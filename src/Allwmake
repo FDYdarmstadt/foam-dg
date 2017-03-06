@@ -1,0 +1,20 @@
+#!/bin/sh
+set -x
+
+wmake libso navalHydro 
+
+wmake steadyNavalFoam
+
+wmake navalFoam
+wmake navalFoamMotion
+wmake navalFoamLevelSet
+wmake swenseFoam
+wmake navalInterIbFoam
+
+wmake initWaveField
+wmake initLevelSetField
+
+wmake setEulerMotion
+wmake transformEuler
+
+wmake meshMotionTestFoam
