@@ -21,41 +21,47 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Description
-
 \*---------------------------------------------------------------------------*/
 
-#include "emptyFaPatch.H"
+#include "emptyDgPatch.H"
+#include "dgBoundaryMesh.H"
+#include "dgMesh.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-// Patch name
-defineTypeNameAndDebug(emptyFaPatch, 0);
-
-// Add the patch constructor functions to the hash tables
-addToRunTimeSelectionTable(faPatch, emptyFaPatch, dictionary);
-
-// Over-riding the face normals return from the underlying patch
-// This is the only piece of info used out of the underlying primitivePatch
-// I choose to store it there because it is used in primitive patch operations
-// and it should not be duplicated as before.  However, to ensure everything
-// in the empty patch is sized to zero, we shall here return a regerence to
-// a zero-sized field (it does not matter what the field is
-//
-// const vectorField& emptyFaPatch::edgeNormals() const
-// {
-//     return faceAreas();
-// }
+    defineTypeNameAndDebug(emptyDgPatch, 0);
+    addToRunTimeSelectionTable(dgPatch, emptyDgPatch, polyPatch);
+}
 
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-} // End namespace Foam
+Foam::emptyDgPatch::emptyDgPatch
+(
+    const polyPatch& patch,
+    const dgBoundaryMesh& bm
+)
+:
+    dgPatch(patch, bm),
+    faceCells_
+    (
+        labelList::subList
+        (
+            boundaryMesh().mesh().mesh().faceOwner(), 0, patch.start()
+        )
+    )
+{}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+const Foam::unallocLabelList& Foam::emptyDgPatch::faceCells() const
+{
+    return faceCells_;
+}
+
 
 // ************************************************************************* //

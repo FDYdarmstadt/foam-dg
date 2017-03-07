@@ -23,25 +23,37 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "faPatch.H"
+#include "dgPatch.H"
+#include "HashTable.H"
 
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-template<class GeometricField, class Type>
-const typename GeometricField::PatchFieldType& Foam::faPatch::lookupPatchField
+Foam::autoPtr<Foam::dgPatch> Foam::dgPatch::New
 (
-    const word& name,
-    const GeometricField*,
-    const Type*
-) const
+    const polyPatch& patch,
+    const dgBoundaryMesh& bm
+)
 {
-    return patchField<GeometricField, Type>
-    (
-        boundaryMesh().mesh()().objectRegistry::lookupObject<GeometricField>
-        (
-            name
-        )
-    );
+    if (debug)
+    {
+        Info<< "dgPatch::New(const polyPatch&, const dgBoundaryMesh&) : "
+            << "constructing dgPatch"
+            << endl;
+    }
+
+    polyPatchConstructorTable::iterator cstrIter =
+        polyPatchConstructorTablePtr_->find(patch.type());
+
+    if (cstrIter == polyPatchConstructorTablePtr_->end())
+    {
+        FatalErrorIn("dgPatch::New(const polyPatch&, const dgBoundaryMesh&)")
+            << "Unknown dgPatch type " << patch.type() << ".\n"
+            << "Valid dgPatch types are :"
+            << polyPatchConstructorTablePtr_->sortedToc()
+            << exit(FatalError);
+    }
+
+    return autoPtr<dgPatch>(cstrIter()(patch, bm));
 }
 
 

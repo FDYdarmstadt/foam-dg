@@ -22,21 +22,21 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    emptyFaPatch
+    Foam::genericDgPatch
 
 Description
-    A patch which will not exist in the faMesh. Typical example is a front and
-    back plane of a 2-D geometry
+    Discontinuous variant of the genericPolyPatch.
 
 SourceFiles
-    emptyFaPatch.C
+    genericDgPatch.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef emptyFaPatch_H
-#define emptyFaPatch_H
+#ifndef genericDgPatch_H
+#define genericDgPatch_H
 
-#include "faPatch.H"
+#include "dgPatch.H"
+#include "genericPolyPatch.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -44,81 +44,27 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class emptyFaPatch Declaration
+                           Class genericDgPatch Declaration
 \*---------------------------------------------------------------------------*/
 
-class emptyFaPatch
+class genericDgPatch
 :
-    public faPatch
+    public dgPatch
 {
 
 public:
 
     //- Runtime type information
-    TypeName("empty");
+    TypeName(genericPolyPatch::typeName_());
 
 
     // Constructors
 
-         //- Construct from components
-        emptyFaPatch
-        (
-            const word& name,
-            const labelList& edgeLabels,
-            const label index,
-            const faBoundaryMesh& bm,
-            const label ngbPolyPatchIndex
-        )
+        //- Construct from components
+        genericDgPatch(const polyPatch& patch, const dgBoundaryMesh& bm)
         :
-            faPatch(name, edgeLabels, index, bm, ngbPolyPatchIndex)
+            dgPatch(patch, bm)
         {}
-
-       //- Construct from dictionary
-        emptyFaPatch
-        (
-            const word& name,
-            const dictionary& dict,
-            const label index,
-            const faBoundaryMesh& bm
-        )
-        :
-            faPatch(name, dict, index, bm)
-        {}
-
-        //- Construct and return a clone, resetting the edge list
-        //  and boundary mesh
-        virtual autoPtr<faPatch> clone
-        (
-            const faBoundaryMesh& bm,
-            const labelList& edgeLabels,
-            const label index,
-            const label ngbPolyPatchIndex
-        ) const
-        {
-            return autoPtr<faPatch>
-            (
-                new emptyFaPatch
-                (
-                    name(),
-                    edgeLabels,
-                    index,
-                    bm,
-                    ngbPolyPatchIndex
-                )
-            );
-        }
-
-    // Member Functions
-
-        virtual label size() const
-        {
-            return 0;
-        }
-
-        //- Return face normals. Over-riding base class return to get zero size
-        //
-//         virtual const vectorField& edgeNormals() const;
-
 };
 
 

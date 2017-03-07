@@ -22,20 +22,21 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    faMeshLduAddressing
+    dgMeshLduAddressing
 
 Description
 
 SourceFiles
-    faMeshLduAddressing.C
+    dgMeshLduAddressing.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef faMeshLduAddressing_H
-#define faMeshLduAddressing_H
+#ifndef dgMeshLduAddressing_H
+#define dgMeshLduAddressing_H
 
 #include "lduAddressing.H"
-#include "faMesh.H"
+#include "dgMesh.H"
+#include "globalMeshData.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -43,10 +44,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                        Class faMeshLduAddressing Declaration
+                    Class dgMeshLduAddressing Declaration
 \*---------------------------------------------------------------------------*/
 
-class faMeshLduAddressing
+class dgMeshLduAddressing
 :
     public lduAddressing
 {
@@ -68,10 +69,10 @@ class faMeshLduAddressing
     // Private Member Functions
 
         //- Disallow default bitwise copy construct
-        faMeshLduAddressing(const faMeshLduAddressing&);
+        dgMeshLduAddressing(const dgMeshLduAddressing&);
 
         //- Disallow default bitwise assignment
-        void operator=(const faMeshLduAddressing&);
+        void operator=(const dgMeshLduAddressing&);
 
 
 public:
@@ -79,31 +80,31 @@ public:
     // Constructors
 
         //- Construct from components
-        faMeshLduAddressing(const faMesh& mesh)
+        dgMeshLduAddressing(const dgMesh& dMesh)
         :
-            lduAddressing(mesh.nFaces()),
+            lduAddressing(dMesh.mesh().nCells()),
             lowerAddr_
             (
                 labelList::subList
                 (
-                    mesh.edgeOwner(),
-                    mesh.nInternalEdges()
+                    dMesh.mesh().faceOwner(),
+                    dMesh.mesh().nInternalFaces()
                 )
             ),
-            upperAddr_(mesh.edgeNeighbour()),
-            patchAddr_(mesh.boundary().size()),
-            patchSchedule_(mesh.globalData().patchSchedule())
+            upperAddr_(dMesh.mesh().faceNeighbour()),
+            patchAddr_(dMesh.mesh().boundaryMesh().size()),
+            patchSchedule_(dMesh.mesh().globalData().patchSchedule())
         {
-            forAll (mesh.boundary(), patchI)
+            forAll (dMesh.boundary(), patchI)
             {
-                patchAddr_[patchI] = &mesh.boundary()[patchI].edgeFaces();
+                patchAddr_[patchI] =
+                    &dMesh.mesh().boundaryMesh()[patchI].faceCells();
             }
         }
 
-    // Destructor
-
-        virtual ~faMeshLduAddressing()
-        {}
+    //- Destructor
+    virtual ~dgMeshLduAddressing()
+    {}
 
 
     // Member Functions

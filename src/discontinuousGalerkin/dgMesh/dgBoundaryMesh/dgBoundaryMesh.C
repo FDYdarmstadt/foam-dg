@@ -25,97 +25,109 @@ Description
 
 \*---------------------------------------------------------------------------*/
 
+#include "dgBoundaryMesh.H"
 #include "dgMesh.H"
-#include "foamTime.H"
-#include "polyMesh.H"
 #include "primitiveMesh.H"
-#include "demandDrivenData.H"
-#include "dgMeshLduAddressing.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-    defineTypeNameAndDebug(dgMesh, 0);
+    defineTypeNameAndDebug(dgBoundaryMesh, 0);
 }
 
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
-const Foam::lduAddressing& Foam::dgMesh::lduAddr() const
+void Foam::dgBoundaryMesh::addPatches(const polyBoundaryMesh& basicBdry)
 {
-    if (!lduPtr_)
+    setSize(basicBdry.size());
+
+    // Set boundary patches
+    dgPatchList& Patches = *this;
+
+    forAll(Patches, patchI)
     {
-        lduPtr_ = new dgMeshLduAddressing(*this);
+        Patches.set(patchI, dgPatch::New(basicBdry[patchI], *this));
     }
-
-    return *lduPtr_;
 }
 
 
-void Foam::dgMesh::clearAddressing()
-{
-    deleteDemandDrivenData(lduPtr_);
-
-    // Geometry dependent object updated through call-back
-    // and handled by polyMesh
-    // HJ, 29/Aug/2010
-}
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::dgMesh::dgMesh(const polyMesh& pMesh)
+// Construct from polyBoundaryMesh
+Foam::dgBoundaryMesh::dgBoundaryMesh
+(
+    const dgMesh& mesh,
+    const polyBoundaryMesh& basicBdry
+)
 :
-    GeoMesh<polyMesh>(pMesh),
-    MeshObject<polyMesh, dgMesh>(pMesh),
-    boundary_(*this, pMesh.boundaryMesh())
+    dgPatchList(basicBdry.size()),
+    mesh_(mesh)
 {
-    if (debug)
-    {
-        InfoIn("dgMesh::dgMesh(const polyMesh& pMesh)")
-            << "Creating dgMesh from polyMesh" << endl;
-    }
+    addPatches(basicBdry);
 }
-
-
-// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
-
-Foam::dgMesh::~dgMesh()
-{}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-const Foam::Time& Foam::dgMesh::time() const
+const Foam::dgMesh& Foam::dgBoundaryMesh::mesh() const
 {
-    return mesh().time();
+    return mesh_;
 }
 
 
-const Foam::objectRegistry& Foam::dgMesh::thisDb() const
+Foam::lduInterfacePtrsList Foam::dgBoundaryMesh::interfaces() const
 {
-    return mesh().thisDb();
+    lduInterfacePtrsList interfaces(size());
+
+    forAll (interfaces, patchI)
+    {
+        if (isA<lduInterface>(this->operator[](patchI)))
+        {
+            interfaces.set
+            (
+                patchI,
+               &refCast<const lduInterface>(this->operator[](patchI))
+            );
+        }
+    }
+
+    return interfaces;
 }
 
 
-const Foam::dgBoundaryMesh& Foam::dgMesh::boundary() const
+void Foam::dgBoundaryMesh::movePoints(const pointField& p)
 {
-    return boundary_;
+    dgPatchList& patches = *this;
+
+    forAll (patches, patchI)
+    {
+        patches[patchI].initMovePoints();
+    }
+
+    forAll (patches, patchI)
+    {
+        patches[patchI].movePoints();
+    }
 }
 
 
-// * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
-
-bool Foam::dgMesh::operator!=(const dgMesh& m) const
+void Foam::dgBoundaryMesh::updateMesh()
 {
-    return &m != this;
-}
+    dgPatchList& patches = *this;
 
+    forAll(patches, patchI)
+    {
+        patches[patchI].initUpdateMesh();
+    }
 
-bool Foam::dgMesh::operator==(const dgMesh& m) const
-{
-    return &m == this;
+    forAll(patches, patchI)
+    {
+        patches[patchI].updateMesh();
+    }
 }
 
 

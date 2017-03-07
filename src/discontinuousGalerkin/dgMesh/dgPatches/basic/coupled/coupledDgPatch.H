@@ -22,21 +22,23 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::symmetryFaPatch
+    Foam::coupledDgPatch
 
 Description
-    Symmetry-plane patch.
+    An abstract base class for patches that couple regions of the
+    computational domain e.g. cyclic and processor-processor links.
 
 SourceFiles
-    symmetryFaPatch.C
+    coupledDgPatch.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef symmetryFaPatch_H
-#define symmetryFaPatch_H
+#ifndef coupledDgPatch_H
+#define coupledDgPatch_H
 
-#include "faPatch.H"
-#include "symmetryPolyPatch.H"
+#include "dgPatch.H"
+#include "lduInterface.H"
+#include "coupledPolyPatch.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -44,17 +46,28 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class symmetryFaPatch Declaration
+                         Class coupledDgPatch Declaration
 \*---------------------------------------------------------------------------*/
 
-class symmetryFaPatch
+class coupledDgPatch
 :
-    public faPatch
+    public lduInterface,
+    public dgPatch
 {
+    // Private data
+
+        const coupledPolyPatch& coupledPolyPatch_;
+
 
 protected:
 
     // Protected Member Functions
+
+        //- Make patch weighting factors
+        virtual void makeWeights(scalarField&) const = 0;
+
+        //- Make patch face - neighbour cell distances
+        virtual void makeDeltaCoeffs(scalarField&) const = 0;
 
         //- Make patch face non-orthogonality correction vectors
         virtual void makeCorrVecs(vectorField&) const;
@@ -62,54 +75,54 @@ protected:
 
 public:
 
+    friend class surfaceInterpolation;
+
+
     //- Runtime type information
-    TypeName(symmetryPolyPatch::typeName_());
+    TypeName(coupledPolyPatch::typeName_());
 
 
     // Constructors
 
-        //- Construct from components
-        symmetryFaPatch
-        (
-            const word& name,
-            const labelList& edgeLabels,
-            const label index,
-            const faBoundaryMesh& bm,
-            const label ngbPolyPatchIndex
-        );
-
-        //- Construct from dictionary
-        symmetryFaPatch
-        (
-            const word& name,
-            const dictionary& dict,
-            const label index,
-            const faBoundaryMesh& bm
-        );
-
-        //- Construct and return a clone, resetting the edge list
-        //  and boundary mesh
-        virtual autoPtr<faPatch> clone
-        (
-            const faBoundaryMesh& bm,
-            const labelList& edgeLabels,
-            const label index,
-            const label ngbPolyPatchIndex
-        ) const
-        {
-            return autoPtr<faPatch>
-            (
-                new symmetryFaPatch
-                (
-                    name(), edgeLabels, index, bm, ngbPolyPatchIndex
-                )
-            );
-        }
-
-    // Destructor
-
-        virtual ~symmetryFaPatch()
+        //- Construct from polyPatch
+        coupledDgPatch(const polyPatch& patch, const dgBoundaryMesh& bm)
+        :
+            dgPatch(patch, bm),
+            coupledPolyPatch_(refCast<const coupledPolyPatch>(patch))
         {}
+
+
+    //- Destructor
+    virtual ~coupledDgPatch();
+
+
+    // Member Functions
+
+        // Access
+
+            //- Return true if patch is coupled
+            virtual bool coupled() const
+            {
+                return coupledPolyPatch_.coupled();
+            }
+
+            //- Return face transformation tensor
+            const tensorField& forwardT() const
+            {
+                return coupledPolyPatch_.forwardT();
+            }
+
+            //- Return neighbour-cell transformation tensor
+            const tensorField& reverseT() const
+            {
+                return coupledPolyPatch_.reverseT();
+            }
+
+            //- Are the cyclic planes parallel
+            bool parallel() const
+            {
+                return coupledPolyPatch_.parallel();
+            }
 };
 
 

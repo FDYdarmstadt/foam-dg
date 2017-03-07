@@ -21,59 +21,35 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
+Typedef
+    Foam::dgPatchList
+
 Description
+    Container classes for dgPatch
 
 \*---------------------------------------------------------------------------*/
 
-#include "faPatch.H"
-#include "dictionary.H"
+#ifndef dgPatchList_H
+#define dgPatchList_H
+
+#include "dgPatch.H"
+#include "PtrList.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-autoPtr<faPatch> faPatch::New
-(
-    const word& name,
-    const dictionary& dict,
-    const label index,
-    const faBoundaryMesh& bm
-)
-{
-    if (debug)
-    {
-        Info<< "faPatch::New(const word&, const dictionary&, const label, "
-               "const faBoundaryMesh&) : constructing faPatch"
-            << endl;
-    }
-
-    word patchType(dict.lookup("type"));
-
-    dictionaryConstructorTable::iterator cstrIter =
-        dictionaryConstructorTablePtr_->find(patchType);
-
-    if (cstrIter == dictionaryConstructorTablePtr_->end())
-    {
-        FatalIOErrorIn
-        (
-            "faPatch::New(const word&, const dictionary&, "
-            "const label, const faBoundaryMesh&)",
-            dict
-        )   << "Unknown faPatch type " << patchType << endl << endl
-            << "Valid faPatch types are :" << endl
-            << dictionaryConstructorTablePtr_->sortedToc()
-            << exit(FatalIOError);
-    }
-
-    return autoPtr<faPatch>(cstrIter()(name, dict, index, bm));
-}
-
+typedef PtrList<dgPatch> dgPatchList;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
 
 // ************************************************************************* //

@@ -21,70 +21,53 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
+Application
+    dgaplacianFoam
+
 Description
+    Solves a Laplace equation using the Discontinuous Galerkin Method
+
+Author
+    Hrvoje Jasak.  All rights reserved.
 
 \*---------------------------------------------------------------------------*/
 
-#include "symmetryFaPatch.H"
-#include "addToRunTimeSelectionTable.H"
+#include "dgCFD.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-namespace Foam
+int main(int argc, char *argv[])
 {
+#   include "setRootCase.H"
+
+#   include "createTime.H"
+#   include "createPolyMesh.H"
+#   include "createDgMesh.H"
+
+// #   include "createFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-defineTypeNameAndDebug(symmetryFaPatch, 0);
-addToRunTimeSelectionTable(faPatch, symmetryFaPatch, dictionary);
+    Info<< "\nCalculating temperature distribution\n" << endl;
 
-// * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
+    Info<< "Time = " << runTime.timeName() << nl << endl;
 
-void symmetryFaPatch::makeCorrVecs(vectorField& cv) const
-{
-    // Non-orthogonal correction not allowed.  HJ, 16/Apr/2009
-    cv = vector::zero;
+//             solve
+//             (
+//                 fvm::ddt(T) - fvm::laplacian(DT, T)
+//             );
+
+// #       include "write.H"
+
+//         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+//             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+//             << nl << endl;
+//     }
+
+    Info<< "End\n" << endl;
+
+    return 0;
 }
 
-
-// * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * * * * * //
-
-// Construct from components
-symmetryFaPatch::symmetryFaPatch
-(
-    const word& name,
-    const labelList& edgeLabels,
-    const label index,
-    const faBoundaryMesh& bm,
-    const label ngbPolyPatchIndex
-)
-:
-    faPatch(name, edgeLabels, index, bm, ngbPolyPatchIndex)
-{}
-
-//- Construct from dictionary
-symmetryFaPatch::symmetryFaPatch
-(
-    const word& name,
-    const dictionary& dict,
-    const label index,
-    const faBoundaryMesh& bm
-)
-:
-    faPatch(name, dict, index, bm)
-{
-    if(ngbPolyPatchIndex() == -1)
-    {
-        FatalErrorIn
-        (
-            "symmetryFaPatch::symmetryFaPatch(const word&, const dictionary&, const label, const faBoundaryMesh&)"
-        )   << "Neighbour polyPatch index is not specified for faPatch "
-            << this->name() << exit(FatalError);
-    }
-}
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-} // End namespace Foam
 
 // ************************************************************************* //

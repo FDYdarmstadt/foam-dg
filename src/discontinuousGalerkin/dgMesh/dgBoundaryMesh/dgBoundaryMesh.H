@@ -22,53 +22,107 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    faPatchData
+    dgBoundaryMesh
 
 Description
-    Class which holds data needed for faPatch construction
+    Discontinuous Galerkin boundary mesh
 
 SourceFiles
+    dgBoundaryMesh.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef faPatchData_H
-#define faPatchData_H
+#ifndef dgBoundaryMesh_H
+#define dgBoundaryMesh_H
 
-#include "labelList.H"
+#include "dgPatchList.H"
+#include "lduInterfacePtrsList.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+class dgMesh;
+
 /*---------------------------------------------------------------------------*\
-                           Class faPatchData Declaration
+                        Class dgBoundaryMesh Declaration
 \*---------------------------------------------------------------------------*/
 
-struct faPatchData
+class dgBoundaryMesh
+:
+    public dgPatchList
 {
-    word name_;
-    word type_;
-    dictionary dict_;
-    label ownPolyPatchID_;
-    label ngbPolyPatchID_;
-    labelList edgeLabels_;
-    faPatchData()
-    :
-        name_(word::null),
-        type_(word::null),
-        ownPolyPatchID_(-1),
-        ngbPolyPatchID_(-1)
+    // Private data
+
+        //- Reference to mesh
+        const dgMesh& mesh_;
+
+
+
+    // Private Member Functions
+
+        //- Disallow construct as copy
+        dgBoundaryMesh(const dgBoundaryMesh&);
+
+        //- Disallow assignment
+        void operator=(const dgBoundaryMesh&);
+
+
+        // Constructor helper
+
+        //- Add fvPatches corresponding to the given polyBoundaryMesh
+        void addPatches(const polyBoundaryMesh&);
+
+
+public:
+
+    //- Runtime type information
+    TypeName("dgBoundaryMesh");
+
+
+    // Constructors
+
+        //- Construct from polyBoundaryMesh
+        dgBoundaryMesh
+        (
+            const dgMesh&,
+            const polyBoundaryMesh&
+        );
+
+
+    //- Destructor
+    virtual ~dgBoundaryMesh()
     {}
+
+
+    // Member functions
+
+        // Access
+
+            //- Return the mesh reference
+            const dgMesh& mesh() const;
+
+            //- Return a list of pointers for each patch
+            //  with only those pointing to interfaces being set
+            lduInterfacePtrsList interfaces() const;
+
+
+        // Edit
+
+            //- Correct dgBoundaryMesh after moving points
+            void movePoints(const pointField&);
+
+            //- Correct dgBoundaryMesh after topology update
+            void updateMesh();
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

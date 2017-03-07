@@ -1,0 +1,13 @@
+dgPatches = dgMesh/dgPatches
+$(dgPatches)/dgPatch/dgPatch.C
+$(dgPatches)/dgPatch/newDgPatch.C
+$(dgPatches)/basic/coupled/coupledDgPatch.C
+$(dgPatches)/constraint/empty/emptyDgPatch.C
+
+dgMesh/dgBoundaryMesh/dgBoundaryMesh.
+dgMesh/dgMesh.C
+
+/* faMatrices/faMatrices.C */
+/* faMatrices/faScalarMatrix/faScalarMatrix.C */
+
+LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin

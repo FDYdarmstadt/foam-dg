@@ -43,7 +43,7 @@ boundaryField
         type fixedValue;
         value uniform 0;
     }
-    defaltFaces
+    defaultFaces
     {
         type empty;
     }

@@ -21,40 +21,29 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-\*----------------------------------------------------------------------------*/
+Description
+    coupledDgPatch is an abstract base class for patches that couple regions
+    of the computational domain e.g. cyclic and processor-processor links.
 
-#include "faPatch.H"
+\*---------------------------------------------------------------------------*/
+
+#include "coupledDgPatch.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+    defineTypeNameAndDebug(coupledDgPatch, 0);
+}
+
+
+// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
+
+Foam::coupledDgPatch::~coupledDgPatch()
+{}
+
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
-template<class Type>
-Foam::tmp<Foam::Field<Type> > Foam::faPatch::patchInternalField
-(
-    const UList<Type>& f
-) const
-{
-    tmp<Field<Type> > tpif(new Field<Type>(size()));
-    Field<Type>& pif = tpif();
-
-    const unallocLabelList& edgeFaces = this->edgeFaces();
-
-    forAll(pif, facei)
-    {
-        pif[facei] = f[edgeFaces[facei]];
-    }
-
-    return tpif;
-}
-
-
-template<class GeometricField, class Type>
-const typename GeometricField::PatchFieldType& Foam::faPatch::patchField
-(
-    const GeometricField& gf
-) const
-{
-    return gf.boundaryField()[index()];
-}
 
 
 // ************************************************************************* //

@@ -22,21 +22,22 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    wedgeFaPatch
+    Foam::emptyDgPatch
 
 Description
-    Wedge front and back plane patch.
+    A patch which will not exist in the dgMesh.
+    Use as front and back plane of a 2-D geometry
 
 SourceFiles
-    wedgeFaPatch.C
+    emptyDgPatch.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef wedgeFaPatch_H
-#define wedgeFaPatch_H
+#ifndef emptyDgPatch_H
+#define emptyDgPatch_H
 
-#include "faPatch.H"
-#include "wedgePolyPatch.H"
+#include "dgPatch.H"
+#include "emptyPolyPatch.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -44,88 +45,42 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class wedgeFaPatch Declaration
+                           Class emptyDgPatch Declaration
 \*---------------------------------------------------------------------------*/
 
-class wedgeFaPatch
+class emptyDgPatch
 :
-    public faPatch
+    public dgPatch
 {
     // Private data
 
-        const wedgePolyPatch* wedgePolyPatchPtr_;
+        //- Dummy face-cell addressing
+        const labelList::subList faceCells_;
 
-        //- Axis point label
-        mutable label axisPoint_;
-
-        //- Is it axis point looked for?
-        mutable bool axisPointChecked_;
-
-        //- Finde axis point
-        void findAxisPoint() const;
 
 public:
 
     //- Runtime type information
-    TypeName("wedge");
+    TypeName(emptyPolyPatch::typeName_());
 
 
     // Constructors
 
-        //- Construct from dictionary
-        wedgeFaPatch
-        (
-            const word& name,
-            const dictionary& dict,
-            const label index,
-            const faBoundaryMesh& bm
-        );
+        //- Construct from polyPatch
+        emptyDgPatch(const polyPatch& patch, const dgBoundaryMesh& bm);
 
 
-    // Destructor
-
-        virtual ~wedgeFaPatch()
-        {}
-
-
-    // Member functions
+    // Member Functions
 
         // Access
 
-            //- Return axis of the wedge
-            const vector& axis() const
+            virtual label size() const
             {
-                return wedgePolyPatchPtr_->axis();
+                return 0;
             }
 
-            //- Return plane normal between the wedge boundaries
-            const vector& centreNormal() const
-            {
-                return wedgePolyPatchPtr_->centreNormal();
-            }
-
-            //- Return face transformation tensor
-            const tensor& edgeT() const
-            {
-                return wedgePolyPatchPtr_->faceT();
-            }
-
-            //- Return neighbour-cell transformation tensor
-            const tensor& faceT() const
-            {
-                return wedgePolyPatchPtr_->cellT();
-            }
-
-            //- Return axis point label
-            label axisPoint() const
-            {
-                if(axisPoint_ == -1 && !axisPointChecked_)
-                {
-                    findAxisPoint();
-                }
-
-                return axisPoint_;
-            }
+            //- Return faceCells of zero size
+            virtual const unallocLabelList& faceCells() const;
 };
 
 

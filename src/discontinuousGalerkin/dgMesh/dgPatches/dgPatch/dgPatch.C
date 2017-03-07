@@ -21,35 +21,53 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Type
-    faPatchList
-
-Description
-    container classes for faPatch
-
 \*---------------------------------------------------------------------------*/
 
-#ifndef faPatchList_H
-#define faPatchList_H
+#include "dgPatch.H"
+#include "addToRunTimeSelectionTable.H"
+#include "dgBoundaryMesh.H"
+#include "dgMesh.H"
+#include "primitiveMesh.H"
 
-#include "faPatch.H"
-#include "PtrList.H"
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
+    defineTypeNameAndDebug(dgPatch, 0);
+    defineRunTimeSelectionTable(dgPatch, polyPatch);
+    addToRunTimeSelectionTable(dgPatch, dgPatch, polyPatch);
+}
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-typedef PtrList<faPatch> faPatchList;
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Foam::dgPatch::dgPatch(const polyPatch& p, const dgBoundaryMesh& bm)
+:
+    polyPatch_(p),
+    boundaryMesh_(bm)
+{}
 
-} // End namespace Foam
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-#endif
+Foam::dgPatch::~dgPatch()
+{}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+const Foam::unallocLabelList& Foam::dgPatch::faceCells() const
+{
+    return polyPatch_.faceCells();
+}
+
+
+void Foam::dgPatch::initMovePoints()
+{}
+
+
+void Foam::dgPatch::movePoints()
+{}
+
 
 // ************************************************************************* //
