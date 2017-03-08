@@ -113,10 +113,10 @@ public:
         // Edit
 
             //- Correct dgBoundaryMesh after moving points
-            void movePoints(const pointField&);
+            void movePoints();
 
             //- Correct dgBoundaryMesh after topology update
-            void updateMesh();
+            void updateMesh(const mapPolyMesh&);
 };
 
 

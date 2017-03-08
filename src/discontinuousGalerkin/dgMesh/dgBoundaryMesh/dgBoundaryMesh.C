@@ -99,14 +99,9 @@ Foam::lduInterfacePtrsList Foam::dgBoundaryMesh::interfaces() const
 }
 
 
-void Foam::dgBoundaryMesh::movePoints(const pointField& p)
+void Foam::dgBoundaryMesh::movePoints()
 {
     dgPatchList& patches = *this;
-
-    forAll (patches, patchI)
-    {
-        patches[patchI].initMovePoints();
-    }
 
     forAll (patches, patchI)
     {
@@ -115,18 +110,13 @@ void Foam::dgBoundaryMesh::movePoints(const pointField& p)
 }
 
 
-void Foam::dgBoundaryMesh::updateMesh()
+void Foam::dgBoundaryMesh::updateMesh(const mapPolyMesh& mpm)
 {
     dgPatchList& patches = *this;
 
     forAll(patches, patchI)
     {
-        patches[patchI].initUpdateMesh();
-    }
-
-    forAll(patches, patchI)
-    {
-        patches[patchI].updateMesh();
+        patches[patchI].updateMesh(mpm);
     }
 }
 

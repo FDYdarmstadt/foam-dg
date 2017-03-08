@@ -52,6 +52,7 @@ namespace Foam
 {
 
 class dgBoundaryMesh;
+class mapPolyMesh;
 
 /*---------------------------------------------------------------------------*\
                            Class dgPatch Declaration
@@ -81,17 +82,11 @@ protected:
 
     // Protected Member Functions
 
-        //- Initialise the patches for moving points
-        virtual void initMovePoints();
-
         //- Correct patches after moving points
         virtual void movePoints();
 
-        //- Initialise the update of the patch topology
-        virtual void initUpdateMesh();
-
         //- Update of the patch topology
-        virtual void updateMesh();
+        virtual void updateMesh(const mapPolyMesh&);
 
 
 public:

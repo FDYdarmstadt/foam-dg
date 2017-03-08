@@ -27,7 +27,7 @@ License
 #include "addToRunTimeSelectionTable.H"
 #include "dgBoundaryMesh.H"
 #include "dgMesh.H"
-#include "primitiveMesh.H"
+#include "mapPolyMesh.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -62,11 +62,11 @@ const Foam::unallocLabelList& Foam::dgPatch::faceCells() const
 }
 
 
-void Foam::dgPatch::initMovePoints()
+void Foam::dgPatch::movePoints()
 {}
 
 
-void Foam::dgPatch::movePoints()
+void Foam::dgPatch::updateMesh(const mapPolyMesh&)
 {}
 
 

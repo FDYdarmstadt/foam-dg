@@ -36,7 +36,7 @@ Description
 
 namespace Foam
 {
-    defineTypeNameAndDebug(dgMesh, 0);
+    defineTypeNameAndDebug(dgMesh, 1);
 }
 
 
@@ -102,6 +102,18 @@ const Foam::objectRegistry& Foam::dgMesh::thisDb() const
 const Foam::dgBoundaryMesh& Foam::dgMesh::boundary() const
 {
     return boundary_;
+}
+
+
+bool Foam::dgMesh::movePoints() const
+{
+    return false;
+}
+
+
+bool Foam::dgMesh::updateMesh(const mapPolyMesh&) const
+{
+    return false;
 }
 
 

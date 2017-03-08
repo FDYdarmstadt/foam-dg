@@ -63,15 +63,6 @@ protected:
 
     // Protected Member Functions
 
-        //- Make patch weighting factors
-        virtual void makeWeights(scalarField&) const = 0;
-
-        //- Make patch face - neighbour cell distances
-        virtual void makeDeltaCoeffs(scalarField&) const = 0;
-
-        //- Make patch face non-orthogonality correction vectors
-        virtual void makeCorrVecs(vectorField&) const;
-
 
 public:
 
