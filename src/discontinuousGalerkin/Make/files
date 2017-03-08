@@ -1,3 +1,5 @@
+primitives/dgVector/dgVector.C
+
 dgPatches = dgMesh/dgPatches
 $(dgPatches)/dgPatch/dgPatch.C
 $(dgPatches)/dgPatch/newDgPatch.C
