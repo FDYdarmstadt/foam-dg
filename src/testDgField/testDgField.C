@@ -30,8 +30,6 @@ Description
 \*---------------------------------------------------------------------------*/
 
 #include "dgCFD.H"
-#include "dgScalarField.H"
-#include "dgVectorField.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 // Main program:
