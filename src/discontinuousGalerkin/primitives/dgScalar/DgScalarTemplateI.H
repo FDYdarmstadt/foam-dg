@@ -31,8 +31,8 @@ namespace Foam
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 template <class Cmpt, int length>
-const char* const DgScalar<Cmpt, length>::typeName =
-    ("dgScalar" + name(length)).c_str();
+const char* const DgScalar<Cmpt, length>::typeName = 
+    "dgScalar";
 
 template <class Cmpt, int length>
 const DgScalar<Cmpt, length> DgScalar<Cmpt, length>::zero(0);

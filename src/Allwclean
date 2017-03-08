@@ -4,4 +4,6 @@ set -x
 wclean discontinuousGalerkin
 
 wclean testDg
+wclean testDgField
+
 wclean dgLaplacianFoam

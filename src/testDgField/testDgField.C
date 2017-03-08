@@ -1,9 +1,9 @@
 /*---------------------------------------------------------------------------*\
-  =========                 |
-  \\      /  F ield         | foam-extend: Open Source CFD
-   \\    /   O peration     | Version:     4.0
-    \\  /    A nd           | Web:         http://www.foam-extend.org
-     \\/     M anipulation  | For copyright notice see file Copyright
+  =========                   |
+  \\      /   F ield          | foam-extend: Open Source CFD
+   \\    /    O peration      |
+    \\  /     A nd            | For copyright notice see file Copyright
+     \\/      M anipulation   |
 -------------------------------------------------------------------------------
 License
     This file is part of foam-extend.
@@ -21,41 +21,41 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
+Application
+    testFadField
+
 Description
-    Vector of dgScalars.
+    Test primitive fields with Discontinuous Galerkin variables
 
 \*---------------------------------------------------------------------------*/
 
-#include "dgVector.H"
+#include "dgCFD.H"
+#include "dgScalarField.H"
+#include "dgVectorField.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// Main program:
 
-namespace Foam
+int main(int argc, char *argv[])
 {
+    // Set field given length
+    dgScalarField dgf1(3);
 
-// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+    // Set field given length and initial value
+    dgScalarField dgf2(3, dgScalar(5));
 
-template<>
-const char* const dgVector::typeName = "dgVector";
+    Info<< "dgf2, length 3 value 5 : " << dgf2 << endl;
+    
+    dgVectorField tfVector
+    (
+        3,
+        dgVector(dgScalar(1), dgScalar(2), dgScalar(3))
+    );
 
-template<>
-const char* dgVector::componentNames[] = {"x", "y", "z"};
+    Info << "tfVector: " << tfVector << endl;
 
-template<>
-const dgVector dgVector::zero(dgScalar::zero, dgScalar::zero, dgScalar::zero);
+    return 0;
+}
 
-template<>
-const dgVector dgVector::one(dgScalar::one, dgScalar::one, dgScalar::one);
-
-template<>
-const dgVector dgVector::max(dgScalar::max, dgScalar::max, dgScalar::max);
-
-template<>
-const dgVector dgVector::min(dgScalar::min, dgScalar::min, dgScalar::min);
-
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-} // End namespace Foam
 
 // ************************************************************************* //

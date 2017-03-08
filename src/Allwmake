@@ -4,4 +4,6 @@ set -x
 wmake libso discontinuousGalerkin
 
 wmake testDg
+wmake testDgField
+
 wmake dgLaplacianFoam

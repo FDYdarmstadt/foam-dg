@@ -21,71 +21,52 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Application
-    testDg
+Typedef
+    Foam::dgScalarField
 
 Description
-    Basic tests with DG variables
+    Specialisation of Field\<T\> for dgScalar.
 
 Author
     Hrvoje Jasak.  All rights reserved.
 
+SourceFiles
+    dgScalarField.C
+
 \*---------------------------------------------------------------------------*/
 
+#ifndef dgScalarField_H
+#define dgScalarField_H
+
+#include "Field.H"
 #include "dgScalar.H"
-#include "dgVector.H"
-#include "dgCFD.H"
+
+#define TEMPLATE
+#include "FieldFunctionsM.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-int main(int argc, char *argv[])
+namespace Foam
 {
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "dg order: " << dgOrder::order
-        << ", coeff length: " << dgOrder::length
-        << endl;
-    
-    Info<< "scalar name: " << dgScalar::typeName << endl;
-    Info<< "vector name: " << dgVector::typeName << endl;
+typedef Field<dgScalar> dgScalarField;
 
-    Info<< "Contiguous scalar: " << contiguous<dgScalar>() << endl;
-    Info<< "Contiguous vector: " << contiguous<dgVector>() << endl;
-    
-    dgScalar a(1);
 
-    Info<< "a: " << a << endl;
+// * * * * * * * * * * * * * * * Global Functions  * * * * * * * * * * * * * //
 
-    dgScalar b = a;
-    
-    Info<< "b = a : " << b << endl;
 
-    dgScalar c = 3*a;
-    
-    Info<< "c = 3*a : " << c << endl;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    dgScalar d = c;
-    d[1] = 1;
-    d[2] = 2;
-    d[3] = 3;
-    d[4] = 4;
-    d[5] = 5;
-    d[6] = 6;
-    d[7] = 7;
-    d[8] = 8;
-    d[9] = 9;
+} // End namespace Foam
 
-    Info<< "d = c into poly : " << d << endl;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    dgVector vec(a, a, a);
+#include "undefFieldFunctionsM.H"
 
-    Info<< "vec: " << vec << endl;
-    
-    Info<< "End\n" << endl;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    return 0;
-}
-
+#endif
 
 // ************************************************************************* //
