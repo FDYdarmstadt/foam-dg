@@ -10,7 +10,7 @@ FoamFile
 {
     version         2.0;
     format          ascii;
-    class           volScalarField;
+    class           cellScalarField;
     object          T;
 }
 
@@ -19,21 +19,21 @@ FoamFile
 
 dimensions [0 0 0 0 1 0 0];
 
-internalField uniform 0;
+internalField uniform (0 0 0 0 0 0 0 0 0 0);
 
 boundaryField
 {
     left
     {
-        type fixedValue;
+        type homogenous;
         value uniform 0;
     }
-    rigth
+    right
     {
-        type fixedValue;
+        type homogenous;
         value uniform 0;
     }
-    sides
+    defaultFaces
     {
         type empty;
     }
