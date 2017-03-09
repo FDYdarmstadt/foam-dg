@@ -37,8 +37,8 @@ namespace Foam
 
 template<class Type> class dgPatchField;
 
-typedef dgPatchField<scalar> dgPatchScalarField;
-typedef dgPatchField<vector> dgPatchVectorField;
+typedef dgPatchField<dgScalar> dgPatchScalarField;
+typedef dgPatchField<dgVector> dgPatchVectorField;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

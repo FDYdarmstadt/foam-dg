@@ -356,8 +356,8 @@ addToDgPatchFieldRunTimeSelection                                             \
 
 #define makeDgPatchFields(type)                                               \
                                                                               \
-makeTemplatePatchTypeField(dgPatchScalarField, type##DgPatchScalarField);     \
-makeTemplatePatchTypeField(dgPatchVectorField, type##DgPatchVectorField);
+makeTemplateDgPatchTypeField(dgPatchScalarField, type##DgPatchScalarField);   \
+makeTemplateDgPatchTypeField(dgPatchVectorField, type##DgPatchVectorField);
 
 
 #define makeDgPatchTypeFieldTypedefs(type)                                    \

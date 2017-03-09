@@ -21,30 +21,35 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
+Class
+    homogenousDgPatchField
+
+Description
+
 \*---------------------------------------------------------------------------*/
 
-#include "dgPatchFields.H"
+#ifndef homogenousDgPatchFieldsFwd_H
+#define homogenousDgPatchFieldsFwd_H
+
+#include "dgFieldTypes.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#define makeDgPatchFieldBase(dgPatchTypeField)                                \
-                                                                              \
-defineNamedTemplateTypeNameAndDebug(dgPatchTypeField, 0);                     \
-                                                                              \
-defineTemplateRunTimeSelectionTable(dgPatchTypeField, patch);                 \
-defineTemplateRunTimeSelectionTable(dgPatchTypeField, dictionary);
+template<class Type> class homogenousDgPatchField;
 
-makeDgPatchFieldBase(dgPatchScalarField)
-makeDgPatchFieldBase(dgPatchVectorField)
-
+makeDgPatchTypeFieldTypedefs(homogenous)
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
 
 // ************************************************************************* //

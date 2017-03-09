@@ -65,6 +65,7 @@ Foam::dgPatchField<Type>::dgPatchField
     const dgPatchField<Type>& ptf
 )
 :
+    refCount(),
     patch_(ptf.patch_),
     internalField_(ptf.internalField_),
     updated_(false),

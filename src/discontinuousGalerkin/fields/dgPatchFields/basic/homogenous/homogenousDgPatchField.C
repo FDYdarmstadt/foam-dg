@@ -23,24 +23,60 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "dgPatchFields.H"
+#include "homogenousDgPatchField.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-#define makeDgPatchFieldBase(dgPatchTypeField)                                \
-                                                                              \
-defineNamedTemplateTypeNameAndDebug(dgPatchTypeField, 0);                     \
-                                                                              \
-defineTemplateRunTimeSelectionTable(dgPatchTypeField, patch);                 \
-defineTemplateRunTimeSelectionTable(dgPatchTypeField, dictionary);
+template<class Type>
+homogenousDgPatchField<Type>::homogenousDgPatchField
+(
+    const dgPatch& p,
+    const DimensionedField<Type, cellMesh>& iF
+)
+:
+    dgPatchField<Type>(p, iF)
+{}
 
-makeDgPatchFieldBase(dgPatchScalarField)
-makeDgPatchFieldBase(dgPatchVectorField)
+
+template<class Type>
+homogenousDgPatchField<Type>::homogenousDgPatchField
+(
+    const dgPatch& p,
+    const DimensionedField<Type, cellMesh>& iF,
+    const dictionary&
+)
+:
+    dgPatchField<Type>(p, iF)
+{}
+
+
+template<class Type>
+homogenousDgPatchField<Type>::homogenousDgPatchField
+(
+    const homogenousDgPatchField& zgpf
+)
+:
+    dgPatchField<Type>(zgpf)
+{}
+
+
+template<class Type>
+homogenousDgPatchField<Type>::homogenousDgPatchField
+(
+    const homogenousDgPatchField& zgpf,
+    const DimensionedField<Type, cellMesh>& iF
+)
+:
+    dgPatchField<Type>(zgpf, iF)
+{}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

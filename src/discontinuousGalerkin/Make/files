@@ -11,6 +11,7 @@ dgMesh/dgMesh.C
 
 dgPatchFields = fields/dgPatchFields
 $(dgPatchFields)/dgPatchField/dgPatchFields.C
+$(dgPatchFields)/basic/homogenous/homogenousDgPatchFields.C 
 
 fields/cellFields/cellFields.C
 
