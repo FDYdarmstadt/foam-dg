@@ -1,6 +1,6 @@
     Info<< "Reading field T\n" << endl;
 
-    volScalarField T
+    cellScalarField T
     (
         IOobject
         (
@@ -10,7 +10,7 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh
+        dgMesh
     );
 
 

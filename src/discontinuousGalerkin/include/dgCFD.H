@@ -7,6 +7,7 @@
 #include "foamTime.H"
 #include "dgMesh.H"
 #include "dgPrimitiveFields.H"
+#include "cellFields.H"
 // #include "dgc.H"
 // #include "dgMatrices.H"
 // #include "dgm.H"

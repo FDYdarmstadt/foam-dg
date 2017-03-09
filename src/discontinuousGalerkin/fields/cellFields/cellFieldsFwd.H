@@ -21,53 +21,47 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Application
-    dgaplacianFoam
+Class
+    cellFields
 
 Description
-    Solves a Laplace equation using the Discontinuous Galerkin Method
+    Discontinuous Galerkin cell fields
 
-Author
-    Hrvoje Jasak.  All rights reserved.
+SourceFiles
+    cellFields.C
+
 
 \*---------------------------------------------------------------------------*/
 
-#include "dgCFD.H"
+#ifndef cellFieldsFwd_H
+#define cellFieldsFwd_H
+
+#include "dgFieldTypes.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-int main(int argc, char *argv[])
+namespace Foam
 {
-#   include "setRootCase.H"
-
-#   include "createTime.H"
-#   include "createPolyMesh.H"
-#   include "createDgMesh.H"
-
-#   include "createFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nCalculating temperature distribution\n" << endl;
+class cellMesh;
 
-    Info<< "Time = " << runTime.timeName() << nl << endl;
+template<class Type>
+class dgPatchField;
 
-//             solve
-//             (
-//                 fvm::ddt(T) - fvm::laplacian(DT, T)
-//             );
+template<class Type, template<class> class PatchField, class GeoMesh>
+class GeometricField;
 
-// #       include "write.H"
+typedef GeometricField<dgScalar, dgPatchField, cellMesh> cellScalarField;
+typedef GeometricField<dgVector, dgPatchField, cellMesh> cellVectorField;
 
-//         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-//             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-//             << nl << endl;
-//     }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "End\n" << endl;
+} // End namespace Foam
 
-    return 0;
-}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+#endif
 
 // ************************************************************************* //

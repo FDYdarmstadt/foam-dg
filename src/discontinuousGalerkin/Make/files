@@ -6,8 +6,13 @@ $(dgPatches)/dgPatch/newDgPatch.C
 $(dgPatches)/basic/coupled/coupledDgPatch.C
 $(dgPatches)/constraint/empty/emptyDgPatch.C
 
-dgMesh/dgBoundaryMesh/dgBoundaryMesh.
+dgMesh/dgBoundaryMesh/dgBoundaryMesh.C
 dgMesh/dgMesh.C
+
+dgPatchFields = fields/dgPatchFields
+$(dgPatchFields)/dgPatchField/dgPatchFields.C
+
+fields/cellFields/cellFields.C
 
 /* faMatrices/faMatrices.C */
 /* faMatrices/faScalarMatrix/faScalarMatrix.C */

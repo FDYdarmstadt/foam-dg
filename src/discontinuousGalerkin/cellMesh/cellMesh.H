@@ -21,53 +21,70 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Application
-    dgaplacianFoam
+Class
+    Foam::cellMesh
 
 Description
-    Solves a Laplace equation using the Discontinuous Galerkin Method
+    Mesh data needed to do the Discontinuous Galerkin discretisation.
 
 Author
     Hrvoje Jasak.  All rights reserved.
 
 \*---------------------------------------------------------------------------*/
 
-#include "dgCFD.H"
+#ifndef cellMesh_H
+#define cellMesh_H
+
+#include "GeoMesh.H"
+#include "dgMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-int main(int argc, char *argv[])
+namespace Foam
 {
-#   include "setRootCase.H"
 
-#   include "createTime.H"
-#   include "createPolyMesh.H"
-#   include "createDgMesh.H"
+/*---------------------------------------------------------------------------*\
+                           Class cellMesh Declaration
+\*---------------------------------------------------------------------------*/
 
-#   include "createFields.H"
+class cellMesh
+:
+    public GeoMesh<dgMesh>
+{
+
+public:
+
+    // Constructors
+
+        //- Construct from dgMesh
+        explicit cellMesh(const dgMesh& mesh)
+        :
+            GeoMesh<dgMesh>(mesh)
+        {}
+
+
+    // Member Functions
+
+        //- Return size
+        label size() const
+        {
+            return size(mesh_);
+        }
+
+        //- Return size
+        static label size(const Mesh& mesh)
+        {
+            return mesh().nCells();
+        }
+};
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nCalculating temperature distribution\n" << endl;
+} // End namespace Foam
 
-    Info<< "Time = " << runTime.timeName() << nl << endl;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//             solve
-//             (
-//                 fvm::ddt(T) - fvm::laplacian(DT, T)
-//             );
-
-// #       include "write.H"
-
-//         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-//             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-//             << nl << endl;
-//     }
-
-    Info<< "End\n" << endl;
-
-    return 0;
-}
-
+#endif
 
 // ************************************************************************* //
