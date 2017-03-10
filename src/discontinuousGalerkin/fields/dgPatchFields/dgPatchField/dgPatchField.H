@@ -245,6 +245,26 @@ public:
 
         // Evaluation functions
 
+            //- Update the coefficients associated with the patch field
+            //  Sets Updated to true
+            virtual void updateCoeffs()
+            {
+                updated_ = true;
+            }
+
+            //- Initialise the evaluation of the patch field
+            virtual void initEvaluate
+            (
+                const Pstream::commsTypes commsType = Pstream::blocking
+            )
+            {}
+
+            //- Evaluate the patch field, sets Updated to false
+            virtual void evaluate
+            (
+                const Pstream::commsTypes commsType = Pstream::blocking
+            );
+
 
         // I-O
 

@@ -135,11 +135,11 @@ public:
 
             //- Solve returning the solution statistics.
             //  Solver controls read from dictionary
-            BlockSolverPerformance<Type> solve(const dictionary&);
+            SolverPerfType solve(const dictionary&);
 
             //- Solve returning the solution statistics.
             //  Solver controls read from dgSolution
-            BlockSolverPerformance<Type> solve();
+            SolverPerfType solve();
     };
 
 

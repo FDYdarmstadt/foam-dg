@@ -9,7 +9,7 @@
 #include "dgPrimitiveFields.H"
 #include "cellFields.H"
 // #include "dgc.H"
-// #include "dgMatrices.H"
+#include "dgMatrices.H"
 // #include "dgm.H"
 // #include "linear.H"
 // #include "uniformDimensionedFields.H"

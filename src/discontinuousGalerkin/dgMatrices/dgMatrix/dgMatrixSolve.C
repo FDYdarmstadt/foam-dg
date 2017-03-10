@@ -55,27 +55,21 @@ dgMatrix<Type>::solve(const dictionary& solverControls)
 
 
 template<class Type>
-autoPtr<typename dgMatrix<Type>::dgSolver> dgMatrix<Type>::solver()
-{
-    return solver(psi_.mesh().solutionDict().solverDict(psi_.name()));
-}
-
-template<class Type>
-BlockSolverPerformance<VectorN<scalar, Type::coeffLength> >
+typename dgMatrix<Type>::SolverPerfType
 dgMatrix<Type>::dgSolver::solve()
 {
     return solve
     (
-        faMat_.psi().mesh().solutionDict().solverDict
+        dgMat_.psi().mesh().solutionDict().solverDict
         (
-            faMat_.psi().name()
+            dgMat_.psi().name()
         )
     );
 }
 
 
 template<class Type>
-BlockSolverPerformance<VectorN<scalar, Type::coeffLength> >
+typename dgMatrix<Type>::SolverPerfType
 dgMatrix<Type>::solve()
 {
     return solve

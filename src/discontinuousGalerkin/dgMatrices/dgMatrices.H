@@ -34,6 +34,8 @@ Description
 #define dgMatrices_H
 
 #include "dgFieldTypes.H"
+#include "VectorN.H"
+#include "TensorN.H"
 #include "dgMatrix.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

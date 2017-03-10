@@ -56,6 +56,8 @@ int main(int argc, char *argv[])
     runTime++;
     T.write();
 
+    dgScalarMatrix TEqn(T, T.dimensions()/dimTime);
+
 //             solve
 //             (
 //                 fvm::ddt(T) - fvm::laplacian(DT, T)
