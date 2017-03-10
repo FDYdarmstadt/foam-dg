@@ -21,26 +21,37 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
+Class
+    faMatrix
+
 Description
-     Finite-Volume matrix member static data members
+    A special block matrix type for the Discontinuous Galerkin method
+    of discretisation
 
 \*---------------------------------------------------------------------------*/
 
-#include "faMatrices.H"
+#ifndef dgMatrices_H
+#define dgMatrices_H
+
+#include "dgFieldTypes.H"
+#include "dgMatrix.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-defineTemplateTypeNameAndDebug(faScalarMatrix, 0);
-defineTemplateTypeNameAndDebug(faVectorMatrix, 0);
-defineTemplateTypeNameAndDebug(faTensorMatrix, 0);
+typedef dgMatrix<dgScalar> dgScalarMatrix;
+typedef dgMatrix<dgVector> dgVectorMatrix;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
 
 // ************************************************************************* //

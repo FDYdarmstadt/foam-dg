@@ -21,66 +21,15 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Class
-    faScalarMatrix
-
-Description
-
-SourceFiles
-    faScalarMatrix.C
-
 \*---------------------------------------------------------------------------*/
 
-#ifndef faScalarMatrix_H
-#define faScalarMatrix_H
-
-#include "faMatrix.H"
+#ifndef dimensionedDgTypes_H
+#define dimensionedDgTypes_H
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-namespace Foam
-{
-
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
-// Set reference level for a component of the solution
-// on a given patch face
-template<>
-void faMatrix<scalar>::setComponentReference
-(
-    const label patchi,
-    const label facei,
-    const direction,
-    const scalar value
-);
-
-template<>
-autoPtr<faMatrix<scalar>::faSolver> faMatrix<scalar>::solver
-(
-    const dictionary&
-);
-
-template<>
-lduSolverPerformance faMatrix<scalar>::faSolver::solve
-(
-    const dictionary&
-);
-
-template<>
-lduSolverPerformance faMatrix<scalar>::solve(const dictionary&);
-
-// Return the matrix residual
-template<>
-tmp<scalarField> faMatrix<scalar>::residual() const;
-
-// H operator
-template<>
-tmp<areaScalarField> faMatrix<scalar>::H() const;
-
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-} // End namespace Foam
+#include "dimensionedDgScalar.H"
+#include "dimensionedDgVector.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

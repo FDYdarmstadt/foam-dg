@@ -21,39 +21,23 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Class
-    faMatrix
-
-Description
-    A special matrix type and solver, designed for finite area
-    solutions of scalar equations.
-    Face addressing is used to make all matrix assembly
-    and solution loops vectorise.
-
 \*---------------------------------------------------------------------------*/
 
-#ifndef faMatrices_H
-#define faMatrices_H
-
-#include "faScalarMatrix.H"
+#include "dgMatrices.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
-typedef faMatrix<scalar> faScalarMatrix;
-typedef faMatrix<vector> faVectorMatrix;
-typedef faMatrix<tensor> faTensorMatrix;
+defineTemplateTypeNameAndDebug(dgScalarMatrix, 0);
+//BUG!! defineTemplateTypeNameAndDebug(dgVectorMatrix, 0);
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#endif
 
 // ************************************************************************* //

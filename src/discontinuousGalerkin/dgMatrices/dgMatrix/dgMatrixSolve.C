@@ -1,0 +1,103 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | foam-extend: Open Source CFD
+   \\    /   O peration     | Version:     4.0
+    \\  /    A nd           | Web:         http://www.foam-extend.org
+     \\/     M anipulation  | For copyright notice see file Copyright
+-------------------------------------------------------------------------------
+License
+    This file is part of foam-extend.
+
+    foam-extend is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or (at your
+    option) any later version.
+
+    foam-extend is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
+
+\*---------------------------------------------------------------------------*/
+
+namespace Foam
+{
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+template<class Type>
+BlockSolverPerformance<VectorN<scalar, Type::coeffLength> >
+dgMatrix<Type>::solve(const dictionary& solverControls)
+{
+    if (debug)
+    {
+        Info<< "dgMatrix<Type>::solve(const dictionary&) : "
+               "solving dgMatrix<Type>"
+            << endl;
+    }
+
+    // Solver call
+    SolverPerfType solverPerf = SolverType::New
+    (
+        psi_.name(),
+        *this
+    )->solve(psi_, source_);
+
+    solverPerf.print();
+
+    psi.correctBoundaryConditions();
+
+    return solverPerf;
+}
+
+
+template<class Type>
+autoPtr<typename dgMatrix<Type>::dgSolver> dgMatrix<Type>::solver()
+{
+    return solver(psi_.mesh().solutionDict().solverDict(psi_.name()));
+}
+
+template<class Type>
+BlockSolverPerformance<VectorN<scalar, Type::coeffLength> >
+dgMatrix<Type>::dgSolver::solve()
+{
+    return solve
+    (
+        faMat_.psi().mesh().solutionDict().solverDict
+        (
+            faMat_.psi().name()
+        )
+    );
+}
+
+
+template<class Type>
+BlockSolverPerformance<VectorN<scalar, Type::coeffLength> >
+dgMatrix<Type>::solve()
+{
+    return solve
+    (
+        this->psi().mesh().solutionDict().solverDict
+        (
+            this->psi().name()
+        )
+    );
+}
+
+
+// Return the matrix residual
+template<class Type>
+tmp<Field<Type> > dgMatrix<Type>::residual() const
+{
+    return MatrixType::residual(psi_, source_);
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+
+// ************************************************************************* //

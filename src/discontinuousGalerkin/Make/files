@@ -17,7 +17,6 @@ $(dgPatchFields)/constraint/empty/emptyDgPatchFields.C
 
 fields/cellFields/cellFields.C
 
-/* faMatrices/faMatrices.C */
-/* faMatrices/faScalarMatrix/faScalarMatrix.C */
+dgMatrices/dgMatrices.C
 
 LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin
