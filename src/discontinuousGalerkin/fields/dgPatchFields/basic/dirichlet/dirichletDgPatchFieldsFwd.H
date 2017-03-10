@@ -21,57 +21,35 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Application
-    dgaplacianFoam
+Class
+    dirichletDgPatchField
 
 Description
-    Solves a Laplace equation using the Discontinuous Galerkin Method
-
-Author
-    Hrvoje Jasak.  All rights reserved.
 
 \*---------------------------------------------------------------------------*/
 
-#include "dgCFD.H"
+#ifndef dirichletDgPatchFieldsFwd_H
+#define dirichletDgPatchFieldsFwd_H
+
+#include "dgFieldTypes.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-int main(int argc, char *argv[])
+namespace Foam
 {
-#   include "setRootCase.H"
-
-#   include "createTime.H"
-#   include "createPolyMesh.H"
-#   include "createDgMesh.H"
-
-#   include "createFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nCalculating temperature distribution\n" << endl;
+template<class Type> class dirichletDgPatchField;
 
-    Info<< "Time = " << runTime.timeName() << nl << endl;
+makeDgPatchTypeFieldTypedefs(dirichlet)
 
-    // Testing
-    runTime++;
-    T.write();
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//             solve
-//             (
-//                 fvm::ddt(T) - fvm::laplacian(DT, T)
-//             );
+} // End namespace Foam
 
-// #       include "write.H"
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-//             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-//             << nl << endl;
-//     }
-
-    Info<< "End\n" << endl;
-
-    return 0;
-}
-
+#endif
 
 // ************************************************************************* //

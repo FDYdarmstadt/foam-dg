@@ -22,23 +22,21 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    homogenousDgPatchField
+    Foam::emptyDgPatchField
 
 Description
-    Homogenous Discontinuous Galerkin patch field
-
-Author
-    Hrvoje Jasak.  All rights reserved
+    Foam::emptyDgPatchField
 
 SourceFiles
-    homogenousDgPatchField.C
+    emptyDgPatchField.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef homogenousDgPatchField_H
-#define homogenousDgPatchField_H
+#ifndef emptyDgPatchField_H
+#define emptyDgPatchField_H
 
 #include "dgPatchField.H"
+#include "emptyDgPatch.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -46,11 +44,11 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                   Class homogenousDgPatchField Declaration
+                     Class emptyDgPatchField Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class Type>
-class homogenousDgPatchField
+class emptyDgPatchField
 :
     public dgPatchField<Type>
 {
@@ -58,20 +56,20 @@ class homogenousDgPatchField
 public:
 
     //- Runtime type information
-    TypeName("homogenous");
+    TypeName(emptyDgPatch::typeName_());
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        homogenousDgPatchField
+        emptyDgPatchField
         (
             const dgPatch&,
             const DimensionedField<Type, cellMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        homogenousDgPatchField
+        emptyDgPatchField
         (
             const dgPatch&,
             const DimensionedField<Type, cellMesh>&,
@@ -79,9 +77,9 @@ public:
         );
 
         //- Construct as copy
-        homogenousDgPatchField
+        emptyDgPatchField
         (
-            const homogenousDgPatchField<Type>&
+            const emptyDgPatchField<Type>&
         );
 
         //- Construct and return a clone
@@ -89,14 +87,14 @@ public:
         {
             return tmp<dgPatchField<Type> >
             (
-                new homogenousDgPatchField<Type>(*this)
+                new emptyDgPatchField<Type>(*this)
             );
         }
 
         //- Construct as copy setting internal field reference
-        homogenousDgPatchField
+        emptyDgPatchField
         (
-            const homogenousDgPatchField<Type>&,
+            const emptyDgPatchField<Type>&,
             const DimensionedField<Type, cellMesh>&
         );
 
@@ -108,20 +106,23 @@ public:
         {
             return tmp<dgPatchField<Type> >
             (
-                new homogenousDgPatchField<Type>(*this, iF)
+                new emptyDgPatchField<Type>(*this, iF)
             );
         }
 
 
-    //- Destructor
-    virtual ~homogenousDgPatchField()
-    {}
-
-
     // Member functions
 
-        // Evaluation functions
+        // Access
 
+            //- Return size
+            virtual label size() const
+            {
+                return 0;
+            }
+
+
+        // Evaluation functions
 };
 
 
@@ -132,7 +133,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "homogenousDgPatchField.C"
+#   include "emptyDgPatchField.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

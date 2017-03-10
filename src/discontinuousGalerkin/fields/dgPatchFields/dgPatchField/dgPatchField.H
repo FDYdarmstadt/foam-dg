@@ -201,6 +201,12 @@ public:
 
         // Access
 
+            //- Return size
+            virtual label size() const
+            {
+                return patch_.size();
+            }
+    
             //- Return local objectRegistry
             const objectRegistry& db() const;
 
@@ -208,6 +214,19 @@ public:
             const dgPatch& patch() const
             {
                 return patch_;
+            }
+
+            //- Return dimensioned internal field reference
+            const DimensionedField<Type, cellMesh>&
+            dimensionedInternalField() const
+            {
+                return internalField_;
+            }
+
+            //- Return internal field reference
+            const Field<Type>& internalField() const
+            {
+                return internalField_;
             }
 
             //- Return true if this patch field fixes a value.

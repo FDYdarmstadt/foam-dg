@@ -21,57 +21,66 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Application
-    dgaplacianFoam
-
-Description
-    Solves a Laplace equation using the Discontinuous Galerkin Method
-
-Author
-    Hrvoje Jasak.  All rights reserved.
-
 \*---------------------------------------------------------------------------*/
 
-#include "dgCFD.H"
+#include "dirichletDgPatchField.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-int main(int argc, char *argv[])
+namespace Foam
 {
-#   include "setRootCase.H"
 
-#   include "createTime.H"
-#   include "createPolyMesh.H"
-#   include "createDgMesh.H"
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-#   include "createFields.H"
+template<class Type>
+dirichletDgPatchField<Type>::dirichletDgPatchField
+(
+    const dgPatch& p,
+    const DimensionedField<Type, cellMesh>& iF
+)
+:
+    dgPatchField<Type>(p, iF)
+{}
+
+
+template<class Type>
+dirichletDgPatchField<Type>::dirichletDgPatchField
+(
+    const dgPatch& p,
+    const DimensionedField<Type, cellMesh>& iF,
+    const dictionary&
+)
+:
+    dgPatchField<Type>(p, iF)
+{}
+
+
+template<class Type>
+dirichletDgPatchField<Type>::dirichletDgPatchField
+(
+    const dirichletDgPatchField& zgpf
+)
+:
+    dgPatchField<Type>(zgpf)
+{}
+
+
+template<class Type>
+dirichletDgPatchField<Type>::dirichletDgPatchField
+(
+    const dirichletDgPatchField& zgpf,
+    const DimensionedField<Type, cellMesh>& iF
+)
+:
+    dgPatchField<Type>(zgpf, iF)
+{}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nCalculating temperature distribution\n" << endl;
-
-    Info<< "Time = " << runTime.timeName() << nl << endl;
-
-    // Testing
-    runTime++;
-    T.write();
-
-//             solve
-//             (
-//                 fvm::ddt(T) - fvm::laplacian(DT, T)
-//             );
-
-// #       include "write.H"
-
-//         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-//             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-//             << nl << endl;
-//     }
-
-    Info<< "End\n" << endl;
-
-    return 0;
-}
-
+} // End namespace Foam
 
 // ************************************************************************* //

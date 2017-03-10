@@ -22,21 +22,21 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    homogenousDgPatchField
+    dirichletDgPatchField
 
 Description
-    Homogenous Discontinuous Galerkin patch field
+    Dirichlet Discontinuous Galerkin patch field
 
 Author
     Hrvoje Jasak.  All rights reserved
 
 SourceFiles
-    homogenousDgPatchField.C
+    dirichletDgPatchField.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef homogenousDgPatchField_H
-#define homogenousDgPatchField_H
+#ifndef dirichletDgPatchField_H
+#define dirichletDgPatchField_H
 
 #include "dgPatchField.H"
 
@@ -46,11 +46,11 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                   Class homogenousDgPatchField Declaration
+                   Class dirichletDgPatchField Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class Type>
-class homogenousDgPatchField
+class dirichletDgPatchField
 :
     public dgPatchField<Type>
 {
@@ -58,20 +58,20 @@ class homogenousDgPatchField
 public:
 
     //- Runtime type information
-    TypeName("homogenous");
+    TypeName("dirichlet");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        homogenousDgPatchField
+        dirichletDgPatchField
         (
             const dgPatch&,
             const DimensionedField<Type, cellMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        homogenousDgPatchField
+        dirichletDgPatchField
         (
             const dgPatch&,
             const DimensionedField<Type, cellMesh>&,
@@ -79,9 +79,9 @@ public:
         );
 
         //- Construct as copy
-        homogenousDgPatchField
+        dirichletDgPatchField
         (
-            const homogenousDgPatchField<Type>&
+            const dirichletDgPatchField<Type>&
         );
 
         //- Construct and return a clone
@@ -89,14 +89,14 @@ public:
         {
             return tmp<dgPatchField<Type> >
             (
-                new homogenousDgPatchField<Type>(*this)
+                new dirichletDgPatchField<Type>(*this)
             );
         }
 
         //- Construct as copy setting internal field reference
-        homogenousDgPatchField
+        dirichletDgPatchField
         (
-            const homogenousDgPatchField<Type>&,
+            const dirichletDgPatchField<Type>&,
             const DimensionedField<Type, cellMesh>&
         );
 
@@ -108,17 +108,26 @@ public:
         {
             return tmp<dgPatchField<Type> >
             (
-                new homogenousDgPatchField<Type>(*this, iF)
+                new dirichletDgPatchField<Type>(*this, iF)
             );
         }
 
 
     //- Destructor
-    virtual ~homogenousDgPatchField()
+    virtual ~dirichletDgPatchField()
     {}
 
 
     // Member functions
+
+        // Access
+
+            //- Return true if this patch field fixes a value.
+            virtual bool fixesValue() const
+            {
+                return true;
+            }
+
 
         // Evaluation functions
 
@@ -132,7 +141,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "homogenousDgPatchField.C"
+#   include "dirichletDgPatchField.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
