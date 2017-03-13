@@ -52,15 +52,17 @@ int main(int argc, char *argv[])
 
     Info<< "Time = " << runTime.timeName() << nl << endl;
 
-    // Testing
     runTime++;
+ 
+    // Testing field I/O
     T.write();
 
+    // Testing matrix operations
     dgScalarMatrix TEqn(T, T.dimensions()/dimTime);
 
 //             solve
 //             (
-//                 fvm::ddt(T) - fvm::laplacian(DT, T)
+//                 dgm::laplacian(DT, T)
 //             );
 
 // #       include "write.H"
