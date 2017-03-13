@@ -263,7 +263,8 @@ public:
             virtual void evaluate
             (
                 const Pstream::commsTypes commsType = Pstream::blocking
-            );
+            )
+            {}
 
 
         // I-O
