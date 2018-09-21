@@ -160,6 +160,12 @@ public:
                 return lduAddr().upperAddr();
             }
 
+            //- Return access to polynomials
+//            const dgPolynomials& polynomials() const
+//            {
+//                return polynomials_;
+//            }
+
 
             // Communication support
 
@@ -183,6 +189,10 @@ public:
 
             //- Update after topo change
             virtual bool updateMesh(const mapPolyMesh&) const;
+
+            scalarList gaussWeights();
+
+            scalarList gaussPoints();
 
 
         // Mapping

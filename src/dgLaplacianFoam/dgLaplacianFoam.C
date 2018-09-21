@@ -60,6 +60,8 @@ int main(int argc, char *argv[])
     // Testing matrix operations
     dgScalarMatrix TEqn(T, T.dimensions()/dimTime);
 
+
+    scalar Tintegral = dgc::volIntegrate(T);
 //             solve
 //             (
 //                 dgm::laplacian(DT, T)

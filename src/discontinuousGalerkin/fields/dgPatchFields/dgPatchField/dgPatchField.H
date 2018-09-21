@@ -206,7 +206,7 @@ public:
             {
                 return patch_.size();
             }
-    
+
             //- Return local objectRegistry
             const objectRegistry& db() const;
 

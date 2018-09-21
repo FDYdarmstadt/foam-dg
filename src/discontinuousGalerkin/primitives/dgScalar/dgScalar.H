@@ -54,6 +54,20 @@ namespace Foam
 template<>
 inline bool contiguous<dgScalar>() {return true;}
 
+//template<>
+//scalar valueLocal
+//(
+//    const vector& localCoordinate
+//);
+//
+//template<>
+//scalar valueGlobal
+//(
+//    const vector& globalCoordinate,
+//    const label& cellIndex
+//);
+
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

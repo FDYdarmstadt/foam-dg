@@ -31,6 +31,7 @@ Description
 #include "primitiveMesh.H"
 #include "demandDrivenData.H"
 #include "dgMeshLduAddressing.H"
+//#include "dgPolynomials.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -114,6 +115,53 @@ bool Foam::dgMesh::movePoints() const
 bool Foam::dgMesh::updateMesh(const mapPolyMesh&) const
 {
     return false;
+}
+
+
+// Not sure whether I need this part of code
+
+//evaluatePolynomial(dgScalarField& dgsf)
+//{
+//
+//    forAll(integrationPoints, ptI)
+//    {
+//        // Obtain polynomial values for given coordinate
+//        scalarList polyEval = polynomial_.evaluate(localCoords);
+//
+//        forAll(mesh_, cellI)
+//        {
+//            forAll(polyEval, modI)
+//            {
+//                // Scale polynomial values for each cell based on DG coeffs
+//                value += dgsf[cellI][modI]*polyEval[modI];
+//            }
+//        }
+//    }
+//}
+
+
+// Only access function (for now)
+Foam::scalarList Foam::dgMesh::gaussWeights()
+{
+//    const scalarList& weights = polynomials_.gaussWeights();
+//
+//    scalarListList weightsMesh(this->size(), weights);
+//    dgPolynomials polynomials();
+
+//    return polynomials.gaussWeights();
+
+    scalarList left(1,1.0);
+    return left;
+}
+
+// Only access function (for now)
+Foam::scalarList Foam::dgMesh::gaussPoints()
+{
+//    dgPolynomials polynomials();
+
+    scalarList one(2,2.0);
+    return one;
+//    return polynomials.gaussPoints();
 }
 
 

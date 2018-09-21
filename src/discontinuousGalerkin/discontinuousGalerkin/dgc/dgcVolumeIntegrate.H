@@ -21,22 +21,30 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Class
-    DgScalar
+InNamespace
+    Foam::dgc
 
 Description
-    Templated Discontinuous Galerkin form of a scalar of given length
+    Volume integrate volField creating a volField.
+
+    Volume integrate volField over the whole domain
+    creating a dimensioned\<Type\>
 
 SourceFiles
-    DgScalarI.H
+    dgcVolumeIntegrate.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef DgScalar_H
-#define DgScalar_H
 
-#include "VectorSpace.H"
-#include "tensor.H"
+#ifndef dgcVolumeIntegrate_H
+#define dgcVolumeIntegrate_H
+
+// I probably need cellFieldsFwd.H
+#include "cellFieldsFwd.H"
+#include "primitiveFieldsFwd.H"
+#include "dgPrimitiveFieldsFwd.H"
+#include "dimensionedDgTypes.H"
+//#include "dimensionedTypes.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -44,65 +52,42 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class DgScalar Declaration
+                     Namespace dgc functions Declaration
 \*---------------------------------------------------------------------------*/
 
-template<class Cmpt, int length>
-class DgScalar
-:
-    public VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>
+namespace dgc
 {
+    template<class Type>
+    tmp<cellScalarField> volumeIntegrate
+    (
+        const GeometricField<Type, dgPatchField, cellMesh>&
+    );
 
-//        scalarField gaussPoints_;
-//
-//        scalarField gaussWeights_;
+    template<class Type>
+    tmp<scalarField> volumeIntegrate
+    (
+        const Field<Type>&
+    );
 
-public:
-
-    // Member constants
-
-        enum
-        {
-            rank = 0, // Rank of DgScalar is 0
-            coeffLength = length // Number of components in this DgScalar
-        };
-
-
-    // Static data members
-
-        static const char* const typeName;
-        static const char* componentNames[];
-        static const DgScalar zero;
-        static const DgScalar one;
-        static const DgScalar max;
-        static const DgScalar min;
+    template<class Type>
+    tmp<Field<Type> > volumeIntegrate
+    (
+        const tmp<GeometricField<Type, dgPatchField, cellMesh> >&
+    );
 
 
-    // Constructors
+    template<class Type>
+    dimensioned<Type> domainIntegrate
+    (
+        const GeometricField<Type, dgPatchField, cellMesh>&
+    );
 
-        //- Construct null
-        inline DgScalar();
-
-        //- Construct given VectorSpace of the same rank
-        inline DgScalar
-        (
-            const VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>&
-        );
-
-        //- Construct given component value.  Special use only!
-        explicit inline DgScalar(const Cmpt& vx);
-
-        //- Construct from Istream
-        inline DgScalar(Istream&);
-
-
-    // Member Functions
-
-//    scalarField gaussPoints();
-//
-//    scalarField gaussWeights();
-
-};
+    template<class Type>
+    dimensioned<Type> domainIntegrate
+    (
+        const tmp<GeometricField<Type, dgPatchField, cellMesh> >&
+    );
+}
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -111,7 +96,9 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "DgScalarTemplateI.H"
+#ifdef NoRepository
+#   include "dgcVolumeIntegrate.C"
+#endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

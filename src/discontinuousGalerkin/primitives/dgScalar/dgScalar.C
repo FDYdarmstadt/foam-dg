@@ -21,69 +21,75 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Application
-    testDg
-
-Description
-    Basic tests with DG variables
-
-Author
-    Hrvoje Jasak.  All rights reserved.
-
 \*---------------------------------------------------------------------------*/
 
-#include "dgCFD.H"
+#include "dgScalar.H"
+//#include "dgPolynomials.H"
+//#include "dgMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-int main(int argc, char *argv[])
+namespace Foam
 {
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "dg order: " << dgOrder::order
-        << ", coeff length: " << dgOrder::length
-        << endl;
+//template<>
+//scalar dgScalar::valueLocal
+//(
+//    const vector& localCoordinate
+//)
+//{
+//    scalar value = 0;
+//    // Scalar list or field?
+////    scalarField polyEval = dgPolynomials.evaluate(localcoords);
+//
+//    forAll (*this, I)
+//    {
+//        // Not sure about this code design
+////        value += polyEval[I]*(*this)[I];
+//    }
+//
+//    return value;
+//}
+//
+//template<>
+//scalar dgScalar::valueGlobal
+//(
+//    const vector& globalCoordinate,
+//    const label& cellIndex
+//)
+//{
+//    scalar value = 0;
+////    vector localCoords = dgMesh.globalToLocal(globalCoordinate, cellIndex);
+//
+////    scalar value = dgPolynomials.evaluate(localCoords) & *this;
+//
+//    return value;
+//}
 
-    Info<< "scalar name: " << dgScalar::typeName << endl;
-    Info<< "vector name: " << dgVector::typeName << endl;
 
-    Info<< "Contiguous scalar: " << contiguous<dgScalar>() << endl;
-    Info<< "Contiguous vector: " << contiguous<dgVector>() << endl;
+// Access
 
-    dgScalar a(1);
+//scalarList dgScalar::gaussWeights()
+//{
+//    dgPolynomials polynomial();
+//
+//    return polynomial().gaussWeights();
+//}
+//
+//scalarList dgScalar::gaussPoints()
+//{
+//    dgPolynomials polynomial();
+//
+//    return polynomial().gaussPoints();
+//}
 
-    Info<< "a: " << a << endl;
 
-    dgScalar b = a;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "b = a : " << b << endl;
+} // End namespace Foam
 
-    dgScalar c = 3*a;
-
-    Info<< "c = 3*a : " << c << endl;
-
-    dgScalar d = c;
-    d[1] = 1;
-    d[2] = 2;
-    d[3] = 3;
-    d[4] = 4;
-    d[5] = 5;
-    d[6] = 6;
-    d[7] = 7;
-    d[8] = 8;
-    d[9] = 9;
-
-    Info<< "d = c into poly : " << d << endl;
-
-    dgVector vec(a, a, a);
-
-    Info<< "vec: " << vec << endl;
-
-    Info<< "End\n" << endl;
-
-    return 0;
-}
-
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 // ************************************************************************* //

@@ -26,7 +26,7 @@ InClass
 
 Description
     Forward declarations of the specialisations of Field\<T\> for dg types
-    
+
 
 \*---------------------------------------------------------------------------*/
 
@@ -44,7 +44,7 @@ namespace Foam
 
 template<class Type> class Field;
 
-typedef Field<dgScalar> sgScalarField;
+typedef Field<dgScalar> dgScalarField;
 typedef Field<dgVector> dgVectorField;
 // typedef Field<dgSphericalTensor> dgSphericalTensorField;
 // typedef Field<dgDiagTensor> dgDiagTensorField;

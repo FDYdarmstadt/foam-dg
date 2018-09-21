@@ -1,4 +1,6 @@
+primitives/dgScalar/dgScalar.C
 primitives/dgVector/dgVector.C
+primitives/dgPolynomials/dgPolynomials.C
 
 dgPatches = dgMesh/dgPatches
 $(dgPatches)/dgPatch/dgPatch.C
@@ -11,12 +13,14 @@ dgMesh/dgMesh.C
 
 dgPatchFields = fields/dgPatchFields
 $(dgPatchFields)/dgPatchField/dgPatchFields.C
-$(dgPatchFields)/basic/homogenous/homogenousDgPatchFields.C 
+$(dgPatchFields)/basic/homogenous/homogenousDgPatchFields.C
 $(dgPatchFields)/basic/dirichlet/dirichletDgPatchFields.C
 $(dgPatchFields)/constraint/empty/emptyDgPatchFields.C
 
 fields/cellFields/cellFields.C
 
 dgMatrices/dgMatrices.C
+
+discontinuousGalerkin/dg/dg.C
 
 LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin

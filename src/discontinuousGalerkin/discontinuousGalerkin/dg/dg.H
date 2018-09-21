@@ -21,69 +21,31 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Application
-    testDg
+Namespace
+    Foam::dg
 
 Description
-    Basic tests with DG variables
-
-Author
-    Hrvoje Jasak.  All rights reserved.
+    Namespace for finite-volume.
 
 \*---------------------------------------------------------------------------*/
 
-#include "dgCFD.H"
+#ifndef dg_H
+#define dg_H
+
+#include "className.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-int main(int argc, char *argv[])
+namespace Foam
 {
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-    Info<< "dg order: " << dgOrder::order
-        << ", coeff length: " << dgOrder::length
-        << endl;
-
-    Info<< "scalar name: " << dgScalar::typeName << endl;
-    Info<< "vector name: " << dgVector::typeName << endl;
-
-    Info<< "Contiguous scalar: " << contiguous<dgScalar>() << endl;
-    Info<< "Contiguous vector: " << contiguous<dgVector>() << endl;
-
-    dgScalar a(1);
-
-    Info<< "a: " << a << endl;
-
-    dgScalar b = a;
-
-    Info<< "b = a : " << b << endl;
-
-    dgScalar c = 3*a;
-
-    Info<< "c = 3*a : " << c << endl;
-
-    dgScalar d = c;
-    d[1] = 1;
-    d[2] = 2;
-    d[3] = 3;
-    d[4] = 4;
-    d[5] = 5;
-    d[6] = 6;
-    d[7] = 7;
-    d[8] = 8;
-    d[9] = 9;
-
-    Info<< "d = c into poly : " << d << endl;
-
-    dgVector vec(a, a, a);
-
-    Info<< "vec: " << vec << endl;
-
-    Info<< "End\n" << endl;
-
-    return 0;
+    namespace dg
+    {
+        NamespaceName("dg");
+    }
 }
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
 
 // ************************************************************************* //

@@ -22,21 +22,21 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    DgScalar
+    Foam::dgPolynomials
 
 Description
-    Templated Discontinuous Galerkin form of a scalar of given length
+    Definition of a Discontinuous Galerkin Polynomials
 
-SourceFiles
-    DgScalarI.H
+Author
+    Gregor Cvijetic.  All rights reserved.
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef DgScalar_H
-#define DgScalar_H
+#ifndef dgPolynomials_H
+#define dgPolynomials_H
 
-#include "VectorSpace.H"
-#include "tensor.H"
+#include "dgOrder.H"
+#include "primitiveFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -44,63 +44,61 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class DgScalar Declaration
+                          Class dgPolynomials Declaration
 \*---------------------------------------------------------------------------*/
 
-template<class Cmpt, int length>
-class DgScalar
-:
-    public VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>
+class dgPolynomials
 {
+    // Private data
 
-//        scalarField gaussPoints_;
-//
-//        scalarField gaussWeights_;
+    //- Number of modes taken into account
+    const label length_;
+
+    //- Weights for Gauss integration points
+    scalarField gaussWeights_;
+
+    //- Location of Gauss integration points (local CS)
+    scalarField gaussPoints_;
+//    const vectorField gaussPoints_;
+
 
 public:
 
-    // Member constants
-
-        enum
-        {
-            rank = 0, // Rank of DgScalar is 0
-            coeffLength = length // Number of components in this DgScalar
-        };
-
-
-    // Static data members
-
-        static const char* const typeName;
-        static const char* componentNames[];
-        static const DgScalar zero;
-        static const DgScalar one;
-        static const DgScalar max;
-        static const DgScalar min;
-
-
     // Constructors
 
-        //- Construct null
-        inline DgScalar();
-
-        //- Construct given VectorSpace of the same rank
-        inline DgScalar
+        //- Construct from dgOrder
+        dgPolynomials
         (
-            const VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>&
+            const label
+//            const dgOrder& dgOrder
         );
 
-        //- Construct given component value.  Special use only!
-        explicit inline DgScalar(const Cmpt& vx);
 
-        //- Construct from Istream
-        inline DgScalar(Istream&);
+    // Member functions
+
+        //- Return vector of modes evaluated in local coordinates
+        scalarField evaluate
+        (
+            const vector localCoords
+        );
 
 
-    // Member Functions
+    // Access functions
 
-//    scalarField gaussPoints();
-//
-//    scalarField gaussWeights();
+        //- Return Gauss weights for reference element
+        const scalarField& gaussWeights()
+        {
+            return gaussWeights_;
+        }
+
+        //- Return Gauss points positions for reference element (local CS)
+        const scalarField& gaussPoints()
+        {
+            return gaussPoints_;
+        }
+
+        void test();
+//        {}
 
 };
 
@@ -108,10 +106,6 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#include "DgScalarTemplateI.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
