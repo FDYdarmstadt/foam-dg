@@ -37,6 +37,7 @@ Author
 
 #include "GeoMesh.H"
 #include "dgMesh.H"
+#include "primitiveMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

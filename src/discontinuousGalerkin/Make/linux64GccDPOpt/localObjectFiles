@@ -1,0 +1,20 @@
+LOCAL_OBJECTS = \
+dgScalar.o\
+dgVector.o\
+dgPolynomials.o\
+dgPatch.o\
+newDgPatch.o\
+coupledDgPatch.o\
+emptyDgPatch.o\
+dgSchemes.o\
+dgBoundaryMesh.o\
+dgMesh.o\
+dgPatchFields.o\
+homogenousDgPatchFields.o\
+dirichletDgPatchFields.o\
+emptyDgPatchFields.o\
+cellFields.o\
+dgMatrices.o\
+dg.o\
+dgLaplacianSchemes.o\
+SIPLaplacianSchemes.o

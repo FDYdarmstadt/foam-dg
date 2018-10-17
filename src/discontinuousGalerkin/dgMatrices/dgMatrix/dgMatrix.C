@@ -47,6 +47,8 @@ dgMatrix<Type>::dgMatrix
     dimensions_(ds),
     source_(psi.size(), pTraits<Type>::zero)
 {
+    Info << "CONSTRUCT MATRIX" << endl;
+
     if (debug)
     {
         InfoIn

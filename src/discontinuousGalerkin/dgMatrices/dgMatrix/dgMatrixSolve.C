@@ -32,6 +32,8 @@ template<class Type>
 BlockSolverPerformance<VectorN<scalar, Type::coeffLength> >
 dgMatrix<Type>::solve(const dictionary& solverControls)
 {
+    Info << "DG MATRIX SOLVE" << endl;
+
     if (debug)
     {
         Info<< "dgMatrix<Type>::solve(const dictionary&) : "
@@ -39,16 +41,35 @@ dgMatrix<Type>::solve(const dictionary& solverControls)
             << endl;
     }
 
-    // Solver call
-    SolverPerfType solverPerf = SolverType::New
-    (
-        psi_.name(),
-        *this
-    )->solve(psi_, source_);
+    Field<Type> source = this->source();
 
+    Field<SubType> intField(psi_.internalField().size());
+    Field<SubType> sourceField(source.size());
+
+    forAll(intField, cellI)
+    {
+        intField[cellI] = psi_.internalField()[cellI];
+        sourceField[cellI] = source[cellI];
+    }
+
+    Info << "SOLVER PERFE" << endl;
+
+    // Solver call
+    SolverPerfType solverPerf =
+        SolverType::New
+        (
+            psi_.name(),
+//            static_cast<typename dgMatrix<Type>::MatrixType&>(*this),
+            *this,
+            solverControls
+        )->solve(intField, sourceField);
+
+    Info << "SOLVER PRINT" << endl;
     solverPerf.print();
 
-    psi.correctBoundaryConditions();
+//    psi().correctBoundaryConditions();
+
+    Info << "SOLVER OUT" << endl;
 
     return solverPerf;
 }

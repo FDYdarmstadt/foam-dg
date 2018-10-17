@@ -1,0 +1,86 @@
+# 1 "files"
+# 1 "<built-in>"
+# 1 "<command-line>"
+
+
+
+
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+
+# 17 "/usr/include/stdc-predef.h" 3 4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 4 "<command-line>" 2
+# 1 "files"
+primitives/dgScalar/dgScalar.C
+primitives/dgVector/dgVector.C
+primitives/dgPolynomials/dgPolynomials.C
+
+dgPatches = dgMesh/dgPatches
+$(dgPatches)/dgPatch/dgPatch.C
+$(dgPatches)/dgPatch/newDgPatch.C
+$(dgPatches)/basic/coupled/coupledDgPatch.C
+$(dgPatches)/constraint/empty/emptyDgPatch.C
+
+discontinuousGalerkin/dgSchemes/dgSchemes.C
+
+dgMesh/dgBoundaryMesh/dgBoundaryMesh.C
+dgMesh/dgMesh.C
+
+dgPatchFields = fields/dgPatchFields
+$(dgPatchFields)/dgPatchField/dgPatchFields.C
+$(dgPatchFields)/basic/homogenous/homogenousDgPatchFields.C
+$(dgPatchFields)/basic/dirichlet/dirichletDgPatchFields.C
+$(dgPatchFields)/constraint/empty/emptyDgPatchFields.C
+
+fields/cellFields/cellFields.C
+
+dgMatrices/dgMatrices.C
+
+discontinuousGalerkin/dg/dg.C
+discontinuousGalerkin/dgLaplacianScheme/dgLaplacianScheme/dgLaplacianSchemes.C
+discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.C
+
+
+LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin

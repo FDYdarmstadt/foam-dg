@@ -155,6 +155,11 @@ public:
                 return polyPatch_.coupled();
             }
 
+            bool isWall() const
+            {
+                return polyPatch_.isWall();
+            }
+
             //- Return the index of this patch in the dgBoundaryMesh
             label index() const
             {
@@ -169,6 +174,14 @@ public:
 
             //- Return faceCells
             virtual const unallocLabelList& faceCells() const;
+
+        // Access function for geometrical data
+
+            //- Return face centres
+            const vectorField& faceCentres() const;
+
+            //- Return face area vectors
+            const vectorField& faceAreas() const;
 };
 
 

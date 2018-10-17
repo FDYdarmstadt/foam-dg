@@ -14,25 +14,25 @@
     );
 
 
-    Info<< "Reading transportProperties\n" << endl;
-
-    IOdictionary transportProperties
-    (
-        IOobject
-        (
-            "transportProperties",
-            runTime.constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    );
-
-
-    Info<< "Reading diffusivity DT\n" << endl;
-
+//    Info<< "Reading transportProperties\n" << endl;
+//
+//    IOdictionary transportProperties
+//    (
+//        IOobject
+//        (
+//            "transportProperties",
+//            runTime.constant(),
+//            mesh,
+//            IOobject::MUST_READ,
+//            IOobject::NO_WRITE
+//        )
+//    );
+//
+//
+//    Info<< "Reading diffusivity DT\n" << endl;
+//
 //    dimensionedScalar DT
-    dimensionediDgScalar DT
-    (
-        transportProperties.lookup("DT")
-    );
+////    dimensionedDgScalar DT
+//    (
+//        transportProperties.lookup("DT")
+//    );

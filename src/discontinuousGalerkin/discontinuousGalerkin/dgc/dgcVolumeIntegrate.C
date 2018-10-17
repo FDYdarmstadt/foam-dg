@@ -48,65 +48,67 @@ volumeIntegrate
     const GeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
-    // Local coordinates (reference element)
-    scalarList gaussCoords = vf.mesh().gaussPoints();
-    scalarList gaussWeights = vf.mesh().gaussWeights();
 
-    tmp<cellScalarField> tCellIntegral(vf, 0);
+// TU MORAM RECI AKO JE RED POLINOMA MANJI OD 2, RADI S DVIJE TOCKE KOJE SU...
+// (ili u polynomials gauss Weights)
+    tmp<cellScalarField> tCellIntegral(new cellScalarField("cellIntegral", vf));
+    cellScalarField& cellIntegral = tCellIntegral();
 
-    dgScalarField& cellIntegral = tCellIntegral().internalField();
-    scalarField cellMax(vf.mesh().cellCentres().component(vector::X));
-    scalarField cellMin(cellMax);
+    dgScalarField& cellIntegralInt = cellIntegral.internalField();
 
-    dgPolynomials polynomials();
+    cellIntegralInt = dgScalar::zero;
 
-    // Go over all Gaussian points for the whole mesh and add value*weight
-    forAll(gaussCoords, ptI)
+    scalarField cellIntInt = volumeIntegrate(vf.internalField());
+
+    dgScalarField dgsf (cellIntegralInt.size());
+
+    forAll (cellIntInt, i)
     {
-        // Calculate modal values in given coordinate (Gaussian point
-        // coordinate)
-        scalarField polyEval = polynomials.evaluate(gaussCoords[ptI]);
-
-        forAll (cellIntegral, cellI)
-        {
-            forAll (polyEval, modI)
-            {
-                cellIntegral[cellI] +=
-                    polyEval[modI]*vf.internalField()[cellI][modI];
-            }
-
-
-            // Determine min,max for each cell
-            forAll (vf.mesh()[cellI], ptI)
-            {
-                if
-                (
-                    vf.mesh().cellPoints(cellI)[ptI] < cellMin[cellI]
-                )
-                {
-                    cellMin[cellI] = vf.mesh().cellPoints(cellI)[ptI];
-                }
-
-                if (vf.mesh().cellPoints(cellI)[ptI] > cellMax[cellI])
-                {
-                    cellMax[cellI] = vf.mesh().cellPoints(cellI)[ptI];
-                }
-            }
-        }
-
-        // TO-DO:
-        // Make two functions valueLocal() and valueGlobal() so that either
-        // x=[min(cellBounds),max(cellBounds)] or x=[-1,1] can be provided
-
-        // Multiply obtained value with Gaussian weight to assemble the integral
-//        cellIntegral += gaussWeights[ptI]*value;
+        cellIntegralInt[i] = dgScalar(cellIntInt[i]);
     }
 
+    const polyMesh& mesh = vf.mesh()();
+    const scalarField points = mesh.points().component(vector::X);
+
+    scalarField cellMax(mesh.cellCentres().component(vector::X));
+    scalarField cellMin(cellMax);
+
+    forAll (cellIntegralInt, cellI)
+    {
+        const labelList& cellPts = mesh.cellPoints(cellI);
+
+        // Determine min,max for each cell
+        forAll (cellPts, ptI)
+        {
+//            Info << "PRE, cell: " << cellI  << nl << ", Cur point coordinate min: " << cellMin[cellI]
+//                 << ", cellMax: " << cellMax[cellI] << endl;
+
+            if
+            (
+                points[cellPts[ptI]] < cellMin[cellI]
+            )
+            {
+                cellMin[cellI] = points[cellPts[ptI]];
+            }
+
+            if (points[cellPts[ptI]] > cellMax[cellI])
+            {
+                cellMax[cellI] = points[cellPts[ptI]];
+            }
+
+//            Info << "AFT Cur point coordinate min: " << cellMin[cellI]
+//                 << ", cellMax: " << cellMax[cellI] << endl;
+        }
+    }
+
+    // TO-DO:
+    // Make two functions valueLocal() and valueGlobal() so that either
+    // x=[min(cellBounds),max(cellBounds)] or x=[-1,1] can be provided
+
     // Normalize and scale based on real cell size (not reference one)
-    cellIntegral *= (cellMax - cellMin)/2;
+    cellIntegralInt = cellIntegralInt*(cellMax - cellMin)/2;
 
     return tCellIntegral;
-//    return vf.mesh().V()*vf.internalField();
 }
 
 
@@ -118,24 +120,15 @@ volumeIntegrate
     const Field<Type>& vf
 )
 {
-    dgPolynomials polynomials(3);
+    // Random constructor - should be considered!
+    dgPolynomials polynomials;
 
-    polynomials.test();
-//
-//    // Local coordinates (reference element)
+    // Local coordinates (reference element)
     scalarField gaussCoords = polynomials.gaussPoints();
     scalarField gaussWeights = polynomials.gaussWeights();
 
-
-// TU MORAM RECI AKO JE RED POLINOMA MANJI OD 2, RADI S DVIJE TOCKE KOJE SU...
-// (ili u polynomials gauss Weights)
     tmp<scalarField> tCellIntegral(new scalarField(vf.size(), 0.0));
     scalarField& cellIntegral = tCellIntegral();
-
-//    scalarField cellMax(vf.mesh().cellCentres().component(vector::X));
-//    scalarField cellMin(cellMax);
-
-//    Info << "coeffs: " << vf[0]  << ", and weights: " << gaussWeights<< endl;
 
     // Go over all Gaussian points for the whole mesh and add value*weight
     forAll(gaussCoords, ptI)
@@ -145,55 +138,17 @@ volumeIntegrate
         scalarField polyEval =
             polynomials.evaluate(vector(gaussCoords[ptI],0,0));
 
-    Info << "POLY EVAL: " << polyEval << " in " << gaussCoords[ptI]
-         << endl;
-//      << ", summed: " << gSum(polyEval)
-//         << ", and cellIntegral: " << cellIntegral << endl;
-
         forAll (cellIntegral, cellI)
         {
             forAll (polyEval, modI)
             {
                 cellIntegral[cellI] +=
                     polyEval[modI]*vf[cellI][modI]*gaussWeights[ptI];
-
-//                Info << nl << polyEval[modI] << ", " << vf[cellI][modI] << ", "
-//                     << gaussWeights[modI]
-//                     << ", CELL INTEGRAL: " << cellIntegral[cellI] << endl;
             }
         }
-
-//            // Determine min,max for each cell
-//            forAll (vf.mesh()[cellI], ptI)
-//            {
-//                if
-//                (
-//                    vf.mesh().cellPoints(cellI)[ptI] < cellMin[cellI]
-//                )
-//                {
-//                    cellMin[cellI] = vf.mesh().cellPoints(cellI)[ptI];
-//                }
-//
-//                if (vf.mesh().cellPoints(cellI)[ptI] > cellMax[cellI])
-//                {
-//                    cellMax[cellI] = vf.mesh().cellPoints(cellI)[ptI];
-//                }
-//            }
-//        }
-
-        // TO-DO:
-        // Make two functions valueLocal() and valueGlobal() so that either
-        // x=[min(cellBounds),max(cellBounds)] or x=[-1,1] can be provided
-
-        // Multiply obtained value with Gaussian weight to assemble the integral
-//        cellIntegral += gaussWeights[ptI]*value;
     }
 
-    // Normalize and scale based on real cell size (not reference one)
-//    cellIntegral *= (cellMax - cellMin)/2;
-
     return tCellIntegral;
-//    return vf.mesh().V()*vf.internalField();
 }
 
 template<class Type>
@@ -206,6 +161,122 @@ volumeIntegrate
     tmp<Field<Type> > tvivf = tvf().mesh().V()*tvf().internalField();
     tvf.clear();
     return tvivf;
+}
+
+
+template<class Type>
+tmp<cellScalarField>
+volumeIntegrateGrad
+(
+    const GeometricField<Type, dgPatchField, cellMesh>& vf
+)
+{
+
+// TU MORAM RECI AKO JE RED POLINOMA MANJI OD 2, RADI S DVIJE TOCKE KOJE SU...
+// (ili u polynomials gauss Weights)
+    tmp<cellScalarField> tCellIntegral(new cellScalarField("cellIntegral", vf));
+    cellScalarField& cellIntegral = tCellIntegral();
+
+    dgScalarField& cellIntegralInt = cellIntegral.internalField();
+
+    cellIntegralInt = dgScalar::zero;
+
+    scalarField cellIntInt = volumeIntegrateGrad(vf.internalField());
+
+    dgScalarField dgsf (cellIntegralInt.size());
+
+    // NOTE - INSERTED SQR INSTEAD OF IN LAPLACIAN CALCULATION
+    forAll (cellIntInt, i)
+    {
+        cellIntegralInt[i] = dgScalar(cellIntInt[i]);
+    }
+
+    const polyMesh& mesh = vf.mesh()();
+    const scalarField points = mesh.points().component(vector::X);
+
+    scalarField cellMax(mesh.cellCentres().component(vector::X));
+    scalarField cellMin(cellMax);
+
+    forAll (cellIntegralInt, cellI)
+    {
+        const labelList& cellPts = mesh.cellPoints(cellI);
+
+        // Determine min,max for each cell
+        forAll (cellPts, ptI)
+        {
+//            Info << "PRE, cell: " << cellI  << nl << ", Cur point coordinate min: " << cellMin[cellI]
+//                 << ", cellMax: " << cellMax[cellI] << endl;
+
+            if
+            (
+                points[cellPts[ptI]] < cellMin[cellI]
+            )
+            {
+                cellMin[cellI] = points[cellPts[ptI]];
+            }
+
+            if (points[cellPts[ptI]] > cellMax[cellI])
+            {
+                cellMax[cellI] = points[cellPts[ptI]];
+            }
+
+//            Info << "AFT Cur point coordinate min: " << cellMin[cellI]
+//                 << ", cellMax: " << cellMax[cellI] << endl;
+        }
+    }
+
+    // TO-DO:
+    // Make two functions valueLocal() and valueGlobal() so that either
+    // x=[min(cellBounds),max(cellBounds)] or x=[-1,1] can be provided
+
+    // Normalize and scale based on real cell size (not reference one)
+    cellIntegralInt = cellIntegralInt*(cellMax - cellMin)/2;
+
+    return tCellIntegral;
+}
+
+
+template<class Type>
+tmp<scalarField>//Field<Type> >
+volumeIntegrateGrad
+(
+    const Field<Type>& vf
+)
+{
+    // Random constructor - should be considered!
+    dgPolynomials polynomials;
+
+    // Local coordinates (reference element)
+    scalarField gaussCoords = polynomials.gaussPoints();
+    scalarField gaussWeights = polynomials.gaussWeights();
+
+    tmp<scalarField> tCellIntegral(new scalarField(vf.size(), 0.0));
+    scalarField& cellIntegral = tCellIntegral();
+
+    // Go over all Gaussian points for the whole mesh and add value*weight
+    forAll(gaussCoords, ptI)
+    {
+        // Calculate modal values in given coordinate (Gaussian point
+        // coordinate)
+        scalarField polyEval =
+            polynomials.gradEvaluate(vector(gaussCoords[ptI],0,0));
+
+        forAll (cellIntegral, cellI)
+        {
+            // Test part
+            forAll (polyEval, modI)
+            {
+                cellIntegral[cellI] +=
+                    polyEval[modI]*vf[cellI][modI]*gaussWeights[ptI];
+            }
+
+            // Trial part
+            cellIntegral[cellI] *= gSum(polyEval);
+        }
+    }
+
+
+    return tCellIntegral;
 }
 
 

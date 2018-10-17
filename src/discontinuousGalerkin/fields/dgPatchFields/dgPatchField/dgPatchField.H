@@ -41,6 +41,8 @@ SourceFiles
 #include "tmp.H"
 #include "dgPatch.H"
 #include "DimensionedField.H"
+#include "dgPrimitiveFields.H"
+#include "dgPolynomials.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -71,7 +73,8 @@ Ostream& operator<<(Ostream&, const dgPatchField<Type>&);
 template<class Type>
 class dgPatchField
 :
-    public refCount
+//    public refCount
+    public Field<Type>
 {
     // Private data
 
@@ -169,6 +172,12 @@ public:
             return tmp<dgPatchField<Type> >(new dgPatchField<Type>(*this, iF));
         }
 
+        dgPatchField
+        (
+            const dgPatchField<Type>&,
+            const DimensionedField<Type, cellMesh>&,
+            const dictionary&
+        );
 
     // Selectors
 
@@ -200,6 +209,19 @@ public:
     // Member functions
 
         // Access
+
+            //- Return polynomials
+            const dgPolynomials& polynomials() const
+            {
+                return internalField_.mesh().polynomials();
+            }
+
+            dgPolynomials& polynomials()
+            {
+                Info << internalField_.mesh().polynomials().gaussPtsEval() <<
+                endl;
+                return internalField_.mesh().polynomials();
+            }
 
             //- Return size
             virtual label size() const
@@ -266,6 +288,28 @@ public:
             )
             {}
 
+            virtual tmp<dgScalarField> valueInternalCoeffs () const
+            {
+    Info << "DgPatchFIELD valueInCoeff not implemented." << endl;
+//                notImplemented
+//                (
+//                    type()
+//                  + "::valueInternalCoeffs()"
+//                );
+                tmp<dgScalarField> nullField (new dgScalarField(0,dgScalar(0)));
+                return nullField;
+            }
+
+            virtual tmp<dgScalarField> valueBoundaryCoeffs () const
+            {
+//                notImplemented
+//                (
+//                    type()
+//                  + "::valueBoundaryCoeffs()"
+//                );
+                tmp<dgScalarField> nullField (new dgScalarField(0,dgScalar(0)));
+                return nullField;
+            }
 
         // I-O
 
@@ -292,7 +336,7 @@ public:
 
     // Member operators
 
-        virtual void operator=(const dgPatchField<Type>&){}
+        virtual void operator=(const dgPatchField<Type>&);
         virtual void operator+=(const dgPatchField<Type>&){}
         virtual void operator-=(const dgPatchField<Type>&){}
         virtual void operator*=(const dgPatchField<scalar>&){}
@@ -304,7 +348,7 @@ public:
         virtual void operator*=(const Field<scalar>&){}
         virtual void operator/=(const Field<scalar>&){}
 
-        virtual void operator=(const Type&){}
+        virtual void operator=(const Type&);
         virtual void operator+=(const Type&){}
         virtual void operator-=(const Type&){}
         virtual void operator*=(const scalar){}
@@ -313,9 +357,9 @@ public:
 
         // Force an assignment irrespective of form of patch
 
-        virtual void operator==(const dgPatchField<Type>&){}
-        virtual void operator==(const Field<Type>&){}
-        virtual void operator==(const Type&){}
+        virtual void operator==(const dgPatchField<Type>&);
+        virtual void operator==(const Field<Type>&);
+        virtual void operator==(const Type&);
 
 
     // Ostream operator

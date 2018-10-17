@@ -48,6 +48,7 @@ namespace Foam
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     typedef DgScalar<scalar, dgOrder::length> dgScalar;
+//    typedef VectorN<scalar, dgOrder::length> dgScalar;
 
 
 //- Specify data associated with dgScalar type is contiguous

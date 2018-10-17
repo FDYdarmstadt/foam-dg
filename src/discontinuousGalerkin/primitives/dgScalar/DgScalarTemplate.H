@@ -36,6 +36,7 @@ SourceFiles
 #define DgScalar_H
 
 #include "VectorSpace.H"
+#include "VectorN.H"
 #include "tensor.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -50,7 +51,8 @@ namespace Foam
 template<class Cmpt, int length>
 class DgScalar
 :
-    public VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>
+//    public VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>
+    public VectorN<Cmpt, length>
 {
 
 //        scalarField gaussPoints_;
@@ -83,10 +85,11 @@ public:
         //- Construct null
         inline DgScalar();
 
-        //- Construct given VectorSpace of the same rank
+        //- Construct given VectorN of the same rank
         inline DgScalar
         (
-            const VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>&
+//            const VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>&
+            const VectorN<Cmpt, length>&
         );
 
         //- Construct given component value.  Special use only!

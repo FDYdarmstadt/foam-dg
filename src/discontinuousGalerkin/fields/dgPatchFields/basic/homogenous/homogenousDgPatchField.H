@@ -122,6 +122,15 @@ public:
 
         // Evaluation functions
 
+//            virtual tmp<dgScalarField> valueInternalCoeffs
+//            (
+////                const tmp<dgScalarField>&
+//            ) const;
+//
+//            virtual tmp<dgScalarField> valueBoundaryCoeffs
+//            (
+////                const tmp<dgScalarField>&
+//            ) const;
 };
 
 

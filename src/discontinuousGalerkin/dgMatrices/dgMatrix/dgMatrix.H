@@ -47,6 +47,13 @@ SourceFiles
 #include "className.H"
 #include "BlockLduMatrix.H"
 #include "BlockLduSolver.H"
+#include "ExpandTensorNField.H"
+
+#include "BlockSolverPerformanceVectorN.H"
+#include "CoeffFieldFunctions.H"
+#include "FieldFunctionsM.H"
+#include "TensorNFields.H"
+//#include "blockLduSolvers.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -70,10 +77,14 @@ template<class Type>
 class dgMatrix
 :
     public BlockLduMatrix<VectorN<scalar, Type::coeffLength> >
+//    public BlockLduMatrix<Type>
 {
 public:
 
     // Public typedefs
+
+        //- Subtype
+        typedef VectorN<scalar, Type::coeffLength> SubType;
 
         //- BlockMatrix type
         typedef BlockLduMatrix<VectorN<scalar, Type::coeffLength> > MatrixType;
@@ -82,7 +93,8 @@ public:
         typedef GeometricField<Type, dgPatchField, cellMesh> FieldType;
 
         //- Solver type
-        typedef BlockLduSolver<MatrixType> SolverType;
+        typedef BlockLduSolver<VectorN<scalar, Type::coeffLength> > SolverType;
+//        typedef BlockLduSolver<MatrixType> SolverType;
 
         //- Solver performance type
         typedef BlockSolverPerformance<VectorN<scalar, Type::coeffLength> >

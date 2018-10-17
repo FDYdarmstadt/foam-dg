@@ -59,10 +59,12 @@ inline DgScalar<Cmpt, length>::DgScalar()
 template <class Cmpt, int length>
 inline DgScalar<Cmpt, length>::DgScalar
 (
-    const VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>& vs
+//    const VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>& vs
+    const VectorN<Cmpt, length>& vs
 )
 :
-    VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>(vs)
+//    VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>(vs)
+    VectorN<Cmpt, length>(vs)
 {}
 
 
@@ -83,7 +85,8 @@ inline DgScalar<Cmpt, length>::DgScalar(const Cmpt& vx)
 template <class Cmpt, int length>
 inline DgScalar<Cmpt, length>::DgScalar(Istream& is)
 :
-    VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>(is)
+//    VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>(is)
+    VectorN<Cmpt, length>(is)
 {}
 
 

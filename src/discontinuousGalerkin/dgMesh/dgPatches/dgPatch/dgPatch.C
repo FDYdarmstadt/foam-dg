@@ -62,6 +62,18 @@ const Foam::unallocLabelList& Foam::dgPatch::faceCells() const
 }
 
 
+const Foam::vectorField& Foam::dgPatch::faceCentres() const
+{
+    return boundaryMesh().mesh().mesh().faceCentres();
+}
+
+
+const Foam::vectorField& Foam::dgPatch::faceAreas() const
+{
+    return boundaryMesh().mesh().mesh().faceAreas();
+}
+
+
 void Foam::dgPatch::movePoints()
 {}
 

@@ -31,17 +31,114 @@ License
 namespace Foam
 {
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+void dgPolynomials::calcGaussPtsEval() const
+{
+    // Local coordinates (reference element)
+    const scalarField& gaussCoords = gaussPoints();
+//    const scalarField& gaussWeights = this->gaussWeights();
+
+    // Evaluate in -1, 1 and gauss points
+    gaussPtsEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
+
+    // Go over all Gauss points for the whole mesh and add value*weight
+    forAll(*gaussPtsEvalPtr_, ptI)
+    {
+        scalarField polyEval(gaussCoords.size(), 0.0);
+
+        // Evaluate in -1
+        if (ptI == 0)
+        {
+            polyEval = evaluate(vector(-1,0,0));
+        }
+        // Evaluate in 1
+        else if (ptI == (gaussPtsEvalPtr_->size() - 1))
+        {
+            polyEval = evaluate(vector(1,0,0));
+        }
+        // Evaluate in Gauss points
+        else
+        {
+            // Calculate modal values in given coordinate (Gaussian point
+            // coordinate)
+            polyEval = evaluate(vector(gaussCoords[ptI + 1],0,0));
+
+//            forAll (polyEval, modI)
+//            {
+//                polyEval[modI] *= gaussWeights[ptI];
+//            }
+        }
+
+        gaussPtsEvalPtr_->set
+        (
+            ptI,
+            new scalarField (polyEval)
+        );
+    }
+}
+
+
+void dgPolynomials::calcGaussPtsGradEval() const
+{
+    // Local coordinates (reference element)
+    const scalarField& gaussCoords = gaussPoints();
+//    const scalarField& gaussWeights = this->gaussWeights();
+
+    gaussPtsGradEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
+
+    // Go over all Gaussian points for the whole mesh and add value*weight
+    forAll(*gaussPtsGradEvalPtr_, ptI)
+    {
+        // This is of size dgScalar.size()
+        scalarField polyEval(gaussCoords.size(), 0.0);
+
+        // Evaluate in -1
+        if (ptI == 0)
+        {
+            polyEval = gradEvaluate(vector(-1,0,0));
+        }
+        // Evaluate in 1
+        else if (ptI == (gaussPtsGradEvalPtr_->size() - 1))
+        {
+            polyEval = gradEvaluate(vector(1,0,0));
+        }
+        // Evaluate in Gauss points
+        else
+        {
+            // Calculate modal values in given coordinate (Gaussian point
+            // coordinate)
+            polyEval = gradEvaluate(vector(gaussCoords[ptI + 1],0,0));
+
+//            forAll (polyEval, modI)
+//            {
+//                polyEval[modI] *= gaussWeights[ptI];
+//            }
+        }
+
+        gaussPtsGradEvalPtr_->set
+        (
+            ptI,
+            new scalarField (polyEval)
+        );
+    }
+
+}
+
+
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 dgPolynomials::dgPolynomials
 (
-    const label
+//    const label
 //    const dgOrder& dgOrder
 )
 :
     length_(dgOrder::length),//dgOrder.length()),
     gaussWeights_(3, 0.0),
-    gaussPoints_(3, 0.0)
+    gaussPoints_(3, 0.0),
+    gaussPtsEvalPtr_(NULL),//gaussPoints_.size()),
+    gaussPtsGradEvalPtr_(NULL)//gaussPoints_.size())
 {
 //    forAll(gaussWeights, gwI)
 //    {
@@ -64,10 +161,10 @@ dgPolynomials::dgPolynomials
 
 //template<class Type>
 //const field<Type>& dgPolynomials::evaluate
-scalarField dgPolynomials::evaluate
+const scalarField dgPolynomials::evaluate
 (
     const vector localCoords
-)
+) const
 {
     scalar lc = localCoords.component(vector::X);
 
@@ -103,10 +200,113 @@ scalarField dgPolynomials::evaluate
         }
     }
 
-    Info << nl<<  "GSUM: " << gSum(value) << endl;
+//    Info << nl<<  "GSUM: " << gSum(value) << endl;
 
     return value;
 }
+
+
+const scalarField dgPolynomials::gradEvaluate
+(
+    const vector localCoords
+) const
+{
+    scalar lc = localCoords.component(vector::X);
+
+    scalarField value(length_, 0.0);
+    scalarField grad(length_, 0.0);
+
+    // First two are simple and base for the loop
+    value[0] = 1.0;
+    value[1] = lc;
+
+    grad[0] = 0.0;
+    grad[1] = 1.0;
+
+    // this should not overwrite 0 and 1
+    forAll(value, vI)
+    {
+        // vI = n - 1 (n used for notation in equations), but we start from
+        // third mode as first two are already defined
+        label i = vI + 2;
+
+        // Analytical form for calculating gradient of modes
+        if ((vI + 2) < value.size())
+        {
+            // Modes
+            value[i] =
+                1.0/(i)*((2.0*i-1)*lc*value[i-1] - (i-1)*value[i-2]);
+
+            // Gradient of modes
+            grad[i] =
+                1.0/(i)*((2.0*i-1)*(lc*grad[i-1] + value[i-1]) - (i-1)*grad[i-2]);
+        }
+        else
+        {
+            // Do nothing
+        }
+    }
+
+//    Info << nl<<  "GSUM: " << gSum(value) << endl;
+
+    return grad;
+}
+
+
+PtrList<scalarField> dgPolynomials::wtdGaussEval()
+{
+    if (!gaussPtsEvalPtr_)
+    {
+        calcGaussPtsEval();
+    }
+
+    const scalarField& gaussWeights = this->gaussWeights();
+
+    const PtrList<scalarField>& gaussPts = *gaussPtsEvalPtr_;
+    PtrList<scalarField> wtdGaussPts = gaussPts;
+
+    // Go over all Gauss points for the whole mesh and add value*weight
+    forAll(gaussPts, ptI)
+    {
+        scalarField& wtdGPI = wtdGaussPts[ptI];
+
+        forAll (wtdGPI, modI)
+        {
+            wtdGPI[modI] *= gaussWeights[ptI];
+        }
+    }
+
+    return wtdGaussPts;
+}
+
+
+PtrList<scalarField> dgPolynomials::wtdGaussGradEval()
+{
+    if (!gaussPtsGradEvalPtr_)
+    {
+        calcGaussPtsGradEval();
+    }
+
+    const scalarField& gaussWeights = this->gaussWeights();
+
+    const PtrList<scalarField>& gaussPts = *gaussPtsGradEvalPtr_;
+    PtrList<scalarField> wtdGaussPts = gaussPts;
+
+    // Go over all Gauss points for the whole mesh and add value*weight
+    forAll(gaussPts, ptI)
+    {
+        scalarField& wtdGPI = wtdGaussPts[ptI];
+
+        forAll (wtdGPI, modI)
+        {
+            wtdGPI[modI] *= gaussWeights[ptI];
+        }
+    }
+
+    return wtdGaussPts;
+}
+
+
 
 
 void dgPolynomials::test()

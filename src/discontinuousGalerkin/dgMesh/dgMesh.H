@@ -39,9 +39,14 @@ SourceFiles
 #include "MeshObject.H"
 #include "polyMesh.H"
 #include "lduMesh.H"
+#include "primitiveMesh.H"
 #include "dgBoundaryMesh.H"
-#include "primitiveFieldsFwd.H"
 #include "DimensionedField.H"
+#include "primitiveFieldsFwd.H"
+#include "dgSchemes.H"
+#include "dgSolution.H"
+#include "dgOrder.H"
+#include "dgPolynomials.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -66,6 +71,15 @@ class dgMesh
         //- Boundary mesh
         dgBoundaryMesh boundary_;
 
+        // Here for now, probably eventually a better place will exist
+        dgSchemes schemesDict_;
+
+        dgSolution solutionDict_;
+
+        mutable scalarField* cellScaleCoeffsPtr_;
+
+        mutable dgPolynomials polynomials_;
+        //dgPolynomials polynomials_;
 
     // Demand-driven data
 
@@ -161,11 +175,55 @@ public:
             }
 
             //- Return access to polynomials
-//            const dgPolynomials& polynomials() const
-//            {
-//                return polynomials_;
-//            }
+            const dgPolynomials& polynomials() const
+            {
+                return polynomials_;
+            }
 
+            dgPolynomials& polynomials()
+            {
+                return polynomials_;
+            }
+
+            const dgSchemes& schemesDict() const
+            {
+                return schemesDict_;
+            }
+
+            dgSchemes& schemesDict()
+            {
+                return schemesDict_;
+            }
+
+            const dgSolution& solutionDict() const
+            {
+                return solutionDict_;
+            }
+
+            dgSolution& solutionDict()
+            {
+                return solutionDict_;
+            }
+
+            label modalSize() const
+            {
+                return dgOrder::length;
+            }
+
+            scalar size() const
+            {
+                return cellScaleCoeffsPtr_->size();
+            }
+
+            const scalarField& cellScaleCoeffs() const
+            {
+                if (!cellScaleCoeffsPtr_)
+                {
+                    calcCellScaleCoeffs();
+                }
+
+                return *cellScaleCoeffsPtr_;
+            }
 
             // Communication support
 
@@ -196,6 +254,8 @@ public:
 
 
         // Mapping
+
+            void calcCellScaleCoeffs() const;
 
 
         // Demand-driven data

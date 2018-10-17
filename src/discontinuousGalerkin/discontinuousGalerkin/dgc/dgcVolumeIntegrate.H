@@ -39,7 +39,6 @@ SourceFiles
 #ifndef dgcVolumeIntegrate_H
 #define dgcVolumeIntegrate_H
 
-// I probably need cellFieldsFwd.H
 #include "cellFieldsFwd.H"
 #include "primitiveFieldsFwd.H"
 #include "dgPrimitiveFieldsFwd.H"
@@ -75,6 +74,19 @@ namespace dgc
         const tmp<GeometricField<Type, dgPatchField, cellMesh> >&
     );
 
+    // For laplacian calculation
+    template<class Type>
+    tmp<cellScalarField> volumeIntegrateGrad
+    (
+        const GeometricField<Type, dgPatchField, cellMesh>&
+    );
+
+    // For laplacian calculation
+    template<class Type>
+    tmp<scalarField> volumeIntegrateGrad
+    (
+        const Field<Type>&
+    );
 
     template<class Type>
     dimensioned<Type> domainIntegrate

@@ -37,11 +37,14 @@ Foam::dgPatchField<Type>::dgPatchField
     const DimensionedField<Type, cellMesh>& iF
 )
 :
+    Field<Type>(p.size()),
     patch_(p),
     internalField_(iF),
     updated_(false),
     patchType_(word::null)
-{}
+{
+    Info << "DG PATCH FIELD 1 " << this->patch().name() << endl;
+}
 
 
 template<class Type>
@@ -52,11 +55,42 @@ Foam::dgPatchField<Type>::dgPatchField
     const dictionary& dict
 )
 :
+    Field<Type>(p.size()),
     patch_(p),
     internalField_(iF),
     updated_(false),
     patchType_(dict.lookupOrDefault<word>("patchType", word::null))
-{}
+{
+    Info << "DG PATCH FIELD 2" << endl;
+
+    if (dict.found("value"))
+    {
+        dgPatchField<Type>::operator=
+        (
+            Field<Type>("value", dict, p.size())
+        );
+    }
+//    else if (!valueRequired)
+//    {
+//        dgPatchField<Type>::operator=(pTraits<Type>::zero);
+//    }
+    else
+    {
+        FatalIOErrorIn
+        (
+            "dgPatchField<Type>::dgPatchField"
+            "("
+            "const dgPatch& p,"
+            "const DimensionedField<Type, cellMesh>& iF"
+            "const dictionary& dict"
+            ")",
+            dict
+        ) << "Essential entry 'value' missing"
+          << exit(FatalIOError);
+    }
+
+    Info << "VALUE OF DIRI FIELD: " << *this << endl;
+}
 
 
 template<class Type>
@@ -65,12 +99,14 @@ Foam::dgPatchField<Type>::dgPatchField
     const dgPatchField<Type>& ptf
 )
 :
-    refCount(),
+    Field<Type>(ptf),
     patch_(ptf.patch_),
     internalField_(ptf.internalField_),
     updated_(false),
     patchType_(ptf.patchType_)
-{}
+{
+    Info << "DG PATCH FIELD 3" << endl;
+}
 
 
 template<class Type>
@@ -80,11 +116,60 @@ Foam::dgPatchField<Type>::dgPatchField
     const DimensionedField<Type, cellMesh>& iF
 )
 :
+    Field<Type>(ptf),
     patch_(ptf.patch_),
     internalField_(iF),
     updated_(false),
     patchType_(ptf.patchType_)
-{}
+{
+    Info << "DG PATCH FIELD 4 " << this->patch().name() << endl;
+}
+
+
+template<class Type>
+Foam::dgPatchField<Type>::dgPatchField
+(
+    const dgPatchField<Type>& ptf,
+    const DimensionedField<Type, cellMesh>& iF,
+    const dictionary& dict
+)
+:
+    Field<Type>(ptf),
+    patch_(ptf),
+    internalField_(iF),
+    updated_(false),
+    patchType_(dict.lookupOrDefault<word>("patchType", word::null))
+{
+    Info << "DG PATCH FIELD 5" << endl;
+
+    if (dict.found("value"))
+    {
+        dgPatchField<Type>::operator=
+        (
+            Field<Type>("value", dict, ptf.size())
+        );
+    }
+//    else if (!valueRequired)
+//    {
+//        dgPatchField<Type>::operator=(pTraits<Type>::zero);
+//    }
+    else
+    {
+        FatalIOErrorIn
+        (
+            "dgPatchField<Type>::dgPatchField"
+            "("
+            "const dgPatch& p,"
+            "const DimensionedField<Type, cellMesh>& iF"
+            "const dictionary& dict"
+            ")",
+            dict
+        ) << "Essential entry 'value' missing"
+          << exit(FatalIOError);
+    }
+
+    Info << "VALUE OF DIRI FIELD: " << *this << endl;
+}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
@@ -140,6 +225,65 @@ void Foam::dgPatchField<Type>::check(const dgPatchField<Type>& ptf) const
 
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
 
+//template<class Type>
+//void Foam::dgPatchField<Type>::operator=
+//(
+//    const UList<Type>& ul
+//)
+//{
+//    Field<Type>::operator=(ul);
+//}
+
+
+template<class Type>
+void Foam::dgPatchField<Type>::operator=
+(
+    const dgPatchField<Type>& ptf
+)
+{
+    check(ptf);
+    Field<Type>::operator=(ptf);
+}
+
+
+template<class Type>
+void Foam::dgPatchField<Type>::operator=
+(
+    const Type& t
+)
+{
+    Field<Type>::operator=(t);
+}
+
+
+template<class Type>
+void Foam::dgPatchField<Type>::operator==
+(
+    const dgPatchField<Type>& ptf
+)
+{
+    Field<Type>::operator=(ptf);
+}
+
+
+template<class Type>
+void Foam::dgPatchField<Type>::operator==
+(
+    const Field<Type>& tf
+)
+{
+    Field<Type>::operator=(tf);
+}
+
+
+template<class Type>
+void Foam::dgPatchField<Type>::operator==
+(
+    const Type& t
+)
+{
+    Field<Type>::operator=(t);
+}
 
 // * * * * * * * * * * * * * * * IOstream Operators  * * * * * * * * * * * * //
 

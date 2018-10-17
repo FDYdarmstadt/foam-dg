@@ -11,7 +11,7 @@
 #include "dgc.H"
 #include "dgMatrices.H"
 //#include "dgPolynomials.H"
-// #include "dgm.H"
+ #include "dgm.H"
 // #include "linear.H"
 // #include "uniformDimensionedFields.H"
 // #include "calculatedDgPatchFields.H"

@@ -57,6 +57,7 @@ const Foam::lduAddressing& Foam::dgMesh::lduAddr() const
 void Foam::dgMesh::clearAddressing()
 {
     deleteDemandDrivenData(lduPtr_);
+    deleteDemandDrivenData(cellScaleCoeffsPtr_);
 
     // Geometry dependent object updated through call-back
     // and handled by polyMesh
@@ -70,7 +71,12 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
 :
     GeoMesh<polyMesh>(pMesh),
     MeshObject<polyMesh, dgMesh>(pMesh),
-    boundary_(*this, pMesh.boundaryMesh())
+    boundary_(*this, pMesh.boundaryMesh()),
+    schemesDict_(mesh().thisDb()),
+    solutionDict_(mesh().thisDb()),
+    cellScaleCoeffsPtr_(NULL),
+    polynomials_(dgPolynomials()),
+    lduPtr_(NULL)
 {
     if (debug)
     {
@@ -90,6 +96,7 @@ Foam::dgMesh::~dgMesh()
 
 const Foam::Time& Foam::dgMesh::time() const
 {
+    Info << polynomials_.gaussPtsEval() << endl;
     return mesh().time();
 }
 
@@ -164,6 +171,40 @@ Foam::scalarList Foam::dgMesh::gaussPoints()
 //    return polynomials.gaussPoints();
 }
 
+
+void Foam::dgMesh::calcCellScaleCoeffs() const
+{
+    const polyMesh& mesh = this->mesh();
+    const scalarField points = mesh.points().component(vector::X);
+
+    scalarField cellMax(mesh.cellCentres().component(vector::X));
+    scalarField cellMin(cellMax);
+
+    forAll (cellMax, cellI)
+    {
+        const labelList& cellPts = mesh.cellPoints(cellI);
+
+        // Determine min,max for each cell
+        forAll (cellPts, ptI)
+        {
+            if
+            (
+                points[cellPts[ptI]] < cellMin[cellI]
+            )
+            {
+                cellMin[cellI] = points[cellPts[ptI]];
+            }
+
+            if (points[cellPts[ptI]] > cellMax[cellI])
+            {
+                cellMax[cellI] = points[cellPts[ptI]];
+            }
+        }
+    }
+
+    // Normalize and scale based on real cell size (not reference one)
+    cellScaleCoeffsPtr_ = new scalarField((cellMax - cellMin)/2);
+}
 
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
 

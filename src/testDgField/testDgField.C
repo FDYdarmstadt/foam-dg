@@ -42,14 +42,18 @@ int main(int argc, char *argv[])
     // Set field given length and initial value
     dgScalarField dgf2(3, dgScalar(4));
 
-//    Info<< "dgf2, length 3 value 5 : " << dgf2 << endl;
+    dgf2[2][2] = 3;
+
+//    dgScalarField dgf25(3, 4);
+
+    Info<< "dgf2, length 3 value 4 : " << dgf2 << endl;
 
 //    dgPolynomials poly(3);
 //    Info << poly.gaussPoints() << endl;
 
-//    scalarField integrate = dgc::volumeIntegrate(dgf2);
+    scalarField integrate = dgc::volumeIntegrate(dgf2);
 
-//    Info << "Integral value: " <<  integrate << endl;
+    Info << "Integral value: " <<  integrate << endl;
 
     dgVectorField tfVector
     (
@@ -62,8 +66,8 @@ int main(int argc, char *argv[])
 
     dgScalar c(0);
     dgScalar d = c;
-    d[1] = 0;
-    d[2] = 0;
+    d[1] = 1;
+    d[2] = 1;
     d[0] = 1;
 //    d[4] = 4;
 //    d[5] = 5;
@@ -72,12 +76,12 @@ int main(int argc, char *argv[])
 //    d[8] = 8;
 //    d[9] = 9;
 
-    dgScalarField dgf3(1, d);
+    dgScalarField dgf3(5, d);
 
     Info << nl << "SCALRA D " << d << endl;
     scalarField integrate2 = dgc::volumeIntegrate(dgf3);
 
-    Info << nl << "Integral value: " <<  integrate2 << endl;
+    Info << "Integral value: " <<  integrate2 << endl;
 
     return 0;
 }

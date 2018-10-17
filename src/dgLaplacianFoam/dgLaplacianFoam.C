@@ -50,32 +50,60 @@ int main(int argc, char *argv[])
 
     Info<< "\nCalculating temperature distribution\n" << endl;
 
-    Info<< "Time = " << runTime.timeName() << nl << endl;
 
+    while(runTime < runTime.endTime())
+    {
     runTime++;
- 
+
+    Info<< "-----------Time = " << runTime.timeName() << nl << endl;
+
     // Testing field I/O
-    T.write();
+//    T.write();
 
     // Testing matrix operations
     dgScalarMatrix TEqn(T, T.dimensions()/dimTime);
 
+    cellScalarField Tintegral = dgc::volumeIntegrate(T);
 
-    scalar Tintegral = dgc::volIntegrate(T);
-//             solve
-//             (
-//                 dgm::laplacian(DT, T)
-//             );
+Info << "THREE" << Tintegral.boundaryField() << nl
+     << Tintegral.internalField() << endl;
 
-// #       include "write.H"
+
+Info << "@" ;
+    forAll (Tintegral.boundaryField(), patchI)
+    {
+        Info << nl << "PATCH: " << Tintegral.boundaryField()[patchI] << endl;
+
+    }
+Info << "@" ;
+
+    cellScalarField T1 = dgc::dgLaplacian(T);
+Info << "@" ;
+
+//    dgScalarMatrix Te = dgm::dgLaplacian(T);
+
+    dgScalarMatrix Te
+    (
+        dgm::dgLaplacian(T)
+    );
+
+Info << "@" ;
+//    Info << " DIAG IS : " << Te.diag() << endl;
+
+    Info<< "------- Timing = " << runTime.timeName() << nl << endl;
+//    Te.solve();
 
 //         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
 //             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
 //             << nl << endl;
 //     }
+//    T.write();
+    runTime.write();
 
-    Info<< "End\n" << endl;
-
+    Info << T << endl;
+//
+//    Info<< "End\n" << endl;
+}
     return 0;
 }
 

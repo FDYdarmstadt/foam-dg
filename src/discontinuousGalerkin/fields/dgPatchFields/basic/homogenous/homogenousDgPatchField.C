@@ -40,7 +40,9 @@ homogenousDgPatchField<Type>::homogenousDgPatchField
 )
 :
     dgPatchField<Type>(p, iF)
-{}
+{
+//    Info << "HOMOGENOUS 1" << endl;
+}
 
 
 template<class Type>
@@ -52,7 +54,9 @@ homogenousDgPatchField<Type>::homogenousDgPatchField
 )
 :
     dgPatchField<Type>(p, iF)
-{}
+{
+//    Info << "HOMOGENOUS 2" << endl;
+}
 
 
 template<class Type>
@@ -62,7 +66,9 @@ homogenousDgPatchField<Type>::homogenousDgPatchField
 )
 :
     dgPatchField<Type>(zgpf)
-{}
+{
+//    Info << "HOMOGENOUS 3" << endl;
+}
 
 
 template<class Type>
@@ -73,10 +79,31 @@ homogenousDgPatchField<Type>::homogenousDgPatchField
 )
 :
     dgPatchField<Type>(zgpf, iF)
-{}
+{
+//    Info << "HOMOGENOUS 4" << endl;
+}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+//template<class Type>
+//tmp<dgScalarField> homogenousDgPatchField<Type>::valueInternalCoeffs
+//(
+////    const tmp<dgScalarField>& dsf
+//) const
+//{
+//    return valueInternalCoeffs();
+//}
+//
+//
+//template<class Type>
+//tmp<dgScalarField> homogenousDgPatchField<Type>::valueBoundaryCoeffs
+//(
+////    const tmp<dgScalarField>& dsf
+//) const
+//{
+////    return ;
+//}
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

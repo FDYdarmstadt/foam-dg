@@ -61,6 +61,22 @@ class dgPolynomials
     scalarField gaussPoints_;
 //    const vectorField gaussPoints_;
 
+    // Ptr list with size(number of Gauss points) with evaluated modes in
+    // corresponding Gauss points, i.e. for 2 Gauss points and 3 modes, PtrList
+    // size is 2, scalarField size is 3, in total 6
+    mutable PtrList<scalarField>* gaussPtsEvalPtr_;
+
+    mutable PtrList<scalarField>* gaussPtsGradEvalPtr_;
+
+
+protected:
+
+        //- Evaluate polynomials in Gauss points
+        void calcGaussPtsEval() const;
+
+        //- Evaluate gradient of polynomials in Gauss points
+        void calcGaussPtsGradEval() const;
+
 
 public:
 
@@ -69,7 +85,7 @@ public:
         //- Construct from dgOrder
         dgPolynomials
         (
-            const label
+//            const label
 //            const dgOrder& dgOrder
         );
 
@@ -77,22 +93,55 @@ public:
     // Member functions
 
         //- Return vector of modes evaluated in local coordinates
-        scalarField evaluate
+        const scalarField evaluate
         (
             const vector localCoords
-        );
+        ) const;
+
+        //- Return vector of gradient of modes evaluated in local coordinates
+        const scalarField gradEvaluate
+        (
+            const vector localCoords
+        ) const;
+
+        const PtrList<scalarField>& gaussPtsEval() const
+        {
+            if (!gaussPtsEvalPtr_)
+            {
+                calcGaussPtsEval();
+            }
+
+            return *gaussPtsEvalPtr_;
+        }
+
+        const PtrList<scalarField>& gaussPtsGradEval() const
+        {
+            if (!gaussPtsGradEvalPtr_)
+            {
+                calcGaussPtsGradEval();
+            }
+
+            return *gaussPtsGradEvalPtr_;
+        }
+
+        //- Modal functions evaluated in gauss points, without gauss weights
+        PtrList<scalarField> wtdGaussEval();
+
+        //- Gradient of modal functions evaluated in gauss points, without gauss
+        // weights
+        PtrList<scalarField> wtdGaussGradEval();
 
 
     // Access functions
 
         //- Return Gauss weights for reference element
-        const scalarField& gaussWeights()
+        const scalarField& gaussWeights() const
         {
             return gaussWeights_;
         }
 
         //- Return Gauss points positions for reference element (local CS)
-        const scalarField& gaussPoints()
+        const scalarField& gaussPoints() const
         {
             return gaussPoints_;
         }

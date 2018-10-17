@@ -1,7 +1,7 @@
 #!/bin/sh
 set -x
 
-wclean discontinuousGalerkin
+wclean libso discontinuousGalerkin
 
 wclean testDg
 wclean testDgField

@@ -50,7 +50,7 @@ Description
 //#include "fvcMagSqrGradGrad.H"
 //#include "fvcSnGrad.H"
 //#include "fvcCurl.H"
-//#include "fvcLaplacian.H"
+#include "dgcLaplacian.H"
 //#include "fvcSup.H"
 //#include "fvcMeshPhi.H"
 //

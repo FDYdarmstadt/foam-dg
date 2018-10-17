@@ -49,9 +49,10 @@ SourceFiles
 namespace Foam
 {
 
+typedef Field<dgScalar> dgScalarField;
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-typedef Field<dgScalar> dgScalarField;
 
 
 // * * * * * * * * * * * * * * * Global Functions  * * * * * * * * * * * * * //

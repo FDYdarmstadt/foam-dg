@@ -128,8 +128,20 @@ public:
                 return true;
             }
 
+        //-Write
+        virtual void write(Ostream&) const;
 
         // Evaluation functions
+
+            virtual tmp<dgScalarField> valueInternalCoeffs
+            (
+//                const tmp<dgScalarField>&
+            ) const;
+
+            virtual tmp<dgScalarField> valueBoundaryCoeffs
+            (
+//                const tmp<dgScalarField>&
+            ) const;
 
 };
 

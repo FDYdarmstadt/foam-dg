@@ -16,12 +16,12 @@ FoamFile
 
 ddtSchemes
 {
-    default Euler;
+    default none;//Euler;
 }
 
 gradSchemes
 {
-    default         Gauss linear;
+    default         none;//Gauss linear;
 }
 
 divSchemes
@@ -31,17 +31,23 @@ divSchemes
 
 laplacianSchemes
 {
-    default         Gauss linear corrected;
+    default         SIPLaplacian;//Gauss linear corrected;
+}
+
+dgLaplacianSchemes
+{
+    default         SIPLaplacian;//Gauss linear corrected;
+    dgLaplacian(T)         SIPLaplacian;
 }
 
 interpolationSchemes
 {
-    default         linear;
+    default         none;//linear;
 }
 
 snGradSchemes
 {
-    default         corrected;
+    default         none;//corrected;
 }
 
 fluxRequired
