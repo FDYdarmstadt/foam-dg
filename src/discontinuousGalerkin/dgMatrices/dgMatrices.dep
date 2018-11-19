@@ -533,6 +533,7 @@ dgMatrices/dgMatrices.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor2I.H
 dgMatrices/dgMatrices.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor3.H
 dgMatrices/dgMatrices.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/sphericalTensor3.H
 dgMatrices/dgMatrices.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/diagTensor3.H
+dgMatrices/dgMatrices.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor3I.H
 dgMatrices/dgMatrices.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor4.H
 dgMatrices/dgMatrices.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/sphericalTensor4.H
 dgMatrices/dgMatrices.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/diagTensor4.H

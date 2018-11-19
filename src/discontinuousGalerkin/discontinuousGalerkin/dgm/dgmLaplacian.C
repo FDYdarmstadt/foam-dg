@@ -224,8 +224,6 @@ dgLaplacian
     const word& name
 )
 {
-    Info << "DGM LAPLACIAN" << endl;
-
     return dg::dgLaplacianScheme<Type, scalar>::New
     (
         vf.mesh(),

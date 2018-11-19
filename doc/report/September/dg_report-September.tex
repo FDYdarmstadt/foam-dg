@@ -1,0 +1,291 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{authblk}
+\usepackage{placeins}
+
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{wasysym}
+\newcommand{\rred}[0]{\color{red}}
+\newcommand{\rblue}[0]{\color{blue}}
+
+% Neater hyperlinks
+\usepackage{hyperref}
+\hypersetup{
+   breaklinks,
+   pdfcreator    = \LaTeX{},
+   pdfproducer   = \LaTeX{},
+   bookmarksopen = true,
+   colorlinks = true,
+   urlcolor   = cyan,
+   citecolor  = red,
+   linkcolor  = black,
+   filecolor  = blue,
+}
+
+% Tensorial and finite volume packages
+\usepackage{general}
+\usepackage{tensorCommon}
+\usepackage{tensorEquation}
+\usepackage{tensorOperator}
+\usepackage{tabularx}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newcolumntype{s}{>{\hsize=.5\hsize}Y}
+\usepackage{multirow}\usepackage{finiteVolume}
+
+\usepackage[center]{titlesec}
+\usepackage{fancyhdr}
+
+% For multicolumn tables
+
+
+% Left justify section headings
+\usepackage{sectsty}
+\sectionfont{\bfseries\Large\raggedright}
+
+% Hide subsubsections in table of contents
+\setcounter{tocdepth}{2}
+
+\title{\vspace{4cm}%
+\Huge
+\bf Discontinuous Galerkin implementation in foam-extend\\[2cm]
+\huge
+Report-1\\
+September 2018\\[1cm]
+}
+
+\author[]{Gregor Cvijeti\'{c}}
+\affil[]{ \small University of Zagreb, Croatia, gregor.cvijetic@fsb.hr}
+
+\renewcommand\Authands{ and }
+
+\newgeometry{left=1in, right=1in, top=1in, bottom=1in}
+\date{\vspace{-5ex}}
+
+%\pagestyle{empty}
+\pagestyle{fancy}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\pagebreak
+
+\tableofcontents
+
+
+
+\section*{Summary}
+\label{sec:1}
+
+\noindent In this report the implementation of discontinuous Galerkin (DG)
+method in
+foam-extend is presented. As reports will be delivered on a monthly basis, of
+which this is the first one, the fundamental programming and mathematical basis,
+as well as the core code structure are presented here. Each following report
+will continue from where the previous report left off, without repeating parts
+that are not in the focus of the current work. Therefore, all of the reports
+should be considered as a whole, rather than each report as an independent
+document.\\
+
+\noindent The report contains:
+\begin{enumerate}
+    \item The mathematical basis for discontinuous Galerkin method,
+    \item The mathematical model for Poisson equation,
+    \item Discussion on the code structure,
+    \item Details of the implementation and numerical procedures.
+\end{enumerate}
+
+\vspace{12pt}
+
+\noindent In the section \nameref{sec:2} an overview of the implemented
+mathematical approach will be given. Furthermore, the Gauss integration and
+choice of modal basis will be briefly covered. In the section \nameref{sec:3}
+the code structure will be presented. As the code structure adheres to the
+foam-extend standard, only the overview of the complete code will be given,
+while parts of the code that are specific to DG will be highlighted.  Section
+\nameref{sec:4} presents a walkthrough of important implementation parts
+needed for code understanding and getting familiar with how the solver
+works.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Mathematical model}
+\label{sec:2}
+
+In this section the mathematical model of the discontinuous Galerkin method will
+be presented. No theory will be covered as it is accessible
+in a number of sources \ref{refereirati kummer lecture notes, phd, onu moju
+knjigo}, therefore only equations and relevant parts of theory will be covered.
+
+
+
+\subsection{Modal basis}
+
+As opposed to available alternative (nodal basis), a modal basis approach has
+been chosen in this work. This means that referent cell value is calculated
+as a superposition of modes (polynomials), whereas only the polynomial
+coefficients (weights on modal values) $\varphi_i$ are stored:
+
+\begin{equation}
+    u(x) = \sum_{i=1}^N \varphi_i P_i(x) \mcomma
+    \label{eq:1}
+\end{equation}
+
+\noindent where $N$ represents number of modes used, $P_i$ is a polynomial of
+mode $i$ evaluated at coordinate $x$ and $\varphi_i$ is a polynomial coefficient. The
+equation \eqref{eq:1} is valid cell-wise, but at this point refers only to a
+referent cell, meaning that $x$ refers to a local coordinate, $x\in\{-1,1\}$.
+
+The choice of polynomials is arbitrary, while due to benefitial properties
+\ref{neka, kummer} the Legendre polynomials are used here:
+%
+\begin{align}
+    P_0 &= 1\notag\\
+    P_1 &= x\notag\\
+    P_2 &= \dfrac{1}{2}(3x^2 - 1)\\
+    P_3 &= \dfrac{1}{2}(5x^2 - 3x)\notag\\
+    P_4 &= \dfrac{1}{8}(35x^4 - 30X^2 + 3)\notag\\
+    &...\notag
+\label{eq:2}
+\end{align}
+
+or using the recursive formula:
+
+\begin{equation}
+    P_{n+1}(x) = \dfrac{2n+1}{n+1}xP_n(x) - \dfrac{n}{n+1} P_{n-1}(x)
+    \label{eq:3}
+\end{equation}
+
+with
+
+\begin{equation}
+    P_0(x) = 1 \textrm{ and }  P_1(x) = x \mfstop
+\label{eq:4}
+\end{equation}
+
+
+\noindent For the initial work only modes up to second order are implemented and
+the implementation for 1-D problems is performed.
+
+
+\subsection{Gaussian quadrature integration}
+
+Gaussian quadrature rule refers to approximation of the definite integral of a
+function, formulated as a weighted sum of function values at specified points
+within the domain of integration:
+
+\begin{equation}
+    \int_{-1}^{1} f(x) dx \approx \sum_{i=1}^{n} w_i f(x_i) \mcomma
+\label{eq:5}
+\end{equation}
+
+Points $x_i$ at which the function is evaluated are called Gauss nodes.
+The accuracy of the approximation depends on the number of used points, whereas
+in case of Legendre polynomials of the order $2n-1$, $n$ Gauss nodes are needed
+to obtain the exact value of the integral.
+Weighting factors $w_i$ are calculated using the relation:
+
+\begin{equation}
+    w_i = \dfrac{2}{(1-x_i^2)[P_n'(x_i)]^2}
+\label{eq:6}
+\end{equation}
+
+\noindent while coordinate $x_i$ is the $i$-th root of the polynomial $P_n$. The
+quadrature rule is used for evaluating the volume and surface integrals
+throughout the code.
+
+
+
+TREBAM LI PROVJERITI DA LI SE INTEGRAL RACUNA SAMO U PAR TOCAKA ILI BI SVAKI
+POLINOM TREBAO U SVOJIM TOCKAMA
+
+
+
+
+\subsection{Poisson equation}
+
+First task of the implementation is to solve the Poisson equation. The
+discretisation is performed using the Symmetric Interior Penalty (SIP)
+method, with the aid of the mean value operator $\{\cdot\}$ and jump operator
+$[\![\cdot ]\!]$ on the cell edges, due to the discontinuous nature of cell-wise
+polynomials. Following \cite{Kummer} the discretized form of Poisson equation
+multiplied by a test function states:
+
+\begin{equation}
+    \int_\Omega \div (\grad u) v dV = \int_\Omega \grad u \cdot \grad v dV
+    -\oint_\Gamma \{\grad u\} \cdot n_\Gamma [\![v]\!] dA
+    -\oint_\Gamma \{\grad v\} \cdot n_\Gamma [\![u]\!] dA
+    +\oint_\Gamma \eta [\![u]\!] [\![v]\!] dA
+\label{eq:7}
+\end{equation}
+
+\noindent where on the right hand side of the equation terms from left to right
+are: volume term, consistency term, symmetry term and penalty term. Jump and
+mean value operators are:
+
+\begin{align}
+    \{c_h\} &= \dfrac{c_h^- + c_h^+}{2}\\
+    [\![c_h]\!] &= c_h^- - c_h^+
+\label{eq:8}
+\end{align}
+
+where $c_h$ is a value within the cell $h$, $-$ sign represents internal (or
+cell side) value on the edge, while $+$ represents value on neighbouring cell
+side of the edge.
+
+TU BI BILO DOBRO RASPISATI MATRICE I SVE
+
+
+\section{Code structure}
+\label{sec:3}
+
+In this section a code structure will be briefly presented. Although most of the
+parts will be covered, a special attention will be given only to parts that are
+significantly different from common foam-extend structure or to parts that don't
+have its alternative in the finite volume library.
+
+\subsection{Source code}
+
+\subsection{Unit tests}
+
+\subsection{Solvers}
+
+
+
+\section{Implementation details}
+\label{sec:4}
+
+\subsection{Primitives}
+
+\subsection{Mesh}
+
+\subsection{Fields}
+
+\subsection{Matrix}
+\subsection{Operators}
+\subsection{Boundary Conditions}
+
+Napisati da ce biti provedena usporedba s Bosss code i Kummer's polynomials.
+
+Osvrnuti se na numerical flux
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagebreak
+
+\bibliographystyle{plain}
+\bibliography{%
+}%
+
+\end{document}

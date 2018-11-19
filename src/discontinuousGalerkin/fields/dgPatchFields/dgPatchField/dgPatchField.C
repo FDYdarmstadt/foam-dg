@@ -43,7 +43,7 @@ Foam::dgPatchField<Type>::dgPatchField
     updated_(false),
     patchType_(word::null)
 {
-    Info << "DG PATCH FIELD 1 " << this->patch().name() << endl;
+//    Info << "DG PATCH FIELD 1 " << this->patch().name() << endl;
 }
 
 
@@ -61,7 +61,7 @@ Foam::dgPatchField<Type>::dgPatchField
     updated_(false),
     patchType_(dict.lookupOrDefault<word>("patchType", word::null))
 {
-    Info << "DG PATCH FIELD 2" << endl;
+//    Info << "DG PATCH FIELD 2" << endl;
 
     if (dict.found("value"))
     {
@@ -105,7 +105,7 @@ Foam::dgPatchField<Type>::dgPatchField
     updated_(false),
     patchType_(ptf.patchType_)
 {
-    Info << "DG PATCH FIELD 3" << endl;
+//    Info << "DG PATCH FIELD 3" << endl;
 }
 
 
@@ -122,7 +122,7 @@ Foam::dgPatchField<Type>::dgPatchField
     updated_(false),
     patchType_(ptf.patchType_)
 {
-    Info << "DG PATCH FIELD 4 " << this->patch().name() << endl;
+//    Info << "DG PATCH FIELD 4 " << this->patch().name() << endl;
 }
 
 
@@ -140,7 +140,7 @@ Foam::dgPatchField<Type>::dgPatchField
     updated_(false),
     patchType_(dict.lookupOrDefault<word>("patchType", word::null))
 {
-    Info << "DG PATCH FIELD 5" << endl;
+//    Info << "DG PATCH FIELD 5" << endl;
 
     if (dict.found("value"))
     {

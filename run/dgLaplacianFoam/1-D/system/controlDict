@@ -16,19 +16,19 @@ FoamFile
 
 application icoDyMFoam;
 
-startFrom       startTime;
+startFrom       latestTime;//startTime;
 
 startTime       0;
 
 stopAt          endTime;
 
-endTime         10;
+endTime         1;
 
 deltaT          1;
 
 writeControl    timeStep;
 
-writeInterval   100;
+writeInterval   1;
 
 purgeWrite      0;
 

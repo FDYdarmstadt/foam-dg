@@ -43,6 +43,7 @@ SourceFiles
 #include "DimensionedField.H"
 #include "dgPrimitiveFields.H"
 #include "dgPolynomials.H"
+#include "FieldField.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -288,15 +289,29 @@ public:
             )
             {}
 
-            virtual tmp<dgScalarField> valueInternalCoeffs () const
+//            virtual tmp<dgScalarField> valueInternalCoeffs () const
+            virtual FieldField<Field, scalar> valueInternalCoeffs () const
             {
-    Info << "DgPatchFIELD valueInCoeff not implemented." << endl;
+//    Info << "DgPatchFIELD valueInCoeff not implemented." << endl;
 //                notImplemented
 //                (
 //                    type()
 //                  + "::valueInternalCoeffs()"
 //                );
-                tmp<dgScalarField> nullField (new dgScalarField(0,dgScalar(0)));
+//                tmp<dgScalarField> nullField (new dgScalarField(0,dgScalar(0)));
+                scalar sqrtSize = polynomials().size();
+                sqrtSize *=sqrtSize;
+                Field<scalar> nF (sqrtSize, 0.0);
+
+                FieldField<Field, scalar> nullField
+                    (internalField_.mesh().size());
+
+                forAll (nullField, i)
+                {
+                    nullField.set(i, nF);
+                }
+
+//    Info << "NULL FIELD: " << nullField << endl;
                 return nullField;
             }
 

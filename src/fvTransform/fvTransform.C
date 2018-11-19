@@ -33,6 +33,7 @@ Author
 \*---------------------------------------------------------------------------*/
 
 #include "dgCFD.H"
+#include "fvCFD.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -43,63 +44,39 @@ int main(int argc, char *argv[])
 #   include "createTime.H"
 #   include "createPolyMesh.H"
 #   include "createDgMesh.H"
+#   include "createFvMesh.H"
 
 #   include "createFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nCalculating temperature distribution\n" << endl;
+    dgPolynomials polynomials;
 
-
-    while(runTime < runTime.endTime())
+    forAll (fvMesh.C(), cellI)
     {
-    runTime++;
+//        vector coord = fvMesh.C()[cellI];
+        vector coord (0, 0, 0);
 
-    Info<< "-----------Time = " << runTime.timeName() << nl << endl;
+        scalarField polyEval = polynomials.evaluate(coord);
 
-    // Testing field I/O
-//    T.write();
+        forAll (polyEval, modI)
+        {
+            Tvol[cellI] +=
+            T[cellI][modI]*polyEval[modI];//*dgMesh.cellScaleCoeffs()[cellI];
 
-    // Testing matrix operations
-    dgScalarMatrix TEqn(T, T.dimensions()/dimTime);
+//            Info<< "Cell: " << cellI << ", modI: " << modI << ", polyEval: "
+//                << polyEval[modI] << ", T:" << T[cellI][modI]
+//                << ", calculated: " << Tvol[cellI] << endl;
+        }
+    }
 
-    cellScalarField Tintegral = dgc::volumeIntegrate(T);
+    // SAMO U OVAJ DG-based solver ubacim da mogu raditi volScalarField i
+    // evaluiram u cell centreima
 
-//Info << "THREE" << Tintegral.boundaryField() << nl
-//     << Tintegral.internalField() << endl;
+    Tvol.write();
 
+    Info<< "Tvol: " << Tvol.internalField() << nl << endl;
 
-//    forAll (Tintegral.boundaryField(), patchI)
-//    {
-//        Info << nl << "PATCH: " << Tintegral.boundaryField()[patchI] << endl;
-//
-//    }
-
-    cellScalarField T1 = dgc::dgLaplacian(T);
-
-//    dgScalarMatrix Te = dgm::dgLaplacian(T);
-
-    dgScalarMatrix Te
-    (
-        dgm::dgLaplacian(T)
-    );
-
-//    Info << " DIAG IS : " << Te.diag() << endl;
-
-//    Info<< "------- Timing = " << runTime.timeName() << nl << endl;
-    Te.solve();
-
-//         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-//             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-//             << nl << endl;
-//     }
-//    T.write();
-    runTime.write();
-
-//    Info << T << endl;
-//
-//    Info<< "End\n" << endl;
-}
     return 0;
 }
 

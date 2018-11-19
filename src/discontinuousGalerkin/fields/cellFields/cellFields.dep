@@ -341,14 +341,12 @@ fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/cellZoneM
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduMesh.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduAddressing.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduSchedule.H
-fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceFieldPtrsList.H
-fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
+fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfacePtrsList.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterface.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrList.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrListI.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrList.C
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrListIO.C
-fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfacePtrsList.H
 fields/cellFields/cellFields.dep: lnInclude/dgBoundaryMesh.H
 fields/cellFields/cellFields.dep: lnInclude/dgPatchList.H
 fields/cellFields/cellFields.dep: lnInclude/dgPatch.H
@@ -407,6 +405,7 @@ fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldFiel
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldFieldFunctions.C
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceFieldPtrsList.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceField.H
+fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrix.C
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixOperations.C
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixUpdateInterfaces.C
@@ -428,6 +427,7 @@ fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimension
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedTensor.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedSymmTensor.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedSymmTensor4thOrder.H
+fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceFieldPtrsList.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/GeometricFieldI.H
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/GeometricField.C
 fields/cellFields/cellFields.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/GeometricBoundaryField.C

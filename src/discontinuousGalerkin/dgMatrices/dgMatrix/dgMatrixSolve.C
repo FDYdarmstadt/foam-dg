@@ -43,6 +43,8 @@ dgMatrix<Type>::solve(const dictionary& solverControls)
 
     Field<Type> source = this->source();
 
+    Field<Type>& psiI = const_cast<Field<Type>&>(psi_.internalField());
+
     Field<SubType> intField(psi_.internalField().size());
     Field<SubType> sourceField(source.size());
 
@@ -52,7 +54,7 @@ dgMatrix<Type>::solve(const dictionary& solverControls)
         sourceField[cellI] = source[cellI];
     }
 
-    Info << "SOLVER PERFE" << endl;
+//    Info << "SOLVER PERFORMANCE" << endl;
 
     // Solver call
     SolverPerfType solverPerf =
@@ -63,13 +65,20 @@ dgMatrix<Type>::solve(const dictionary& solverControls)
             *this,
             solverControls
         )->solve(intField, sourceField);
+//        )->solve(psi_.internalField(), this->source());
 
-    Info << "SOLVER PRINT" << endl;
+//    Info << "SOLVER PRINT" << endl;
     solverPerf.print();
 
 //    psi().correctBoundaryConditions();
 
     Info << "SOLVER OUT" << endl;
+
+    forAll(intField, cellI)
+    {
+        psiI[cellI] = intField[cellI];
+    }
+
 
     return solverPerf;
 }

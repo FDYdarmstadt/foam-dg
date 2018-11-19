@@ -107,6 +107,7 @@ private:
 
         // Reference to GeometricField<Type, dgPatchField, cellMesh>
         const GeometricField<Type, dgPatchField, cellMesh>& psi_;
+//        GeometricField<Type, dgPatchField, cellMesh>& psi_;
 
         //- Dimension set
         dimensionSet dimensions_;

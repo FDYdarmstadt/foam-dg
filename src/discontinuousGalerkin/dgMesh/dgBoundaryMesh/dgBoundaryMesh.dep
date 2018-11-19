@@ -110,10 +110,13 @@ dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/U
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BiIndirectList.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BiIndirectListI.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListIO.C
+dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOps.H
+dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/labelList.H
+dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ops.H
+dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOpsTemplates.C
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/primitivePatch.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/PrimitivePatchTemplate.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/boolList.H
-dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/labelList.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/edgeList.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/edge.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/pointField.H
@@ -125,7 +128,6 @@ dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/z
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/zeroI.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/VectorSpaceI.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/VectorSpaceM.H
-dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ops.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/VectorSpace.C
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/IOstreams.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ISstream.H
@@ -173,8 +175,6 @@ dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/N
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/stringList.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dynamicLabelList.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/optimisationSwitch.H
-dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOps.H
-dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOpsTemplates.C
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/LIFOStack.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/gatherScatter.C
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/OPstream.H
@@ -350,8 +350,6 @@ dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/c
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduMesh.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduAddressing.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduSchedule.H
-dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceFieldPtrsList.H
-dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/DimensionedField.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/DimensionedFieldI.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/DimensionedFieldFunctions.H
@@ -407,6 +405,7 @@ dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/F
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldFieldFunctions.C
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceFieldPtrsList.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceField.H
+dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrix.C
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixOperations.C
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixUpdateInterfaces.C

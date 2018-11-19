@@ -341,14 +341,12 @@ dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/cellZoneMeshFwd.H
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduMesh.H
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduAddressing.H
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduSchedule.H
-dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceFieldPtrsList.H
-dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
+dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfacePtrsList.H
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterface.H
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrList.H
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrListI.H
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrList.C
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrListIO.C
-dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfacePtrsList.H
 dgMesh/dgMesh.dep: lnInclude/dgBoundaryMesh.H
 dgMesh/dgMesh.dep: lnInclude/dgPatchList.H
 dgMesh/dgMesh.dep: lnInclude/dgPatch.H
@@ -407,6 +405,7 @@ dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldField.C
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldFieldFunctions.C
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceFieldPtrsList.H
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceField.H
+dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrix.C
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixOperations.C
 dgMesh/dgMesh.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixUpdateInterfaces.C

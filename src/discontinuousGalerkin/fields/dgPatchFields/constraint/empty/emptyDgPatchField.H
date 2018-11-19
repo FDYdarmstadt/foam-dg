@@ -123,6 +123,16 @@ public:
 
 
         // Evaluation functions
+//            virtual FieldField<Field, scalar> valueInternalCoeffs () const
+//            {
+//                FieldField<Field, scalar> nullField
+//                    (internalField().mesh().size());
+
+//                return fvPatchField::valueInternalCoeffs();
+//                nullField;
+//            }
+
+//            virtual tmp<dgScalarField> valueBoundaryCoeffs () const
 };
 
 

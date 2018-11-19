@@ -343,14 +343,12 @@ testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/cellZoneMeshFwd.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduMesh.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduAddressing.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduSchedule.H
-testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceFieldPtrsList.H
-testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
+testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfacePtrsList.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterface.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrList.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrListI.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrList.C
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrListIO.C
-testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfacePtrsList.H
 testDg.dep: ../discontinuousGalerkin/lnInclude/dgBoundaryMesh.H
 testDg.dep: ../discontinuousGalerkin/lnInclude/dgPatchList.H
 testDg.dep: ../discontinuousGalerkin/lnInclude/dgPatch.H
@@ -409,6 +407,7 @@ testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldField.C
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldFieldFunctions.C
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceFieldPtrsList.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceField.H
+testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrix.C
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixOperations.C
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixUpdateInterfaces.C
@@ -439,6 +438,7 @@ testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedDiagTensor.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedTensor.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedSymmTensor.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedSymmTensor4thOrder.H
+testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceFieldPtrsList.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/GeometricFieldI.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/GeometricField.C
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/GeometricBoundaryField.C
@@ -544,6 +544,7 @@ testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor2I.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor3.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/sphericalTensor3.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/diagTensor3.H
+testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor3I.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor4.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/sphericalTensor4.H
 testDg.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/diagTensor4.H

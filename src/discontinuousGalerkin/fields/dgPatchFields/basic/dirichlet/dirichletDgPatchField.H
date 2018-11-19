@@ -133,7 +133,8 @@ public:
 
         // Evaluation functions
 
-            virtual tmp<dgScalarField> valueInternalCoeffs
+//            virtual tmp<dgScalarField> valueInternalCoeffs
+            virtual FieldField<Field, scalar> valueInternalCoeffs
             (
 //                const tmp<dgScalarField>&
             ) const;

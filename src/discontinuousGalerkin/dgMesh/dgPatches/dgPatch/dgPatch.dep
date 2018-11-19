@@ -108,10 +108,13 @@ dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UIndi
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BiIndirectList.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BiIndirectListI.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListIO.C
+dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOps.H
+dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/labelList.H
+dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ops.H
+dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOpsTemplates.C
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/primitivePatch.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/PrimitivePatchTemplate.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/boolList.H
-dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/labelList.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/edgeList.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/edge.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/pointField.H
@@ -123,7 +126,6 @@ dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/zero.
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/zeroI.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/VectorSpaceI.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/VectorSpaceM.H
-dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ops.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/VectorSpace.C
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/IOstreams.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ISstream.H
@@ -171,8 +173,6 @@ dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/Named
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/stringList.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dynamicLabelList.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/optimisationSwitch.H
-dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOps.H
-dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOpsTemplates.C
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/LIFOStack.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/gatherScatter.C
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/OPstream.H
@@ -351,8 +351,6 @@ dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/cellZ
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduMesh.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduAddressing.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduSchedule.H
-dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceFieldPtrsList.H
-dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/DimensionedField.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/DimensionedFieldI.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/DimensionedFieldFunctions.H
@@ -408,6 +406,7 @@ dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/Field
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldFieldFunctions.C
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceFieldPtrsList.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceField.H
+dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrix.C
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixOperations.C
 dgMesh/dgPatches/dgPatch/dgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixUpdateInterfaces.C

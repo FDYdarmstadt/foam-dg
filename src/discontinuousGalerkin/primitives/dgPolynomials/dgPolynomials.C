@@ -62,7 +62,7 @@ void dgPolynomials::calcGaussPtsEval() const
         {
             // Calculate modal values in given coordinate (Gaussian point
             // coordinate)
-            polyEval = evaluate(vector(gaussCoords[ptI + 1],0,0));
+            polyEval = evaluate(vector(gaussCoords[ptI - 1],0,0));
 
 //            forAll (polyEval, modI)
 //            {
@@ -86,7 +86,6 @@ void dgPolynomials::calcGaussPtsGradEval() const
 //    const scalarField& gaussWeights = this->gaussWeights();
 
     gaussPtsGradEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
-
     // Go over all Gaussian points for the whole mesh and add value*weight
     forAll(*gaussPtsGradEvalPtr_, ptI)
     {
@@ -108,7 +107,7 @@ void dgPolynomials::calcGaussPtsGradEval() const
         {
             // Calculate modal values in given coordinate (Gaussian point
             // coordinate)
-            polyEval = gradEvaluate(vector(gaussCoords[ptI + 1],0,0));
+            polyEval = gradEvaluate(vector(gaussCoords[ptI - 1],0,0));
 
 //            forAll (polyEval, modI)
 //            {
@@ -122,7 +121,6 @@ void dgPolynomials::calcGaussPtsGradEval() const
             new scalarField (polyEval)
         );
     }
-
 }
 
 
@@ -213,6 +211,7 @@ const scalarField dgPolynomials::gradEvaluate
 {
     scalar lc = localCoords.component(vector::X);
 
+
     scalarField value(length_, 0.0);
     scalarField grad(length_, 0.0);
 
@@ -235,8 +234,7 @@ const scalarField dgPolynomials::gradEvaluate
         {
             // Modes
             value[i] =
-                1.0/(i)*((2.0*i-1)*lc*value[i-1] - (i-1)*value[i-2]);
-
+                1.0/(i)*((2.0*i-1)*lc*value[i-1]);// - (i-1)*value[i-2]);
             // Gradient of modes
             grad[i] =
                 1.0/(i)*((2.0*i-1)*(lc*grad[i-1] + value[i-1]) - (i-1)*grad[i-2]);
@@ -286,7 +284,6 @@ PtrList<scalarField> dgPolynomials::wtdGaussGradEval()
     {
         calcGaussPtsGradEval();
     }
-
     const scalarField& gaussWeights = this->gaussWeights();
 
     const PtrList<scalarField>& gaussPts = *gaussPtsGradEvalPtr_;

@@ -109,10 +109,13 @@ dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/l
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BiIndirectList.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BiIndirectListI.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListIO.C
+dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOps.H
+dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/labelList.H
+dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ops.H
+dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOpsTemplates.C
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/primitivePatch.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/PrimitivePatchTemplate.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/boolList.H
-dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/labelList.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/edgeList.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/edge.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/pointField.H
@@ -124,7 +127,6 @@ dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/l
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/zeroI.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/VectorSpaceI.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/VectorSpaceM.H
-dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ops.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/VectorSpace.C
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/IOstreams.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ISstream.H
@@ -172,8 +174,6 @@ dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/l
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/stringList.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dynamicLabelList.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/optimisationSwitch.H
-dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOps.H
-dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/ListOpsTemplates.C
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/LIFOStack.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/gatherScatter.C
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/OPstream.H
@@ -352,8 +352,6 @@ dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/l
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduMesh.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduAddressing.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduSchedule.H
-dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceFieldPtrsList.H
-dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/DimensionedField.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/DimensionedFieldI.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/DimensionedFieldFunctions.H
@@ -409,6 +407,7 @@ dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/l
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldFieldFunctions.C
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceFieldPtrsList.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceField.H
+dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrix.C
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixOperations.C
 dgMesh/dgPatches/constraint/empty/emptyDgPatch.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixUpdateInterfaces.C

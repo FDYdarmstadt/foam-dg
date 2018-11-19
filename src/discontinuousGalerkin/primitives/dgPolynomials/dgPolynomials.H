@@ -149,6 +149,11 @@ public:
         void test();
 //        {}
 
+        label size() const
+        {
+            return length_;
+        }
+
 };
 
 

@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | foam-extend: Open Source CFD                    |
-|  \\    /   O peration     | Version:     4.0                                |
+|  \\    /   O peration     | Version:     4.1-clean                          |
 |   \\  /    A nd           | Web:         http://www.foam-extend.org         |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -9,38 +9,27 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       cellScalarField;
-    location    "1";
-    object      T;
+    class       volScalarField;
+    location    "0";
+    object      Tvol;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 dimensions      [0 0 0 0 1 0 0];
 
-internalField   uniform (6 0 3);
-//nonuniform
-//5
-//(
-//(1 1 1)
-//(1 1 1)
-//(0 0 2)
-//(0 0 0)
-//(1 1 1)
-//);// 0 0 0 0 0 0 0);
+internalField   uniform -0.5;
 
 boundaryField
 {
     left
     {
-//        type            homogenous;
-        type            dirichlet;
-        value           uniform (1 0 0);
+        type            calculated;
+        value           uniform 0;
     }
     right
     {
-        type            dirichlet;
-//        type            homogenous;
-        value           uniform (1 0 0);
+        type            calculated;
+        value           uniform 0;
     }
     sides
     {

@@ -18,14 +18,14 @@ solvers
 {
     T
     {
-         solver           GaussSeidel;//smoothSolver;
+//         solver           BiCGSGaussSeidel;
          smoother         GaussSeidel;
          nSweeps          1;
 
-//        solver           BiCGStab;
-//        preconditioner   DILU;
+        solver           BiCGStab;
+        preconditioner   Cholesky;
 //
-        minIter          1;
+        minIter          0;
         maxIter          1000;
         tolerance        1e-10;
         relTol           0;

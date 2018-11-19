@@ -66,13 +66,11 @@ tmp<dgLaplacianScheme<Type, GType> > dgLaplacianScheme<Type, GType>::New
             << exit(FatalIOError);
     }
 
-    Info << "NEW CONSTR3 " << endl;
     const word schemeName(schemeData);
 
     typename IstreamConstructorTable::iterator cstrIter =
         IstreamConstructorTablePtr_->find(schemeName);
 
-    Info << "NEW CONSTR4 " << endl;
     if (cstrIter == IstreamConstructorTablePtr_->end())
     {
         FatalIOErrorIn
