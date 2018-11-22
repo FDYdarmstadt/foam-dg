@@ -43,7 +43,7 @@ namespace dg
     defineTemplateRunTimeSelectionTable(dgLaplacianScheme##Type##GType, Istream);
 
 #define makedgLaplacianScheme(Type)                                             \
-    makedgLaplacianGTypeScheme(Type, scalar); 
+    makedgLaplacianGTypeScheme(Type, scalar);
 //    makedgLaplacianGTypeScheme(Type, dgScalar);
 
 makedgLaplacianScheme(dgScalar);

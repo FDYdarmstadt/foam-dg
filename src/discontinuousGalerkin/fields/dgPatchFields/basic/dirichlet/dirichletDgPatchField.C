@@ -62,10 +62,6 @@ dirichletDgPatchField<Type>::dirichletDgPatchField
             Field<Type>("value", dict, p.size())
         );
     }
-//    else if (!valueRequired)
-//    {
-//        dgPatchField<Type>::operator=(pTraits<Type>::zero);
-//    }
     else
     {
         FatalIOErrorIn
@@ -118,13 +114,6 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valueInternalCoeffs
 {
 // Diagonal
 
-//    Info << "VALUE INTERNALE COEFFS: " << *this << endl;
-//    tmp<dgScalarField > diagCoeffs
-//    (
-//        new Field<Type>(this->size(), pTraits<Type>::zero)
-//    );
-
-
     const dgPolynomials& polynomials = this->polynomials();
 
     typedef FieldField<Field, scalar> scalarFieldField;
@@ -137,8 +126,7 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valueInternalCoeffs
         diag.set(cellI, new scalarField(sqr(scalar(polynomials.size())), 0.0));
     }
 
-
-    scalar eta = 1.0;//6.0;
+    scalar eta = 1.0;
 
     const PtrList<scalarField>& gaussEdgeEval = polynomials.gaussPtsEval();
     const PtrList<scalarField>& gaussGradEdgeEval =
@@ -154,7 +142,6 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valueInternalCoeffs
         (
             new dgScalarField(mesh.size(), dgScalar(0.0))
         );
-//    dgScalarField& diagCoeffs = tdiagCoeffs();
 
     forAll(faceCells, faceI)
     {
@@ -162,8 +149,6 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valueInternalCoeffs
     label globalFace = this->patch().patch().start() + faceI;
 
         scalar Sf = mag(faceSf[globalFace]);
-
-        // vf[faceCells[faceI]] is global addressing
 
         // Better name here would be edgePt
         label gaussPt = 0;
@@ -180,12 +165,6 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valueInternalCoeffs
             norm = -1;
         }
 
-Info<< "CELL : "<< mesh().cellCentres()[faceCells[faceI]].component(vector::X)
-    << ", FACE: " << faceCf[globalFace]
-    << ", faceCells: " << globalFace
-    << ", achieved gaussPt: " << gaussPt << ", and norm: " << norm << endl;
-
-
         // This should be outside of loops
         const scalarField& polyEval = gaussEdgeEval[gaussPt];
         const scalarField& polyGEval = gaussGradEdgeEval[gaussPt];
@@ -200,9 +179,6 @@ Info<< "CELL : "<< mesh().cellCentres()[faceCells[faceI]].component(vector::X)
                 diag[faceCell][addr] = eta*Sf*polyEval[modI]*polyEval[modJ]
                                      - Sf*polyGEval[modI]*polyEval[modJ]
                                      - Sf*polyEval[modI]*polyGEval[modJ];
-
-//            Info<< "PENALY TERM: " << diag[faceCell][addr]
-//                << ", Sf: " << Sf <<  endl;
             }
         }
     }
@@ -217,7 +193,6 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valueBoundaryCoeffs
 //    const tmp<dgScalarField>& dsf
 ) const
 {
-//    Info << "VALUE BOU COEFFS: " << *this << endl;
 
     const vectorField& faceSf = this->patch().faceAreas();
     const vectorField& faceCf = this->patch().faceCentres();
@@ -242,7 +217,7 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valueBoundaryCoeffs
         );
     dgScalarField& sourceCoeffs = tsourceCoeffs();
 
-    scalar eta = 1.0;//6.0;
+    scalar eta = 1.0;
 
     forAll(faceCells, faceI)
     {
@@ -266,19 +241,12 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valueBoundaryCoeffs
             norm = -1;
         }
 
-Info<< "CELL : "<< mesh().cellCentres()[faceCells[faceI]].component(vector::X)
-    << ", FACE: " << faceCf[globalFace]
-    << ", faceCells: " << globalFace
-    << ", achieved gaussPt: " << gaussPt << ", and norm: " << norm << endl;
-
-
-
         // This should be outside of loops
         const scalarField& polyEval = gaussEdgeEval[gaussPt];
         const scalarField& polyGEval = gaussGradEdgeEval[gaussPt];
 
 
-// This is hacked - should be Type templated for vectors and other
+// Should be Type templated for vectors and other
 
         // Penalty term
         forAll (polyEval, modJ)

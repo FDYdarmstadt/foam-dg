@@ -41,7 +41,6 @@ homogenousDgPatchField<Type>::homogenousDgPatchField
 :
     dgPatchField<Type>(p, iF)
 {
-//    Info << "HOMOGENOUS 1" << endl;
 }
 
 
@@ -55,7 +54,6 @@ homogenousDgPatchField<Type>::homogenousDgPatchField
 :
     dgPatchField<Type>(p, iF)
 {
-//    Info << "HOMOGENOUS 2" << endl;
 }
 
 
@@ -67,7 +65,6 @@ homogenousDgPatchField<Type>::homogenousDgPatchField
 :
     dgPatchField<Type>(zgpf)
 {
-//    Info << "HOMOGENOUS 3" << endl;
 }
 
 
@@ -80,7 +77,6 @@ homogenousDgPatchField<Type>::homogenousDgPatchField
 :
     dgPatchField<Type>(zgpf, iF)
 {
-//    Info << "HOMOGENOUS 4" << endl;
 }
 
 
@@ -92,7 +88,7 @@ homogenousDgPatchField<Type>::homogenousDgPatchField
 ////    const tmp<dgScalarField>& dsf
 //) const
 //{
-//    return 
+//    return
 //    (
 //        new (this->size(), pTraits<dgScalar>::zero)
 //    );
@@ -107,7 +103,6 @@ tmp<dgScalarField> homogenousDgPatchField<Type>::valueBoundaryCoeffs
 {
 
     const dgMesh& mesh = this->patch().boundaryMesh().mesh();
-//    const dgPolynomials& polynomials = this->polynomials();
 
     tmp<dgScalarField> tsourceCoeffs
         (
@@ -127,7 +122,6 @@ tmp<dgScalarField> homogenousDgPatchField<Type>::valueBoundaryCoeffs
     }
 
     return tsourceCoeffs;
-//    return ;
 }
 
 

@@ -90,18 +90,9 @@ dgLaplacian
 //
     return dgm::dgLaplacian
     (
-//        Gamma,
         vf,
         "dgLaplacian(" + vf.name() + ')'
     );
-//    return dg::dgLaplacianScheme<Type, GType>::New
-//    return dg::dgLaplacianScheme<Type, dimensionedScalar>::New
-//    (
-//        vf.mesh(),
-//        vf.mesh().schemesDict().dgLaplacianScheme(name)
-//    )().dgmLaplacian(vf);
-
-//   return dg::dgmLaplacian(vf); //Matrix
 }
 
 

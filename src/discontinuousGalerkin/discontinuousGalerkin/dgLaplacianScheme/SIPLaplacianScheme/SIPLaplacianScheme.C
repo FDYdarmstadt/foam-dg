@@ -141,8 +141,6 @@ SIPLaplacianScheme<Type, GType>::dgcLaplacian
     const GeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
-//    const dgMesh& mesh = this->mesh();
-
     // Laplace consists of four terms:
     // Volume term, consistency term, symmetry term and penalty term
 
@@ -232,17 +230,9 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
     );
     dgMatrix<Type>& dgm = tdgm();
 
-//    Info << "CONSTRUCT MATRIX OUT " << endl;
     dgPolynomials polynomials;
 
-
-    scalar eta = 1.0;//6.0;
-
-// VOLUME TERM
-//    Info << "VOLUME TERM IN " << endl;
-
-//    typename CoeffField<VectorN<scalar, Type::coeffLength> >::linearTypeField& d
-//        = dgm.diag().asLinear();
+    scalar eta = 1.0;
 
     typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ds
         = dgm.diag().asSquare();
@@ -262,20 +252,10 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
 
         forAll (coeffs, modI)
         {
-//            forAll (coeffs, modJ)
-//            {
-//                label coeff = modI*coeffs.size() + modJ;
-                label coeff = modI*coeffs.size() + modI;
-//                gradCoeffs[coeff] += unwPolyEval[ptI][modJ]*polyEval[ptI][modI];
-                gradCoeffs[coeff] += unwPolyEval[ptI][modI]*polyEval[ptI][modI];
-
-//            Info << "modI: " << modI << ", modJ: " << modJ << ", gradCoeff:"
-//                 << gradCoeffs[coeff] << endl;
-//            }
+            label coeff = modI*coeffs.size() + modI;
+            gradCoeffs[coeff] += unwPolyEval[ptI][modI]*polyEval[ptI][modI];
         }
     }
-
-//Info << "GRAD COEFFS: " << gradCoeffs << endl;
 
     const scalarField& scaleCells = mesh.cellScaleCoeffs();
 
@@ -288,7 +268,7 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
                 label coeff = modI*coeffs.size() + modJ;
 
                 ds[cellI](modI, modJ) =
-                    gradCoeffs[coeff]*scaleCells[cellI];// + SMALL;
+                    gradCoeffs[coeff]*scaleCells[cellI];
             }
         }
     }
@@ -300,16 +280,7 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
 
     typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& us
         = dgm.upper().asSquare();
-//
-//
-//    typename CoeffField<VectorN<scalar, Type::coeffLength> >::linearTypeField& u
-//        = dgm.upper().asLinear();
-//
-//    typename CoeffField<VectorN<scalar, Type::coeffLength> >::linearTypeField& l
-//        = dgm.lower().asLinear();
 
-
-//    Info << "VOLUME TERM OUT " << endl;
 // CONSISTENCY TERM
 {
     // Go over all faces, if nei exists it is an internal face - do:
@@ -325,9 +296,8 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
     // I evaluate polyEval in gauss points and (-1) and (1) so that Ptr
     // size is length+2
 
-    const vectorField& faceSf = mesh().faceAreas();//Centres();
+    const vectorField& faceSf = mesh().faceAreas();
 
-//    const labelList& ownList = mesh().faceOwner();
     const labelList& neiList = mesh().faceNeighbour();
 
     // Go over all internal faces (only those that have nei)
@@ -338,278 +308,108 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
         const label& own = mesh().faceOwner()[faceI];
         const label& nei = mesh().faceNeighbour()[faceI];
 
-        // If neighbour exists it is internal face
-//        {
-            // If own(C().x()) < nei(C().x()), face coord=1, otherwise -1
+        // Matrix size
+        scalar mtxSize = Type::coeffLength;
+        mtxSize *= mtxSize;
 
-            // Matrix size
-            scalar mtxSize = Type::coeffLength;
-            mtxSize *= mtxSize;
+        scalarField diagCoeffOwn(mtxSize, 0.0);
+        scalarField offCoeffOwn(mtxSize, 0.0);
 
-            scalarField diagCoeffOwn(mtxSize, 0.0);
-            scalarField offCoeffOwn(mtxSize, 0.0);
+        scalarField diagCoeffNei(mtxSize, 0.0);
+        scalarField offCoeffNei(mtxSize, 0.0);
 
-            scalarField diagCoeffNei(mtxSize, 0.0);
-            scalarField offCoeffNei(mtxSize, 0.0);
+        scalar Sf = mag(faceSf[faceI]);
 
-            scalar Sf = mag(faceSf[faceI]);
+        label gaussPt = 0;
+        label  gaussPtNei = gaussEdgeEval.size() - 1;
+        scalar norm = -1;
 
-            label gaussPt = 0;
-            label  gaussPtNei = gaussEdgeEval.size() - 1;
-            scalar norm = -1;
+        // Owner local coord = 1 on face
+        if
+        (
+            mesh().cellCentres()[own].component(vector::X)
+          < mesh().cellCentres()[nei].component(vector::X)
+        )
+        {
+            gaussPt = gaussEdgeEval.size() - 1;
+            gaussPtNei = 0;
+        }
+        // Owner local coord = -1 on face
+        else
+        {
+            gaussPt = 0;
+            gaussPtNei = gaussEdgeEval.size() - 1;
+            norm = -1;
+        }
 
-            // Owner local coord = 1 on face
-            if
-            (
-                mesh().cellCentres()[own].component(vector::X)
-              < mesh().cellCentres()[nei].component(vector::X)
-            )
+        // This should be outside of loops
+        const scalarField& polyEval = gaussEdgeEval[gaussPt];
+        const scalarField& polyEvalNei = gaussEdgeEval[gaussPtNei];
+        const scalarField& polyGEval = gaussGradEdgeEval[gaussPt];
+        const scalarField& polyGEvalNei = gaussGradEdgeEval[gaussPtNei];
+
+        // For owner, calculate diag and off-diag contrib
+        forAll (polyEval, coeffJ)
+        {
+            forAll (polyEval, coeffI)
             {
-                gaussPt = gaussEdgeEval.size() - 1;
-                gaussPtNei = 0;
-            }
-            // Owner local coord = -1 on face
-            else
-            {
-                gaussPt = 0;
-                gaussPtNei = gaussEdgeEval.size() - 1;
-                norm = -1;
-            }
+
+                label mtxCoeff = coeffJ*polyEval.size() + coeffI;
+
+                // Consistency term - diag and offdiag contrib
+                diagCoeffOwn[mtxCoeff] = -
+                    polyGEval[coeffI]*polyEval[coeffJ]*Sf/2.0;
+
+                offCoeffOwn[mtxCoeff] = -(
+                  - polyGEval[coeffI]*polyEvalNei[coeffJ]*Sf/2.0);
+
+                offCoeffNei[mtxCoeff] = -(
+                    polyGEvalNei[coeffI]*polyEval[coeffJ]*Sf/2.0);
+
+                diagCoeffNei[mtxCoeff] = -(
+                  - polyGEvalNei[coeffI]*polyEvalNei[coeffJ]*Sf/2.0);
+
+                // Symmetry term - diag and offdiag contrib
+                diagCoeffOwn[mtxCoeff] += -(
+                    polyEval[coeffI]*polyGEval[coeffJ]*Sf/2.0);
+
+                offCoeffOwn[mtxCoeff] += -(
+                    polyEval[coeffI]*polyGEvalNei[coeffJ]*Sf/2.0);
+
+                offCoeffNei[mtxCoeff] += -(
+                    - polyEvalNei[coeffI]*polyGEval[coeffJ]*Sf/2.0);
+
+                diagCoeffNei[mtxCoeff] += -(
+                    - polyEvalNei[coeffI]*polyGEvalNei[coeffJ]*Sf/2.0);
 
 
-            // Set the scope - calculate owner cell first
-            {
-                // This should be outside of loops
-                const scalarField& polyEval = gaussEdgeEval[gaussPt];
-                const scalarField& polyEvalNei = gaussEdgeEval[gaussPtNei];
-                const scalarField& polyGEval = gaussGradEdgeEval[gaussPt];
-                const scalarField& polyGEvalNei = gaussGradEdgeEval[gaussPtNei];
+                // Penalty term T1
+                diagCoeffOwn[mtxCoeff] +=
+                    polyEval[coeffI]*polyEval[coeffJ]*Sf*eta;
 
-                // For owner, calculate diag and off-diag contrib
-                forAll (polyEval, coeffJ)
-                {
-                    forAll (polyEval, coeffI)
-                    {
+                // Penalty term T3
+                offCoeffOwn[mtxCoeff] +=
+                  - polyEval[coeffI]*polyEvalNei[coeffJ]*Sf*eta;
 
-                    label mtxCoeff = coeffJ*polyEval.size() + coeffI;
+                // Penalty term T2
+                offCoeffNei[mtxCoeff] +=
+                  - polyEvalNei[coeffI]*polyEval[coeffJ]*Sf*eta;
 
-                    // Consistency term - diag and offdiag contrib
-                    diagCoeffOwn[mtxCoeff] = -
-                        polyGEval[coeffI]*polyEval[coeffJ]*Sf/2.0;//*norm;
-
-                    offCoeffOwn[mtxCoeff] = -(
-                      - polyGEval[coeffI]*polyEvalNei[coeffJ]*Sf/2.0);//*norm;
-
-                    offCoeffNei[mtxCoeff] = -(
-                        polyGEvalNei[coeffI]*polyEval[coeffJ]*Sf/2.0);
-
-                    diagCoeffNei[mtxCoeff] = -(
-                      - polyGEvalNei[coeffI]*polyEvalNei[coeffJ]*Sf/2.0);
-
-                    // Symmetry term - diag and offdiag contrib
-                    diagCoeffOwn[mtxCoeff] += -(
-                        polyEval[coeffI]*polyGEval[coeffJ]*Sf/2.0);//*norm;
-
-                    offCoeffOwn[mtxCoeff] += -(
-                        polyEval[coeffI]*polyGEvalNei[coeffJ]*Sf/2.0);//*norm;
-
-                    offCoeffNei[mtxCoeff] += -(
-                        - polyEvalNei[coeffI]*polyGEval[coeffJ]*Sf/2.0);
-
-                    diagCoeffNei[mtxCoeff] += -(
-                        - polyEvalNei[coeffI]*polyGEvalNei[coeffJ]*Sf/2.0);
+                // Penalty term T4
+                diagCoeffNei[mtxCoeff] +=
+                    polyEvalNei[coeffI]*polyEvalNei[coeffJ]*Sf*eta;
 
 
-                    // Penalty term T1
-                    diagCoeffOwn[mtxCoeff] +=
-                        polyEval[coeffI]*polyEval[coeffJ]*Sf*eta;
+                // For cell owner
+                ds[own](coeffJ, coeffI) += diagCoeffOwn[mtxCoeff];
+                us[faceI](coeffJ, coeffI) += offCoeffNei[mtxCoeff];
 
-                    // Penalty term T3
-                    offCoeffOwn[mtxCoeff] +=
-                      - polyEval[coeffI]*polyEvalNei[coeffJ]*Sf*eta;
-
-                    // Penalty term T2
-                    offCoeffNei[mtxCoeff] +=
-                      - polyEvalNei[coeffI]*polyEval[coeffJ]*Sf*eta;
-
-                    // Penalty term T4
-                    diagCoeffNei[mtxCoeff] +=
-                        polyEvalNei[coeffI]*polyEvalNei[coeffJ]*Sf*eta;
-
-
-                    // For cell owner
-                    ds[own](coeffJ, coeffI) += diagCoeffOwn[mtxCoeff];
-                    us[faceI](coeffJ, coeffI) += offCoeffNei[mtxCoeff];
-//
-                    ds[nei](coeffJ, coeffI) += diagCoeffNei[mtxCoeff];
-                    ls[faceI](coeffJ, coeffI) += offCoeffOwn[mtxCoeff];
-//                    ds[own](0, 0) = 4;
-//                    ds[own](0, 2) = -4;
-//                    ds[own](2, 0) = -4;
-//                    ds[own](1, 1) = 4.7;
-//                    ds[own](2, 2) = 6.4;
-
-//                    us[faceI](0, 0) = -2;
-//                    ls[faceI](0, 0) = -2;
-
-//                    ds[nei](0, 0) = 4;
-//                    ds[nei](2, 0) = -4;
-//                    ds[nei](0, 2) = -4;
-//                    ds[nei](1, 1) = 4.7;
-//                    ds[nei](2, 2) = 6.4;
-
-//                    us[faceI](coeffJ, coeffI) += offCoeffNei[mtxCoeff];
-//                    ls[faceI](coeffJ, coeffI) += offCoeffOwn[mtxCoeff];
-
-
-//                Info << "DIAGONAL OWN: " << d[own](coeffI) << ", coeff: "
-//                     << coeffI << ", cell: " << own << endl;
-                    }
-//                }
-            }
-//Info << "GGGG OUT" << endl;
-//
-//    Info << "SIP OUT diag " << ds << nl << endl;
-            // Switch local coords for nei cell
-            label saveLabel = gaussPt;
-            gaussPt = gaussPtNei;
-            gaussPtNei = saveLabel;
-//            norm = - sign(norm) * 1;
-
-
-            // Set the scope - calculate neighbour cell
-            {
-                // This should be outside of loops
-                const scalarField& polyEval = gaussEdgeEval[gaussPt];
-                const scalarField& polyEvalNei = gaussEdgeEval[gaussPtNei];
-                const scalarField& polyGEval = gaussGradEdgeEval[gaussPt];
-                const scalarField& polyGEvalNei = gaussGradEdgeEval[gaussPtNei];
-
-                // For neighbour, calculate diag and off-diag contrib
-                forAll (polyEval, coeffJ)
-                {
-                    forAll (polyEval, coeffI)
-                    {
-
-                    label mtxCoeff = coeffJ*polyEval.size() + coeffI;
-
-                    // Consistency term - diag and offdiag contrib
-                    diagCoeffOwn[mtxCoeff] = -
-                        polyGEval[coeffI]*polyEval[coeffJ]*Sf/2.0*norm;
-
-                    offCoeffOwn[mtxCoeff] = -(
-                      - polyGEval[coeffI]*polyEvalNei[coeffJ]*Sf/2.0)*norm;
-
-                    offCoeffNei[mtxCoeff] = -(
-                        polyGEvalNei[coeffI]*polyEval[coeffJ]*Sf/2.0)*norm;
-
-                    diagCoeffNei[mtxCoeff] = -(
-                      - polyGEvalNei[coeffI]*polyEvalNei[coeffJ]*Sf/2.0)*norm;
-
-                    // Symmetry term - diag and offdiag contrib
-                    diagCoeffOwn[mtxCoeff] += -(
-                        polyEval[coeffI]*polyGEval[coeffJ]*Sf/2.0)*norm;
-
-                    offCoeffOwn[mtxCoeff] += -(
-                        polyEval[coeffI]*polyGEvalNei[coeffJ]*Sf/2.0)*norm;
-
-                    offCoeffNei[mtxCoeff] += -(
-                        - polyEvalNei[coeffI]*polyGEval[coeffJ]*Sf/2.0)*norm;
-
-                    diagCoeffNei[mtxCoeff] += -(
-                        - polyEvalNei[coeffI]*polyGEvalNei[coeffJ]*Sf/2.0)*norm;
-
-
-                    // Penalty term T1
-                    diagCoeffOwn[mtxCoeff] +=
-                        polyEval[coeffI]*polyEval[coeffJ]*Sf*eta;
-
-                    // Penalty term T3
-                    offCoeffOwn[mtxCoeff] +=
-                      - polyEval[coeffI]*polyEvalNei[coeffJ]*Sf*eta;
-
-                    // Penalty term T2
-                    offCoeffNei[mtxCoeff] +=
-                      - polyEvalNei[coeffI]*polyEval[coeffJ]*Sf*eta;
-
-                    // Penalty term T4
-                    diagCoeffNei[mtxCoeff] +=
-                        polyEvalNei[coeffI]*polyEvalNei[coeffJ]*Sf*eta;
-
-
-                    // For cell owner
-
-                    ds[nei](coeffJ, coeffI) += diagCoeffOwn[mtxCoeff];
-                    us[faceI](coeffJ, coeffI) += offCoeffNei[mtxCoeff];
-//
-                    ds[own](coeffJ, coeffI) += diagCoeffNei[mtxCoeff];
-                    ls[faceI](coeffJ, coeffI) += offCoeffOwn[mtxCoeff];
-
-
-
-
-
-
-//                    ds[own](0, 2) = -4;
-//                    ds[own](2, 0) = -4;
-//                    ds[nei](0, 2) = -4;
-//                    ds[nei](2, 0) = -4;
-//
-//
-//
-//
-//                    ds[0](0, 2) = -10;
-//                    ds[0](2, 0) = -10;
-
-
-
-
-//                    // Consistency term
-//                    diagCoeffNei[mtxCoeff] = -(
-//                        polyGEval[coeffI]*polyEval[coeffJ]*Sf/2.0
-//                      - polyGEval[coeffI]*polyEvalNei[coeffJ]*Sf/2.0);
-//
-//                    offCoeffNei[mtxCoeff] = -(
-//                        polyGEvalNei[coeffI]*polyEval[coeffJ]*Sf/2.0
-//                      - polyGEvalNei[coeffI]*polyEvalNei[coeffJ]*Sf/2.0);
-//
-//                    // Symmetry term - diag and offdiag contrib
-//                    diagCoeffNei[mtxCoeff] += -(
-//                        polyEval[coeffI]*polyGEval[coeffJ]*Sf/2.0
-//                      + polyEval[coeffI]*polyGEvalNei[coeffJ]*Sf/2.0);
-//
-//                    offCoeffNei[mtxCoeff] -= -(
-//                        polyEvalNei[coeffI]*polyGEval[coeffJ]*Sf/2.0
-//                      + polyEvalNei[coeffI]*polyGEvalNei[coeffJ]*Sf/2.0);
-//
-//
-//                    // Penalty term - diag and offdiag contrib
-//                    diagCoeffNei[mtxCoeff] +=
-//                        polyEval[coeffI]*polyEval[coeffJ]*Sf*eta;
-////                      - polyEval[coeffI]*polyEvalNei[coeffJ]*Sf*eta;
-
-//                    offCoeffNei[mtxCoeff] +=
-//                        - polyEvalNei[coeffI]*polyEvalNei[coeffJ]*Sf*eta;
-//                      - polyEvalNei[coeffI]*polyEval[coeffJ]*Sf*eta;
-
-                    // For cell nei
-//                    ds[nei](coeffJ, coeffI) += diagCoeffNei[mtxCoeff];
-//                    ls[faceI](coeffJ, coeffI) += offCoeffNei[mtxCoeff];
-
-//                Info << "DIAGONAL NEI: " << d[nei](coeffI) << ", coeff: "
-//                     << coeffI << ", cell: " << own << endl;
-                    }
-                }
+                ds[nei](coeffJ, coeffI) += diagCoeffNei[mtxCoeff];
+                ls[faceI](coeffJ, coeffI) += offCoeffOwn[mtxCoeff];
             }
         }
     }
 }
-
-//    Info << "SIP OUT diag " << ds << nl << endl;
-//    Info << "VALUEAING BOUDNARYI FIELDS" << endl;
-
-//    dgm.source()[0] = dgScalar(1.538);
-//    dgm.source()[4] = dgScalar(1.538);
 
     forAll(mesh.mesh().boundaryMesh(), patchI)
     {
@@ -636,23 +436,7 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
     }
 
 
-    dgm.source()[0][0] = 0;
-//    dgm.source()[0][1] = 0;
-    dgm.source()[0][2] = 0;
-    dgm.source()[4][0] = 0;
-//    dgm.source()[4][1] = 0;
-    dgm.source()[4][2] = 0;
-
-//    Info << "And 1" << endl;
-//        const dgPatchField<Type>& pf = vf.boundaryField()[patchI];
-//
-//    Info << "And 2" << endl;
-////        Info << pf.valueBoundaryCoeffs() << endl;
-//
-//    }
-//
     Info << "SIP OUT diag " << ds << nl << endl;
-//    Info << "SIP OUT diag " << d << endl;
     Info << "SIP OUT upper " << us << nl << endl;
     Info << "SIP OUT lower " << ls << nl << endl;
     Info << "SIP OUT source " << dgm.source() << endl;

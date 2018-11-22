@@ -537,7 +537,6 @@ discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.d
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor3.H
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/sphericalTensor3.H
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/diagTensor3.H
-discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor3I.H
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor4.H
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/sphericalTensor4.H
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/diagTensor4.H

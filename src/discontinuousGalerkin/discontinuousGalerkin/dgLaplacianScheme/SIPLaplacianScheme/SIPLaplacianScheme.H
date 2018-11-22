@@ -58,17 +58,6 @@ class SIPLaplacianScheme
 {
     // Private Member Functions
 
-//        tmp<dgMatrix<Type> > dgmLaplacianUncorrected
-//        (
-//            const surfaceScalarField& gammaMagSf,
-//            const GeometricField<Type, dgPatchField, cellMesh>&
-//        );
-//
-//        tmp<GeometricField<Type, dgsPatchField, surfaceMesh> > gammaSnGradCorr
-//        (
-//            const surfaceVectorField& SfGammaCorr,
-//            const GeometricField<Type, dgPatchField, cellMesh>&
-//        );
 
         //- Disallow default bitwise copy construct
         SIPLaplacianScheme(const SIPLaplacianScheme&);

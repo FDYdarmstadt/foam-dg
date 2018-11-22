@@ -343,12 +343,14 @@ dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/cellZoneMeshFwd.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduMesh.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduAddressing.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduSchedule.H
-dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfacePtrsList.H
+dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceFieldPtrsList.H
+dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterface.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrList.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrListI.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrList.C
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/UPtrListIO.C
+dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfacePtrsList.H
 dgLaplacianFoam.dep: ../discontinuousGalerkin/lnInclude/dgBoundaryMesh.H
 dgLaplacianFoam.dep: ../discontinuousGalerkin/lnInclude/dgPatchList.H
 dgLaplacianFoam.dep: ../discontinuousGalerkin/lnInclude/dgPatch.H
@@ -407,7 +409,6 @@ dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldField.C
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/FieldFieldFunctions.C
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceFieldPtrsList.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduInterfaceField.H
-dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceField.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrix.C
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixOperations.C
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/BlockLduMatrixUpdateInterfaces.C
@@ -438,7 +439,6 @@ dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedDiagTensor.
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedTensor.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedSymmTensor.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/dimensionedSymmTensor4thOrder.H
-dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/lduInterfaceFieldPtrsList.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/GeometricFieldI.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/GeometricField.C
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/GeometricBoundaryField.C
@@ -544,7 +544,6 @@ dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor2I.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor3.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/sphericalTensor3.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/diagTensor3.H
-dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor3I.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/tensor4.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/sphericalTensor4.H
 dgLaplacianFoam.dep: $(WM_PROJECT_DIR)/src/foam/lnInclude/diagTensor4.H

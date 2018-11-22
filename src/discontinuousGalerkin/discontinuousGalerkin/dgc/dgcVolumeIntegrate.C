@@ -80,9 +80,6 @@ volumeIntegrate
         // Determine min,max for each cell
         forAll (cellPts, ptI)
         {
-//            Info << "PRE, cell: " << cellI  << nl << ", Cur point coordinate min: " << cellMin[cellI]
-//                 << ", cellMax: " << cellMax[cellI] << endl;
-
             if
             (
                 points[cellPts[ptI]] < cellMin[cellI]
@@ -95,9 +92,6 @@ volumeIntegrate
             {
                 cellMax[cellI] = points[cellPts[ptI]];
             }
-
-//            Info << "AFT Cur point coordinate min: " << cellMin[cellI]
-//                 << ", cellMax: " << cellMax[cellI] << endl;
         }
     }
 
@@ -204,9 +198,6 @@ volumeIntegrateGrad
         // Determine min,max for each cell
         forAll (cellPts, ptI)
         {
-//            Info << "PRE, cell: " << cellI  << nl << ", Cur point coordinate min: " << cellMin[cellI]
-//                 << ", cellMax: " << cellMax[cellI] << endl;
-
             if
             (
                 points[cellPts[ptI]] < cellMin[cellI]
@@ -219,9 +210,6 @@ volumeIntegrateGrad
             {
                 cellMax[cellI] = points[cellPts[ptI]];
             }
-
-//            Info << "AFT Cur point coordinate min: " << cellMin[cellI]
-//                 << ", cellMax: " << cellMax[cellI] << endl;
         }
     }
 
@@ -243,7 +231,7 @@ volumeIntegrateGrad
     const Field<Type>& vf
 )
 {
-    // Random constructor - should be considered!
+    // Constructor - should be considered!
     dgPolynomials polynomials;
 
     // Local coordinates (reference element)
