@@ -9,6 +9,7 @@
 *.orig
 *.orig[0-9][0-9]
 \#*\#
+*.swp
 
 # file-browser settings - anywhere
 .directory
@@ -38,7 +39,6 @@ lnInclude
 linux*Gcc*/
 linux*Icc*/
 linuxming*/
-MINGW32*gcc*/
 darwin*/
 SiCortex*Gcc*/
 solaris*Gcc*/
@@ -74,4 +74,6 @@ doc/[Dd]oxygen/man
 # ignore Apple Mac specific stuff
 .DS_Store
 
+
+.gitignore
 # end-of-file
