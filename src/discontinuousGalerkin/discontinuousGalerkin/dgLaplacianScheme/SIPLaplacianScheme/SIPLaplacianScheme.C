@@ -348,6 +348,7 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
         const scalarField& polyGEval = gaussGradEdgeEval[gaussPt];
         const scalarField& polyGEvalNei = gaussGradEdgeEval[gaussPtNei];
 
+
         // For owner, calculate diag and off-diag contrib
         forAll (polyEval, coeffJ)
         {

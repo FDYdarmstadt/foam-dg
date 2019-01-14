@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
     dgScalar c = 3*a;
 
-    Info<< "c = 3*a : " << c << endl;
+    Info<< "c = 3*a : " << c*a << endl;
 
     dgScalar d = c;
     d[1] = 1;
@@ -79,6 +79,7 @@ int main(int argc, char *argv[])
     dgVector vec(a, a, a);
 
     Info<< "vec: " << vec << endl;
+    Info<< "vec2: " << vec + vec + vec << endl;
 
     Info<< "End\n" << endl;
 
