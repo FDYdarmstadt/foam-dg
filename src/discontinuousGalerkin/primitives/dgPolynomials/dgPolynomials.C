@@ -170,9 +170,11 @@ const scalarField dgPolynomials::evaluate
     scalarField value(length_, 0.0);
 
     // First two are simple and base for the loop
-//    value[0] = pTraits<Type>::one;
     value[0] = 1;
     value[1] = lc;
+
+//    value[0] = 1/2;
+//    value[1] = lc*Foam::sqrt(3.0)/2;
 
     // this should not overwrite 0 and 1
     forAll(value, vI)
@@ -188,9 +190,7 @@ const scalarField dgPolynomials::evaluate
 
             value[i] =
                 1.0/(i)*((2*i-1)*lc*value[i-1] - (i-1)*value[i-2]);
-
-//            Info << "NODE " << vI << ": " << value[vI]
-//                 << " for lc: " << lc << endl;
+//                Foam::sqrt(5.0)/4*(3.0*sqr(lc) - 1.0);
         }
         else
         {
@@ -221,6 +221,7 @@ const scalarField dgPolynomials::gradEvaluate
 
     grad[0] = 0.0;
     grad[1] = 1.0;
+//    grad[1] = Foam::sqrt(3.0)/2;
 
     // this should not overwrite 0 and 1
     forAll(value, vI)
@@ -238,6 +239,7 @@ const scalarField dgPolynomials::gradEvaluate
             // Gradient of modes
             grad[i] =
                 1.0/(i)*((2.0*i-1)*(lc*grad[i-1] + value[i-1]) - (i-1)*grad[i-2]);
+//                3.0*Foam::sqrt(5.0)/2.0*lc;
         }
         else
         {
@@ -266,11 +268,15 @@ PtrList<scalarField> dgPolynomials::wtdGaussEval()
     // Go over all Gauss points for the whole mesh and add value*weight
     forAll(gaussPts, ptI)
     {
-        scalarField& wtdGPI = wtdGaussPts[ptI];
-
-        forAll (wtdGPI, modI)
+        if (ptI < gaussPts.size() - 2)
         {
-            wtdGPI[modI] *= gaussWeights[ptI];
+            // Zeroth entry is for coordinate -1
+            scalarField& wtdGPI = wtdGaussPts[ptI + 1];
+
+            forAll (wtdGPI, modI)
+            {
+                wtdGPI[modI] *= gaussWeights[ptI];
+            }
         }
     }
 
@@ -292,11 +298,15 @@ PtrList<scalarField> dgPolynomials::wtdGaussGradEval()
     // Go over all Gauss points for the whole mesh and add value*weight
     forAll(gaussPts, ptI)
     {
-        scalarField& wtdGPI = wtdGaussPts[ptI];
-
-        forAll (wtdGPI, modI)
+        if (ptI < gaussPts.size() - 2)
         {
-            wtdGPI[modI] *= gaussWeights[ptI];
+            scalarField& wtdGPI = wtdGaussPts[ptI + 1];
+
+            forAll (wtdGPI, modI)
+            {
+                // Zeroth entry is for coordinate -1
+                wtdGPI[modI] *= gaussWeights[ptI];
+            }
         }
     }
 

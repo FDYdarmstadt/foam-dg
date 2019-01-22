@@ -156,7 +156,6 @@ Foam::scalarList Foam::dgMesh::gaussWeights()
 //    dgPolynomials polynomials();
 
 //    return polynomials.gaussWeights();
-Info<< "dgMesh::gaussPoints NOT IMPLEMENTED." << endl;
 
     scalarList left(1,1.0);
     return left;
@@ -166,8 +165,6 @@ Info<< "dgMesh::gaussPoints NOT IMPLEMENTED." << endl;
 Foam::scalarList Foam::dgMesh::gaussPoints()
 {
 //    dgPolynomials polynomials();
-
-Info<< "dgMesh::gaussPoints NOT IMPLEMENTED." << endl;
 
     scalarList one(2,2.0);
     return one;

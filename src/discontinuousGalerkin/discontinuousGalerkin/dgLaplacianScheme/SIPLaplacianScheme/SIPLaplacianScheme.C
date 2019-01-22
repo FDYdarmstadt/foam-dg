@@ -274,6 +274,8 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
     }
 }
 
+Info << "DIAGONAL: " << ds[0] << endl;
+
 
     typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ls
         = dgm.lower().asSquare();
