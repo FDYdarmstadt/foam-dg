@@ -54,6 +54,14 @@ class dirichletDgPatchField
 :
     public dgPatchField<Type>
 {
+    // Private data
+
+        //- Penalty factor Eta pointer
+        mutable scalarField* etaPtr_;
+
+        //- Calculate penalty factor
+        void calcEta();
+
 
 public:
 

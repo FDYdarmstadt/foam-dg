@@ -33,6 +33,7 @@ Author
 \*---------------------------------------------------------------------------*/
 
 #include "dgCFD.H"
+#include "fvCFD.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -99,7 +100,11 @@ int main(int argc, char *argv[])
 //    Info << T << endl;
 //
 //    Info<< "End\n" << endl;
-}
+
+#       include "infoOut.H"
+
+    }
+
     return 0;
 }
 

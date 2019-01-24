@@ -17,7 +17,7 @@ FoamFile
 
 dimensions      [0 0 0 0 1 0 0];
 
-internalField  // uniform (2 0 0);
+internalField  //uniform (2 0 0);
 nonuniform
 5
 (
@@ -26,7 +26,7 @@ nonuniform
 (0 0 2)
 (0 0 0)
 (1 1 1)
-);// 0 0 0 0 0 0 0);
+);
 
 boundaryField
 {
@@ -34,7 +34,7 @@ boundaryField
     {
 //        type            homogenous;
         type            dirichlet;
-        value           uniform (5 0 0);
+        value           uniform (5.5 0 0);
     }
     right
     {

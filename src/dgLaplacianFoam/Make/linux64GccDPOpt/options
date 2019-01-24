@@ -53,7 +53,8 @@
 
 # 4 "<command-line>" 2
 # 1 "options"
-EXE_INC = -DFULLDEBUG -g -O0    -I../discontinuousGalerkin/lnInclude
+EXE_INC = -DFULLDEBUG -g -O0    -I../discontinuousGalerkin/lnInclude     -I$(LIB_SRC)/finiteVolume/lnInclude
 
 
-EXE_LIBS =     -L$(FOAM_USER_LIBBIN) -ldiscontinuousGalerkin
+
+EXE_LIBS =     -L$(FOAM_USER_LIBBIN) -ldiscontinuousGalerkin     -lfiniteVolume

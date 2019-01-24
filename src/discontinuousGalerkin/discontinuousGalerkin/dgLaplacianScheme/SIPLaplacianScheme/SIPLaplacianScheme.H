@@ -56,14 +56,21 @@ class SIPLaplacianScheme
 :
     public dg::dgLaplacianScheme<Type, GType>
 {
-    // Private Member Functions
+    // Private data
 
+        //- Penalty factor Eta pointer
+        mutable scalarField* etaPtr_;
+
+    // Private Member Functions
 
         //- Disallow default bitwise copy construct
         SIPLaplacianScheme(const SIPLaplacianScheme&);
 
         //- Disallow default bitwise assignment
         void operator=(const SIPLaplacianScheme&);
+
+        //- Update Eta
+        void calcEta();
 
 
 public:
@@ -77,13 +84,15 @@ public:
         //- Construct null
         SIPLaplacianScheme(const dgMesh& mesh)
         :
-            dgLaplacianScheme<Type, GType>(mesh)
+            dgLaplacianScheme<Type, GType>(mesh),
+            etaPtr_(NULL)
         {}
 
         //- Construct from Istream
         SIPLaplacianScheme(const dgMesh& mesh, Istream& is)
         :
-            dgLaplacianScheme<Type, GType>(mesh, is)
+            dgLaplacianScheme<Type, GType>(mesh, is),
+            etaPtr_(NULL)
         {}
 
         //- Construct from mesh, interpolation and snGradScheme schemes

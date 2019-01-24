@@ -1,5 +1,7 @@
 EXE_INC = -DFULLDEBUG -g -O0\
-    -I../discontinuousGalerkin/lnInclude
+    -I../discontinuousGalerkin/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude
 
 EXE_LIBS = \
-    -L$(FOAM_USER_LIBBIN) -ldiscontinuousGalerkin
+    -L$(FOAM_USER_LIBBIN) -ldiscontinuousGalerkin \
+    -lfiniteVolume

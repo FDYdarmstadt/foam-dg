@@ -31,7 +31,54 @@ License
 namespace Foam
 {
 
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
+
+template<class Type>
+void dirichletDgPatchField<Type>::calcEta()
+{
+    if (!etaPtr_)
+    {
+        const polyMesh& mesh = this->patch().boundaryMesh().mesh().mesh();
+        dgPolynomials polynomials;
+
+        scalar sqrP = sqr(scalar(polynomials.order()));
+
+        const pointField& points = mesh.points();
+        const labelList& faceCells = this->patch().faceCells();
+
+        // Eta should be determined based on min or max cell dimension
+        scalarField cellSize(faceCells.size(), 0);
+
+        // Cell size is determined by creating per-cell bounding box and taking
+        // the maximum dimension (span) of the bounding box
+        forAll (cellSize, cellI)
+        {
+            labelList pointLabels = mesh.cellPoints(faceCells[cellI]);
+            pointField cellPts(pointLabels.size());
+
+            forAll (pointLabels, ptI)
+            {
+                cellPts[ptI] = points[pointLabels[ptI]];
+            }
+
+            // Create cell bounding box
+            boundBox cellPtBB(cellPts);
+
+            // Determine cellSize based on max span of the cell bounding box
+            cellSize[cellI] = cellPtBB.minDim();
+        }
+
+        Info<< "Cell sizes: " << cellSize << endl;
+        Info<< "P: " << sqrP << endl;
+        Info<< "eta: " << sqrP/cellSize << endl;
+
+        etaPtr_ = new scalarField(sqrP/cellSize);
+//        etaPtr_ = new scalarField(cellSize);
+    }
+}
+
+
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 template<class Type>
 dirichletDgPatchField<Type>::dirichletDgPatchField
@@ -40,8 +87,10 @@ dirichletDgPatchField<Type>::dirichletDgPatchField
     const DimensionedField<Type, cellMesh>& iF
 )
 :
-    dgPatchField<Type>(p, iF)
+    dgPatchField<Type>(p, iF),
+    etaPtr_(NULL)
 {
+    calcEta();
 }
 
 
@@ -53,7 +102,9 @@ dirichletDgPatchField<Type>::dirichletDgPatchField
     const dictionary& dict
 )
 :
-    dgPatchField<Type>(p, iF)
+    dgPatchField<Type>(p, iF),
+    etaPtr_(NULL)
+
 {
     if (dict.found("value"))
     {
@@ -77,6 +128,7 @@ dirichletDgPatchField<Type>::dirichletDgPatchField
           << exit(FatalIOError);
     }
 
+    calcEta();
 }
 
 
@@ -86,8 +138,11 @@ dirichletDgPatchField<Type>::dirichletDgPatchField
     const dirichletDgPatchField& zgpf
 )
 :
-    dgPatchField<Type>(zgpf)
+    dgPatchField<Type>(zgpf),
+    etaPtr_(NULL)
+
 {
+    calcEta();
 }
 
 
@@ -98,8 +153,11 @@ dirichletDgPatchField<Type>::dirichletDgPatchField
     const DimensionedField<Type, cellMesh>& iF
 )
 :
-    dgPatchField<Type>(zgpf, iF)
+    dgPatchField<Type>(zgpf, iF),
+    etaPtr_(NULL)
+
 {
+    calcEta();
 }
 
 
@@ -126,7 +184,7 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valueInternalCoeffs
         diag.set(cellI, new scalarField(sqr(scalar(polynomials.size())), 0.0));
     }
 
-    scalar eta = 1.0;
+    scalarField& etaCells = *etaPtr_;
 
     const PtrList<scalarField>& gaussEdgeEval = polynomials.gaussPtsEval();
     const PtrList<scalarField>& gaussGradEdgeEval =
@@ -146,13 +204,14 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valueInternalCoeffs
     forAll(faceCells, faceI)
     {
         const label& faceCell = faceCells[faceI];
-    label globalFace = this->patch().patch().start() + faceI;
+        label globalFace = this->patch().patch().start() + faceI;
 
+
+        scalar eta = etaCells[faceI];
         scalar Sf = mag(faceSf[globalFace]);
 
         // Better name here would be edgePt
         label gaussPt = 0;
-        scalar norm = 1;
 
         // Owner local coord = 1 on face
         if
@@ -162,7 +221,6 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valueInternalCoeffs
         )
         {
             gaussPt = gaussEdgeEval.size() - 1;
-            norm = -1;
         }
 
         // This should be outside of loops
@@ -217,18 +275,21 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valueBoundaryCoeffs
         );
     dgScalarField& sourceCoeffs = tsourceCoeffs();
 
-    scalar eta = 1.0;
+    scalarField& etaCells = *etaPtr_;
+
+Info<< nl << "ETA CELLS: " << etaCells << nl << endl;
 
     forAll(faceCells, faceI)
     {
         const label& faceCell = faceCells[faceI];
-    label globalFace = this->patch().patch().start() + faceI;
-
+        label globalFace = this->patch().patch().start() + faceI;
+Info << " FACE CELL INDEX : " << faceCell << endl;
+        scalar eta = etaCells[faceI];
+//        scalar eta = etaCells[faceCell];
         scalar Sf = mag(faceSf[globalFace]);
 
         // Better name here would be edgePt
         label gaussPt = 0;
-        scalar norm = -1;
 
         // Owner local coord = 1 on face
         if
@@ -238,7 +299,6 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valueBoundaryCoeffs
         )
         {
             gaussPt = gaussEdgeEval.size() - 1;
-            norm = -1;
         }
 
         // This should be outside of loops
@@ -246,6 +306,8 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valueBoundaryCoeffs
         const scalarField& polyGEval = gaussGradEdgeEval[gaussPt];
 
 
+        Info<< " EVALUATION cell: " << faceCell << ", eval: " << polyEval
+            << ", and grad eval: " << polyGEval << ", ETA: " << eta << endl;
 // Should be Type templated for vectors and other
 
         // Penalty term
@@ -256,7 +318,13 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valueBoundaryCoeffs
                 sourceCoeffs[faceCell][modJ] +=
                    eta*Sf*polyEval[modI]*polyEval[modJ]*mag(dsf[faceI][modI])
                  - Sf*polyEval[modI]*polyGEval[modJ]*mag(dsf[faceI][modI]);
+//                   eta*Sf*polyEval[modI]*polyEval[modJ]*mag(dsf[faceI][modI])
+//                 - Sf*polyEval[modI]*polyGEval[modJ]*mag(dsf[faceI][modI]);
+
+                Info<< "ENTERING MODS" << modI << ", " << modJ << endl;
             }
+        Info<< "SOURCE cell: " << faceCell << ", is: " <<
+        sourceCoeffs[faceCell][modJ] << endl;
         }
     }
 

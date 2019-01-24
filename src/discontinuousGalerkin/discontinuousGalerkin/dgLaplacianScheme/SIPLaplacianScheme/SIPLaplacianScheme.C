@@ -40,6 +40,54 @@ namespace Foam
 namespace dg
 {
 
+// * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
+
+template<class Type, class GType>
+void SIPLaplacianScheme<Type, GType>::calcEta()
+{
+    if (!etaPtr_)
+    {
+        const polyMesh& mesh = this->mesh().mesh();;
+        dgPolynomials polynomials;
+
+        scalar sqrP = sqr(scalar(polynomials.order()));
+
+        const pointField& points = mesh.points();
+
+        // Eta should be determined based on min or max cell dimension
+        scalarField cellSize(mesh.cellCentres().size(), 0);
+
+        // Cell size is determined by creating per-cell bounding box and taking
+        // the maximum dimension (span) of the bounding box
+        forAll (cellSize, cellI)
+        {
+            labelList pointLabels = mesh.cellPoints(cellI);
+            pointField cellPts(pointLabels.size());
+
+            forAll (pointLabels, ptI)
+            {
+                cellPts[ptI] = points[pointLabels[ptI]];
+            }
+
+//            pointField& cellPt = cellPoints(cellI);
+
+            // Create cell bounding box
+            boundBox cellPtBB(cellPts);
+
+            // Determine cellSize based on max span of the cell bounding box
+            cellSize[cellI] = cellPtBB.minDim();
+        }
+
+        Info<< "Cell sizes: " << cellSize << endl;
+        Info<< "P: " << sqrP << endl;
+        Info<< "eta: " << sqrP/cellSize << endl;
+
+        etaPtr_ = new scalarField(sqrP/cellSize);
+//        etaPtr_ = new scalarField(cellSize);
+    }
+}
+
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 //template<class Type, class GType>
@@ -232,7 +280,11 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
 
     dgPolynomials polynomials;
 
-    scalar eta = 1.0;
+    // Calculate penalty
+    calcEta();
+    scalarField& etaCells = *etaPtr_;
+
+//    scalar eta = 1.0;
 
     typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ds
         = dgm.diag().asSquare();
@@ -310,6 +362,17 @@ Info << "DIAGONAL: " << ds[0] << endl;
         const label& own = mesh().faceOwner()[faceI];
         const label& nei = mesh().faceNeighbour()[faceI];
 
+
+        scalar eta = etaCells[own];
+
+
+        // Greater eta is chosen between owner and neighbour
+        if (etaCells[own] < etaCells[nei])
+        {
+            eta = etaCells[nei];
+        }
+
+
         // Matrix size
         scalar mtxSize = Type::coeffLength;
         mtxSize *= mtxSize;
@@ -324,7 +387,6 @@ Info << "DIAGONAL: " << ds[0] << endl;
 
         label gaussPt = 0;
         label  gaussPtNei = gaussEdgeEval.size() - 1;
-        scalar norm = -1;
 
         // Owner local coord = 1 on face
         if
@@ -341,7 +403,6 @@ Info << "DIAGONAL: " << ds[0] << endl;
         {
             gaussPt = 0;
             gaussPtNei = gaussEdgeEval.size() - 1;
-            norm = -1;
         }
 
         // This should be outside of loops
@@ -424,7 +485,8 @@ Info << "DIAGONAL: " << ds[0] << endl;
 
         forAll(vbc(), cellI)
         {
-            dgm.source()[cellI] += vbc()[cellI];
+            dgm.source()[cellI] -= vbc()[cellI];
+//            dgm.source()[cellI] += vbc()[cellI];
 
             forAll (vbc()[cellI], addrI)
             {
@@ -432,7 +494,8 @@ Info << "DIAGONAL: " << ds[0] << endl;
                 {
                     label addr = addrI*vbc()[cellI].size() + addrJ;
 
-                    ds[cellI](addrI, addrJ) += vic[cellI][addr];
+//                    ds[cellI](addrI, addrJ) += vic[cellI][addr];
+                    ds[cellI](addrI, addrJ) -= vic[cellI][addr];
                 }
             }
         }

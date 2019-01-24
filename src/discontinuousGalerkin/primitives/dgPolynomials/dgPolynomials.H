@@ -154,6 +154,11 @@ public:
             return length_;
         }
 
+        label order() const
+        {
+            return dgOrder::order;
+        }
+
 };
 
 
