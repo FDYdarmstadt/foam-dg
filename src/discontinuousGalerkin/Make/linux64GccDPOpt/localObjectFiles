@@ -1,14 +1,15 @@
 LOCAL_OBJECTS = \
 dgScalar.o\
 dgVector.o\
-dgPolynomials.o\
+dgBase.o\
+quadratures.o\
+dgMesh.o\
+dgBoundaryMesh.o\
 dgPatch.o\
 newDgPatch.o\
 coupledDgPatch.o\
 emptyDgPatch.o\
 dgSchemes.o\
-dgBoundaryMesh.o\
-dgMesh.o\
 dgPatchFields.o\
 homogenousDgPatchFields.o\
 dirichletDgPatchFields.o\

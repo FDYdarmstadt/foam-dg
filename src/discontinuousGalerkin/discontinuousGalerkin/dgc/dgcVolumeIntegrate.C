@@ -26,7 +26,7 @@ License
 #include "dgcVolumeIntegrate.H"
 #include "dgMesh.H"
 #include "Field.H"
-#include "dgPolynomials.H"
+#include "dgBase.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -106,16 +106,17 @@ volumeIntegrate
 }
 
 
-
 template<class Type>
 tmp<scalarField>//Field<Type> >
 volumeIntegrate
 (
-    const Field<Type>& vf
+    const Field<Type>& vf,
+    const polyMesh& mesh
 )
 {
+//    const polyMesh& mesh = vf.mesh()();
     // Random constructor - should be considered!
-    dgPolynomials polynomials;
+    dgBase polynomials(mesh);
 
     // Local coordinates (reference element)
     scalarField gaussCoords = polynomials.gaussPoints();
@@ -144,6 +145,7 @@ volumeIntegrate
 
     return tCellIntegral;
 }
+
 
 template<class Type>
 tmp<Field<Type> >
@@ -175,7 +177,8 @@ volumeIntegrateGrad
 
     cellIntegralInt = dgScalar::zero;
 
-    scalarField cellIntInt = volumeIntegrateGrad(vf.internalField());
+    const polyMesh& mesh = vf.mesh()();
+    scalarField cellIntInt = volumeIntegrateGrad(vf.internalField(), mesh);
 
     dgScalarField dgsf (cellIntegralInt.size());
 
@@ -185,7 +188,6 @@ volumeIntegrateGrad
         cellIntegralInt[i] = dgScalar(cellIntInt[i]);
     }
 
-    const polyMesh& mesh = vf.mesh()();
     const scalarField points = mesh.points().component(vector::X);
 
     scalarField cellMax(mesh.cellCentres().component(vector::X));
@@ -228,11 +230,13 @@ template<class Type>
 tmp<scalarField>//Field<Type> >
 volumeIntegrateGrad
 (
-    const Field<Type>& vf
+    const Field<Type>& vf,
+    const polyMesh& mesh
 )
 {
+//    const polyMesh& mesh = vf.mesh()();
     // Constructor - should be considered!
-    dgPolynomials polynomials;
+    dgBase polynomials(mesh);
 
     // Local coordinates (reference element)
     scalarField gaussCoords = polynomials.gaussPoints();

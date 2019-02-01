@@ -55,8 +55,11 @@
 # 1 "files"
 primitives/dgScalar/dgScalar.C
 primitives/dgVector/dgVector.C
-primitives/dgPolynomials/dgPolynomials.C
+primitives/dgBase/dgBase.C
+primitives/dgBase/quadratures/quadratures.C
 
+dgMesh/dgMesh.C
+dgMesh/dgBoundaryMesh/dgBoundaryMesh.C
 dgPatches = dgMesh/dgPatches
 $(dgPatches)/dgPatch/dgPatch.C
 $(dgPatches)/dgPatch/newDgPatch.C
@@ -65,8 +68,6 @@ $(dgPatches)/constraint/empty/emptyDgPatch.C
 
 discontinuousGalerkin/dgSchemes/dgSchemes.C
 
-dgMesh/dgBoundaryMesh/dgBoundaryMesh.C
-dgMesh/dgMesh.C
 
 dgPatchFields = fields/dgPatchFields
 $(dgPatchFields)/dgPatchField/dgPatchFields.C

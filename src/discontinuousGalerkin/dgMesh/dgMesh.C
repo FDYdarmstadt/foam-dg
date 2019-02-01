@@ -75,7 +75,7 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     schemesDict_(mesh().thisDb()),
     solutionDict_(mesh().thisDb()),
     cellScaleCoeffsPtr_(NULL),
-    polynomials_(dgPolynomials()),
+    polynomials_(dgBase(pMesh)),
     lduPtr_(NULL)
 {
     if (debug)
@@ -96,7 +96,6 @@ Foam::dgMesh::~dgMesh()
 
 const Foam::Time& Foam::dgMesh::time() const
 {
-    Info << polynomials_.gaussPtsEval() << endl;
     return mesh().time();
 }
 

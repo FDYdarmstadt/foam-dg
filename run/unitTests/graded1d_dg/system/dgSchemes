@@ -18,7 +18,7 @@ FoamFile
 
 dgLaplacianSchemes
 {
-    default SIPLaplacian;
+//    default SIPLaplacian;
     dgLaplacian(T) SIP;
 }
 

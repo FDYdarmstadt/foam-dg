@@ -23,17 +23,98 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "dgPolynomials.H"
-#include "dgOrder.H"
+#include "dgBase.H"
+#include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
+defineTypeNameAndDebug(dgBase, 0);
+defineRunTimeSelectionTable(dgBase, dictionary);
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-void dgPolynomials::calcGaussPtsEval() const
+//void dgBase::setConstants() const
+//{
+//// The constants are set depending on the quadrature order
+//
+//    if (quadratureOrder_ == 0)
+//    {
+//        // ERROR - unable 0th order
+//    }
+//    if (quadratureOrder_ == 1)
+//    {
+//        gaussWeights_[0] = 5.0/9.0;
+//
+//        gaussPoints_[0] = - sqrt(3.0/5.0);
+//    }
+//    if (quadratureOrder_ == 2)
+//    {
+//        gaussWeights_[0] = 5.0/9.0;
+//        gaussWeights_[1] = 8.0/9.0;
+//
+//        gaussPoints_[0] = - sqrt(3.0/5.0);
+//        gaussPoints_[1] = 0;
+//    }
+//    if (quadratureOrder_ == 3)
+//    {
+//        gaussWeights_[0] = 5.0/9.0;
+//        gaussWeights_[1] = 8.0/9.0;
+//        gaussWeights_[2] = 5.0/9.0;
+//
+//        gaussPoints_[0] = - sqrt(3.0/5.0);
+//        gaussPoints_[1] = 0;
+//        gaussPoints_[2] = sqrt(3.0/5.0);
+//    }
+//    if (quadratureOrder_ == 4)
+//    {
+//        gaussWeights_[0] = 5.0/9.0;
+//        gaussWeights_[1] = 8.0/9.0;
+//        gaussWeights_[2] = 5.0/9.0;
+//        gaussWeights_[3] = 5.0/9.0;
+//
+//        gaussPoints_[0] = - sqrt(3.0/5.0);
+//        gaussPoints_[1] = 0;
+//        gaussPoints_[2] = sqrt(3.0/5.0);
+//        gaussPoints_[3] = sqrt(3.0/5.0);
+//    }
+//    if (quadratureOrder_ == 5)
+//    {
+//        gaussWeights_[0] = 5.0/9.0;
+//        gaussWeights_[1] = 8.0/9.0;
+//        gaussWeights_[2] = 5.0/9.0;
+//        gaussWeights_[3] = 5.0/9.0;
+//        gaussWeights_[4] = 5.0/9.0;
+//
+//        gaussPoints_[0] = - sqrt(3.0/5.0);
+//        gaussPoints_[1] = 0;
+//        gaussPoints_[2] = sqrt(3.0/5.0);
+//        gaussPoints_[3] = sqrt(3.0/5.0);
+//        gaussPoints_[4] = sqrt(3.0/5.0);
+//    }
+//    if (quadratureOrder_ == 6)
+//    {
+//        gaussWeights_[0] = 5.0/9.0;
+//        gaussWeights_[1] = 8.0/9.0;
+//        gaussWeights_[2] = 5.0/9.0;
+//        gaussWeights_[3] = 5.0/9.0;
+//        gaussWeights_[4] = 5.0/9.0;
+//        gaussWeights_[5] = 5.0/9.0;
+//
+//        gaussPoints_[0] = - sqrt(3.0/5.0);
+//        gaussPoints_[1] = 0;
+//        gaussPoints_[2] = sqrt(3.0/5.0);
+//        gaussPoints_[3] = sqrt(3.0/5.0);
+//        gaussPoints_[4] = sqrt(3.0/5.0);
+//        gaussPoints_[5] = sqrt(3.0/5.0);
+//    }
+//
+//}
+
+
+void dgBase::calcGaussPtsEval() const
 {
     // Local coordinates (reference element)
     const scalarField& gaussCoords = gaussPoints();
@@ -79,7 +160,7 @@ void dgPolynomials::calcGaussPtsEval() const
 }
 
 
-void dgPolynomials::calcGaussPtsGradEval() const
+void dgBase::calcGaussPtsGradEval() const
 {
     // Local coordinates (reference element)
     const scalarField& gaussCoords = gaussPoints();
@@ -125,41 +206,86 @@ void dgPolynomials::calcGaussPtsGradEval() const
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
-
-dgPolynomials::dgPolynomials
+dgBase::dgBase
 (
-//    const label
-//    const dgOrder& dgOrder
+    const polyMesh& mesh
 )
 :
+    IOdictionary
+    (
+        IOobject
+        (
+            "dgDict",
+            mesh.time().system(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    ),
+    polyMesh_(mesh),
     length_(dgOrder::length),//dgOrder.length()),
-    gaussWeights_(3, 0.0),
-    gaussPoints_(3, 0.0),
+    gaussWeights_(1, 0.0),
+    gaussPoints_(1, 0.0),
+//    gaussWeights_(quadratureOrder_, 0.0),
+//    gaussPoints_(quadratureOrder_, 0.0),
+//    polynomials_(length_),
     gaussPtsEvalPtr_(NULL),//gaussPoints_.size()),
     gaussPtsGradEvalPtr_(NULL)//gaussPoints_.size())
 {
-//    forAll(gaussWeights, gwI)
-//    {
-//        // It would be great to have an expression here
-//        gaussWeights[gwI] =
-//    }
+//    setConstants();
+}
 
-// HARD-CODED to only 3 points for now
-    gaussWeights_[0] = 5.0/9.0;
-    gaussWeights_[1] = 8.0/9.0;
-    gaussWeights_[2] = 5.0/9.0;
 
-    gaussPoints_[0] = - sqrt(3.0/5.0);
-    gaussPoints_[1] = 0;
-    gaussPoints_[2] = sqrt(3.0/5.0);
+// * * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * //
+
+autoPtr<dgBase> dgBase::New
+(
+    const polyMesh& mesh
+)
+{
+    const dictionary& dict =
+    IOdictionary
+    (
+        IOobject
+        (
+            "dgDict",
+            mesh.time().system(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    );
+
+    const word quadratureRule(dict.lookup("quadratureRule"));
+    const label quadratureOrder(readLabel(dict.lookup("quadratureOrder")));
+
+    dictionaryConstructorTable::iterator cstrIter =
+        dictionaryConstructorTablePtr_->find(quadratureRule);
+
+    if (cstrIter == dictionaryConstructorTablePtr_->end())
+    {
+        FatalErrorIn
+            (
+            "dgBase::dgBase::New\n"
+            "(\n"
+            "   const polyMesh& mesh,\n"
+            ")"
+            )   << "Unknown quadrature type "
+                << quadratureRule << endl << endl
+                << "Valid quadrature types are: " << endl
+                << dictionaryConstructorTablePtr_->toc()
+                << exit(FatalError);
+    }
+
+    return autoPtr<dgBase>(cstrIter()(mesh, quadratureOrder));
 }
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 //template<class Type>
-//const field<Type>& dgPolynomials::evaluate
-const scalarField dgPolynomials::evaluate
+//const field<Type>& dgBase::evaluate
+const scalarField dgBase::evaluate
 (
     const vector localCoords
 ) const
@@ -204,7 +330,7 @@ const scalarField dgPolynomials::evaluate
 }
 
 
-const scalarField dgPolynomials::gradEvaluate
+const scalarField dgBase::gradEvaluate
 (
     const vector localCoords
 ) const
@@ -253,7 +379,7 @@ const scalarField dgPolynomials::gradEvaluate
 }
 
 
-PtrList<scalarField> dgPolynomials::wtdGaussEval()
+PtrList<scalarField> dgBase::wtdGaussEval()
 {
     if (!gaussPtsEvalPtr_)
     {
@@ -284,7 +410,7 @@ PtrList<scalarField> dgPolynomials::wtdGaussEval()
 }
 
 
-PtrList<scalarField> dgPolynomials::wtdGaussGradEval()
+PtrList<scalarField> dgBase::wtdGaussGradEval()
 {
     if (!gaussPtsGradEvalPtr_)
     {
@@ -316,7 +442,7 @@ PtrList<scalarField> dgPolynomials::wtdGaussGradEval()
 
 
 
-void dgPolynomials::test()
+void dgBase::test()
 {}
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

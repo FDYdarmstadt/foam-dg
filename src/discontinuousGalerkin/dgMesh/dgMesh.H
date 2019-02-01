@@ -46,7 +46,7 @@ SourceFiles
 #include "dgSchemes.H"
 #include "dgSolution.H"
 #include "dgOrder.H"
-#include "dgPolynomials.H"
+#include "dgBase.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -78,7 +78,7 @@ class dgMesh
 
         mutable scalarField* cellScaleCoeffsPtr_;
 
-        mutable dgPolynomials polynomials_;
+        mutable dgBase polynomials_;
         //dgPolynomials polynomials_;
 
     // Demand-driven data
@@ -175,12 +175,12 @@ public:
             }
 
             //- Return access to polynomials
-            const dgPolynomials& polynomials() const
+            const dgBase& polynomials() const
             {
                 return polynomials_;
             }
 
-            dgPolynomials& polynomials()
+            dgBase& polynomials()
             {
                 return polynomials_;
             }

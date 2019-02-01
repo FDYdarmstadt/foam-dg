@@ -22,7 +22,7 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::dgPolynomials
+    Foam::dgBase
 
 Description
     Definition of a Discontinuous Galerkin Polynomials
@@ -32,27 +32,39 @@ Author
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef dgPolynomials_H
-#define dgPolynomials_H
+#ifndef dgBase_H
+#define dgBase_H
 
 #include "dgOrder.H"
 #include "primitiveFields.H"
+#include "IOdictionary.H"
+#include "polyMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
+
 /*---------------------------------------------------------------------------*\
-                          Class dgPolynomials Declaration
+                          Class dgBase Declaration
 \*---------------------------------------------------------------------------*/
 
-class dgPolynomials
+class dgBase
+:
+    public  IOdictionary
 {
     // Private data
 
+    const polyMesh& polyMesh_;
+//    const dgMesh& mesh_;
+
     //- Number of modes taken into account
     const label length_;
+
+//    const label quadratureOrder_;
+
+//    const word quadratureRule_;
 
     //- Weights for Gauss integration points
     scalarField gaussWeights_;
@@ -60,6 +72,10 @@ class dgPolynomials
     //- Location of Gauss integration points (local CS)
     scalarField gaussPoints_;
 //    const vectorField gaussPoints_;
+
+//    quadrature& quadrature_;
+
+//    polynomial& polynomials_;
 
     // Ptr list with size(number of Gauss points) with evaluated modes in
     // corresponding Gauss points, i.e. for 2 Gauss points and 3 modes, PtrList
@@ -80,13 +96,40 @@ protected:
 
 public:
 
+    //- Runtime type information
+    TypeName("dgBase");
+
+    // Declare run-time constructor selection table
+
+        declareRunTimeSelectionTable
+        (
+            autoPtr,
+            dgBase,
+            dictionary,
+            (
+                const polyMesh& mesh,
+                const label quadratureOrder
+            ),
+            (mesh, quadratureOrder)
+        );
+
     // Constructors
 
         //- Construct from dgOrder
-        dgPolynomials
+        dgBase
         (
+//            const dgMesh& mesh
+            const polyMesh& mesh
 //            const label
 //            const dgOrder& dgOrder
+        );
+
+    // Selectors
+
+        //- Return an autoPtr to the selected dgBase (quadrature type)
+        static autoPtr<dgBase> New
+        (
+            const polyMesh& mesh
         );
 
 
@@ -165,6 +208,12 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//#ifdef NoRepository
+//#   include "dgBase.C"
+//#endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

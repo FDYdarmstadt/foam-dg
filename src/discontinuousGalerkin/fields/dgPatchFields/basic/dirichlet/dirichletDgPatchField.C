@@ -24,7 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "dirichletDgPatchField.H"
-#include "dgPolynomials.H"
+#include "dgBase.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -39,7 +39,7 @@ void dirichletDgPatchField<Type>::calcEta()
     if (!etaPtr_)
     {
         const polyMesh& mesh = this->patch().boundaryMesh().mesh().mesh();
-        dgPolynomials polynomials;
+        dgBase polynomials(mesh);
 
         scalar sqrP = sqr(scalar(polynomials.order()));
 
@@ -172,7 +172,7 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valueInternalCoeffs
 {
 // Diagonal
 
-    const dgPolynomials& polynomials = this->polynomials();
+    const dgBase& polynomials = this->polynomials();
 
     typedef FieldField<Field, scalar> scalarFieldField;
 
@@ -258,7 +258,7 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valueBoundaryCoeffs
 
     const dgMesh& mesh = this->patch().boundaryMesh().mesh();
 
-    const dgPolynomials& polynomials = this->polynomials();
+    const dgBase& polynomials = this->polynomials();
 
     const PtrList<scalarField>& gaussEdgeEval = polynomials.gaussPtsEval();
     const PtrList<scalarField>& gaussGradEdgeEval =

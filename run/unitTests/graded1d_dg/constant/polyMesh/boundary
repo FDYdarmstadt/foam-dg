@@ -29,11 +29,23 @@ FoamFile
         nFaces          1;
         startFace       10;
     }
-    sides
+    sides1
     {
         type            empty;
-        nFaces          40;
+        nFaces          20;
         startFace       11;
+    }
+    sides2
+    {
+        type            empty;
+        nFaces          3;
+        startFace       31;
+    }
+    sides3
+    {
+        type            empty;
+        nFaces          17;
+        startFace       34;
     }
 )
 

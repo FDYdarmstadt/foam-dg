@@ -42,7 +42,7 @@ SourceFiles
 #include "dgPatch.H"
 #include "DimensionedField.H"
 #include "dgPrimitiveFields.H"
-#include "dgPolynomials.H"
+#include "dgBase.H"
 #include "FieldField.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -212,15 +212,13 @@ public:
         // Access
 
             //- Return polynomials
-            const dgPolynomials& polynomials() const
+            const dgBase& polynomials() const
             {
                 return internalField_.mesh().polynomials();
             }
 
-            dgPolynomials& polynomials()
+            dgBase& polynomials()
             {
-                Info << internalField_.mesh().polynomials().gaussPtsEval() <<
-                endl;
                 return internalField_.mesh().polynomials();
             }
 
