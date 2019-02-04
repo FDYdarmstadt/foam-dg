@@ -34,6 +34,7 @@ Author
 
 #include "dgCFD.H"
 #include "fvCFD.H"
+#include "quadratures.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -89,6 +90,8 @@ int main(int argc, char *argv[])
 
 //    Info<< "------- Timing = " << runTime.timeName() << nl << endl;
     Te.solve();
+
+Info<< " SOLVED" << endl;
 
 //         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
 //             << "  ClockTime = " << runTime.elapsedClockTime() << " s"

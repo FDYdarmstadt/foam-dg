@@ -1,6 +1,7 @@
 OBJECTS = \
 $(OBJECTS_DIR)/dgScalar.o\
 $(OBJECTS_DIR)/dgVector.o\
+$(OBJECTS_DIR)/dgPolynomials.o\
 $(OBJECTS_DIR)/dgBase.o\
 $(OBJECTS_DIR)/quadratures.o\
 $(OBJECTS_DIR)/dgMesh.o\

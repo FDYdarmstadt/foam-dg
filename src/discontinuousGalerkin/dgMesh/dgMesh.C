@@ -75,7 +75,10 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     schemesDict_(mesh().thisDb()),
     solutionDict_(mesh().thisDb()),
     cellScaleCoeffsPtr_(NULL),
-    polynomials_(dgBase(pMesh)),
+    dgBasePtr_
+    (
+        dgBase::New(pMesh)
+    ),
     lduPtr_(NULL)
 {
     if (debug)
@@ -83,6 +86,8 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
         InfoIn("dgMesh::dgMesh(const polyMesh& pMesh)")
             << "Creating dgMesh from polyMesh" << endl;
     }
+
+//    dgBasePtr_ = new dgBase::New(pMesh);
 }
 
 

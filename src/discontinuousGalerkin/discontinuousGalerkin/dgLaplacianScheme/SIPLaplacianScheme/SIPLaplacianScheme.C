@@ -48,7 +48,8 @@ void SIPLaplacianScheme<Type, GType>::calcEta()
     if (!etaPtr_)
     {
         const polyMesh& mesh = this->mesh().mesh();;
-        dgBase polynomials(mesh);
+        const dgBase& polynomials = this->mesh().polynomials();
+//        dgBase polynomials(mesh);
 
         scalar sqrP = sqr(scalar(polynomials.order()));
 
@@ -278,9 +279,9 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
     );
     dgMatrix<Type>& dgm = tdgm();
 
-    const polyMesh& pMesh = mesh.mesh();
+//    const polyMesh& pMesh = mesh.mesh();
 
-    dgBase polynomials(pMesh);
+    const dgBase& polynomials = mesh.polynomials();//(pMesh);
 
     // Calculate penalty
     calcEta();

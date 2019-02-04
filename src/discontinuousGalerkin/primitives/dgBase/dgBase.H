@@ -39,6 +39,7 @@ Author
 #include "primitiveFields.H"
 #include "IOdictionary.H"
 #include "polyMesh.H"
+#include "dgPolynomials.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -62,15 +63,16 @@ class dgBase
     //- Number of modes taken into account
     const label length_;
 
+    mutable dgPolynomials* polynomialsPtr_;
 //    const label quadratureOrder_;
 
 //    const word quadratureRule_;
 
     //- Weights for Gauss integration points
-    scalarField gaussWeights_;
+//    scalarField gaussWeights_;
 
     //- Location of Gauss integration points (local CS)
-    scalarField gaussPoints_;
+//    scalarField gaussPoints_;
 //    const vectorField gaussPoints_;
 
 //    quadrature& quadrature_;
@@ -80,18 +82,20 @@ class dgBase
     // Ptr list with size(number of Gauss points) with evaluated modes in
     // corresponding Gauss points, i.e. for 2 Gauss points and 3 modes, PtrList
     // size is 2, scalarField size is 3, in total 6
-    mutable PtrList<scalarField>* gaussPtsEvalPtr_;
+//    mutable PtrList<scalarField>* gaussPtsEvalPtr_;
 
-    mutable PtrList<scalarField>* gaussPtsGradEvalPtr_;
+//    mutable PtrList<scalarField>* gaussPtsGradEvalPtr_;
 
 
 protected:
 
-        //- Evaluate polynomials in Gauss points
-        void calcGaussPtsEval() const;
-
-        //- Evaluate gradient of polynomials in Gauss points
-        void calcGaussPtsGradEval() const;
+//        virtual void setConstants() const;
+//
+//        //- Evaluate polynomials in Gauss points
+//        virtual void calcGaussPtsEval() const;
+//
+//        //- Evaluate gradient of polynomials in Gauss points
+//        virtual void calcGaussPtsGradEval() const;
 
 
 public:
@@ -147,47 +151,25 @@ public:
             const vector localCoords
         ) const;
 
-        const PtrList<scalarField>& gaussPtsEval() const
-        {
-            if (!gaussPtsEvalPtr_)
-            {
-                calcGaussPtsEval();
-            }
+        virtual const PtrList<scalarField>& gaussPtsEval() const = 0;
 
-            return *gaussPtsEvalPtr_;
-        }
-
-        const PtrList<scalarField>& gaussPtsGradEval() const
-        {
-            if (!gaussPtsGradEvalPtr_)
-            {
-                calcGaussPtsGradEval();
-            }
-
-            return *gaussPtsGradEvalPtr_;
-        }
+        virtual const PtrList<scalarField>& gaussPtsGradEval() const = 0;
 
         //- Modal functions evaluated in gauss points, without gauss weights
-        PtrList<scalarField> wtdGaussEval();
+        virtual const PtrList<scalarField> wtdGaussEval() const = 0;
 
         //- Gradient of modal functions evaluated in gauss points, without gauss
         // weights
-        PtrList<scalarField> wtdGaussGradEval();
+        virtual const PtrList<scalarField> wtdGaussGradEval() const = 0;
 
 
     // Access functions
 
         //- Return Gauss weights for reference element
-        const scalarField& gaussWeights() const
-        {
-            return gaussWeights_;
-        }
+        virtual const scalarField& gaussWeights() const = 0;
 
         //- Return Gauss points positions for reference element (local CS)
-        const scalarField& gaussPoints() const
-        {
-            return gaussPoints_;
-        }
+        virtual const scalarField& gaussPoints() const = 0;
 
         void test();
 //        {}
@@ -202,6 +184,11 @@ public:
             return dgOrder::order;
         }
 
+
+        const dgPolynomials& polynomials()
+        {
+            return *polynomialsPtr_;
+        }
 };
 
 

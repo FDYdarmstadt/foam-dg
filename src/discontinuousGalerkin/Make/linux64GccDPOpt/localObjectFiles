@@ -1,6 +1,7 @@
 LOCAL_OBJECTS = \
 dgScalar.o\
 dgVector.o\
+dgPolynomials.o\
 dgBase.o\
 quadratures.o\
 dgMesh.o\

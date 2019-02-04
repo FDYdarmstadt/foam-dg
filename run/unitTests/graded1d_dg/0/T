@@ -42,20 +42,24 @@ boundaryField
 //        type            homogenous;
         value           uniform (1 0 0);
     }
-    sides2
-    {
-        type            dirichlet;
-//        type            homogenous;
-        value           uniform (15 0 0);
-    }
-    sides3
+    sides
     {
         type            empty;
     }
-    sides1
-    {
-        type            empty;
-    }
+//    sides2
+//    {
+//        type            dirichlet;
+////        type            homogenous;
+//        value           uniform (15 0 0);
+//    }
+//    sides3
+//    {
+//        type            empty;
+//    }
+//    sides1
+//    {
+//        type            empty;
+//    }
 }
 
 

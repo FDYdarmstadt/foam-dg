@@ -66,7 +66,7 @@ namespace dgc
     tmp<scalarField> volumeIntegrate
     (
         const Field<Type>&,
-        const polyMesh& mesh
+        const dgMesh& mesh
     );
 
     template<class Type>
@@ -87,7 +87,7 @@ namespace dgc
     tmp<scalarField> volumeIntegrateGrad
     (
         const Field<Type>&,
-        const polyMesh& mesh
+        const dgMesh& mesh
     );
 
     template<class Type>

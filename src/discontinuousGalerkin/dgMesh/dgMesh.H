@@ -78,7 +78,7 @@ class dgMesh
 
         mutable scalarField* cellScaleCoeffsPtr_;
 
-        mutable dgBase polynomials_;
+        autoPtr<dgBase> dgBasePtr_;
         //dgPolynomials polynomials_;
 
     // Demand-driven data
@@ -177,12 +177,12 @@ public:
             //- Return access to polynomials
             const dgBase& polynomials() const
             {
-                return polynomials_;
+                return dgBasePtr_();
             }
 
             dgBase& polynomials()
             {
-                return polynomials_;
+                return dgBasePtr_();
             }
 
             const dgSchemes& schemesDict() const

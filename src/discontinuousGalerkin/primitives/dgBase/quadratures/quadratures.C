@@ -41,173 +41,175 @@ addToRunTimeSelectionTable
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//void quadratures::setConstants() const
-//{
-//// The constants are set depending on the quadrature order
-//
-//    if (quadratureOrder_ == 0)
-//    {
-//        // ERROR - unable 0th order
-//    }
-//    if (quadratureOrder_ == 1)
-//    {
-//        gaussWeights_[0] = 5.0/9.0;
-//
-//        gaussPoints_[0] = - sqrt(3.0/5.0);
-//    }
-//    if (quadratureOrder_ == 2)
-//    {
-//        gaussWeights_[0] = 5.0/9.0;
-//        gaussWeights_[1] = 8.0/9.0;
-//
-//        gaussPoints_[0] = - sqrt(3.0/5.0);
-//        gaussPoints_[1] = 0;
-//    }
-//    if (quadratureOrder_ == 3)
-//    {
-//        gaussWeights_[0] = 5.0/9.0;
-//        gaussWeights_[1] = 8.0/9.0;
-//        gaussWeights_[2] = 5.0/9.0;
-//
-//        gaussPoints_[0] = - sqrt(3.0/5.0);
-//        gaussPoints_[1] = 0;
-//        gaussPoints_[2] = sqrt(3.0/5.0);
-//    }
-//    if (quadratureOrder_ == 4)
-//    {
-//        gaussWeights_[0] = 5.0/9.0;
-//        gaussWeights_[1] = 8.0/9.0;
-//        gaussWeights_[2] = 5.0/9.0;
-//        gaussWeights_[3] = 5.0/9.0;
-//
-//        gaussPoints_[0] = - sqrt(3.0/5.0);
-//        gaussPoints_[1] = 0;
-//        gaussPoints_[2] = sqrt(3.0/5.0);
-//        gaussPoints_[3] = sqrt(3.0/5.0);
-//    }
-//    if (quadratureOrder_ == 5)
-//    {
-//        gaussWeights_[0] = 5.0/9.0;
-//        gaussWeights_[1] = 8.0/9.0;
-//        gaussWeights_[2] = 5.0/9.0;
-//        gaussWeights_[3] = 5.0/9.0;
-//        gaussWeights_[4] = 5.0/9.0;
-//
-//        gaussPoints_[0] = - sqrt(3.0/5.0);
-//        gaussPoints_[1] = 0;
-//        gaussPoints_[2] = sqrt(3.0/5.0);
-//        gaussPoints_[3] = sqrt(3.0/5.0);
-//        gaussPoints_[4] = sqrt(3.0/5.0);
-//    }
-//    if (quadratureOrder_ == 6)
-//    {
-//        gaussWeights_[0] = 5.0/9.0;
-//        gaussWeights_[1] = 8.0/9.0;
-//        gaussWeights_[2] = 5.0/9.0;
-//        gaussWeights_[3] = 5.0/9.0;
-//        gaussWeights_[4] = 5.0/9.0;
-//        gaussWeights_[5] = 5.0/9.0;
-//
-//        gaussPoints_[0] = - sqrt(3.0/5.0);
-//        gaussPoints_[1] = 0;
-//        gaussPoints_[2] = sqrt(3.0/5.0);
-//        gaussPoints_[3] = sqrt(3.0/5.0);
-//        gaussPoints_[4] = sqrt(3.0/5.0);
-//        gaussPoints_[5] = sqrt(3.0/5.0);
-//    }
-//
-//}
-//
-//
-//void quadratures::calcGaussPtsEval() const
-//{
-//    // Local coordinates (reference element)
-//    const scalarField& gaussCoords = gaussPoints();
-////    const scalarField& gaussWeights = this->gaussWeights();
-//
-//    // Evaluate in -1, 1 and gauss points
-//    gaussPtsEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
-//
-//    // Go over all Gauss points for the whole mesh and add value*weight
-//    forAll(*gaussPtsEvalPtr_, ptI)
-//    {
-//        scalarField polyEval(gaussCoords.size(), 0.0);
-//
-//        // Evaluate in -1
-//        if (ptI == 0)
-//        {
-//            polyEval = evaluate(vector(-1,0,0));
-//        }
-//        // Evaluate in 1
-//        else if (ptI == (gaussPtsEvalPtr_->size() - 1))
-//        {
-//            polyEval = evaluate(vector(1,0,0));
-//        }
-//        // Evaluate in Gauss points
-//        else
-//        {
-//            // Calculate modal values in given coordinate (Gaussian point
-//            // coordinate)
-//            polyEval = evaluate(vector(gaussCoords[ptI - 1],0,0));
-//
-////            forAll (polyEval, modI)
-////            {
-////                polyEval[modI] *= gaussWeights[ptI];
-////            }
-//        }
-//
-//        gaussPtsEvalPtr_->set
-//        (
-//            ptI,
-//            new scalarField (polyEval)
-//        );
-//    }
-//}
-//
-//
-//void quadratures::calcGaussPtsGradEval() const
-//{
-//    // Local coordinates (reference element)
-//    const scalarField& gaussCoords = gaussPoints();
-////    const scalarField& gaussWeights = this->gaussWeights();
-//
-//    gaussPtsGradEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
-//    // Go over all Gaussian points for the whole mesh and add value*weight
-//    forAll(*gaussPtsGradEvalPtr_, ptI)
-//    {
-//        // This is of size dgScalar.size()
-//        scalarField polyEval(gaussCoords.size(), 0.0);
-//
-//        // Evaluate in -1
-//        if (ptI == 0)
-//        {
-//            polyEval = gradEvaluate(vector(-1,0,0));
-//        }
-//        // Evaluate in 1
-//        else if (ptI == (gaussPtsGradEvalPtr_->size() - 1))
-//        {
-//            polyEval = gradEvaluate(vector(1,0,0));
-//        }
-//        // Evaluate in Gauss points
-//        else
-//        {
-//            // Calculate modal values in given coordinate (Gaussian point
-//            // coordinate)
-//            polyEval = gradEvaluate(vector(gaussCoords[ptI - 1],0,0));
-//
-////            forAll (polyEval, modI)
-////            {
-////                polyEval[modI] *= gaussWeights[ptI];
-////            }
-//        }
-//
-//        gaussPtsGradEvalPtr_->set
-//        (
-//            ptI,
-//            new scalarField (polyEval)
-//        );
-//    }
-//}
+void quadratures::setConstants()
+{
+// The constants are set depending on the quadrature order
+
+    if (quadratureOrder_ == 0)
+    {
+        // ERROR - unable 0th order
+    }
+    if (quadratureOrder_ == 1)
+    {
+        gaussWeights_[0] = 5.0/9.0;
+
+        gaussPoints_[0] = - sqrt(3.0/5.0);
+    }
+    if (quadratureOrder_ == 2)
+    {
+        gaussWeights_[0] = 5.0/9.0;
+        gaussWeights_[1] = 8.0/9.0;
+
+        gaussPoints_[0] = - sqrt(3.0/5.0);
+        gaussPoints_[1] = 0;
+    }
+    if (quadratureOrder_ == 3)
+    {
+        Info<< "Deploying third order quadrature rule." << endl;
+
+        gaussWeights_[0] = 5.0/9.0;
+        gaussWeights_[1] = 8.0/9.0;
+        gaussWeights_[2] = 5.0/9.0;
+
+        gaussPoints_[0] = - sqrt(3.0/5.0);
+        gaussPoints_[1] = 0;
+        gaussPoints_[2] = sqrt(3.0/5.0);
+    }
+    if (quadratureOrder_ == 4)
+    {
+        gaussWeights_[0] = 5.0/9.0;
+        gaussWeights_[1] = 8.0/9.0;
+        gaussWeights_[2] = 5.0/9.0;
+        gaussWeights_[3] = 5.0/9.0;
+
+        gaussPoints_[0] = - sqrt(3.0/5.0);
+        gaussPoints_[1] = 0;
+        gaussPoints_[2] = sqrt(3.0/5.0);
+        gaussPoints_[3] = sqrt(3.0/5.0);
+    }
+    if (quadratureOrder_ == 5)
+    {
+        gaussWeights_[0] = 5.0/9.0;
+        gaussWeights_[1] = 8.0/9.0;
+        gaussWeights_[2] = 5.0/9.0;
+        gaussWeights_[3] = 5.0/9.0;
+        gaussWeights_[4] = 5.0/9.0;
+
+        gaussPoints_[0] = - sqrt(3.0/5.0);
+        gaussPoints_[1] = 0;
+        gaussPoints_[2] = sqrt(3.0/5.0);
+        gaussPoints_[3] = sqrt(3.0/5.0);
+        gaussPoints_[4] = sqrt(3.0/5.0);
+    }
+    if (quadratureOrder_ == 6)
+    {
+        gaussWeights_[0] = 5.0/9.0;
+        gaussWeights_[1] = 8.0/9.0;
+        gaussWeights_[2] = 5.0/9.0;
+        gaussWeights_[3] = 5.0/9.0;
+        gaussWeights_[4] = 5.0/9.0;
+        gaussWeights_[5] = 5.0/9.0;
+
+        gaussPoints_[0] = - sqrt(3.0/5.0);
+        gaussPoints_[1] = 0;
+        gaussPoints_[2] = sqrt(3.0/5.0);
+        gaussPoints_[3] = sqrt(3.0/5.0);
+        gaussPoints_[4] = sqrt(3.0/5.0);
+        gaussPoints_[5] = sqrt(3.0/5.0);
+    }
+
+}
+
+
+void quadratures::calcGaussPtsEval() const
+{
+    // Local coordinates (reference element)
+    const scalarField& gaussCoords = gaussPoints();
+//    const scalarField& gaussWeights = this->gaussWeights();
+
+    // Evaluate in -1, 1 and gauss points
+    gaussPtsEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
+
+    // Go over all Gauss points for the whole mesh and add value*weight
+    forAll(*gaussPtsEvalPtr_, ptI)
+    {
+        scalarField polyEval(gaussCoords.size(), 0.0);
+
+        // Evaluate in -1
+        if (ptI == 0)
+        {
+            polyEval = evaluate(vector(-1,0,0));
+        }
+        // Evaluate in 1
+        else if (ptI == (gaussPtsEvalPtr_->size() - 1))
+        {
+            polyEval = evaluate(vector(1,0,0));
+        }
+        // Evaluate in Gauss points
+        else
+        {
+            // Calculate modal values in given coordinate (Gaussian point
+            // coordinate)
+            polyEval = evaluate(vector(gaussCoords[ptI - 1],0,0));
+
+//            forAll (polyEval, modI)
+//            {
+//                polyEval[modI] *= gaussWeights[ptI];
+//            }
+        }
+
+        gaussPtsEvalPtr_->set
+        (
+            ptI,
+            new scalarField (polyEval)
+        );
+    }
+}
+
+
+void quadratures::calcGaussPtsGradEval() const
+{
+    // Local coordinates (reference element)
+    const scalarField& gaussCoords = gaussPoints();
+//    const scalarField& gaussWeights = this->gaussWeights();
+
+    gaussPtsGradEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
+    // Go over all Gaussian points for the whole mesh and add value*weight
+    forAll(*gaussPtsGradEvalPtr_, ptI)
+    {
+        // This is of size dgScalar.size()
+        scalarField polyEval(gaussCoords.size(), 0.0);
+
+        // Evaluate in -1
+        if (ptI == 0)
+        {
+            polyEval = gradEvaluate(vector(-1,0,0));
+        }
+        // Evaluate in 1
+        else if (ptI == (gaussPtsGradEvalPtr_->size() - 1))
+        {
+            polyEval = gradEvaluate(vector(1,0,0));
+        }
+        // Evaluate in Gauss points
+        else
+        {
+            // Calculate modal values in given coordinate (Gaussian point
+            // coordinate)
+            polyEval = gradEvaluate(vector(gaussCoords[ptI - 1],0,0));
+
+//            forAll (polyEval, modI)
+//            {
+//                polyEval[modI] *= gaussWeights[ptI];
+//            }
+        }
+
+        gaussPtsGradEvalPtr_->set
+        (
+            ptI,
+            new scalarField (polyEval)
+        );
+    }
+}
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
@@ -220,180 +222,90 @@ quadratures::quadratures
 :
     dgBase(mesh),
 //    length_(dgOrder::length),//dgOrder.length()),
-    quadratureOrder_(quadratureOrder)
-//    gaussWeights_(quadratureOrder_, 0.0),
-//    gaussPoints_(quadratureOrder_, 0.0),
-//    gaussPtsEvalPtr_(NULL),//gaussPoints_.size()),
-//    gaussPtsGradEvalPtr_(NULL)//gaussPoints_.size())
+    quadratureOrder_(quadratureOrder),
+    gaussWeights_(quadratureOrder, 0.0),
+    gaussPoints_(quadratureOrder, 0.0),
+    gaussPtsEvalPtr_(NULL),//gaussPoints_.size()),
+    gaussPtsGradEvalPtr_(NULL)//gaussPoints_.size())
 {
+    Info<< "QUADRATURE CONSTRUCTOR ENTERED" << endl;
+
+    setConstants();
+    Info<< "QUADRATURE CONSTRUCTOR EXITED" << endl;
 }
-
-
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-////template<class Type>
-////const field<Type>& quadratures::evaluate
-//const scalarField quadratures::evaluate
-//(
-//    const vector localCoords
-//) const
-//{
-//    scalar lc = localCoords.component(vector::X);
-//
-////    field<Type> value(length_, pTraits<Type>::zero);
-//    scalarField value(length_, 0.0);
-//
-//    // First two are simple and base for the loop
-//    value[0] = 1;
-//    value[1] = lc;
-//
-////    value[0] = 1/2;
-////    value[1] = lc*Foam::sqrt(3.0)/2;
-//
-//    // this should not overwrite 0 and 1
-//    forAll(value, vI)
-//    {
-//        label i = vI + 2;
-//
-//        if ((vI + 2) < value.size())
-//        {
-//            // Analytical form for calculating modes
-////            value[vI+1] =
-////                1.0/(vI + 1.0)*((2*vI+1)*lc*value[vI] - vI*value[vI-1]);
-//
-//
-//            value[i] =
-//                1.0/(i)*((2*i-1)*lc*value[i-1] - (i-1)*value[i-2]);
-////                Foam::sqrt(5.0)/4*(3.0*sqr(lc) - 1.0);
-//        }
-//        else
-//        {
-//            // Do nothing
-//        }
-//    }
-//
-////    Info << nl<<  "GSUM: " << gSum(value) << endl;
-//
-//    return value;
-//}
-//
-//
-//const scalarField quadratures::gradEvaluate
-//(
-//    const vector localCoords
-//) const
-//{
-//    scalar lc = localCoords.component(vector::X);
-//
-//
-//    scalarField value(length_, 0.0);
-//    scalarField grad(length_, 0.0);
-//
-//    // First two are simple and base for the loop
-//    value[0] = 1.0;
-//    value[1] = lc;
-//
-//    grad[0] = 0.0;
-//    grad[1] = 1.0;
-////    grad[1] = Foam::sqrt(3.0)/2;
-//
-//    // this should not overwrite 0 and 1
-//    forAll(value, vI)
-//    {
-//        // vI = n - 1 (n used for notation in equations), but we start from
-//        // third mode as first two are already defined
-//        label i = vI + 2;
-//
-//        // Analytical form for calculating gradient of modes
-//        if ((vI + 2) < value.size())
-//        {
-//            // Modes
-//            value[i] =
-//                1.0/(i)*((2.0*i-1)*lc*value[i-1]);// - (i-1)*value[i-2]);
-//            // Gradient of modes
-//            grad[i] =
-//                1.0/(i)*((2.0*i-1)*(lc*grad[i-1] + value[i-1]) - (i-1)*grad[i-2]);
-////                3.0*Foam::sqrt(5.0)/2.0*lc;
-//        }
-//        else
-//        {
-//            // Do nothing
-//        }
-//    }
-//
-////    Info << nl<<  "GSUM: " << gSum(value) << endl;
-//
-//    return grad;
-//}
-//
-//
-//PtrList<scalarField> quadratures::wtdGaussEval()
-//{
-//    if (!gaussPtsEvalPtr_)
-//    {
-//        calcGaussPtsEval();
-//    }
-//
-//    const scalarField& gaussWeights = this->gaussWeights();
-//
-//    const PtrList<scalarField>& gaussPts = *gaussPtsEvalPtr_;
-//    PtrList<scalarField> wtdGaussPts = gaussPts;
-//
-//    // Go over all Gauss points for the whole mesh and add value*weight
-//    forAll(gaussPts, ptI)
-//    {
-//        if (ptI < gaussPts.size() - 2)
-//        {
-//            // Zeroth entry is for coordinate -1
-//            scalarField& wtdGPI = wtdGaussPts[ptI + 1];
-//
-//            forAll (wtdGPI, modI)
-//            {
-//                wtdGPI[modI] *= gaussWeights[ptI];
-//            }
-//        }
-//    }
-//
-//    return wtdGaussPts;
-//}
-//
-//
-//PtrList<scalarField> quadratures::wtdGaussGradEval()
-//{
-//    if (!gaussPtsGradEvalPtr_)
-//    {
-//        calcGaussPtsGradEval();
-//    }
-//    const scalarField& gaussWeights = this->gaussWeights();
-//
-//    const PtrList<scalarField>& gaussPts = *gaussPtsGradEvalPtr_;
-//    PtrList<scalarField> wtdGaussPts = gaussPts;
-//
-//    // Go over all Gauss points for the whole mesh and add value*weight
-//    forAll(gaussPts, ptI)
-//    {
-//        if (ptI < gaussPts.size() - 2)
-//        {
-//            scalarField& wtdGPI = wtdGaussPts[ptI + 1];
-//
-//            forAll (wtdGPI, modI)
-//            {
-//                // Zeroth entry is for coordinate -1
-//                wtdGPI[modI] *= gaussWeights[ptI];
-//            }
-//        }
-//    }
-//
-//    return wtdGaussPts;
-//}
-//
-//
-//
-//
-//void quadratures::test()
-//{}
+
+const PtrList<scalarField> quadratures::wtdGaussEval() const
+{
+Info<< "ENTER WTD GAUSS EVAL" << endl;
+    if (!gaussPtsEvalPtr_)
+    {
+        calcGaussPtsEval();
+    }
+
+    const scalarField& gaussWeights = this->gaussWeights();
+
+    const PtrList<scalarField>& gaussPts = *gaussPtsEvalPtr_;
+    PtrList<scalarField> wtdGaussPts = gaussPts;
+
+    // Go over all Gauss points for the whole mesh and add value*weight
+    forAll(gaussPts, ptI)
+    {
+        if (ptI < gaussPts.size() - 2)
+        {
+            // Zeroth entry is for coordinate -1
+            scalarField& wtdGPI = wtdGaussPts[ptI + 1];
+
+            forAll (wtdGPI, modI)
+            {
+                wtdGPI[modI] *= gaussWeights[ptI];
+            }
+        }
+    }
+
+Info<< "EXIT WTD GAUSS EVAL" << endl;
+
+    return wtdGaussPts;
+}
+
+
+const PtrList<scalarField> quadratures::wtdGaussGradEval() const
+{
+Info<< "ENTER WTD GRAD GAUSS EVAL" << endl;
+    if (!gaussPtsGradEvalPtr_)
+    {
+        calcGaussPtsGradEval();
+    }
+    Info<< "ONE" << endl;
+    const scalarField& gaussWeights = this->gaussWeights();
+
+    Info<< "TWO" << endl;
+    const PtrList<scalarField>& gaussPts = *gaussPtsGradEvalPtr_;
+    PtrList<scalarField> wtdGaussPts = gaussPts;
+
+    Info<< "THREE" << endl;
+    // Go over all Gauss points for the whole mesh and add value*weight
+    forAll(gaussPts, ptI)
+    {
+        if (ptI < gaussPts.size() - 2)
+        {
+            scalarField& wtdGPI = wtdGaussPts[ptI + 1];
+
+            forAll (wtdGPI, modI)
+            {
+                // Zeroth entry is for coordinate -1
+                wtdGPI[modI] *= gaussWeights[ptI];
+            }
+        }
+    }
+Info<< "EXIT WTD GRAD GAUSS EVAL" << endl;
+
+    return wtdGaussPts;
+}
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

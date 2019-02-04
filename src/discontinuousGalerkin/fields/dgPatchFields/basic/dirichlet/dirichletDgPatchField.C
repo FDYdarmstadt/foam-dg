@@ -39,7 +39,9 @@ void dirichletDgPatchField<Type>::calcEta()
     if (!etaPtr_)
     {
         const polyMesh& mesh = this->patch().boundaryMesh().mesh().mesh();
-        dgBase polynomials(mesh);
+        const dgBase& polynomials =
+            this->patch().boundaryMesh().mesh().polynomials();
+//        dgBase::New(mesh);
 
         scalar sqrP = sqr(scalar(polynomials.order()));
 

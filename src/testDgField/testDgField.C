@@ -51,9 +51,9 @@ int main(int argc, char *argv[])
 //    dgPolynomials poly(3);
 //    Info << poly.gaussPoints() << endl;
 
-    scalarField integrate = dgc::volumeIntegrate(dgf2);
-
-    Info << "Integral value: " <<  integrate << endl;
+    // Mesh needed for this
+//    scalarField integrate = dgc::volumeIntegrate(dgf2);
+//    Info << "Integral value: " <<  integrate << endl;
 
     dgVectorField tfVector
     (
@@ -79,9 +79,8 @@ int main(int argc, char *argv[])
     dgScalarField dgf3(5, d);
 
     Info << nl << "SCALRA D " << d << endl;
-    scalarField integrate2 = dgc::volumeIntegrate(dgf3);
-
-    Info << "Integral value: " <<  integrate2 << endl;
+//    scalarField integrate2 = dgc::volumeIntegrate(dgf3);
+//    Info << "Integral value: " <<  integrate2 << endl;
 
     return 0;
 }

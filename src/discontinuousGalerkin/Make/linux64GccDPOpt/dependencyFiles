@@ -1,6 +1,7 @@
 DEPENDENCIES = \
 primitives/dgScalar/dgScalar.dep\
 primitives/dgVector/dgVector.dep\
+primitives/dgBase/polynomials/dgPolynomials.dep\
 primitives/dgBase/dgBase.dep\
 primitives/dgBase/quadratures/quadratures.dep\
 dgMesh/dgMesh.dep\

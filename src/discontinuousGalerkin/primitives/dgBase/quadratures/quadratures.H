@@ -53,7 +53,7 @@ namespace Foam
 
 class quadratures
 :
-public  dgBase
+    public  dgBase
 {
     // Private data
 
@@ -63,26 +63,28 @@ public  dgBase
     const label quadratureOrder_;
 
     //- Weights for Gauss integration points
-//    scalarField gaussWeights_;
+    scalarField gaussWeights_;
 
     //- Location of Gauss integration points (local CS)
-//    scalarField gaussPoints_;
+    scalarField gaussPoints_;
 
     // Ptr list with size(number of Gauss points) with evaluated modes in
     // corresponding Gauss points, i.e. for 2 Gauss points and 3 modes, PtrList
     // size is 2, scalarField size is 3, in total 6
-//    mutable PtrList<scalarField>* gaussPtsEvalPtr_;
+    mutable PtrList<scalarField>* gaussPtsEvalPtr_;
 
-//    mutable PtrList<scalarField>* gaussPtsGradEvalPtr_;
+    mutable PtrList<scalarField>* gaussPtsGradEvalPtr_;
 
 
 protected:
 
+        void setConstants();
+
         //- Evaluate polynomials in Gauss points
-//        void calcGaussPtsEval() const;
+        void calcGaussPtsEval() const;
 
         //- Evaluate gradient of polynomials in Gauss points
-//        void calcGaussPtsGradEval() const;
+        void calcGaussPtsGradEval() const;
 
 
 public:
@@ -102,72 +104,47 @@ public:
 
     // Member functions
 
-//        //- Return vector of modes evaluated in local coordinates
-//        const scalarField evaluate
-//        (
-//            const vector localCoords
-//        ) const;
-//
-//        //- Return vector of gradient of modes evaluated in local coordinates
-//        const scalarField gradEvaluate
-//        (
-//            const vector localCoords
-//        ) const;
-//
-//        const PtrList<scalarField>& gaussPtsEval() const
-//        {
-//            if (!gaussPtsEvalPtr_)
-//            {
-//                calcGaussPtsEval();
-//            }
-//
-//            return *gaussPtsEvalPtr_;
-//        }
-//
-//        const PtrList<scalarField>& gaussPtsGradEval() const
-//        {
-//            if (!gaussPtsGradEvalPtr_)
-//            {
-//                calcGaussPtsGradEval();
-//            }
-//
-//            return *gaussPtsGradEvalPtr_;
-//        }
-//
-//        //- Modal functions evaluated in gauss points, without gauss weights
-//        PtrList<scalarField> wtdGaussEval();
-//
-//        //- Gradient of modal functions evaluated in gauss points, without gauss
-//        // weights
-//        PtrList<scalarField> wtdGaussGradEval();
-//
-//
-//    // Access functions
-//
-//        //- Return Gauss weights for reference element
-//        const scalarField& gaussWeights() const
-//        {
-//            return gaussWeights_;
-//        }
-//
-//        //- Return Gauss points positions for reference element (local CS)
-//        const scalarField& gaussPoints() const
-//        {
-//            return gaussPoints_;
-//        }
-//
-//        void test();
-////        {}
-//
-//        label size() const
-//        {
-//            return length_;
-//        }
-//
-//        label order() const
-//        {
-//            return dgOrder::order;
-//        }
+        virtual const PtrList<scalarField>& gaussPtsEval() const
+        {
+            if (!gaussPtsEvalPtr_)
+            {
+                calcGaussPtsEval();
+            }
+
+            return *gaussPtsEvalPtr_;
+        }
+
+        virtual const PtrList<scalarField>& gaussPtsGradEval() const
+        {
+            if (!gaussPtsGradEvalPtr_)
+            {
+                calcGaussPtsGradEval();
+            }
+
+            return *gaussPtsGradEvalPtr_;
+        }
+
+        //- Modal functions evaluated in gauss points, without gauss weights
+        virtual const PtrList<scalarField> wtdGaussEval() const;
+
+        //- Gradient of modal functions evaluated in gauss points, without gauss
+        // weights
+        virtual const PtrList<scalarField> wtdGaussGradEval() const;
+
+
+    // Access functions
+
+        //- Return Gauss weights for reference element
+        virtual const scalarField& gaussWeights() const
+        {
+            return gaussWeights_;
+        }
+
+        //- Return Gauss points positions for reference element (local CS)
+        virtual const scalarField& gaussPoints() const
+        {
+            return gaussPoints_;
+        }
 
 };
 

@@ -11,7 +11,7 @@
     );
 
 
-    dgPolynomials polynomials;
+    const dgBase& polynomials = dgMesh.polynomials();
 
     volScalarField Tvol
     (

@@ -38,6 +38,11 @@ defineRunTimeSelectionTable(dgBase, dictionary);
 
 //void dgBase::setConstants() const
 //{
+    // Create polynomials object
+//    polynomialsPts_ = new dgPolynomials(readLabel(lookup("polynomialOrder")));
+
+//}
+
 //// The constants are set depending on the quadrature order
 //
 //    if (quadratureOrder_ == 0)
@@ -114,95 +119,95 @@ defineRunTimeSelectionTable(dgBase, dictionary);
 //}
 
 
-void dgBase::calcGaussPtsEval() const
-{
-    // Local coordinates (reference element)
-    const scalarField& gaussCoords = gaussPoints();
-//    const scalarField& gaussWeights = this->gaussWeights();
-
-    // Evaluate in -1, 1 and gauss points
-    gaussPtsEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
-
-    // Go over all Gauss points for the whole mesh and add value*weight
-    forAll(*gaussPtsEvalPtr_, ptI)
-    {
-        scalarField polyEval(gaussCoords.size(), 0.0);
-
-        // Evaluate in -1
-        if (ptI == 0)
-        {
-            polyEval = evaluate(vector(-1,0,0));
-        }
-        // Evaluate in 1
-        else if (ptI == (gaussPtsEvalPtr_->size() - 1))
-        {
-            polyEval = evaluate(vector(1,0,0));
-        }
-        // Evaluate in Gauss points
-        else
-        {
-            // Calculate modal values in given coordinate (Gaussian point
-            // coordinate)
-            polyEval = evaluate(vector(gaussCoords[ptI - 1],0,0));
-
-//            forAll (polyEval, modI)
-//            {
-//                polyEval[modI] *= gaussWeights[ptI];
-//            }
-        }
-
-        gaussPtsEvalPtr_->set
-        (
-            ptI,
-            new scalarField (polyEval)
-        );
-    }
-}
-
-
-void dgBase::calcGaussPtsGradEval() const
-{
-    // Local coordinates (reference element)
-    const scalarField& gaussCoords = gaussPoints();
-//    const scalarField& gaussWeights = this->gaussWeights();
-
-    gaussPtsGradEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
-    // Go over all Gaussian points for the whole mesh and add value*weight
-    forAll(*gaussPtsGradEvalPtr_, ptI)
-    {
-        // This is of size dgScalar.size()
-        scalarField polyEval(gaussCoords.size(), 0.0);
-
-        // Evaluate in -1
-        if (ptI == 0)
-        {
-            polyEval = gradEvaluate(vector(-1,0,0));
-        }
-        // Evaluate in 1
-        else if (ptI == (gaussPtsGradEvalPtr_->size() - 1))
-        {
-            polyEval = gradEvaluate(vector(1,0,0));
-        }
-        // Evaluate in Gauss points
-        else
-        {
-            // Calculate modal values in given coordinate (Gaussian point
-            // coordinate)
-            polyEval = gradEvaluate(vector(gaussCoords[ptI - 1],0,0));
-
-//            forAll (polyEval, modI)
-//            {
-//                polyEval[modI] *= gaussWeights[ptI];
-//            }
-        }
-
-        gaussPtsGradEvalPtr_->set
-        (
-            ptI,
-            new scalarField (polyEval)
-        );
-    }
-}
+//void dgBase::calcGaussPtsEval() const
+//{
+//    // Local coordinates (reference element)
+//    const scalarField& gaussCoords = gaussPoints();
+////    const scalarField& gaussWeights = this->gaussWeights();
+//
+//    // Evaluate in -1, 1 and gauss points
+//    gaussPtsEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
+//
+//    // Go over all Gauss points for the whole mesh and add value*weight
+//    forAll(*gaussPtsEvalPtr_, ptI)
+//    {
+//        scalarField polyEval(gaussCoords.size(), 0.0);
+//
+//        // Evaluate in -1
+//        if (ptI == 0)
+//        {
+//            polyEval = evaluate(vector(-1,0,0));
+//        }
+//        // Evaluate in 1
+//        else if (ptI == (gaussPtsEvalPtr_->size() - 1))
+//        {
+//            polyEval = evaluate(vector(1,0,0));
+//        }
+//        // Evaluate in Gauss points
+//        else
+//        {
+//            // Calculate modal values in given coordinate (Gaussian point
+//            // coordinate)
+//            polyEval = evaluate(vector(gaussCoords[ptI - 1],0,0));
+//
+////            forAll (polyEval, modI)
+////            {
+////                polyEval[modI] *= gaussWeights[ptI];
+////            }
+//        }
+//
+//        gaussPtsEvalPtr_->set
+//        (
+//            ptI,
+//            new scalarField (polyEval)
+//        );
+//    }
+//}
+//
+//
+//void dgBase::calcGaussPtsGradEval() const
+//{
+//    // Local coordinates (reference element)
+//    const scalarField& gaussCoords = gaussPoints();
+////    const scalarField& gaussWeights = this->gaussWeights();
+//
+//    gaussPtsGradEvalPtr_ = new PtrList<scalarField>(gaussCoords.size() + 2);
+//    // Go over all Gaussian points for the whole mesh and add value*weight
+//    forAll(*gaussPtsGradEvalPtr_, ptI)
+//    {
+//        // This is of size dgScalar.size()
+//        scalarField polyEval(gaussCoords.size(), 0.0);
+//
+//        // Evaluate in -1
+//        if (ptI == 0)
+//        {
+//            polyEval = gradEvaluate(vector(-1,0,0));
+//        }
+//        // Evaluate in 1
+//        else if (ptI == (gaussPtsGradEvalPtr_->size() - 1))
+//        {
+//            polyEval = gradEvaluate(vector(1,0,0));
+//        }
+//        // Evaluate in Gauss points
+//        else
+//        {
+//            // Calculate modal values in given coordinate (Gaussian point
+//            // coordinate)
+//            polyEval = gradEvaluate(vector(gaussCoords[ptI - 1],0,0));
+//
+////            forAll (polyEval, modI)
+////            {
+////                polyEval[modI] *= gaussWeights[ptI];
+////            }
+//        }
+//
+//        gaussPtsGradEvalPtr_->set
+//        (
+//            ptI,
+//            new scalarField (polyEval)
+//        );
+//    }
+//}
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
@@ -224,15 +229,19 @@ dgBase::dgBase
     ),
     polyMesh_(mesh),
     length_(dgOrder::length),//dgOrder.length()),
-    gaussWeights_(1, 0.0),
-    gaussPoints_(1, 0.0),
+    polynomialsPtr_(NULL)
+//    gaussWeights_(1, 0.0),
+//    gaussPoints_(1, 0.0),
 //    gaussWeights_(quadratureOrder_, 0.0),
 //    gaussPoints_(quadratureOrder_, 0.0),
 //    polynomials_(length_),
-    gaussPtsEvalPtr_(NULL),//gaussPoints_.size()),
-    gaussPtsGradEvalPtr_(NULL)//gaussPoints_.size())
+//    gaussPtsEvalPtr_(NULL),//gaussPoints_.size()),
+//    gaussPtsGradEvalPtr_(NULL)//gaussPoints_.size())
 {
 //    setConstants();
+
+    // Create polynomials object
+    polynomialsPtr_ = new dgPolynomials(readLabel(lookup("polynomialOrder")) + 1);
 }
 
 
@@ -243,6 +252,8 @@ autoPtr<dgBase> dgBase::New
     const polyMesh& mesh
 )
 {
+    Info<< " NEW SELECTOR DGBASE " << endl;
+
     const dictionary& dict =
     IOdictionary
     (
@@ -255,9 +266,11 @@ autoPtr<dgBase> dgBase::New
             IOobject::NO_WRITE
         )
     );
+    Info<< " Reading quadrature rule and order: " << endl;
 
     const word quadratureRule(dict.lookup("quadratureRule"));
     const label quadratureOrder(readLabel(dict.lookup("quadratureOrder")));
+    Info<< " Rule and order read in. Finding in iterator quadrature rule: " << endl;
 
     dictionaryConstructorTable::iterator cstrIter =
         dictionaryConstructorTablePtr_->find(quadratureRule);
@@ -277,6 +290,7 @@ autoPtr<dgBase> dgBase::New
                 << exit(FatalError);
     }
 
+    Info<< " Returning a constructor: " << endl;
     return autoPtr<dgBase>(cstrIter()(mesh, quadratureOrder));
 }
 
@@ -290,43 +304,7 @@ const scalarField dgBase::evaluate
     const vector localCoords
 ) const
 {
-    scalar lc = localCoords.component(vector::X);
-
-//    field<Type> value(length_, pTraits<Type>::zero);
-    scalarField value(length_, 0.0);
-
-    // First two are simple and base for the loop
-    value[0] = 1;
-    value[1] = lc;
-
-//    value[0] = 1/2;
-//    value[1] = lc*Foam::sqrt(3.0)/2;
-
-    // this should not overwrite 0 and 1
-    forAll(value, vI)
-    {
-        label i = vI + 2;
-
-        if ((vI + 2) < value.size())
-        {
-            // Analytical form for calculating modes
-//            value[vI+1] =
-//                1.0/(vI + 1.0)*((2*vI+1)*lc*value[vI] - vI*value[vI-1]);
-
-
-            value[i] =
-                1.0/(i)*((2*i-1)*lc*value[i-1] - (i-1)*value[i-2]);
-//                Foam::sqrt(5.0)/4*(3.0*sqr(lc) - 1.0);
-        }
-        else
-        {
-            // Do nothing
-        }
-    }
-
-//    Info << nl<<  "GSUM: " << gSum(value) << endl;
-
-    return value;
+    return polynomialsPtr_->evaluate(localCoords);
 }
 
 
@@ -335,111 +313,8 @@ const scalarField dgBase::gradEvaluate
     const vector localCoords
 ) const
 {
-    scalar lc = localCoords.component(vector::X);
-
-
-    scalarField value(length_, 0.0);
-    scalarField grad(length_, 0.0);
-
-    // First two are simple and base for the loop
-    value[0] = 1.0;
-    value[1] = lc;
-
-    grad[0] = 0.0;
-    grad[1] = 1.0;
-//    grad[1] = Foam::sqrt(3.0)/2;
-
-    // this should not overwrite 0 and 1
-    forAll(value, vI)
-    {
-        // vI = n - 1 (n used for notation in equations), but we start from
-        // third mode as first two are already defined
-        label i = vI + 2;
-
-        // Analytical form for calculating gradient of modes
-        if ((vI + 2) < value.size())
-        {
-            // Modes
-            value[i] =
-                1.0/(i)*((2.0*i-1)*lc*value[i-1]);// - (i-1)*value[i-2]);
-            // Gradient of modes
-            grad[i] =
-                1.0/(i)*((2.0*i-1)*(lc*grad[i-1] + value[i-1]) - (i-1)*grad[i-2]);
-//                3.0*Foam::sqrt(5.0)/2.0*lc;
-        }
-        else
-        {
-            // Do nothing
-        }
-    }
-
-//    Info << nl<<  "GSUM: " << gSum(value) << endl;
-
-    return grad;
+    return polynomialsPtr_->gradEvaluate(localCoords);
 }
-
-
-PtrList<scalarField> dgBase::wtdGaussEval()
-{
-    if (!gaussPtsEvalPtr_)
-    {
-        calcGaussPtsEval();
-    }
-
-    const scalarField& gaussWeights = this->gaussWeights();
-
-    const PtrList<scalarField>& gaussPts = *gaussPtsEvalPtr_;
-    PtrList<scalarField> wtdGaussPts = gaussPts;
-
-    // Go over all Gauss points for the whole mesh and add value*weight
-    forAll(gaussPts, ptI)
-    {
-        if (ptI < gaussPts.size() - 2)
-        {
-            // Zeroth entry is for coordinate -1
-            scalarField& wtdGPI = wtdGaussPts[ptI + 1];
-
-            forAll (wtdGPI, modI)
-            {
-                wtdGPI[modI] *= gaussWeights[ptI];
-            }
-        }
-    }
-
-    return wtdGaussPts;
-}
-
-
-PtrList<scalarField> dgBase::wtdGaussGradEval()
-{
-    if (!gaussPtsGradEvalPtr_)
-    {
-        calcGaussPtsGradEval();
-    }
-    const scalarField& gaussWeights = this->gaussWeights();
-
-    const PtrList<scalarField>& gaussPts = *gaussPtsGradEvalPtr_;
-    PtrList<scalarField> wtdGaussPts = gaussPts;
-
-    // Go over all Gauss points for the whole mesh and add value*weight
-    forAll(gaussPts, ptI)
-    {
-        if (ptI < gaussPts.size() - 2)
-        {
-            scalarField& wtdGPI = wtdGaussPts[ptI + 1];
-
-            forAll (wtdGPI, modI)
-            {
-                // Zeroth entry is for coordinate -1
-                wtdGPI[modI] *= gaussWeights[ptI];
-            }
-        }
-    }
-
-    return wtdGaussPts;
-}
-
-
 
 
 void dgBase::test()

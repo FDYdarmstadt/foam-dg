@@ -58,7 +58,9 @@ volumeIntegrate
 
     cellIntegralInt = dgScalar::zero;
 
-    scalarField cellIntInt = volumeIntegrate(vf.internalField());
+    // This should be handled in a nicer way
+    const dgMesh& dgMesh = vf.mesh();
+    scalarField cellIntInt = volumeIntegrate(vf.internalField(), dgMesh);
 
     dgScalarField dgsf (cellIntegralInt.size());
 
@@ -111,12 +113,12 @@ tmp<scalarField>//Field<Type> >
 volumeIntegrate
 (
     const Field<Type>& vf,
-    const polyMesh& mesh
+    const dgMesh& mesh
 )
 {
 //    const polyMesh& mesh = vf.mesh()();
     // Random constructor - should be considered!
-    dgBase polynomials(mesh);
+    const dgBase& polynomials = mesh.polynomials();
 
     // Local coordinates (reference element)
     scalarField gaussCoords = polynomials.gaussPoints();
@@ -177,8 +179,9 @@ volumeIntegrateGrad
 
     cellIntegralInt = dgScalar::zero;
 
+    const dgMesh& dgMesh = vf.mesh();
     const polyMesh& mesh = vf.mesh()();
-    scalarField cellIntInt = volumeIntegrateGrad(vf.internalField(), mesh);
+    scalarField cellIntInt = volumeIntegrateGrad(vf.internalField(), dgMesh);
 
     dgScalarField dgsf (cellIntegralInt.size());
 
@@ -231,12 +234,12 @@ tmp<scalarField>//Field<Type> >
 volumeIntegrateGrad
 (
     const Field<Type>& vf,
-    const polyMesh& mesh
+    const dgMesh& mesh
 )
 {
 //    const polyMesh& mesh = vf.mesh()();
     // Constructor - should be considered!
-    dgBase polynomials(mesh);
+    const dgBase& polynomials = mesh.polynomials();
 
     // Local coordinates (reference element)
     scalarField gaussCoords = polynomials.gaussPoints();
