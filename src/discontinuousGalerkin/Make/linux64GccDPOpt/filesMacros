@@ -1,3 +1,0 @@
-dgPatches = dgMesh/dgPatches
-dgPatchFields = fields/dgPatchFields
-LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin

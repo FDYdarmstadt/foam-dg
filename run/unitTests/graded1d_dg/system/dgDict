@@ -14,7 +14,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-quadratureRule quadrature;
+quadratureRule gaussQuadrature;
 quadratureOrder 3;
 
 polynomialOrder 2;

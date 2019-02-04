@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "quadratures.H"
+#include "gaussQuadrature.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -31,17 +31,17 @@ License
 namespace Foam
 {
 
-defineTypeNameAndDebug(quadratures, 0);
+defineTypeNameAndDebug(gaussQuadrature, 0);
 addToRunTimeSelectionTable
 (
     dgBase,
-    quadratures,
+    gaussQuadrature,
     dictionary
 );
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-void quadratures::setConstants()
+void gaussQuadrature::setConstants()
 {
 // The constants are set depending on the quadrature order
 
@@ -121,7 +121,7 @@ void quadratures::setConstants()
 }
 
 
-void quadratures::calcGaussPtsEval() const
+void gaussQuadrature::calcGaussPtsEval() const
 {
     // Local coordinates (reference element)
     const scalarField& gaussCoords = gaussPoints();
@@ -167,7 +167,7 @@ void quadratures::calcGaussPtsEval() const
 }
 
 
-void quadratures::calcGaussPtsGradEval() const
+void gaussQuadrature::calcGaussPtsGradEval() const
 {
     // Local coordinates (reference element)
     const scalarField& gaussCoords = gaussPoints();
@@ -214,7 +214,7 @@ void quadratures::calcGaussPtsGradEval() const
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-quadratures::quadratures
+gaussQuadrature::gaussQuadrature
 (
     const polyMesh& mesh,
     const label quadratureOrder
@@ -238,7 +238,7 @@ quadratures::quadratures
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-const PtrList<scalarField> quadratures::wtdGaussEval() const
+const PtrList<scalarField> gaussQuadrature::wtdGaussEval() const
 {
 Info<< "ENTER WTD GAUSS EVAL" << endl;
     if (!gaussPtsEvalPtr_)
@@ -272,7 +272,7 @@ Info<< "EXIT WTD GAUSS EVAL" << endl;
 }
 
 
-const PtrList<scalarField> quadratures::wtdGaussGradEval() const
+const PtrList<scalarField> gaussQuadrature::wtdGaussGradEval() const
 {
 Info<< "ENTER WTD GRAD GAUSS EVAL" << endl;
     if (!gaussPtsGradEvalPtr_)

@@ -2,7 +2,7 @@ primitives/dgScalar/dgScalar.C
 primitives/dgVector/dgVector.C
 primitives/dgBase/polynomials/dgPolynomials.C
 primitives/dgBase/dgBase.C
-primitives/dgBase/quadratures/quadratures.C
+primitives/dgBase/quadratures/gaussQuadrature.C
 
 dgMesh/dgMesh.C
 dgMesh/dgBoundaryMesh/dgBoundaryMesh.C

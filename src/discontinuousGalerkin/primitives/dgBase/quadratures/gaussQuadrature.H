@@ -22,7 +22,7 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::quadratures
+    Foam::gaussQuadrature
 
 Description
     Definition of quadrature rules
@@ -32,8 +32,8 @@ Author
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef quadratures_H
-#define quadratures_H
+#ifndef gaussQuadrature_H
+#define gaussQuadrature_H
 
 #include "dgBase.H"
 //#include "primitiveFields.H"
@@ -48,10 +48,10 @@ namespace Foam
 
 
 /*---------------------------------------------------------------------------*\
-                          Class quadratures Declaration
+                          Class gaussQuadrature Declaration
 \*---------------------------------------------------------------------------*/
 
-class quadratures
+class gaussQuadrature
 :
     public  dgBase
 {
@@ -90,12 +90,12 @@ protected:
 public:
 
     //- Runtime type information
-    TypeName("quadrature");
+    TypeName("gaussQuadrature");
 
     // Constructors
 
-        //- Construct from quadratures
-        quadratures
+        //- Construct from gaussQuadrature
+        gaussQuadrature
         (
             const polyMesh& mesh,
             const label quadratureOrder
