@@ -51,17 +51,21 @@ void gaussQuadrature::setConstants()
     }
     if (quadratureOrder_ == 1)
     {
-        gaussWeights_[0] = 5.0/9.0;
+        Info<< "Deploying first order quadrature rule." << endl;
 
-        gaussPoints_[0] = - sqrt(3.0/5.0);
+        gaussWeights_[0] = 2;
+
+        gaussPoints_[0] = 0;
     }
     if (quadratureOrder_ == 2)
     {
-        gaussWeights_[0] = 5.0/9.0;
-        gaussWeights_[1] = 8.0/9.0;
+        Info<< "Deploying second order quadrature rule." << endl;
 
-        gaussPoints_[0] = - sqrt(3.0/5.0);
-        gaussPoints_[1] = 0;
+        gaussWeights_[0] = 1.0;
+        gaussWeights_[1] = 1.0;
+
+        gaussPoints_[0] = sqrt(3.0/5.0);
+        gaussPoints_[1] = - sqrt(3.0/5.0);
     }
     if (quadratureOrder_ == 3)
     {
@@ -77,45 +81,53 @@ void gaussQuadrature::setConstants()
     }
     if (quadratureOrder_ == 4)
     {
-        gaussWeights_[0] = 5.0/9.0;
-        gaussWeights_[1] = 8.0/9.0;
-        gaussWeights_[2] = 5.0/9.0;
-        gaussWeights_[3] = 5.0/9.0;
+        Info<< "Deploying fourth order quadrature rule." << endl;
 
-        gaussPoints_[0] = - sqrt(3.0/5.0);
-        gaussPoints_[1] = 0;
-        gaussPoints_[2] = sqrt(3.0/5.0);
-        gaussPoints_[3] = sqrt(3.0/5.0);
+        gaussWeights_[0] = (18.0 + sqrt(30.0))/36.0;
+        gaussWeights_[1] = (18.0 + sqrt(30.0))/36.0;
+        gaussWeights_[2] = (18.0 - sqrt(30.0))/36.0;
+        gaussWeights_[3] = (18.0 - sqrt(30.0))/36.0;
+
+        gaussPoints_[0] = sqrt(3.0/7.0 - 2.0/7.0*sqrt(6.0/5.0));
+        gaussPoints_[1] = - sqrt(3.0/7.0 - 2.0/7.0*sqrt(6.0/5.0));
+        gaussPoints_[2] = sqrt(3.0/7.0 + 2.0/7.0*sqrt(6.0/5.0));
+        gaussPoints_[3] = - sqrt(3.0/7.0 + 2.0/7.0*sqrt(6.0/5.0));
     }
     if (quadratureOrder_ == 5)
     {
-        gaussWeights_[0] = 5.0/9.0;
-        gaussWeights_[1] = 8.0/9.0;
-        gaussWeights_[2] = 5.0/9.0;
-        gaussWeights_[3] = 5.0/9.0;
-        gaussWeights_[4] = 5.0/9.0;
+        Info<< "Deploying fifth order quadrature rule." << endl;
 
-        gaussPoints_[0] = - sqrt(3.0/5.0);
-        gaussPoints_[1] = 0;
-        gaussPoints_[2] = sqrt(3.0/5.0);
-        gaussPoints_[3] = sqrt(3.0/5.0);
-        gaussPoints_[4] = sqrt(3.0/5.0);
+        gaussWeights_[0] = (322.0 + 13.0*sqrt(70.0))/900.0;
+        gaussWeights_[1] = (322.0 + 13.0*sqrt(70.0))/900.0;
+        gaussWeights_[2] = 128.0/225.0;
+        gaussWeights_[3] = (322.0 - 13.0*sqrt(70.0))/900.0;
+        gaussWeights_[4] = (322.0 - 13.0*sqrt(70.0))/900.0;
+
+        gaussPoints_[0] = 1.0/3.0*sqrt(5.0 - 2.0*sqrt(10.0/7.0));
+        gaussPoints_[1] = - 1.0/3.0*sqrt(5.0 - 2.0*sqrt(10.0/7.0));
+        gaussPoints_[2] = 0;
+        gaussPoints_[3] = 1.0/3.0*sqrt(5.0 + 2.0*sqrt(10.0/7.0));
+        gaussPoints_[4] = - 1.0/3.0*sqrt(5.0 + 2.0*sqrt(10.0/7.0));
     }
-    if (quadratureOrder_ == 6)
+    if (quadratureOrder_ > 5)
     {
-        gaussWeights_[0] = 5.0/9.0;
-        gaussWeights_[1] = 8.0/9.0;
-        gaussWeights_[2] = 5.0/9.0;
-        gaussWeights_[3] = 5.0/9.0;
-        gaussWeights_[4] = 5.0/9.0;
-        gaussWeights_[5] = 5.0/9.0;
+        Info<< "Quadrature order higher than 5 not implemented." << endl;
 
-        gaussPoints_[0] = - sqrt(3.0/5.0);
-        gaussPoints_[1] = 0;
-        gaussPoints_[2] = sqrt(3.0/5.0);
-        gaussPoints_[3] = sqrt(3.0/5.0);
-        gaussPoints_[4] = sqrt(3.0/5.0);
-        gaussPoints_[5] = sqrt(3.0/5.0);
+//        Info<< "Deploying sixth order quadrature rule." << endl;
+//
+//        gaussWeights_[0] = 5.0/9.0;
+//        gaussWeights_[1] = 8.0/9.0;
+//        gaussWeights_[2] = 5.0/9.0;
+//        gaussWeights_[3] = 5.0/9.0;
+//        gaussWeights_[4] = 5.0/9.0;
+//        gaussWeights_[5] = 5.0/9.0;
+//
+//        gaussPoints_[0] = - sqrt(3.0/5.0);
+//        gaussPoints_[1] = 0;
+//        gaussPoints_[2] = sqrt(3.0/5.0);
+//        gaussPoints_[3] = sqrt(3.0/5.0);
+//        gaussPoints_[4] = sqrt(3.0/5.0);
+//        gaussPoints_[5] = sqrt(3.0/5.0);
     }
 
 }

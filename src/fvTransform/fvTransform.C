@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    dgPolynomials polynomials;
+    const dgBase& polynomials = dgMesh.polynomials();
 
     forAll (fvMesh.C(), cellI)
     {

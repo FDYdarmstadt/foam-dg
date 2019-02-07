@@ -42,3 +42,6 @@
     Info<< nl << "- - - - - - - - - - - -" << nl << nl
         << "Tvol: " << Tvol.internalField() << nl << endl;
 
+
+    Info<< "Test harness successfully finished." << endl;
+

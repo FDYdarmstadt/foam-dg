@@ -7,3 +7,4 @@ wmake testDg
 wmake testDgField
 
 wmake dgLaplacianFoam
+wmake fvTransform

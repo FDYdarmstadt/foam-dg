@@ -1,0 +1,202 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     3.2                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  | For copyright notice see file Copyright         |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default none;//Euler;
+}
+
+gradSchemes
+{
+    default         none;//Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+}
+
+laplacianSchemes
+{
+    default         SIPLaplacian;//Gauss linear corrected;
+}
+
+dgLaplacianSchemes
+{
+    default         SIPLaplacian;//Gauss linear corrected;
+    dgLaplacian(T)         SIPLaplacian;
+}
+
+interpolationSchemes
+{
+    default         none;//linear;
+}
+
+snGradSchemes
+{
+    default         none;//corrected;
+}
+
+fluxRequired
+{}
+
+// ************************************************************************* //
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     3.2                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  | For copyright notice see file Copyright         |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    T
+    {
+//         solver           smoothSolver;
+//         smoother         GaussSeidel;
+//         nSweeps          1;
+
+        solver           BiCGStab;
+        preconditioner   DILU;
+
+        minIter          1;
+        maxIter          1000;
+        tolerance        1e-10;
+        relTol           0;
+    }
+
+//     T
+//     {
+//         solver           PCG;
+//         preconditioner   DIC;
+
+//         minIter          1;
+//         maxIter          1000;
+//         tolerance        1e-08;
+//         relTol           0;
+//     }
+
+//     T
+//     {
+//         solver          GAMG;
+//         tolerance       1e-08;
+//         relTol          0;
+//         minIter 1;
+//         smoother        GaussSeidel;
+//         cacheAgglomeration true;
+//         nCellsInCoarsestLevel 10;
+//         agglomerator    faceAreaPair;
+//         mergeLevels     1;
+//     }
+}
+
+SIMPLE
+{}
+
+
+// ************************************************************************* //
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  | For copyright notice see file Copyright         |
+\*---------------------------------------------------------------------------*/
+Build  : 4.1-dace0ac19d1c
+Exec   : blockMesh
+Date   : Jan 24 2019
+Time   : 14:51:53
+Host   : "GUbuntu"
+PID    : 11364
+CtrlDict : "/home/gregor/foam/gregor-4.0/run/discontinuousGalerkin/foam/run/unitTests/graded1d_dg/system/controlDict"
+Case   : /home/gregor/foam/gregor-4.0/run/discontinuousGalerkin/foam/run/unitTests/graded1d_dg
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+allowSystemOperations : Disallowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+
+Creating block mesh from
+    "/home/gregor/foam/gregor-4.0/run/discontinuousGalerkin/foam/run/unitTests/graded1d_dg/constant/polyMesh/blockMeshDict"
+
+Creating curved edges
+Creating topology blocks
+Creating topology patches
+
+Reading patches section
+
+Creating block mesh topology
+
+Reading physicalType from existing boundary file
+
+Default patch type set to empty
+
+Check topology
+
+	Basic statistics
+		Number of internal faces : 0
+		Number of boundary faces : 6
+		Number of defined boundary faces : 6
+		Number of undefined boundary faces : 0
+	Checking patch -> block consistency
+
+Creating block offsets
+Creating merge list .
+
+Creating polyMesh from blockMesh
+Creating patches
+Creating cells
+Creating points with scale 1
+    Block 0 cell size :
+        i : 0.345049542 .. 0.690099084
+        j : 1 .. 1
+        k : 1 .. 1
+
+
+Adding cell zones
+    0	background
+
+Writing cell zones as cellSets
+
+Writing polyMesh
+----------------
+Mesh Information
+----------------
+  boundingBox: (0 0 0) (5 1 1)
+  nPoints: 44
+  nCells: 10
+  nFaces: 51
+  nInternalFaces: 9
+----------------
+Patches
+----------------
+  patch 0 (start: 9 size: 1) name: left
+  patch 1 (start: 10 size: 1) name: right
+  patch 2 (start: 11 size: 40) name: sides
+
+End
+
