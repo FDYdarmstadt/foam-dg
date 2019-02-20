@@ -181,7 +181,7 @@ public:
 
         label order() const
         {
-            return dgOrder::order;
+            return (length_ - 1);
         }
 
 

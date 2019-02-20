@@ -79,9 +79,9 @@ void SIPLaplacianScheme<Type, GType>::calcEta()
             cellSize[cellI] = cellPtBB.minDim();
         }
 
-        Info<< "Cell sizes: " << cellSize << endl;
-        Info<< "P: " << sqrP << endl;
-        Info<< "eta: " << sqrP/cellSize << endl;
+//        Info<< "Cell sizes: " << cellSize << endl;
+//        Info<< "P: " << sqrP << endl;
+//        Info<< "eta: " << sqrP/cellSize << endl;
 
         etaPtr_ = new scalarField(sqrP/cellSize);
 //        etaPtr_ = new scalarField(cellSize);
@@ -287,6 +287,8 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
     calcEta();
     scalarField& etaCells = *etaPtr_;
 
+//    scalarField etaCells = etaCellsa;
+//    etaCells = 1.0;
 //    scalar eta = 1.0;
 
     typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ds
@@ -482,8 +484,8 @@ Info << "DIAGONAL: " << ds[0] << endl;
     {
         const dgPatchField<Type>& pf = vf.boundaryField()[patchI];
 
-        FieldField<Field, scalar> vic = pf.valueInternalCoeffs();
-        tmp<dgScalarField> vbc = pf.valueBoundaryCoeffs();
+        FieldField<Field, scalar> vic = pf.valIntCoeffsLaplace();
+        tmp<dgScalarField> vbc = pf.valBouCoeffsLaplace();
 
 
         forAll(vbc(), cellI)

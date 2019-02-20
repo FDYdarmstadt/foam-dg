@@ -127,10 +127,10 @@ public:
 ////                const tmp<dgScalarField>&
 //            ) const;
 
-            virtual tmp<dgScalarField> valueBoundaryCoeffs
-            (
+//            virtual tmp<dgScalarField> valueBoundaryCoeffs
+//            (
 //                const tmp<dgScalarField>&
-            ) const;
+//            ) const;
 };
 
 

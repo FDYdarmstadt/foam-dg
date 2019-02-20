@@ -93,36 +93,36 @@ homogenousDgPatchField<Type>::homogenousDgPatchField
 //        new (this->size(), pTraits<dgScalar>::zero)
 //    );
 //}
-
-
-template<class Type>
-tmp<dgScalarField> homogenousDgPatchField<Type>::valueBoundaryCoeffs
-(
-//    const tmp<dgScalarField>& dsf
-) const
-{
-
-    const dgMesh& mesh = this->patch().boundaryMesh().mesh();
-
-    tmp<dgScalarField> tsourceCoeffs
-        (
-            new dgScalarField(mesh.size(), dgScalar(0.0))
-        );
-    dgScalarField& sourceCoeffs = tsourceCoeffs();
-
-    Field<Type> dsf = *this;
-
-    forAll (sourceCoeffs, faceI)
-    {
-        forAll (sourceCoeffs[faceI], modI)
-        {
-            // THIS SHOULD BE CHECKED - OK FOR ZEROGRADIENT
-            sourceCoeffs[faceI][modI] = 0.0;//mag(dsf[faceI][modI]);
-        }
-    }
-
-    return tsourceCoeffs;
-}
+//
+//
+//template<class Type>
+//tmp<dgScalarField> homogenousDgPatchField<Type>::valueBoundaryCoeffs
+//(
+////    const tmp<dgScalarField>& dsf
+//) const
+//{
+//
+//    const dgMesh& mesh = this->patch().boundaryMesh().mesh();
+//
+//    tmp<dgScalarField> tsourceCoeffs
+//        (
+//            new dgScalarField(mesh.size(), dgScalar(0.0))
+//        );
+//    dgScalarField& sourceCoeffs = tsourceCoeffs();
+//
+//    Field<Type> dsf = *this;
+//
+//    forAll (sourceCoeffs, faceI)
+//    {
+//        forAll (sourceCoeffs[faceI], modI)
+//        {
+//            // THIS SHOULD BE CHECKED - OK FOR ZEROGRADIENT
+//            sourceCoeffs[faceI][modI] = 0.0;//mag(dsf[faceI][modI]);
+//        }
+//    }
+//
+//    return tsourceCoeffs;
+//}
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

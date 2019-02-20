@@ -64,8 +64,8 @@ class dgSchemes
 //        dictionary interpolationSchemes_;
 //        ITstream defaultInterpolationScheme_;
 //
-//        dictionary divSchemes_;
-//        ITstream defaultDivScheme_;
+        dictionary dgDivSchemes_;
+        ITstream defaultDgDivScheme_;
 //
 //        dictionary gradSchemes_;
 //        ITstream defaultGradScheme_;
@@ -116,7 +116,7 @@ public:
 //
 //            ITstream& interpolationScheme(const word& name) const;
 //
-//            ITstream& divScheme(const word& name) const;
+            ITstream& dgDivScheme(const word& name) const;
 //
 //            ITstream& gradScheme(const word& name) const;
 //
@@ -149,11 +149,11 @@ public:
 //                return interpolationSchemes_;
 //            }
 //
-//            //- Return access to div schemes
-//            dictionary& divSchemes()
-//            {
-//                return divSchemes_;
-//            }
+            //- Return access to div schemes
+            dictionary& dgDivSchemes()
+            {
+                return dgDivSchemes_;
+            }
 //
 //            //- Return access to grad schemes
 //            dictionary& gradSchemes()

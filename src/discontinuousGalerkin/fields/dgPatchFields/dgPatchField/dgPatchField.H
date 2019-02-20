@@ -288,7 +288,7 @@ public:
             {}
 
 //            virtual tmp<dgScalarField> valueInternalCoeffs () const
-            virtual FieldField<Field, scalar> valueInternalCoeffs () const
+            virtual FieldField<Field, scalar> valIntCoeffsLaplace () const
             {
 //    Info << "DgPatchFIELD valueInCoeff not implemented." << endl;
 //                notImplemented
@@ -313,7 +313,7 @@ public:
                 return nullField;
             }
 
-            virtual tmp<dgScalarField> valueBoundaryCoeffs () const
+            virtual tmp<dgScalarField> valBouCoeffsLaplace () const
             {
 //                notImplemented
 //                (
@@ -323,6 +323,33 @@ public:
                 tmp<dgScalarField> nullField (new dgScalarField(0,dgScalar(0)));
                 return nullField;
             }
+
+            virtual FieldField<Field, scalar> valIntCoeffsDiv
+            (
+                const dgPatchField<dgVector>& dvf
+            ) const
+            {
+                scalar sqrtSize = polynomials().size();
+                sqrtSize *=sqrtSize;
+                Field<scalar> nF (sqrtSize, 0.0);
+
+                FieldField<Field, scalar> nullField
+                    (internalField_.mesh().size());
+
+                forAll (nullField, i)
+                {
+                    nullField.set(i, nF);
+                }
+
+                return nullField;
+            }
+
+            virtual tmp<dgScalarField> valBouCoeffsDiv () const
+            {
+                tmp<dgScalarField> nullField (new dgScalarField(0,dgScalar(0)));
+                return nullField;
+            }
+
 
         // I-O
 

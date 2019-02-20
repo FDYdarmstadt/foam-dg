@@ -228,7 +228,7 @@ dgBase::dgBase
         )
     ),
     polyMesh_(mesh),
-    length_(dgOrder::length),//dgOrder.length()),
+    length_(readLabel(lookup("polynomialOrder")) + 1),//dgOrder.length()),
     polynomialsPtr_(NULL)
 //    gaussWeights_(1, 0.0),
 //    gaussPoints_(1, 0.0),

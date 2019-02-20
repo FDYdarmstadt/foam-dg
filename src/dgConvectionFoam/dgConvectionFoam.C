@@ -21,37 +21,72 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Namespace
-    Foam::dgm
+Application
+    dgaplacianFoam
 
 Description
-    Namespace of functions to calculate implicit derivatives returning a
-    matrix.
+    Solves a Laplace equation using the Discontinuous Galerkin Method
 
-    Temporal derivatives are calculated using Euler-implicit, backward
-    differencing or Crank-Nicholson. Spatial derivatives are calculated
-    using Gauss' Theorem.
-
+Author
+    Hrvoje Jasak.  All rights reserved.
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef dgm_H
-#define dgm_H
+#include "dgCFD.H"
+#include "fvCFD.H"
+//#include "gaussQuadrature.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//#include "dgmDdt.H"
-//#include "dgmD2dt2.H"
+int main(int argc, char *argv[])
+{
+#   include "setRootCase.H"
 
-#include "dgmDiv.H"
+#   include "createTime.H"
+#   include "createPolyMesh.H"
+#   include "createDgMesh.H"
 
-//#include "dgmGrad.H"
-//#include "dgmAdjDiv.H"
-#include "dgmLaplacian.H"
-//#include "dgmSup.H"
+#   include "createFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#endif
+    Info<< "\nCalculating temperature distribution\n" << endl;
+
+
+    while(runTime < runTime.endTime())
+    {
+        runTime++;
+
+        Info<< "-----------Time = " << runTime.timeName() << nl << endl;
+
+        dgScalar aa(1);
+
+
+        Info<< "VECTOR CELL FIELD : " <<  U << endl;
+
+    dgScalarMatrix Te
+    (
+        dgm::dgLaplacian(T)
+      + dgm::dgDiv(U, T)
+    );
+
+
+    Te.solve();
+
+
+//         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+//             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+//             << nl << endl;
+//     }
+        runTime.write();
+
+
+#       include "infoOut.H"
+
+    }
+
+    return 0;
+}
+
 
 // ************************************************************************* //

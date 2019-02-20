@@ -142,12 +142,24 @@ public:
         // Evaluation functions
 
 //            virtual tmp<dgScalarField> valueInternalCoeffs
-            virtual FieldField<Field, scalar> valueInternalCoeffs
+            virtual FieldField<Field, scalar> valIntCoeffsLaplace
             (
 //                const tmp<dgScalarField>&
             ) const;
 
-            virtual tmp<dgScalarField> valueBoundaryCoeffs
+            virtual tmp<dgScalarField> valBouCoeffsLaplace
+            (
+//                const tmp<dgScalarField>&
+            ) const;
+
+
+//            virtual tmp<dgScalarField> valueInternalCoeffs
+            virtual FieldField<Field, scalar> valIntCoeffsDiv
+            (
+                const dgPatchField<dgVector>&
+            ) const;
+
+            virtual tmp<dgScalarField> valBouCoeffsDiv
             (
 //                const tmp<dgScalarField>&
             ) const;

@@ -21,37 +21,45 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Namespace
-    Foam::dgm
-
-Description
-    Namespace of functions to calculate implicit derivatives returning a
-    matrix.
-
-    Temporal derivatives are calculated using Euler-implicit, backward
-    differencing or Crank-Nicholson. Spatial derivatives are calculated
-    using Gauss' Theorem.
-
-
 \*---------------------------------------------------------------------------*/
 
-#ifndef dgm_H
-#define dgm_H
+#include "dgDivScheme.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//#include "dgmDdt.H"
-//#include "dgmD2dt2.H"
-
-#include "dgmDiv.H"
-
-//#include "dgmGrad.H"
-//#include "dgmAdjDiv.H"
-#include "dgmLaplacian.H"
-//#include "dgmSup.H"
+namespace Foam
+{
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#endif
+namespace dg
+{
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// Define the constructor function hash tables
+
+#define makedgDivGTypeScheme(Type, GType)                                 \
+    typedef dgDivScheme<Type, GType> dgDivScheme##Type##GType;        \
+    defineTemplateRunTimeSelectionTable(dgDivScheme##Type##GType, Istream);
+
+#define makedgDivScheme(Type)                                             \
+    makedgDivGTypeScheme(Type, scalar);
+//    makedgDivGTypeScheme(Type, dgScalar);
+
+makedgDivScheme(dgScalar);
+
+//makeLaplacianScheme(vector);
+//makeLaplacianScheme(sphericalTensor);
+//makeLaplacianScheme(symmTensor);
+//makeLaplacianScheme(diagTensor);
+//makeLaplacianScheme(tensor);
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace fv
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
 
 // ************************************************************************* //

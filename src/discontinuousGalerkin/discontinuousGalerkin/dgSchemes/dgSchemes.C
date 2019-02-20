@@ -45,8 +45,8 @@ void Foam::dgSchemes::clear()
 //    defaultD2dt2Scheme_.clear();
 //    interpolationSchemes_.clear();
 //    defaultInterpolationScheme_.clear();
-//    divSchemes_.clear(); // optional
-//    defaultDivScheme_.clear();
+    dgDivSchemes_.clear(); // optional
+    defaultDgDivScheme_.clear();
 //    gradSchemes_.clear(); // optional
 //    defaultGradScheme_.clear();
 //    snGradSchemes_.clear();
@@ -113,19 +113,19 @@ Foam::dgSchemes::dgSchemes(const objectRegistry& obr)
 //        interpolationSchemes_.name() + "::default",
 //        tokenList()
 //    ),
-//    divSchemes_
-//    (
-//        ITstream
-//        (
-//            objectPath() + "::divSchemes",
-//            tokenList()
-//        )()
-//    ),
-//    defaultDivScheme_
-//    (
-//        divSchemes_.name() + "::default",
-//        tokenList()
-//    ),
+    dgDivSchemes_
+    (
+        ITstream
+        (
+            objectPath() + "::dgDivSchemes",
+            tokenList()
+        )()
+    ),
+    defaultDgDivScheme_
+    (
+        dgDivSchemes_.name() + "::default",
+        tokenList()
+    ),
 //    gradSchemes_
 //    (
 //        ITstream
@@ -315,19 +315,19 @@ bool Foam::dgSchemes::read()
 //        }
 //
 //
-//        if (dict.found("divSchemes"))
-//        {
-//            divSchemes_ = dict.subDict("divSchemes");
-//        }
-//
-//        if
-//        (
-//            divSchemes_.found("default")
-//         && word(divSchemes_.lookup("default")) != "none"
-//        )
-//        {
-//            defaultDivScheme_ = divSchemes_.lookup("default");
-//        }
+        if (dict.found("dgDivSchemes"))
+        {
+            dgDivSchemes_ = dict.subDict("dgDivSchemes");
+        }
+
+        if
+        (
+            dgDivSchemes_.found("default")
+         && word(dgDivSchemes_.lookup("default")) != "none"
+        )
+        {
+            defaultDgDivScheme_ = dgDivSchemes_.lookup("default");
+        }
 //
 //        if (dict.found("gradSchemes"))
 //        {
@@ -475,23 +475,23 @@ const Foam::dictionary& Foam::dgSchemes::schemesDict() const
 //}
 //
 //
-//Foam::ITstream& Foam::dgSchemes::divScheme(const word& name) const
-//{
-//    if (debug)
-//    {
-//        Info<< "Lookup divScheme for " << name << endl;
-//    }
-//
-//    if (divSchemes_.found(name) || defaultDivScheme_.empty())
-//    {
-//        return divSchemes_.lookup(name);
-//    }
-//    else
-//    {
-//        const_cast<ITstream&>(defaultDivScheme_).rewind();
-//        return const_cast<ITstream&>(defaultDivScheme_);
-//    }
-//}
+Foam::ITstream& Foam::dgSchemes::dgDivScheme(const word& name) const
+{
+    if (debug)
+    {
+        Info<< "Lookup divScheme for " << name << endl;
+    }
+
+    if (dgDivSchemes_.found(name) || defaultDgDivScheme_.empty())
+    {
+        return dgDivSchemes_.lookup(name);
+    }
+    else
+    {
+        const_cast<ITstream&>(defaultDgDivScheme_).rewind();
+        return const_cast<ITstream&>(defaultDgDivScheme_);
+    }
+}
 //
 //
 //Foam::ITstream& Foam::dgSchemes::gradScheme(const word& name) const
@@ -591,8 +591,8 @@ bool Foam::dgSchemes::writeData(Ostream& os) const
 //    os << nl << "interpolationSchemes";
 //    interpolationSchemes_.write(os, true);
 //
-//    os << nl << "divSchemes";
-//    divSchemes_.write(os, true);
+    os << nl << "dgDivSchemes";
+    dgDivSchemes_.write(os, true);
 //
 //    os << nl << "gradSchemes";
 //    gradSchemes_.write(os, true);

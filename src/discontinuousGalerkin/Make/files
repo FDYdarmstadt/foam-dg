@@ -28,6 +28,8 @@ dgMatrices/dgMatrices.C
 discontinuousGalerkin/dg/dg.C
 discontinuousGalerkin/dgLaplacianScheme/dgLaplacianScheme/dgLaplacianSchemes.C
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.C
+discontinuousGalerkin/dgDivScheme/dgDivScheme/dgDivSchemes.C
+discontinuousGalerkin/dgDivScheme/localDivScheme/localDivSchemes.C
 
 
 LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin

@@ -21,37 +21,21 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Namespace
-    Foam::dgm
-
-Description
-    Namespace of functions to calculate implicit derivatives returning a
-    matrix.
-
-    Temporal derivatives are calculated using Euler-implicit, backward
-    differencing or Crank-Nicholson. Spatial derivatives are calculated
-    using Gauss' Theorem.
-
-
 \*---------------------------------------------------------------------------*/
 
-#ifndef dgm_H
-#define dgm_H
+#include "localDivScheme.H"
+#include "dgMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//#include "dgmDdt.H"
-//#include "dgmD2dt2.H"
+namespace Foam
+{
+namespace dg
+{
+    makeDivScheme(localDivScheme)
+}
+}
 
-#include "dgmDiv.H"
 
-//#include "dgmGrad.H"
-//#include "dgmAdjDiv.H"
-#include "dgmLaplacian.H"
-//#include "dgmSup.H"
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#endif
 
 // ************************************************************************* //
