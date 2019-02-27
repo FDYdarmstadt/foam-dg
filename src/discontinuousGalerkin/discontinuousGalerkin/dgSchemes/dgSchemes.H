@@ -55,8 +55,8 @@ class dgSchemes
 {
     // Private data
 
-//        dictionary ddtSchemes_;
-//        ITstream defaultDdtScheme_;
+        dictionary dgDdtSchemes_;
+        ITstream defaultDgDdtScheme_;
 //
 //        dictionary d2dt2Schemes_;
 //        ITstream defaultD2dt2Scheme_;
@@ -110,7 +110,7 @@ public:
 
             const dictionary& schemesDict() const;
 
-//            ITstream& ddtScheme(const word& name) const;
+            ITstream& dgDdtScheme(const word& name) const;
 //
 //            ITstream& d2dt2Scheme(const word& name) const;
 //
@@ -131,11 +131,11 @@ public:
 
         // Edit
 
-//            //- Return access to ddt schemes
-//            dictionary& ddtSchemes()
-//            {
-//                return ddtSchemes_;
-//            }
+            //- Return access to ddt schemes
+            dictionary& dgDdtSchemes()
+            {
+                return dgDdtSchemes_;
+            }
 //
 //            //- Return access to d2dt2 schemes
 //            dictionary& d2dt2Schemes()

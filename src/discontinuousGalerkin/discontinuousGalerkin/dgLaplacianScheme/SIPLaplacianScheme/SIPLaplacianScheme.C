@@ -265,7 +265,7 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
     const GeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
-    Info << "MATRIX CONSTRUCTOR: " << endl;
+//    Info << "MATRIX CONSTRUCTOR: " << endl;
 
     const dgMesh& mesh = this->mesh();
 
@@ -331,7 +331,7 @@ SIPLaplacianScheme<Type, GType>::dgmLaplacian
     }
 }
 
-Info << "DIAGONAL: " << ds[0] << endl;
+//Info << "DIAGONAL: " << ds[0] << endl;
 
 
     typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ls
@@ -507,10 +507,10 @@ Info << "DIAGONAL: " << ds[0] << endl;
     }
 
 
-    Info << "SIP OUT diag " << ds << nl << endl;
-    Info << "SIP OUT upper " << us << nl << endl;
-    Info << "SIP OUT lower " << ls << nl << endl;
-    Info << "SIP OUT source " << dgm.source() << endl;
+//    Info << "SIP OUT diag " << ds << nl << endl;
+//    Info << "SIP OUT upper " << us << nl << endl;
+//    Info << "SIP OUT lower " << ls << nl << endl;
+//    Info << "SIP OUT source " << dgm.source() << endl;
 
     return tdgm;
 }

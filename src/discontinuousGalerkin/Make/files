@@ -30,6 +30,8 @@ discontinuousGalerkin/dgLaplacianScheme/dgLaplacianScheme/dgLaplacianSchemes.C
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.C
 discontinuousGalerkin/dgDivScheme/dgDivScheme/dgDivSchemes.C
 discontinuousGalerkin/dgDivScheme/localDivScheme/localDivSchemes.C
+discontinuousGalerkin/dgDdtScheme/dgDdtScheme/dgDdtSchemes.C
+discontinuousGalerkin/dgDdtScheme/EulerDdtScheme/EulerDdtSchemes.C
 
 
 LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin

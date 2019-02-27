@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | foam-extend: Open Source CFD
-   \\    /   O peration     | Version:     4.0
+   \\    /   O peration     | Version:     4.1
     \\  /    A nd           | Web:         http://www.foam-extend.org
      \\/     M anipulation  | For copyright notice see file Copyright
 -------------------------------------------------------------------------------
@@ -21,37 +21,40 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Namespace
-    Foam::dgm
-
 Description
-    Namespace of functions to calculate implicit derivatives returning a
-    matrix.
-
-    Temporal derivatives are calculated using Euler-implicit, backward
-    differencing or Crank-Nicholson. Spatial derivatives are calculated
-    using Gauss' Theorem.
-
+    Abstract base class for finite volume calculus ddt schemes.
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef dgm_H
-#define dgm_H
+#include "dgDdtScheme.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "dgmDdt.H"
-//#include "dgmD2dt2.H"
-
-#include "dgmDiv.H"
-
-//#include "dgmGrad.H"
-//#include "dgmAdjDiv.H"
-#include "dgmLaplacian.H"
-//#include "dgmSup.H"
+namespace Foam
+{
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#endif
+namespace dg
+{
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// Define the constructor function hash tables
+
+defineTemplateRunTimeSelectionTable(dgDdtScheme<dgScalar>, Istream);
+//defineTemplateRunTimeSelectionTable(dgDdtScheme<dgVector>, Istream);
+//defineTemplateRunTimeSelectionTable(dgDdtScheme<dgSphericalTensor>, Istream);
+//defineTemplateRunTimeSelectionTable(dgDdtScheme<dgSymmTensor>, Istream);
+//defineTemplateRunTimeSelectionTable(dgDdtScheme<dgSymmTensor4thOrder>, Istream);
+//defineTemplateRunTimeSelectionTable(dgDdtScheme<dgDiagTensor>, Istream);
+//defineTemplateRunTimeSelectionTable(dgDdtScheme<dgTensor>, Istream);
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace fv
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
 
 // ************************************************************************* //

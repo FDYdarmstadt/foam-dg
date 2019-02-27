@@ -134,7 +134,7 @@ localDivScheme<Type, GType>::dgmDiv
 
     forAll(vvf.boundaryField(), i)
     {
-Info<< "- - - - - - - - - THIS IS THE VVF: " << vvf.boundaryField()[i] << endl;
+//Info<< "- - - - - - - - - THIS IS THE VVF: " << vvf.boundaryField()[i] << endl;
     }
 
 
@@ -218,7 +218,7 @@ Info<< "- - - - - - - - - THIS IS THE VVF: " << vvf.boundaryField()[i] << endl;
         }
     }
 
-    Info<< "MATRIX: " << ds << nl << endl;
+//    Info<< "MATRIX: " << ds << nl << endl;
 
 //    const scalarField& scaleCells = mesh.cellScaleCoeffs();
 //
@@ -327,22 +327,9 @@ Info<< "- - - - - - - - - THIS IS THE VVF: " << vvf.boundaryField()[i] << endl;
                     Anei[modJ] += -
                         vvf[nei][0][inner]*gradCoeffs[coeff][inner]
                         *scaleCells[nei];
-
-//    Info << "FOR ModI, ModJ, inner, own and nei: " << modI << ", "
-//         << modJ << ", "
-//         << inner << ", "
-//         << own << ", "
-//         << nei << ", "
-//         << vvf[own] << " and "
-//         << vvf[nei]
-//         << endl;
-
                 }
             }
         }
-
-
-Info << " A OWN AND A NEI: " << Aown << " AND " << Anei << endl;
 
 
         // For owner, calculate diag and off-diag contrib
@@ -360,9 +347,6 @@ Info << " A OWN AND A NEI: " << Aown << " AND " << Anei << endl;
                 diagCoeffNei[mtxCoeff] =
                     Anei[coeffJ]*polyEvalNei[coeffI]*Sf/2.0;
 
-//Info << " DIAG COEFF OWN: " << diagCoeffOwn << endl;
-//Info << " DIAG COEFF NEI: " << diagCoeffNei << endl;
-
 
                 // For cell owner
                 ds[own](coeffJ, coeffI) += diagCoeffOwn[mtxCoeff];
@@ -373,9 +357,6 @@ Info << " A OWN AND A NEI: " << Aown << " AND " << Anei << endl;
     }
 }
 
-Info << " USING VOL VECTOR FIELD : " << vvf << endl;
-
-    Info << "DIV OUT diag pre BC" << ds << nl << endl;
 
     forAll(mesh.mesh().boundaryMesh(), patchI)
     {
@@ -395,7 +376,6 @@ Info << " USING VOL VECTOR FIELD : " << vvf << endl;
                 forAll (vbc()[cellI], addrJ)
                 {
                     label addr = addrI*vbc()[cellI].size() + addrJ;
-//Info<< "ADDR: " << vic[cellI][addr] << endl;
 
 //                    ds[cellI](addrI, addrJ) += vic[cellI][addr];
                     ds[cellI](addrI, addrJ) -= vic[cellI][addr];
@@ -404,10 +384,8 @@ Info << " USING VOL VECTOR FIELD : " << vvf << endl;
         }
     }
 
-    Info << "DIV OUT diag " << ds << nl << endl;
-//    Info << "SIP OUT upper " << us << nl << endl;
-//    Info << "SIP OUT lower " << ls << nl << endl;
-    Info << "DIV OUT source " << dgm.source() << endl;
+//    Info << "DIV OUT diag " << ds << nl << endl;
+//    Info << "DIV OUT source " << dgm.source() << endl;
 
 
     return tdgm;

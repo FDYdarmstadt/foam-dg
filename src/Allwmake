@@ -8,4 +8,5 @@ wmake testDgField
 
 wmake dgLaplacianFoam
 wmake dgConvectionFoam
+wmake dgScalarTransport
 wmake fvTransform

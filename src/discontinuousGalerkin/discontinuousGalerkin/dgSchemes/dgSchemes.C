@@ -39,8 +39,8 @@ Foam::dgSchemes::debug
 
 void Foam::dgSchemes::clear()
 {
-//    ddtSchemes_.clear();
-//    defaultDdtScheme_.clear();
+    dgDdtSchemes_.clear();
+    defaultDgDdtScheme_.clear();
 //    d2dt2Schemes_.clear();
 //    defaultD2dt2Scheme_.clear();
 //    interpolationSchemes_.clear();
@@ -74,19 +74,19 @@ Foam::dgSchemes::dgSchemes(const objectRegistry& obr)
             IOobject::NO_WRITE
         )
     ),
-//    ddtSchemes_
-//    (
-//        ITstream
-//        (
-//            objectPath() + "::ddtSchemes",
-//            tokenList()
-//        )()
-//    ),
-//    defaultDdtScheme_
-//    (
-//        ddtSchemes_.name() + "::default",
-//        tokenList()
-//    ),
+    dgDdtSchemes_
+    (
+        ITstream
+        (
+            objectPath() + "::dgDdtSchemes",
+            tokenList()
+        )()
+    ),
+    defaultDgDdtScheme_
+    (
+        dgDdtSchemes_.name() + "::default",
+        tokenList()
+    ),
 //    d2dt2Schemes_
 //    (
 //        ITstream
@@ -197,59 +197,59 @@ bool Foam::dgSchemes::read()
         // Persistent settings across reads is incorrect
         clear();
 
-//        if (dict.found("ddtSchemes"))
-//        {
-//            ddtSchemes_ = dict.subDict("ddtSchemes");
-//        }
-//        else if (dict.found("timeScheme"))
-//        {
-//            // For backward compatibility.
-//            // The timeScheme will be deprecated with warning or removed
-//            WarningIn("dgSchemes::read()")
-//                << "Using deprecated 'timeScheme' instead of 'ddtSchemes'"
-//                << nl << endl;
-//
-//            word schemeName(dict.lookup("timeScheme"));
-//
-//            if (schemeName == "EulerImplicit")
-//            {
-//                schemeName = "Euler";
-//            }
-//            else if (schemeName == "BackwardDifferencing")
-//            {
-//                schemeName = "backward";
-//            }
-//            else if (schemeName == "SteadyState")
-//            {
-//                schemeName = "steadyState";
-//            }
-//            else
-//            {
-//                FatalIOErrorIn("dgSchemes::read()", dict.lookup("timeScheme"))
-//                    << "\n    Only EulerImplicit, BackwardDifferencing and "
-//                       "SteadyState\n    are supported by the old timeScheme "
-//                       "specification.\n    Please use ddtSchemes instead."
-//                    << exit(FatalIOError);
-//            }
-//
-//            ddtSchemes_.set("default", schemeName);
-//
-//            ddtSchemes_.lookup("default")[0].lineNumber() =
-//                dict.lookup("timeScheme").lineNumber();
-//        }
-//        else
-//        {
-//            ddtSchemes_.set("default", "none");
-//        }
-//
-//        if
-//        (
-//            ddtSchemes_.found("default")
-//         && word(ddtSchemes_.lookup("default")) != "none"
-//        )
-//        {
-//            defaultDdtScheme_ = ddtSchemes_.lookup("default");
-//        }
+        if (dict.found("dgDdtSchemes"))
+        {
+            dgDdtSchemes_ = dict.subDict("dgDdtSchemes");
+        }
+        else if (dict.found("timeScheme"))
+        {
+            // For backward compatibility.
+            // The timeScheme will be deprecated with warning or removed
+            WarningIn("dgSchemes::read()")
+                << "Using deprecated 'timeScheme' instead of 'dgDdtSchemes'"
+                << nl << endl;
+
+            word schemeName(dict.lookup("timeScheme"));
+
+            if (schemeName == "EulerImplicit")
+            {
+                schemeName = "Euler";
+            }
+            else if (schemeName == "BackwardDifferencing")
+            {
+                schemeName = "backward";
+            }
+            else if (schemeName == "SteadyState")
+            {
+                schemeName = "steadyState";
+            }
+            else
+            {
+                FatalIOErrorIn("dgSchemes::read()", dict.lookup("timeScheme"))
+                    << "\n    Only EulerImplicit, BackwardDifferencing and "
+                       "SteadyState\n    are supported by the old timeScheme "
+                       "specification.\n    Please use dgDdtSchemes instead."
+                    << exit(FatalIOError);
+            }
+
+            dgDdtSchemes_.set("default", schemeName);
+
+            dgDdtSchemes_.lookup("default")[0].lineNumber() =
+                dict.lookup("timeScheme").lineNumber();
+        }
+        else
+        {
+            dgDdtSchemes_.set("default", "none");
+        }
+
+        if
+        (
+            dgDdtSchemes_.found("default")
+         && word(dgDdtSchemes_.lookup("default")) != "none"
+        )
+        {
+            defaultDgDdtScheme_ = dgDdtSchemes_.lookup("default");
+        }
 //
 //
 //        if (dict.found("d2dt2Schemes"))
@@ -414,23 +414,23 @@ const Foam::dictionary& Foam::dgSchemes::schemesDict() const
 }
 
 
-//Foam::ITstream& Foam::dgSchemes::ddtScheme(const word& name) const
-//{
-//    if (debug)
-//    {
-//        Info<< "Lookup ddtScheme for " << name << endl;
-//    }
-//
-//    if (ddtSchemes_.found(name) || defaultDdtScheme_.empty())
-//    {
-//        return ddtSchemes_.lookup(name);
-//    }
-//    else
-//    {
-//        const_cast<ITstream&>(defaultDdtScheme_).rewind();
-//        return const_cast<ITstream&>(defaultDdtScheme_);
-//    }
-//}
+Foam::ITstream& Foam::dgSchemes::dgDdtScheme(const word& name) const
+{
+    if (debug)
+    {
+        Info<< "Lookup ddtScheme for " << name << endl;
+    }
+
+    if (dgDdtSchemes_.found(name) || defaultDgDdtScheme_.empty())
+    {
+        return dgDdtSchemes_.lookup(name);
+    }
+    else
+    {
+        const_cast<ITstream&>(defaultDgDdtScheme_).rewind();
+        return const_cast<ITstream&>(defaultDgDdtScheme_);
+    }
+}
 //
 //
 //Foam::ITstream& Foam::dgSchemes::d2dt2Scheme(const word& name) const
@@ -581,9 +581,9 @@ bool Foam::dgSchemes::fluxRequired(const word& name) const
 
 bool Foam::dgSchemes::writeData(Ostream& os) const
 {
-//    // Write dictionaries
-//    os << nl << "ddtSchemes";
-//    ddtSchemes_.write(os, true);
+    // Write dictionaries
+    os << nl << "dgDdtSchemes";
+    dgDdtSchemes_.write(os, true);
 //
 //    os << nl << "d2dt2Schemes";
 //    d2dt2Schemes_.write(os, true);

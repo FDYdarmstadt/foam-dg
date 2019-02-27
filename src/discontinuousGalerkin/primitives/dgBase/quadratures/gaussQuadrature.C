@@ -240,10 +240,7 @@ gaussQuadrature::gaussQuadrature
     gaussPtsEvalPtr_(NULL),//gaussPoints_.size()),
     gaussPtsGradEvalPtr_(NULL)//gaussPoints_.size())
 {
-    Info<< "QUADRATURE CONSTRUCTOR ENTERED" << endl;
-
     setConstants();
-    Info<< "QUADRATURE CONSTRUCTOR EXITED" << endl;
 }
 
 
@@ -252,7 +249,6 @@ gaussQuadrature::gaussQuadrature
 
 const PtrList<scalarField> gaussQuadrature::wtdGaussEval() const
 {
-Info<< "ENTER WTD GAUSS EVAL" << endl;
     if (!gaussPtsEvalPtr_)
     {
         calcGaussPtsEval();
@@ -278,7 +274,6 @@ Info<< "ENTER WTD GAUSS EVAL" << endl;
         }
     }
 
-Info<< "EXIT WTD GAUSS EVAL" << endl;
 
     return wtdGaussPts;
 }
@@ -286,19 +281,15 @@ Info<< "EXIT WTD GAUSS EVAL" << endl;
 
 const PtrList<scalarField> gaussQuadrature::wtdGaussGradEval() const
 {
-Info<< "ENTER WTD GRAD GAUSS EVAL" << endl;
     if (!gaussPtsGradEvalPtr_)
     {
         calcGaussPtsGradEval();
     }
-    Info<< "ONE" << endl;
     const scalarField& gaussWeights = this->gaussWeights();
 
-    Info<< "TWO" << endl;
     const PtrList<scalarField>& gaussPts = *gaussPtsGradEvalPtr_;
     PtrList<scalarField> wtdGaussPts = gaussPts;
 
-    Info<< "THREE" << endl;
     // Go over all Gauss points for the whole mesh and add value*weight
     forAll(gaussPts, ptI)
     {
@@ -313,7 +304,7 @@ Info<< "ENTER WTD GRAD GAUSS EVAL" << endl;
             }
         }
     }
-Info<< "EXIT WTD GRAD GAUSS EVAL" << endl;
+//Info<< "EXIT WTD GRAD GAUSS EVAL" << endl;
 
     return wtdGaussPts;
 }
