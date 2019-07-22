@@ -279,19 +279,68 @@ EulerDdtScheme<Type>::dgmDdt
 
     scalar rDeltaT = 1.0/mesh.time().deltaT().value();
 
-    dgm.diag() = rDeltaT*mesh.mesh().cellVolumes();///mesh.mesh().cellVolumes();
+//    label dim = mesh.polynomials().size();
+//    scalarList A(dim, 0.0);
 
-//Info << "DDT DIAG: " << dgm.diag() << endl;
+    dgScalar rDel(rDeltaT);
 
-    dgm.source() =
-    vf.oldTime().internalField();//*mesh.mesh().cellVolumes();
 
-//Info << "DDT SOURCE old time: " << dgm.source() << endl;
 
-    dgm.source() =
-    rDeltaT*vf.oldTime().internalField()*mesh.mesh().cellVolumes();
+    const dgBase& polynomials = mesh.polynomials();
 
-//Info << "DDT SOURCE NEW time: " << dgm.source() << endl;
+    const PtrList<scalarField>& polyEval = polynomials.gaussPtsEval();
+    const PtrList<scalarField>& polyEvalW = polynomials.wtdGaussEval();
+    const scalarField& scaleCells = mesh.cellScaleCoeffs();
+
+
+
+
+    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField&
+        ds = dgm.diag().asSquare();
+
+    forAll(vf, cellI)
+    {
+        forAll (polynomials, modJ)
+        {
+            forAll (polynomials, modI)
+            {
+                for (label ptI = 1; ptI < (polyEval.size() - 1); ptI++)
+                {
+                    ds[cellI](modJ, modI) +=
+                        rDeltaT*polyEval[ptI][modI]*polyEvalW[ptI][modJ]
+//                        *mesh.mesh().cellVolumes()[cellI];
+                      *scaleCells[cellI]/4;
+
+                    if (mag(ds[cellI](modJ, modI)) < SMALL)
+                    {
+                        ds[cellI](modJ, modI) = 0;
+                    }
+                }
+
+                dgm.source()[cellI][modJ] += ds[cellI](modJ, modI)
+                    *vf.oldTime().internalField()[cellI][modJ];
+
+            }
+        }
+    }
+
+
+//    forAll (vf, cellI)
+//    {
+//        forAll (A, coeffI)
+//        {
+//            forAll (A, coeffJ)
+//            {
+//                dgm.diag() =
+//                rDeltaT*mesh.mesh().cellVolumes();
+//            }
+//        }
+//    }
+
+
+
+//    dgm.source() = //rDel;
+//    rDeltaT*vf.oldTime().internalField()*mesh.mesh().cellVolumes();
 
 
     return tdgm;

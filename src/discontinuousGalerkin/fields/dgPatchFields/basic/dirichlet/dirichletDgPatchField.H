@@ -161,6 +161,7 @@ public:
 
             virtual tmp<dgScalarField> valBouCoeffsDiv
             (
+                const dgPatchField<dgVector>&
 //                const tmp<dgScalarField>&
             ) const;
 

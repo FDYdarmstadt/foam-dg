@@ -60,21 +60,20 @@ int main(int argc, char *argv[])
 
         Info<< "-----------Time = " << runTime.timeName() << nl << endl;
 
-        dgScalar aa(1);
-
-
 //        Info<< "VECTOR CELL FIELD : " <<  U << endl;
 
     dgScalarMatrix Te
     (
-        dgm::dgLaplacian(T)
-      + dgm::dgDiv(U, T)
-        +
-       dgm::dgDdt(T)
+        dgm::dgLaplacian(T)// +
+//       dgm::dgDiv(U, T)
+//    +
+//       dgm::dgDdt(T)
     );
 
-//Info << "MATRIX TE diag: " << Te.diag() << endl;
-//Info << "MATRIX TE sors: " << Te.source() << endl;
+Info << nl << nl << "SOLVER:"<< nl << "MATRIX TE diag: " << Te.diag() << nl << endl;
+Info << "MATRIX TE upper: " << Te.upper() << nl << endl;
+Info << "MATRIX TE lowa: " << Te.lower() << nl << endl;
+Info << "MATRIX TE sors: " << Te.source() << nl << endl;
 
     Te.solve();
 

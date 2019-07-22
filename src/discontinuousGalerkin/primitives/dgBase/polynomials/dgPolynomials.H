@@ -37,6 +37,8 @@ Author
 
 #include "dgOrder.H"
 #include "primitiveFields.H"
+#include "dgScalar.H"
+#include "dgVector.H"
 //#include "IOdictionary.H"
 //#include "polyMesh.H"
 //#include "dgMesh.H"
@@ -75,13 +77,25 @@ public:
     // Member functions
 
         //- Return vector of modes evaluated in local coordinates
-        const scalarField evaluate
+        scalarField evaluate
         (
             const vector localCoords
         ) const;
 
+        scalar evaluate
+        (
+            const dgScalar,
+            const vector localCoords
+        ) const;
+
+        vector evaluate
+        (
+            const dgVector,
+            const vector localCoords
+        ) const;
+
         //- Return vector of gradient of modes evaluated in local coordinates
-        const scalarField gradEvaluate
+        scalarField gradEvaluate
         (
             const vector localCoords
         ) const;
@@ -96,7 +110,7 @@ public:
 
         label order() const
         {
-            return dgOrder::order;
+            return length_;
         }
 
 };

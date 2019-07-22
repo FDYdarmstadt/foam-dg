@@ -329,6 +329,7 @@ public:
                 const dgPatchField<dgVector>& dvf
             ) const
             {
+Info<< " DG PATCH FIELD one in" << endl;
                 scalar sqrtSize = polynomials().size();
                 sqrtSize *=sqrtSize;
                 Field<scalar> nF (sqrtSize, 0.0);
@@ -341,12 +342,18 @@ public:
                     nullField.set(i, nF);
                 }
 
+Info<< " DG PATCH FIELD one out" << endl;
                 return nullField;
             }
 
-            virtual tmp<dgScalarField> valBouCoeffsDiv () const
+            virtual tmp<dgScalarField> valBouCoeffsDiv
+            (
+                const dgPatchField<dgVector>&
+            ) const
             {
+Info<< " DG PATCH FIELD two in" << endl;
                 tmp<dgScalarField> nullField (new dgScalarField(0,dgScalar(0)));
+Info<< " DG PATCH FIELD two out" << endl;
                 return nullField;
             }
 

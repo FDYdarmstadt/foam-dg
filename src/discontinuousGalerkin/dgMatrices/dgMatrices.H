@@ -22,7 +22,7 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    faMatrix
+    dgMatrix
 
 Description
     A special block matrix type for the Discontinuous Galerkin method
@@ -36,21 +36,147 @@ Description
 #include "dgFieldTypes.H"
 #include "VectorN.H"
 #include "TensorN.H"
-#include "dgMatrix.H"
+//#include "dgMatrix.H"
+#include "cellFields.H"
+#include "runTimeSelectionTables.H"
+
+#include "coeffFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
+//template<class Type>
+//class dgMatrices
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-typedef dgMatrix<dgScalar> dgScalarMatrix;
-typedef dgMatrix<dgVector> dgVectorMatrix;
+//template<class Type>
+class dgMatrices
+{
+
+    label blockSize_;
+
+
+public:
+
+//    typedef dgMatrices<Type> dgMatrixType;
+
+    TypeName("dgMatrices");
+
+
+    // Declare run-time New selection table
+
+        declareRunTimeSelectionTable
+        (
+            autoPtr,
+            dgMatrices,
+            dgMatrices, //Table name
+            (
+                const GeometricField<dgScalar, dgPatchField, cellMesh>& psi,
+                const dimensionSet& ds
+            ),
+            (psi, ds)
+        );
+
+
+    // Constructors
+
+        //- Construct from components
+        dgMatrices
+        (
+//            const GeometricField<Type, dgPatchField, cellMesh>&,
+//            const dimensionSet&
+        );
+
+        dgMatrices(const dgMatrices&);
+
+
+    // Selectors
+
+        //- Return a reference to the selected dgMatrix
+        static autoPtr<dgMatrices> New
+        (
+            const GeometricField<dgScalar, dgPatchField, cellMesh>&,
+            const dimensionSet&,
+            const int& blockSize
+        );
+
+    // Destructor
+
+        virtual ~dgMatrices()
+        {}
+
+
+};
+
+//typedef dgMatrix<dgScalar, 0> dgZeroScalarMatrix;
+//typedef dgMatrix<dgScalar, 1> dgOneScalarMatrix;
+//typedef dgMatrix<dgScalar, 2> dgTwoScalarMatrix;
+//typedef dgMatrix<dgScalar, 3> dgThreeScalarMatrix;
+//typedef dgMatrix<dgScalar, 4> dgFourScalarMatrix;
+//typedef dgMatrix<dgVector> dgVectorMatrix;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#ifndef NoRepository
+#   include "dgMatrices.C"
+#endif
+
+#define addToDgMatricesRunTimeSelection(DgTypeMatrix, typeDgTypeMatrix)       \
+                                                                              \
+addToRunTimeSelectionTable                                                    \
+(                                                                             \
+    DgTypeMatrix, typeDgTypeMatrix, dgMatrices                                \
+);                                                                            \
+
+
+#define makeDgTypeMatrixTypeName(type)                                        \
+defineNamedTemplateTypeNameAndDebug(type, 0);                                 \
+
+
+#define makeDgMatrixTypeName(type)                                            \
+                                                                              \
+makeDgTypeMatrixTypeName(dg##type##ScalarMatrix);
+
+
+#define makeDgTypeMatrix(DgTypeMatrix, typeDgTypeMatrix)                      \
+                                                                              \
+defineTypeNameAndDebug(typeDgTypeMatrix, 0);                                  \
+                                                                              \
+addToDgMatricesRunTimeSelection                                               \
+(                                                                             \
+    DgTypeMatrix, typeDgTypeMatrix                                            \
+);                                                                            \
+
+
+#define makeTemplateDgTypeMatrix(DgTypeMatrix, typeDgTypeMatrix)              \
+                                                                              \
+defineNamedTemplateTypeNameAndDebug(typeDgTypeMatrix, 0);                     \
+                                                                              \
+addToDgMatricesRunTimeSelection                                               \
+(                                                                             \
+    DgTypeMatrix, typeDgTypeMatrix                                            \
+);                                                                            \
+
+
+#define makeDgMatrices(type)                                                  \
+                                                                              \
+makeTemplateDgTypeMatrix(dgMatrices, dg##type##ScalarMatrix);             \
+
+
+#define makeDgTypeMatrixTypedefs(type, size)                                  \
+                                                                              \
+typedef dgMatrix<dgScalar, size> dg##type##ScalarMatrix;                      \
+
+
+
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

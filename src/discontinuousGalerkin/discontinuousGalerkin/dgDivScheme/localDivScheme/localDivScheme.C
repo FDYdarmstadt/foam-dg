@@ -123,20 +123,12 @@ template<class Type, class GType>
 tmp<dgMatrix<Type> >
 localDivScheme<Type, GType>::dgmDiv
 (
-//    const dimensionedScalar& gamma,
     const GeometricField<dgVector, dgPatchField, cellMesh>& vvf,
     const GeometricField<Type, dgPatchField, cellMesh>& vsf
 )
 {
     const dgMesh& mesh = this->mesh();
-    const dgBase& polynomials = mesh.polynomials();//(pMesh);
-
-
-    forAll(vvf.boundaryField(), i)
-    {
-//Info<< "- - - - - - - - - THIS IS THE VVF: " << vvf.boundaryField()[i] << endl;
-    }
-
+    const dgBase& polynomials = mesh.polynomials();
 
     tmp<dgMatrix<Type> > tdgm
     (
@@ -149,16 +141,13 @@ localDivScheme<Type, GType>::dgmDiv
     dgMatrix<Type>& dgm = tdgm();
 
     // Volume part
-
-    // Velocity times test function, x-dir only
-//    scalar A0 = vvf[0][0]*P[0]*P[0]
-
     label dim = polynomials.size();
 
-    scalarList A(dim, 0.0);
+//    scalarList A(dim, 0.0);
 
     // Check if this is weighted or unweighted
     const PtrList<scalarField>& polyEval = polynomials.gaussPtsEval();
+    const PtrList<scalarField>& polyEvalW = polynomials.wtdGaussEval();
     const PtrList<scalarField>& polyGEval = polynomials.wtdGaussGradEval();
     const scalarField& scaleCells = mesh.cellScaleCoeffs();
 
@@ -166,81 +155,96 @@ localDivScheme<Type, GType>::dgmDiv
         = dgm.diag().asSquare();
 
     Field<scalarField> gradCoeffs(ds[0].size(), scalarField(dim, 0.0));
-    scalarField coeffs(Type::coeffLength, 0.0);
+    Field<scalarField> surfaceCoeffsNeg(ds[0].size(), scalarField(dim, 0.0));
+    Field<scalarField> surfaceCoeffsPos(ds[0].size(), scalarField(dim, 0.0));
+    Field<scalarField> surfaceCoeffsCrssPos(ds[0].size(), scalarField(dim, 0.0));
+    Field<scalarField> surfaceCoeffsCrssNeg(ds[0].size(), scalarField(dim, 0.0));
+//    scalarField coeffs(, 0.0);
 
-    // Go over all Gaussian points for the whole mesh and add value*weight
-    forAll(coeffs, pti)
-    {
-        // Zeroth entry is for coordinate -1
-        label ptI = pti + 1;
 
-        forAll (coeffs, modJ)
-        {
-            forAll (coeffs, modI)
-            {
+    label lastPoint = polyEval.size() - 1;
 
-                label coeff = modJ*coeffs.size() + modI;
-
-//                gradCoeffs[coeff] += unwPolyEval[ptI][modI]*polyEval[ptI][modI];
-                scalarList vectorSize (3, 0.0);
-
-                forAll (vectorSize, inner)
-                {
-                    gradCoeffs[coeff][inner] = polyEval[ptI][modJ]
-                                              *polyEval[ptI][inner]
-                                              *polyGEval[ptI][modI];
-                }
-            }
-        }
-    }
-
+    scalarField velocityInt(vsf.size(),  0.0);
+    scalarField scalarInt(vsf.size(),  0.0);
 
     forAll(vsf, cellI)
     {
-        forAll(A, modJ)
+        for (label ptI = 1; ptI < (polyEval.size() - 1); ptI++)
         {
-            forAll(A, modI)
+            forAll (polynomials, modI)
             {
-                label coeff = modJ*coeffs.size() + modI;
-                scalarList vectorSize (3, 0.0);
+                velocityInt[cellI] +=
+                vvf[cellI][0][modI]*polyEvalW[ptI][modI]*scaleCells[cellI];
 
-                forAll(vectorSize, inner)
+                scalarInt[cellI] +=
+                vsf[cellI][modI]*polyEvalW[ptI][modI]*scaleCells[cellI];
+            }
+
+        }
+
+
+// Calculate velocity integral, velocity left and right edge
+    forAll (polynomials, modJ)
+    {
+        forAll (polynomials, modI)
+        {
+
+            label coeff = modJ*polynomials.size() + modI;
+
+            scalarList vectorSize (3, 0.0);
+
+                // Go over all Gaussian points for the whole mesh and add
+                for (label ptI = 1; ptI < (polyEval.size() - 1); ptI++)
                 {
-//                    Info<< "VVF CELLI " << cellI << ": " << vvf[cellI][0][inner] << endl;
+                    // Zeroth entry is for coordinate -1
+                    scalar velocity = 0.0;
 
-                    // Tako nesto...
-                    ds[cellI](modJ, modI) +=
-                        vvf[cellI][0][inner]*gradCoeffs[coeff][inner]
+                    forAll (vectorSize, inner)
+                    {
+                        velocity += vvf[cellI][0][inner]*polyEval[ptI][inner];
+                    }
+
+                    ds[cellI](modJ, modI) += -
+                       mag(velocity)*
+//                        velocityInt[cellI]*
+                        polyEval[ptI][modI]*polyGEval[ptI][modJ]
                         *scaleCells[cellI];
+
+//Info<< nl << "SEQUENTIAL DIAGONAL IS: " << ds[cellI] << nl
+//    << "ptI: " << ptI << ", modI: " << modI << ", polyEval: "
+//    <<  polyEval[ptI][modI] << ", grad: " << polyGEval[ptI][modJ]
+//    << endl;
                 }
-//Info << nl<< "DS CELL " << cellI << ", " << ds[cellI](modJ, modI) << nl<< endl;
+
+                if (mag(ds[cellI](modJ, modI)) < SMALL)
+                {
+                    ds[cellI](modJ, modI) = 0;
+                }
             }
         }
     }
 
-//    Info<< "MATRIX: " << ds << nl << endl;
 
-//    const scalarField& scaleCells = mesh.cellScaleCoeffs();
-//
-//    forAll (vf, cellI)
+Info << "DIV DIAGONAL IS: " << dgm.diag() << endl;
+
+//    forAll(vsf, cellI)
 //    {
-//        forAll (coeffs, modI)
+//        forAll(A, modJ)
 //        {
-//            forAll (coeffs, modJ)
+//            forAll(A, modI)
 //            {
-//                label coeff = modI*coeffs.size() + modJ;
-//
-//                ds[cellI](modI, modJ) =
-//                    gradCoeffs[coeff]*scaleCells[cellI];
+//                label coeff = modJ*coeffs.size() + modI;
+//                scalarList vectorSize (3, 0.0);
+//            }
+//        }
+//    }
 
 
+    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ls
+        = dgm.lower().asSquare();
 
-
-//    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ls
-//        = dgm.lower().asSquare();
-//
-//    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& us
-//        = dgm.upper().asSquare();
+    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& us
+        = dgm.upper().asSquare();
 
 {
     // Go over all faces, if nei exists it is an internal face - do:
@@ -263,6 +267,8 @@ localDivScheme<Type, GType>::dgmDiv
     // Go over all internal faces (only those that have nei)
     forAll (neiList, faceI)
     {
+        scalar velocityOwn = 0.0;
+        scalar velocityNei = 0.0;
 
         // Nei is -1 for boundary faces
         const label& own = mesh().faceOwner()[faceI];
@@ -270,21 +276,29 @@ localDivScheme<Type, GType>::dgmDiv
 
 
         // Matrix size
-        scalar mtxSize = Type::coeffLength;
+        label mtxSize = Type::coeffLength;
         mtxSize *= mtxSize;
 
         scalarField diagCoeffOwn(mtxSize, 0.0);
-//        scalarField offCoeffOwn(mtxSize, 0.0);
-
         scalarField diagCoeffNei(mtxSize, 0.0);
-//        scalarField offCoeffNei(mtxSize, 0.0);
+        scalarField diagCoeffOwnNei(mtxSize, 0.0);
+        scalarField diagCoeffNeiOwn(mtxSize, 0.0);
+
 
         scalar Sf = mag(faceSf[faceI]);
 
         label gaussPt = 0;
         label  gaussPtNei = gaussEdgeEval.size() - 1;
+        label ownCo = -1;
+        label neiCo = 1;
 
-        // Owner local coord = 1 on face
+
+        Field<scalarField>& surfaceCoeffsOwn = surfaceCoeffsNeg;
+        Field<scalarField>& surfaceCoeffsNei = surfaceCoeffsPos;
+        Field<scalarField>& surfaceCoeffsCrssOwn = surfaceCoeffsCrssPos;
+        Field<scalarField>& surfaceCoeffsCrssNei = surfaceCoeffsCrssNeg;
+
+        // Owner local coord = 1 on face1
         if
         (
             mesh().cellCentres()[own].component(vector::X)
@@ -293,83 +307,184 @@ localDivScheme<Type, GType>::dgmDiv
         {
             gaussPt = gaussEdgeEval.size() - 1;
             gaussPtNei = 0;
+            ownCo = 1;
+            neiCo = -1;
         }
         // Owner local coord = -1 on face
         else
         {
             gaussPt = 0;
             gaussPtNei = gaussEdgeEval.size() - 1;
+            surfaceCoeffsOwn = surfaceCoeffsPos;
+            surfaceCoeffsNei = surfaceCoeffsNeg;
+            surfaceCoeffsCrssOwn = surfaceCoeffsCrssNeg;
+            surfaceCoeffsCrssNei = surfaceCoeffsCrssPos;
         }
+
+        vector gaussPtVec (ownCo, 0, 0);
+        vector gaussPtVecNei (neiCo, 0, 0);
+        vector faceUOwn = polynomials.evaluate(vvf[own], gaussPtVec);
+        vector faceUNei = polynomials.evaluate(vvf[nei], gaussPtVecNei);
+
+Info << "GAUSS PTS OWN: " << gaussPtVec << ", NEI: " << gaussPtVecNei
+     << ", vel: " << faceUOwn << ", " << faceUNei << endl;
+
+        // Evaluate flux direction on the face, add contribution to according
+        // cell
+        scalar fluxDirOwn = faceSf[faceI] & faceUOwn;
+        scalar fluxDirNei = faceSf[faceI] & faceUNei;
+
+        scalar faceFlux = 0.5*(fluxDirOwn + fluxDirNei);
+        scalar uw = pos(faceFlux);
+
+Info << "FOR FACE " << faceI << ", velocity: " << faceFlux << ", uw: " << uw <<  endl;
 
         // This should be outside of loops
         const scalarField& polyEval = gaussEdgeEval[gaussPt];
         const scalarField& polyEvalNei = gaussEdgeEval[gaussPtNei];
-//        const scalarField& polyGEval = gaussGradEdgeEval[gaussPt];
-//        const scalarField& polyGEvalNei = gaussGradEdgeEval[gaussPtNei];
 
 
-        scalarList Aown(dim, 0.0);
-        scalarList Anei(dim, 0.0);
+        scalarList Aown(mtxSize, 0.0);
+        scalarList Anei(mtxSize, 0.0);
+        scalarList AownOffd(mtxSize, 0.0);
+        scalarList AneiOffd(mtxSize, 0.0);
 
-        forAll(A, modJ)
+
+
+        forAll(polynomials, modJ)
         {
-            forAll(A, modI)
-            {
-                label coeff = modJ*coeffs.size() + modI;
-                scalarList vectorSize (3, 0.0);
-
-                forAll(vectorSize, inner)
-                {
-                    Aown[modJ] +=
-                        vvf[own][0][inner]*gradCoeffs[coeff][inner]
-                        *scaleCells[own];
-
-                    Anei[modJ] += -
-                        vvf[nei][0][inner]*gradCoeffs[coeff][inner]
-                        *scaleCells[nei];
-                }
-            }
+            velocityOwn += vvf[own][0][modJ]*polyEval[modJ];
+            velocityNei += vvf[nei][0][modJ]*polyEvalNei[modJ];
         }
 
+        scalar w = pos(faceFlux);///2.0;
+
+        if (w < 1.0)
+        {
+            Info << "SET TO CENTRAL DIFFERENCE." << endl;
+        }
+        else
+        {
+            Info << "SET TO UPWIND." << endl;
+        }
+
+        forAll(polynomials, modJ)
+        {
+            forAll(polynomials, modI)
+            {
+                label coeff = modJ*polynomials.size() + modI;
+                scalarList vectorSize (3, 0.0);
+
+//                Aown[coeff] =
+//                (w)*faceFlux*polyEval[modJ]*polyEval[modI];
+//
+//                Anei[coeff] =
+//                - (1 - w)*faceFlux*polyEvalNei[modJ]*polyEvalNei[modI];
+
+
+
+                Aown[coeff] =
+                 (w)*faceFlux*polyEval[modJ]*polyEval[modI]/4;
+
+//                Anei[coeff] =
+//                (w)*faceFlux*polyEvalNei[modJ]*polyEvalNei[modI];
+
+                Anei[coeff] +=
+                - (1 - w)*faceFlux*polyEvalNei[modJ]*polyEvalNei[modI];
+
+
+//Info<<"COEFF: " << coeff << endl;
+//Info<< "OWN: " << Aown[coeff] << endl;
+//Info<< "NEI: " << Anei[coeff] << nl<< endl;
+                AownOffd[coeff] =
+//                (1 - w)*faceFlux*polyEvalNei[modJ]*polyEval[modI];
+                - (1 - w)*faceFlux*polyEvalNei[modJ]*polyEvalNei[modI];
+
+                AneiOffd[coeff] =
+                - (w)*faceFlux*polyEvalNei[modJ]*polyEval[modI]/4;
+            }
+        }
 
         // For owner, calculate diag and off-diag contrib
         forAll (polyEval, coeffJ)
         {
             forAll (polyEval, coeffI)
             {
-
                 label mtxCoeff = coeffJ*polyEval.size() + coeffI;
 
-                diagCoeffOwn[mtxCoeff] =
-                    Aown[coeffJ]*polyEval[coeffI]*Sf/2.0;
+                ds[own](coeffJ, coeffI) += Aown[mtxCoeff];
+                ds[nei](coeffJ, coeffI) += Anei[mtxCoeff];
+
+                ls[faceI](coeffJ, coeffI) += AneiOffd[mtxCoeff];
+                us[faceI](coeffJ, coeffI) += AownOffd[mtxCoeff];
+
+//Info << "A OWN PART: " << Aown[mtxCoeff] << ", CURFACE I: " << faceI << endl;
 
 
-                diagCoeffNei[mtxCoeff] =
-                    Anei[coeffJ]*polyEvalNei[coeffI]*Sf/2.0;
+//        if (faceI > (neiList.size() - 2))
+//        {
+////            Info << "FACE 5: " << faceI << ", nei is : " << nei << endl;
+//
+//            ds[nei](coeffJ, coeffI) += Aown[mtxCoeff];
+//        }
 
 
-                // For cell owner
-                ds[own](coeffJ, coeffI) += diagCoeffOwn[mtxCoeff];
-
-                ds[nei](coeffJ, coeffI) += diagCoeffNei[mtxCoeff];
             }
         }
+
+
+//Info << " DIAG COEFF OWN: " << diagCoeffOwn << nl << " DIAG COEFF NEI: "
+//    << diagCoeffNei << nl << endl;
+
     }
+
+Info << "DIV FACE DIAGONAL IS: " << dgm.diag() << nl << endl;
+
+//    forAll (neiList, faceI)
+//    {
+//        // Nei is -1 for boundary faces
+//        const label& own = mesh().faceOwner()[faceI];
+//        const label& nei = mesh().faceNeighbour()[faceI];
+//
+//        forAll (polynomials, coeffJ)
+//        {
+//            forAll (polynomials, coeffI)
+//            {
+//                ds[own](coeffJ, coeffI) = 0.0;
+//                ds[nei](coeffJ, coeffI) = 0.0;
+//            }
+//        }
+//    }
+
+
 }
 
+//    dgm.negSumDiag();
+//Info << "DIV DIAGONAL IS NEG SUM: " << dgm.diag() << nl << endl;
+
+//Info<< " SETTING BC's "<< 1/0 << endl;
 
     forAll(mesh.mesh().boundaryMesh(), patchI)
     {
+        if (!isA<emptyPolyPatch>(mesh.mesh().boundaryMesh()[patchI]))
+        {
         const dgPatchField<Type>& psf = vsf.boundaryField()[patchI];
         const dgPatchField<dgVector>& pvf = vvf.boundaryField()[patchI];
 
         FieldField<Field, scalar> vic = psf.valIntCoeffsDiv(pvf);
-        tmp<dgScalarField> vbc = psf.valBouCoeffsDiv();
+        tmp<dgScalarField> vbc = psf.valBouCoeffsDiv(pvf);
+
 
 
         forAll(ds, cellI)
         {
-//            dgm.source()[cellI] -= vbc()[cellI];
+            if (vbc().size())
+            {
+//        Info << " SOURCE PRIOR TO IMPLEMENTATION: " << vbc() <<  ", for patch: "
+//             << mesh.mesh().boundaryMesh()[patchI].name() << endl;
+
+                dgm.source()[cellI] -= vbc()[cellI];
+            }
 
             forAll (vbc()[cellI], addrI)
             {
@@ -377,15 +492,21 @@ localDivScheme<Type, GType>::dgmDiv
                 {
                     label addr = addrI*vbc()[cellI].size() + addrJ;
 
-//                    ds[cellI](addrI, addrJ) += vic[cellI][addr];
-                    ds[cellI](addrI, addrJ) -= vic[cellI][addr];
+
+//                    if (cellI < (ds.size()) - 1)
+                    {
+//                        Info << " BOUNDARY CELL NUMBRE: " << cellI << endl;
+
+                        ds[cellI](addrI, addrJ) -= vic[cellI][addr];
+                    }
                 }
             }
         }
+        }
     }
 
-//    Info << "DIV OUT diag " << ds << nl << endl;
-//    Info << "DIV OUT source " << dgm.source() << endl;
+    Info << "DIV OUT diag " << ds << nl << endl;
+    Info << "DIV OUT source " << dgm.source() << endl;
 
 
     return tdgm;

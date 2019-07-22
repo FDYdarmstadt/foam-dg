@@ -1,37 +1,38 @@
 primitives/dgScalar/dgScalar.C
-primitives/dgVector/dgVector.C
-primitives/dgBase/polynomials/dgPolynomials.C
-primitives/dgBase/dgBase.C
-primitives/dgBase/quadratures/gaussQuadrature.C
+awd=primitives/dgVector/dgVector.C
+awd=primitives/dgBase/polynomials/dgPolynomials.C
+awd=primitives/dgBase/dgBase.C
+awd=primitives/dgBase/quadratures/gaussQuadrature.C
 
-dgMesh/dgMesh.C
-dgMesh/dgBoundaryMesh/dgBoundaryMesh.C
-dgPatches = dgMesh/dgPatches
-$(dgPatches)/dgPatch/dgPatch.C
-$(dgPatches)/dgPatch/newDgPatch.C
-$(dgPatches)/basic/coupled/coupledDgPatch.C
-$(dgPatches)/constraint/empty/emptyDgPatch.C
-
-discontinuousGalerkin/dgSchemes/dgSchemes.C
-
-
-dgPatchFields = fields/dgPatchFields
-$(dgPatchFields)/dgPatchField/dgPatchFields.C
-$(dgPatchFields)/basic/homogenous/homogenousDgPatchFields.C
-$(dgPatchFields)/basic/dirichlet/dirichletDgPatchFields.C
-$(dgPatchFields)/constraint/empty/emptyDgPatchFields.C
-
-fields/cellFields/cellFields.C
-
-dgMatrices/dgMatrices.C
-
-discontinuousGalerkin/dg/dg.C
-discontinuousGalerkin/dgLaplacianScheme/dgLaplacianScheme/dgLaplacianSchemes.C
-discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.C
-discontinuousGalerkin/dgDivScheme/dgDivScheme/dgDivSchemes.C
-discontinuousGalerkin/dgDivScheme/localDivScheme/localDivSchemes.C
-discontinuousGalerkin/dgDdtScheme/dgDdtScheme/dgDdtSchemes.C
-discontinuousGalerkin/dgDdtScheme/EulerDdtScheme/EulerDdtSchemes.C
+awd=dgMesh/dgMesh.C
+awd=dgMesh/dgBoundaryMesh/dgBoundaryMesh.C
+awd=dgPatches = dgMesh/dgPatches
+awd=$(dgPatches)/dgPatch/dgPatch.C
+awd=$(dgPatches)/dgPatch/newDgPatch.C
+awd=$(dgPatches)/basic/coupled/coupledDgPatch.C
+awd=$(dgPatches)/constraint/empty/emptyDgPatch.C
+awd=
+awd=discontinuousGalerkin/dgSchemes/dgSchemes.C
+awd=
+awd=
+awd=dgPatchFields = fields/dgPatchFields
+awd=$(dgPatchFields)/dgPatchField/dgPatchFields.C
+awd=$(dgPatchFields)/basic/homogenous/homogenousDgPatchFields.C
+awd=$(dgPatchFields)/basic/dirichlet/dirichletDgPatchFields.C
+awd=$(dgPatchFields)/constraint/empty/emptyDgPatchFields.C
+awd=
+awd=fields/cellFields/cellFields.C
+awd=
+awd=dgMatrices/dgMatrices.C
+awd=dgMatrices/dgMatrix/dgMatrixSize.C
+awd=
+awd=discontinuousGalerkin/dg/dg.C
+awd=discontinuousGalerkin/dgLaplacianScheme/dgLaplacianScheme/dgLaplacianSchemes.C
+awd=discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.C
+awd=discontinuousGalerkin/dgDivScheme/dgDivScheme/dgDivSchemes.C
+awd=discontinuousGalerkin/dgDivScheme/localDivScheme/localDivSchemes.C
+awd=discontinuousGalerkin/dgDdtScheme/dgDdtScheme/dgDdtSchemes.C
+awd=discontinuousGalerkin/dgDdtScheme/EulerDdtScheme/EulerDdtSchemes.C
 
 
 LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin

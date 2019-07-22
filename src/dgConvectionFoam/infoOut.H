@@ -36,6 +36,7 @@
         forAll (polyEval, modI)
         {
             Tvol[cellI] += T[cellI][modI]*polyEval[modI];
+//                          *dgMesh.cellScaleCoeffs()[cellI];
         }
     }
 

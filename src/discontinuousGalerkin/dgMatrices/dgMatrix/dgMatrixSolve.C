@@ -28,9 +28,9 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-template<class Type>
-BlockSolverPerformance<VectorN<scalar, Type::coeffLength> >
-dgMatrix<Type>::solve(const dictionary& solverControls)
+template<class Type, int Size>
+BlockSolverPerformance<VectorN<scalar, Size> >
+dgMatrix<Type, Size>::solve(const dictionary& solverControls)
 {
     Info << "DG MATRIX SOLVE" << endl;
 
@@ -84,9 +84,9 @@ dgMatrix<Type>::solve(const dictionary& solverControls)
 }
 
 
-template<class Type>
-typename dgMatrix<Type>::SolverPerfType
-dgMatrix<Type>::dgSolver::solve()
+template<class Type, int Size>
+typename dgMatrix<Type, Size>::SolverPerfType
+dgMatrix<Type, Size>::dgSolver::solve()
 {
     return solve
     (
@@ -98,9 +98,9 @@ dgMatrix<Type>::dgSolver::solve()
 }
 
 
-template<class Type>
-typename dgMatrix<Type>::SolverPerfType
-dgMatrix<Type>::solve()
+template<class Type, int Size>
+typename dgMatrix<Type, Size>::SolverPerfType
+dgMatrix<Type, Size>::solve()
 {
     return solve
     (
@@ -113,8 +113,8 @@ dgMatrix<Type>::solve()
 
 
 // Return the matrix residual
-template<class Type>
-tmp<Field<Type> > dgMatrix<Type>::residual() const
+template<class Type, int Size>
+tmp<Field<Type> > dgMatrix<Type, Size>::residual() const
 {
     return MatrixType::residual(psi_, source_);
 }

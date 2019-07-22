@@ -38,11 +38,16 @@
         forAll (polyEval, modI)
         {
             Tvol[cellI] += T[cellI][modI]*polyEval[modI];
+//                          *dgMesh.cellScaleCoeffs()[cellI];
         }
     }
 
     Info<< nl << "- - - - - - - - - - - -" << nl << nl
         << "Tvol: " << Tvol.internalField() << nl << endl;
+
+    Info<< nl << "- - - - - - - - - - - -" << nl << nl
+        << "T: " << T.internalField() << nl << endl;
+
 
 
     Info<< "Test harness successfully finished." << endl;

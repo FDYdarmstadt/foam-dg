@@ -25,6 +25,8 @@ License
 
 #include "dgmLaplacian.H"
 #include "dgLaplacianScheme.H"
+#include "IOobjectList.H"
+#include "IOdictionary.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -46,22 +48,27 @@ dgLaplacian
     const word& name
 )
 {
-    const dimensionedScalar  Gamma ("Gamma", vf.dimensions(), 0.0);
+    IOdictionary dict
+    (
+        IOobject
+        (
+            "transportProperties",
+            vf.time().constant(),
+            vf.mesh()(),
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    );
 
-//    cellScalarField Gamma
-//    (
-//        IOobject
-//        (
-//            "1",
-//            vf.time().constant(),
-//            vf.mesh(),
-//            IOobject::MUST_READ
-////            IOobject::NO_WRITE
-//        ),
-////        vf
-//        vf.mesh()
-////        dimensionedDgScalar("1", dimless, 1.0)
-//    );
+    const dimensionedScalar  Gamma
+    (
+        "Gamma",
+        vf.dimensions(),
+        readScalar(dict.lookup("gamma"))
+    );
+
+
+
 
     return dgm::dgLaplacian(Gamma, vf, name);
 }

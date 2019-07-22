@@ -247,7 +247,7 @@ gaussQuadrature::gaussQuadrature
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-const PtrList<scalarField> gaussQuadrature::wtdGaussEval() const
+PtrList<scalarField> gaussQuadrature::wtdGaussEval() const
 {
     if (!gaussPtsEvalPtr_)
     {
@@ -279,7 +279,7 @@ const PtrList<scalarField> gaussQuadrature::wtdGaussEval() const
 }
 
 
-const PtrList<scalarField> gaussQuadrature::wtdGaussGradEval() const
+PtrList<scalarField> gaussQuadrature::wtdGaussGradEval() const
 {
     if (!gaussPtsGradEvalPtr_)
     {

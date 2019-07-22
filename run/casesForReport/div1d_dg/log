@@ -1,0 +1,601 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  | For copyright notice see file Copyright         |
+\*---------------------------------------------------------------------------*/
+Build  : 4.1-dace0ac19d1c
+Exec   : dgScalarTransport
+Date   : Apr 04 2019
+Time   : 12:42:01
+Host   : "GUbuntu"
+PID    : 8198
+CtrlDict : "/home/gregor/foam/gregor-4.0/run/discontinuousGalerkin/foam/run/dgDiv/div1d_dg/system/controlDict"
+Case   : /home/gregor/foam/gregor-4.0/run/discontinuousGalerkin/foam/run/dgDiv/div1d_dg
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+allowSystemOperations : Disallowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Create polyMesh for time = 0
+
+Create DG mesh for time = 0
+
+ NEW SELECTOR DGBASE 
+ Reading quadrature rule and order: 
+ Rule and order read in. Finding in iterator quadrature rule: 
+ Returning a constructor: 
+Deploying third order quadrature rule.
+
+    From function dgMesh::dgMesh(const polyMesh& pMesh)
+    in file dgMesh/dgMesh.C at line 86
+    Creating dgMesh from polyMesh
+Create mesh for time = 0
+
+Reading field T
+
+
+Calculating temperature distribution
+
+-----------Time = 1
+
+CONSTRUCT MATRIX
+DDT SOURCE NEW time: 10((0 0 0) (0 0 0) (0 0 0) (1 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0))
+CONSTRUCT MATRIX
+VELOCITY INT: 10(2.222222222 0 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(2.222222222 0 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(2.222222222 0 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(5.777777778 0 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(5.777777778 0 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(5.777777778 0 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 0 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 0 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 0 0 0 0 0 0 0 0 0)
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 2.469135802, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: 8.790123457, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0.8888888889, mod index: 1, 0
+VOLUME CEOFFS: 11.25925926, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: -1.912584368, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: -1.912584368, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0.8888888889, mod index: 1, 1
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: 0.987654321, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -2.172839506, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0.8888888889, mod index: 1, 2
+VOLUME CEOFFS: -1.185185185, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -5.737753105, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad -1.290994449, mod index: 2, 0
+VOLUME CEOFFS: -5.737753105, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 2, 0
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 1.290994449, mod index: 2, 0
+VOLUME CEOFFS: 4.444444444, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad -1.290994449, mod index: 2, 1
+VOLUME CEOFFS: 4.444444444, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 2, 1
+VOLUME CEOFFS: 8.888888889, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 1.290994449, mod index: 2, 1
+VOLUME CEOFFS: -2.295101242, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad -1.290994449, mod index: 2, 2
+VOLUME CEOFFS: -2.295101242, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 2, 2
+VOLUME CEOFFS: 0, last term: 10(8 0 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 1.290994449, mod index: 2, 2
+VELOCITY INT: 10(8 2.222222222 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 2.222222222 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 2.222222222 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 5.777777778 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 5.777777778 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 5.777777778 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 0 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 0 0 0 0 0 0 0 0)
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 2.469135802, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: 8.790123457, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0.8888888889, mod index: 1, 0
+VOLUME CEOFFS: 11.25925926, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0.8888888889, mod index: 1, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: 0.987654321, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -2.172839506, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0.8888888889, mod index: 1, 2
+VOLUME CEOFFS: -1.185185185, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad -1.290994449, mod index: 2, 0
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 2, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 1.290994449, mod index: 2, 0
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad -1.290994449, mod index: 2, 1
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 2, 1
+VOLUME CEOFFS: 8.888888889, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 1.290994449, mod index: 2, 1
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad -1.290994449, mod index: 2, 2
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 2, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 0 0 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 1.290994449, mod index: 2, 2
+VELOCITY INT: 10(8 8 2.222222222 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 2.222222222 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 2.222222222 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 5.777777778 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 5.777777778 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 5.777777778 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 0 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 0 0 0 0 0 0 0)
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 2.469135802, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: 8.790123457, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0.8888888889, mod index: 1, 0
+VOLUME CEOFFS: 11.25925926, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0.8888888889, mod index: 1, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: 0.987654321, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -2.172839506, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0.8888888889, mod index: 1, 2
+VOLUME CEOFFS: -1.185185185, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad -1.290994449, mod index: 2, 0
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 2, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 1.290994449, mod index: 2, 0
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad -1.290994449, mod index: 2, 1
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 2, 1
+VOLUME CEOFFS: 8.888888889, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 1.290994449, mod index: 2, 1
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad -1.290994449, mod index: 2, 2
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 2, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 0 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 1.290994449, mod index: 2, 2
+VELOCITY INT: 10(8 8 8 2.222222222 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 2.222222222 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 2.222222222 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 5.777777778 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 5.777777778 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 5.777777778 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 0 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 0 0 0 0 0 0)
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 2.469135802, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: 8.790123457, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0.8888888889, mod index: 1, 0
+VOLUME CEOFFS: 11.25925926, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0.8888888889, mod index: 1, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: 0.987654321, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -2.172839506, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0.8888888889, mod index: 1, 2
+VOLUME CEOFFS: -1.185185185, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad -1.290994449, mod index: 2, 0
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 2, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 1.290994449, mod index: 2, 0
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad -1.290994449, mod index: 2, 1
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 2, 1
+VOLUME CEOFFS: 8.888888889, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 1.290994449, mod index: 2, 1
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad -1.290994449, mod index: 2, 2
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 2, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 0 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 1.290994449, mod index: 2, 2
+VELOCITY INT: 10(8 8 8 8 2.222222222 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 2.222222222 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 2.222222222 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 5.777777778 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 5.777777778 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 5.777777778 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 0 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 0 0 0 0 0)
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 2.469135802, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: 8.790123457, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0.8888888889, mod index: 1, 0
+VOLUME CEOFFS: 11.25925926, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0.8888888889, mod index: 1, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: 0.987654321, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -2.172839506, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0.8888888889, mod index: 1, 2
+VOLUME CEOFFS: -1.185185185, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad -1.290994449, mod index: 2, 0
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 2, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 1.290994449, mod index: 2, 0
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad -1.290994449, mod index: 2, 1
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 2, 1
+VOLUME CEOFFS: 8.888888889, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 1.290994449, mod index: 2, 1
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad -1.290994449, mod index: 2, 2
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 2, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 0 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 1.290994449, mod index: 2, 2
+VELOCITY INT: 10(8 8 8 8 8 2.222222222 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 2.222222222 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 2.222222222 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 5.777777778 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 5.777777778 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 5.777777778 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 0 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 0 0 0 0)
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 2.469135802, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: 8.790123457, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0.8888888889, mod index: 1, 0
+VOLUME CEOFFS: 11.25925926, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0.8888888889, mod index: 1, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: 0.987654321, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -2.172839506, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0.8888888889, mod index: 1, 2
+VOLUME CEOFFS: -1.185185185, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad -1.290994449, mod index: 2, 0
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 2, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 1.290994449, mod index: 2, 0
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad -1.290994449, mod index: 2, 1
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 2, 1
+VOLUME CEOFFS: 8.888888889, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 1.290994449, mod index: 2, 1
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad -1.290994449, mod index: 2, 2
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 2, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 0 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 1.290994449, mod index: 2, 2
+VELOCITY INT: 10(8 8 8 8 8 8 2.222222222 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 2.222222222 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 2.222222222 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 5.777777778 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 5.777777778 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 5.777777778 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 0 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 0 0 0)
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 2.469135802, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: 8.790123457, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0.8888888889, mod index: 1, 0
+VOLUME CEOFFS: 11.25925926, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 1, weighter poly: 0, weightedGrad 0.8888888889, mod index: 1, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: 0.987654321, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -2.172839506, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0.8888888889, mod index: 1, 2
+VOLUME CEOFFS: -1.185185185, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad -1.290994449, mod index: 2, 0
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 2, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 1.290994449, mod index: 2, 0
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad -1.290994449, mod index: 2, 1
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 2, 1
+VOLUME CEOFFS: 8.888888889, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 1.290994449, mod index: 2, 1
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad -1.290994449, mod index: 2, 2
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 2, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 0 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 1.290994449, mod index: 2, 2
+VELOCITY INT: 10(8 8 8 8 8 8 8 2.222222222 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 2.222222222 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 2.222222222 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 5.777777778 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 5.777777778 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 5.777777778 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 0 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 0 0)
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 2.469135802, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: 8.790123457, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0.8888888889, mod index: 1, 0
+VOLUME CEOFFS: 11.25925926, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 1, weighter poly: 0, weightedGrad 0.8888888889, mod index: 1, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: 0.987654321, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -2.172839506, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0.8888888889, mod index: 1, 2
+VOLUME CEOFFS: -1.185185185, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 0, weighter poly: 0.5555555556, weightedGrad -1.290994449, mod index: 2, 0
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 2, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 2, weighter poly: 0.5555555556, weightedGrad 1.290994449, mod index: 2, 0
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 0, weighter poly: -0.4303314829, weightedGrad -1.290994449, mod index: 2, 1
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 2, 1
+VOLUME CEOFFS: 8.888888889, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 2, weighter poly: 0.4303314829, weightedGrad 1.290994449, mod index: 2, 1
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 0, weighter poly: 0.2222222222, weightedGrad -1.290994449, mod index: 2, 2
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 2, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 0 0), point: 2, weighter poly: 0.2222222222, weightedGrad 1.290994449, mod index: 2, 2
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 2.222222222 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 2.222222222 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 2.222222222 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 5.777777778 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 5.777777778 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 5.777777778 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 8 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 8 0)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 8 0)
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 2.469135802, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 0, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: 8.790123457, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0.8888888889, mod index: 1, 0
+VOLUME CEOFFS: 11.25925926, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 2, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 0, weighter poly: -0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: -1.912584368, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 1, weighter poly: 0, weightedGrad 0.8888888889, mod index: 1, 1
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 2, weighter poly: 0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: 0.987654321, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 0, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -2.172839506, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0.8888888889, mod index: 1, 2
+VOLUME CEOFFS: -1.185185185, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 2, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 0, weighter poly: 0.5555555556, weightedGrad -1.290994449, mod index: 2, 0
+VOLUME CEOFFS: -5.737753105, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 2, 0
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 2, weighter poly: 0.5555555556, weightedGrad 1.290994449, mod index: 2, 0
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 0, weighter poly: -0.4303314829, weightedGrad -1.290994449, mod index: 2, 1
+VOLUME CEOFFS: 4.444444444, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 1, weighter poly: 0, weightedGrad 0, mod index: 2, 1
+VOLUME CEOFFS: 8.888888889, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 2, weighter poly: 0.4303314829, weightedGrad 1.290994449, mod index: 2, 1
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 0, weighter poly: 0.2222222222, weightedGrad -1.290994449, mod index: 2, 2
+VOLUME CEOFFS: -2.295101242, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 2, 2
+VOLUME CEOFFS: 0, last term: 10(8 8 8 8 8 8 8 8 8 0), point: 2, weighter poly: 0.2222222222, weightedGrad 1.290994449, mod index: 2, 2
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 8 2.222222222)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 8 2.222222222)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 8 2.222222222)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 8 5.777777778)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 8 5.777777778)
+VELOCITY INT: 10(8 8 8 8 8 8 8 8 8 5.777777778)
+VELOCITY INT: 10{8}
+VELOCITY INT: 10{8}
+VELOCITY INT: 10{8}
+VOLUME CEOFFS: 0, last term: 10{8}, point: 0, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10{8}, point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10{8}, point: 2, weighter poly: 0.5555555556, weightedGrad 0, mod index: 0, 0
+VOLUME CEOFFS: 0, last term: 10{8}, point: 0, weighter poly: -0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10{8}, point: 1, weighter poly: 0, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10{8}, point: 2, weighter poly: 0.4303314829, weightedGrad 0, mod index: 0, 1
+VOLUME CEOFFS: 0, last term: 10{8}, point: 0, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10{8}, point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 0, last term: 10{8}, point: 2, weighter poly: 0.2222222222, weightedGrad 0, mod index: 0, 2
+VOLUME CEOFFS: 2.469135802, last term: 10{8}, point: 0, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: 8.790123457, last term: 10{8}, point: 1, weighter poly: 0.8888888889, weightedGrad 0.8888888889, mod index: 1, 0
+VOLUME CEOFFS: 11.25925926, last term: 10{8}, point: 2, weighter poly: 0.5555555556, weightedGrad 0.5555555556, mod index: 1, 0
+VOLUME CEOFFS: -1.912584368, last term: 10{8}, point: 0, weighter poly: -0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: -1.912584368, last term: 10{8}, point: 1, weighter poly: 0, weightedGrad 0.8888888889, mod index: 1, 1
+VOLUME CEOFFS: 0, last term: 10{8}, point: 2, weighter poly: 0.4303314829, weightedGrad 0.5555555556, mod index: 1, 1
+VOLUME CEOFFS: 0.987654321, last term: 10{8}, point: 0, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -2.172839506, last term: 10{8}, point: 1, weighter poly: -0.4444444444, weightedGrad 0.8888888889, mod index: 1, 2
+VOLUME CEOFFS: -1.185185185, last term: 10{8}, point: 2, weighter poly: 0.2222222222, weightedGrad 0.5555555556, mod index: 1, 2
+VOLUME CEOFFS: -5.737753105, last term: 10{8}, point: 0, weighter poly: 0.5555555556, weightedGrad -1.290994449, mod index: 2, 0
+VOLUME CEOFFS: -5.737753105, last term: 10{8}, point: 1, weighter poly: 0.8888888889, weightedGrad 0, mod index: 2, 0
+VOLUME CEOFFS: 0, last term: 10{8}, point: 2, weighter poly: 0.5555555556, weightedGrad 1.290994449, mod index: 2, 0
+VOLUME CEOFFS: 4.444444444, last term: 10{8}, point: 0, weighter poly: -0.4303314829, weightedGrad -1.290994449, mod index: 2, 1
+VOLUME CEOFFS: 4.444444444, last term: 10{8}, point: 1, weighter poly: 0, weightedGrad 0, mod index: 2, 1
+VOLUME CEOFFS: 8.888888889, last term: 10{8}, point: 2, weighter poly: 0.4303314829, weightedGrad 1.290994449, mod index: 2, 1
+VOLUME CEOFFS: -2.295101242, last term: 10{8}, point: 0, weighter poly: 0.2222222222, weightedGrad -1.290994449, mod index: 2, 2
+VOLUME CEOFFS: -2.295101242, last term: 10{8}, point: 1, weighter poly: -0.4444444444, weightedGrad 0, mod index: 2, 2
+VOLUME CEOFFS: 0, last term: 10{8}, point: 2, weighter poly: 0.2222222222, weightedGrad 1.290994449, mod index: 2, 2
+CELL DIAG: 0, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 0, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 0, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 0, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 0, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 0, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 0, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 0, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 0, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 1, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 1, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 1, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 1, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 1, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 1, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 1, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 1, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 1, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 2, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 2, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 2, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 2, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 2, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 2, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 2, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 2, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 2, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 3, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 3, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 3, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 3, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 3, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 3, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 3, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 3, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 3, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 4, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 4, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 4, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 4, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 4, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 4, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 4, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 4, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 4, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 5, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 5, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 5, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 5, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 5, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 5, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 5, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 5, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 5, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 6, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 6, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 6, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 6, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 6, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 6, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 6, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 6, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 6, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 7, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 7, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 7, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 7, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 7, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 7, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 7, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 7, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 7, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 8, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 8, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 8, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 8, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 8, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 8, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 8, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 8, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 8, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 9, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 9, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 9, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 9, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 9, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 9, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 9, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 9, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+CELL DIAG: 9, is: (0 0 0 -16 0 -4.440892099e-16 0 -16 0)
+FOR FACE 0, velocity: (1 0 0), and flux own: 1, flux nei: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+ CELL: 0, vec: 1 and cell: 1, vec: 1, surface Coeff own: 9{0.5} and surfaceCoeff nei: :9(0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5)
+FOR FACE 1, velocity: (1 0 0), and flux own: 1, flux nei: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+ CELL: 1, vec: 1 and cell: 2, vec: 1, surface Coeff own: 9{0.5} and surfaceCoeff nei: :9(0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5)
+FOR FACE 2, velocity: (1 0 0), and flux own: 1, flux nei: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+ CELL: 2, vec: 1 and cell: 3, vec: 1, surface Coeff own: 9{0.5} and surfaceCoeff nei: :9(0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5)
+FOR FACE 3, velocity: (1 0 0), and flux own: 1, flux nei: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+ CELL: 3, vec: 1 and cell: 4, vec: 1, surface Coeff own: 9{0.5} and surfaceCoeff nei: :9(0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5)
+FOR FACE 4, velocity: (1 0 0), and flux own: 1, flux nei: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+ CELL: 4, vec: 1 and cell: 5, vec: 1, surface Coeff own: 9{0.5} and surfaceCoeff nei: :9(0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5)
+FOR FACE 5, velocity: (1 0 0), and flux own: 1, flux nei: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+ CELL: 5, vec: 1 and cell: 6, vec: 1, surface Coeff own: 9{0.5} and surfaceCoeff nei: :9(0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5)
+FOR FACE 6, velocity: (1 0 0), and flux own: 1, flux nei: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+ CELL: 6, vec: 1 and cell: 7, vec: 1, surface Coeff own: 9{0.5} and surfaceCoeff nei: :9(0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5)
+FOR FACE 7, velocity: (1 0 0), and flux own: 1, flux nei: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+ CELL: 7, vec: 1 and cell: 8, vec: 1, surface Coeff own: 9{0.5} and surfaceCoeff nei: :9(0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5)
+FOR FACE 8, velocity: (1 0 0), and flux own: 1, flux nei: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+VELOCITY OWN: 1
+VELOCITY NEI: 1
+ CELL: 8, vec: 1 and cell: 9, vec: 1, surface Coeff own: 9{0.5} and surfaceCoeff nei: :9(0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5 -0.5 0.5)
+ SETTING BC's
+ DG PATCH FIELD one in
+ DG PATCH FIELD one out
+ DG PATCH FIELD two in
+ DG PATCH FIELD two out
+ DG PATCH FIELD one in
+ DG PATCH FIELD one out
+ DG PATCH FIELD two in
+ DG PATCH FIELD two out
+DIV OUT diag 10{(0 0 0 -16 0 -4.440892099e-16 0 -16 0)}
+
+DIV OUT source 10{(0 0 0)}
+MATRIX TE diag: square
+10{(0.5 0.5 0.5 -15.5 0.5 0.5 0.5 -15.5 0.5)}
+
+MATRIX TE upper: square
+9{(0 0 0 0 0 0 0 0 0)}
+
+MATRIX TE lowa: square
+9{(0 0 0 0 0 0 0 0 0)}
+
+MATRIX TE sors: 10((0 0 0) (0 0 0) (0 0 0) (1 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0))
+
+DG MATRIX SOLVE
+BiCGStab:  Solving for T, Initial residual = (0 0.3562538537 0.0114920598), Final residual = (0 4.532818347e-33 1.416505734e-34), No Iterations 1
+SOLVER OUT
+
+- - - - - - - - - - - -
+
+Tvol: 10(0 0 0 -0.875 0 0 0 0 0 0)
+
+Test harness successfully finished.

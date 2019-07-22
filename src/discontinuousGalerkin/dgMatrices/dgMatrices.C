@@ -32,8 +32,102 @@ namespace Foam
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
-defineTemplateTypeNameAndDebug(dgScalarMatrix, 0);
+//defineTemplateTypeNameAndDebug(dgZeroScalarMatrix, 0);
+//defineTemplateTypeNameAndDebug(dgOneScalarMatrix, 0);
+//defineTemplateTypeNameAndDebug(dgTwoScalarMatrix, 0);
+//defineTemplateTypeNameAndDebug(dgThreeScalarMatrix, 0);
+//defineTemplateTypeNameAndDebug(dgFourScalarMatrix, 0);
+
+
 //BUG!! defineTemplateTypeNameAndDebug(dgVectorMatrix, 0);
+
+//defineRunTimeSelectionTable(dgMatrixType, dgMatrixType);
+
+
+//typedef dgMatrices<Type> dgMatrixType;
+
+//template<class Type>
+defineRunTimeSelectionTable(dgMatrices, dgMatrices);
+
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+//template<class Type>
+//dgMatrices<Type>::dgMatrices
+dgMatrices::dgMatrices
+(
+//    const GeometricField<Type, dgPatchField, cellMesh>& psi,
+//    const dimensionSet& ds
+)
+:
+    blockSize_(0)
+{}
+
+
+//template<class Type>
+//dgMatrices<Type>::dgMatrices(const dgMatrices<Type>& dgm)
+dgMatrices::dgMatrices(const dgMatrices& dgm)
+:
+    blockSize_(0)
+{}
+
+
+
+// * * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * //
+
+//template<class Type>
+//autoPtr<dgMatrices<Type> > dgMatrices<Type>::New
+autoPtr<dgMatrices> dgMatrices::New
+(
+    const GeometricField<dgScalar, dgPatchField, cellMesh>& psi,
+    const dimensionSet& ds,
+    const int& blockSize
+)
+{
+    word matrixName;
+
+    if (blockSize == 0)
+    {
+        matrixName = "dgZeroScalarMatrix";
+    }
+    else if (blockSize == 1)
+    {
+        matrixName = "dgOneScalarMatrix";
+    }
+    else if (blockSize == 2)
+    {
+        matrixName = "dgTwoScalarMatrix";
+    }
+    else if (blockSize == 3)
+    {
+        matrixName = "dgThreeScalarMatrix";
+    }
+    else if (blockSize == 4)
+    {
+        matrixName = "dgFourScalarMatrix";
+    }
+
+    typename dgMatricesConstructorTable::iterator cstrIter =
+            dgMatricesConstructorTablePtr_->find(matrixName);
+
+    if (cstrIter == dgMatricesConstructorTablePtr_->end())
+    {
+        FatalErrorIn
+        (
+            "dgMatrices::New(const volVectorField&, "
+            "const surfaceScalarField&, transportModel&)"
+        )   << "Unknown dgMatrices size " << blockSize
+            << endl << endl
+            << "Valid dgMatrices sizes are :" << endl
+            << dgMatricesConstructorTablePtr_->sortedToc()
+            << exit(FatalError);
+    }
+
+//    return autoPtr<dgMatrices<Type> >
+    return autoPtr<dgMatrices>
+    (
+        cstrIter()(psi, ds)
+    );
+}
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

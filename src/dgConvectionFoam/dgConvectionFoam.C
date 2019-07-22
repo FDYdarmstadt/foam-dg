@@ -66,8 +66,9 @@ int main(int argc, char *argv[])
 
     dgScalarMatrix Te
     (
-        dgm::dgLaplacian(T)
-      + dgm::dgDiv(U, T)
+//        dgm::dgLaplacian(T) +
+       dgm::dgDdt(T) +
+       dgm::dgDiv(U, T)
     );
 
 

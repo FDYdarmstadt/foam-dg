@@ -127,7 +127,8 @@ public:
 //            const GeometricField<Type, dgPatchField, cellMesh>&
 //        );
 
-        tmp<dgMatrix<Type> > dgmLaplacian
+//        tmp<dgMatrix<Type> > dgmLaplacian
+        tmp<dgMatrices> dgmLaplacian
         (
             const dimensionedScalar&,
             const GeometricField<Type, dgPatchField, cellMesh>&

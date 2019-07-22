@@ -64,7 +64,7 @@ class dgBase
     const label length_;
 
     mutable dgPolynomials* polynomialsPtr_;
-//    const label quadratureOrder_;
+    const label quadratureOrder_;
 
 //    const word quadratureRule_;
 
@@ -140,13 +140,26 @@ public:
     // Member functions
 
         //- Return vector of modes evaluated in local coordinates
-        const scalarField evaluate
+        scalarField evaluate
         (
             const vector localCoords
         ) const;
 
+        scalar evaluate
+        (
+            const dgScalar,
+            const vector localCoords
+        ) const;
+
+        vector evaluate
+        (
+            const dgVector,
+            const vector localCoords
+        ) const;
+
+
         //- Return vector of gradient of modes evaluated in local coordinates
-        const scalarField gradEvaluate
+        scalarField gradEvaluate
         (
             const vector localCoords
         ) const;
@@ -156,11 +169,11 @@ public:
         virtual const PtrList<scalarField>& gaussPtsGradEval() const = 0;
 
         //- Modal functions evaluated in gauss points, without gauss weights
-        virtual const PtrList<scalarField> wtdGaussEval() const = 0;
+        virtual PtrList<scalarField> wtdGaussEval() const = 0;
 
         //- Gradient of modal functions evaluated in gauss points, without gauss
         // weights
-        virtual const PtrList<scalarField> wtdGaussGradEval() const = 0;
+        virtual PtrList<scalarField> wtdGaussGradEval() const = 0;
 
 
     // Access functions
@@ -189,6 +202,12 @@ public:
         {
             return *polynomialsPtr_;
         }
+
+        label quadratureOrder() const
+        {
+            return quadratureOrder_;
+        }
+
 };
 
 

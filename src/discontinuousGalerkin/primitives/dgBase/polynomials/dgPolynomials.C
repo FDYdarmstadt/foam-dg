@@ -51,7 +51,7 @@ dgPolynomials::dgPolynomials
 
 //template<class Type>
 //const field<Type>& dgPolynomials::evaluate
-const scalarField dgPolynomials::evaluate
+scalarField dgPolynomials::evaluate
 (
     const vector localCoords
 ) const
@@ -63,40 +63,128 @@ const scalarField dgPolynomials::evaluate
 
     // First two are simple and base for the loop
     value[0] = 1;
-    value[1] = lc;
 
-//    value[0] = 1/2;
-//    value[1] = lc*Foam::sqrt(3.0)/2;
-
-    // this should not overwrite 0 and 1
-    forAll(value, vI)
+    if (length_ > 0)
     {
-        label i = vI + 2;
+        value[1] = lc;
 
-        if ((vI + 2) < value.size())
+    //    value[0] = 1/2;
+    //    value[1] = lc*Foam::sqrt(3.0)/2;
+
+        // this should not overwrite 0 and 1
+        forAll(value, vI)
         {
-            // Analytical form for calculating modes
-//            value[vI+1] =
-//                1.0/(vI + 1.0)*((2*vI+1)*lc*value[vI] - vI*value[vI-1]);
+            label i = vI + 2;
+
+            if ((vI + 2) < value.size())
+            {
+                // Analytical form for calculating modes
+    //            value[vI+1] =
+    //                1.0/(vI + 1.0)*((2*vI+1)*lc*value[vI] - vI*value[vI-1]);
 
 
-            value[i] =
-                1.0/(i)*((2*i-1)*lc*value[i-1] - (i-1)*value[i-2]);
-//                Foam::sqrt(5.0)/4*(3.0*sqr(lc) - 1.0);
-        }
-        else
-        {
-            // Do nothing
+                value[i] =
+                    1.0/(i)*((2*i-1)*lc*value[i-1] - (i-1)*value[i-2]);
+    //                Foam::sqrt(5.0)/4*(3.0*sqr(lc) - 1.0);
+            }
+            else
+            {
+                // Do nothing
+            }
         }
     }
-
 //    Info << nl<<  "GSUM: " << gSum(value) << endl;
 
     return value;
 }
 
 
-const scalarField dgPolynomials::gradEvaluate
+scalar dgPolynomials::evaluate
+(
+    const dgScalar scalarVal,
+    const vector localCoords
+) const
+{
+    scalar lc = localCoords.component(vector::X);
+
+//    field<Type> value(length_, pTraits<Type>::zero);
+    scalarField value(length_, 0.0);
+
+    scalar evaluated = scalarVal[0] + scalarVal[1]*lc;
+
+    // First two are simple and base for the loop
+    value[0] = 1;
+
+
+    if (length_ > 0)
+    {
+        value[1] = lc;
+
+    //    value[0] = 1/2;
+    //    value[1] = lc*Foam::sqrt(3.0)/2;
+
+        // this should not overwrite 0 and 1
+        forAll(value, vI)
+        {
+            label i = vI + 2;
+
+            if ((vI + 2) < value.size())
+            {
+                // Analytical form for calculating modes
+    //            value[vI+1] =
+    //                1.0/(vI + 1.0)*((2*vI+1)*lc*value[vI] - vI*value[vI-1]);
+
+
+    //            value[i] =
+                evaluated +=
+                    1.0/(i)*((2*i-1)*lc*value[i-1] - (i-1)*value[i-2])*scalarVal[i];
+    //                Foam::sqrt(5.0)/4*(3.0*sqr(lc) - 1.0);
+            }
+            else
+            {
+                // Do nothing
+            }
+        }
+    }
+
+
+//    Info << nl<<  "GSUM: " << gSum(value) << endl;
+
+    return evaluated;
+}
+
+
+vector dgPolynomials::evaluate
+(
+    const dgVector vectorVal,
+    const vector localCoords
+) const
+{
+//    scalar lc = localCoords.component(vector::X);
+
+//    field<Type> value(length_, pTraits<Type>::zero);
+    scalarField value = evaluate(localCoords);
+
+
+    vector evaluated(0, 0, 0);
+
+    forAll (value, modI)
+    {
+        forAll (evaluated, cmpt)
+        {
+            evaluated[cmpt] += value[modI]*vectorVal[cmpt][modI];
+        }
+    }
+
+
+    return evaluated;
+}
+
+
+
+
+
+scalarField dgPolynomials::gradEvaluate
 (
     const vector localCoords
 ) const
@@ -109,36 +197,39 @@ const scalarField dgPolynomials::gradEvaluate
 
     // First two are simple and base for the loop
     value[0] = 1.0;
-    value[1] = lc;
-
     grad[0] = 0.0;
-    grad[1] = 1.0;
-//    grad[1] = Foam::sqrt(3.0)/2;
 
-    // this should not overwrite 0 and 1
-    forAll(value, vI)
+    if (length_ > 0)
     {
-        // vI = n - 1 (n used for notation in equations), but we start from
-        // third mode as first two are already defined
-        label i = vI + 2;
+        value[1] = lc;
 
-        // Analytical form for calculating gradient of modes
-        if ((vI + 2) < value.size())
+        grad[1] = 1.0;
+    //    grad[1] = Foam::sqrt(3.0)/2;
+
+        // this should not overwrite 0 and 1
+        forAll(value, vI)
         {
-            // Modes
-            value[i] =
-                1.0/(i)*((2.0*i-1)*lc*value[i-1]);// - (i-1)*value[i-2]);
-            // Gradient of modes
-            grad[i] =
-                1.0/(i)*((2.0*i-1)*(lc*grad[i-1] + value[i-1]) - (i-1)*grad[i-2]);
-//                3.0*Foam::sqrt(5.0)/2.0*lc;
-        }
-        else
-        {
-            // Do nothing
+            // vI = n - 1 (n used for notation in equations), but we start from
+            // third mode as first two are already defined
+            label i = vI + 2;
+
+            // Analytical form for calculating gradient of modes
+            if ((vI + 2) < value.size())
+            {
+                // Modes
+                value[i] =
+                    1.0/(i)*((2.0*i-1)*lc*value[i-1]);// - (i-1)*value[i-2]);
+                // Gradient of modes
+                grad[i] =
+                    1.0/(i)*((2.0*i-1)*(lc*grad[i-1] + value[i-1]) - (i-1)*grad[i-2]);
+    //                3.0*Foam::sqrt(5.0)/2.0*lc;
+            }
+            else
+            {
+                // Do nothing
+            }
         }
     }
-
 //    Info << nl<<  "GSUM: " << gSum(value) << endl;
 
     return grad;

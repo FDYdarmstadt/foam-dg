@@ -63,10 +63,10 @@ class gaussQuadrature
     const label quadratureOrder_;
 
     //- Weights for Gauss integration points
-    scalarField gaussWeights_;
+    mutable scalarField gaussWeights_;
 
     //- Location of Gauss integration points (local CS)
-    scalarField gaussPoints_;
+    mutable scalarField gaussPoints_;
 
     // Ptr list with size(number of Gauss points) with evaluated modes in
     // corresponding Gauss points, i.e. for 2 Gauss points and 3 modes, PtrList
@@ -125,11 +125,11 @@ public:
         }
 
         //- Modal functions evaluated in gauss points, without gauss weights
-        virtual const PtrList<scalarField> wtdGaussEval() const;
+        virtual PtrList<scalarField> wtdGaussEval() const;
 
         //- Gradient of modal functions evaluated in gauss points, without gauss
         // weights
-        virtual const PtrList<scalarField> wtdGaussGradEval() const;
+        virtual PtrList<scalarField> wtdGaussGradEval() const;
 
 
     // Access functions

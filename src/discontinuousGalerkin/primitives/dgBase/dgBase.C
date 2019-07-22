@@ -229,7 +229,8 @@ dgBase::dgBase
     ),
     polyMesh_(mesh),
     length_(readLabel(lookup("polynomialOrder")) + 1),//dgOrder.length()),
-    polynomialsPtr_(NULL)
+    polynomialsPtr_(NULL),
+    quadratureOrder_(readLabel(lookup("quadratureOrder")))
 //    gaussWeights_(1, 0.0),
 //    gaussPoints_(1, 0.0),
 //    gaussWeights_(quadratureOrder_, 0.0),
@@ -242,6 +243,10 @@ dgBase::dgBase
 
     // Create polynomials object
     polynomialsPtr_ = new dgPolynomials(readLabel(lookup("polynomialOrder")) + 1);
+
+
+    Info<< "Quadrature order: " << quadratureOrder_ << ", polynomial order: " <<
+    length_ - 1 << endl;
 }
 
 
@@ -299,7 +304,7 @@ autoPtr<dgBase> dgBase::New
 
 //template<class Type>
 //const field<Type>& dgBase::evaluate
-const scalarField dgBase::evaluate
+scalarField dgBase::evaluate
 (
     const vector localCoords
 ) const
@@ -308,7 +313,27 @@ const scalarField dgBase::evaluate
 }
 
 
-const scalarField dgBase::gradEvaluate
+scalar dgBase::evaluate
+(
+    const dgScalar value,
+    const vector localCoords
+) const
+{
+    return polynomialsPtr_->evaluate(value, localCoords);
+}
+
+
+vector dgBase::evaluate
+(
+    const dgVector value,
+    const vector localCoords
+) const
+{
+    return polynomialsPtr_->evaluate(value, localCoords);
+}
+
+
+scalarField dgBase::gradEvaluate
 (
     const vector localCoords
 ) const
