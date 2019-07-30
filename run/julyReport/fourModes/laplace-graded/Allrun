@@ -1,0 +1,19 @@
+#!/bin/sh
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# Get application name
+application="dgLaplacianFoam"
+application2="fvTransform"
+application3="fvPointTransform"
+
+
+\cp -f blockMeshDict constant/polyMesh/blockMeshDict
+runApplication blockMesh >/dev/null
+runApplication $application >/dev/null
+runApplication $application2 >/dev/null
+runApplication $application3 >/dev/null
+
+#runApplication decomposePar -cellDist
+#runApplication decomposeSets -writeEmptySets
+#runParallel $application 3

@@ -58,7 +58,6 @@ scalarField dgPolynomials::evaluate
 {
     scalar lc = localCoords.component(vector::X);
 
-//    field<Type> value(length_, pTraits<Type>::zero);
     scalarField value(length_, 0.0);
 
     // First two are simple and base for the loop
@@ -68,9 +67,6 @@ scalarField dgPolynomials::evaluate
     {
         value[1] = lc;
 
-    //    value[0] = 1/2;
-    //    value[1] = lc*Foam::sqrt(3.0)/2;
-
         // this should not overwrite 0 and 1
         forAll(value, vI)
         {
@@ -79,13 +75,8 @@ scalarField dgPolynomials::evaluate
             if ((vI + 2) < value.size())
             {
                 // Analytical form for calculating modes
-    //            value[vI+1] =
-    //                1.0/(vI + 1.0)*((2*vI+1)*lc*value[vI] - vI*value[vI-1]);
-
-
                 value[i] =
                     1.0/(i)*((2*i-1)*lc*value[i-1] - (i-1)*value[i-2]);
-    //                Foam::sqrt(5.0)/4*(3.0*sqr(lc) - 1.0);
             }
             else
             {
@@ -93,12 +84,12 @@ scalarField dgPolynomials::evaluate
             }
         }
     }
-//    Info << nl<<  "GSUM: " << gSum(value) << endl;
 
     return value;
 }
 
 
+//template<int Size>
 scalar dgPolynomials::evaluate
 (
     const dgScalar scalarVal,
@@ -107,7 +98,6 @@ scalar dgPolynomials::evaluate
 {
     scalar lc = localCoords.component(vector::X);
 
-//    field<Type> value(length_, pTraits<Type>::zero);
     scalarField value(length_, 0.0);
 
     scalar evaluated = scalarVal[0] + scalarVal[1]*lc;
@@ -115,30 +105,24 @@ scalar dgPolynomials::evaluate
     // First two are simple and base for the loop
     value[0] = 1;
 
-
     if (length_ > 0)
     {
         value[1] = lc;
 
-    //    value[0] = 1/2;
-    //    value[1] = lc*Foam::sqrt(3.0)/2;
-
         // this should not overwrite 0 and 1
         forAll(value, vI)
         {
-            label i = vI + 2;
+            scalar i = vI + 2;
 
             if ((vI + 2) < value.size())
             {
                 // Analytical form for calculating modes
-    //            value[vI+1] =
-    //                1.0/(vI + 1.0)*((2*vI+1)*lc*value[vI] - vI*value[vI-1]);
+                value[i] =
+                    ((2.0*i+1.0)/(i+1)
+                    *lc*value[i-1] -
+                    1.0*i/(1.0 + i)*value[i-2]);
 
-
-    //            value[i] =
-                evaluated +=
-                    1.0/(i)*((2*i-1)*lc*value[i-1] - (i-1)*value[i-2])*scalarVal[i];
-    //                Foam::sqrt(5.0)/4*(3.0*sqr(lc) - 1.0);
+                evaluated += value[i]*scalarVal[i];
             }
             else
             {
@@ -147,24 +131,18 @@ scalar dgPolynomials::evaluate
         }
     }
 
-
-//    Info << nl<<  "GSUM: " << gSum(value) << endl;
-
     return evaluated;
 }
 
 
+//template<int Size>
 vector dgPolynomials::evaluate
 (
     const dgVector vectorVal,
     const vector localCoords
 ) const
 {
-//    scalar lc = localCoords.component(vector::X);
-
-//    field<Type> value(length_, pTraits<Type>::zero);
     scalarField value = evaluate(localCoords);
-
 
     vector evaluated(0, 0, 0);
 
@@ -175,7 +153,6 @@ vector dgPolynomials::evaluate
             evaluated[cmpt] += value[modI]*vectorVal[cmpt][modI];
         }
     }
-
 
     return evaluated;
 }
@@ -204,7 +181,6 @@ scalarField dgPolynomials::gradEvaluate
         value[1] = lc;
 
         grad[1] = 1.0;
-    //    grad[1] = Foam::sqrt(3.0)/2;
 
         // this should not overwrite 0 and 1
         forAll(value, vI)
@@ -218,11 +194,11 @@ scalarField dgPolynomials::gradEvaluate
             {
                 // Modes
                 value[i] =
-                    1.0/(i)*((2.0*i-1)*lc*value[i-1]);// - (i-1)*value[i-2]);
+                    1.0/(i)*((2*i-1)*lc*value[i-1] - (i-1)*value[i-2]);
+
                 // Gradient of modes
                 grad[i] =
                     1.0/(i)*((2.0*i-1)*(lc*grad[i-1] + value[i-1]) - (i-1)*grad[i-2]);
-    //                3.0*Foam::sqrt(5.0)/2.0*lc;
             }
             else
             {
@@ -230,7 +206,6 @@ scalarField dgPolynomials::gradEvaluate
             }
         }
     }
-//    Info << nl<<  "GSUM: " << gSum(value) << endl;
 
     return grad;
 }

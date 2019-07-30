@@ -1,0 +1,66 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.0                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       cellVectorField;
+    location    "1";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 0 1 0 0];
+
+internalField   uniform ((2 0 0) (3 0 0) (4 0 0));
+//nonuniform
+//5
+//(
+//(1 1 1)
+//(1 1 1)
+//(0 0 2)
+//(0 0 0)
+//(1 1 1)
+//);// 0 0 0 0 0 0 0);
+
+boundaryField
+{
+    left
+    {
+//        type            homogenous;
+        type            dirichlet;
+        value           uniform ((5 0 0) (6 0 0) (7 0 0));
+    }
+    right
+    {
+        type            dirichlet;
+//        type            homogenous;
+        value           uniform ((5 0 0) (6 0 0) (7 0 0));
+    }
+    sides
+    {
+        type            empty;
+    }
+//    sides2
+//    {
+//        type            dirichlet;
+////        type            homogenous;
+//        value           uniform (15 0 0);
+//    }
+//    sides3
+//    {
+//        type            empty;
+//    }
+//    sides1
+//    {
+//        type            empty;
+//    }
+}
+
+
+// ************************************************************************* //

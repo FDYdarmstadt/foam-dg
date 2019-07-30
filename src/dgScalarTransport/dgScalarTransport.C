@@ -34,6 +34,7 @@ Author
 
 #include "dgCFD.H"
 #include "fvCFD.H"
+#include "OFstream.H"
 //#include "gaussQuadrature.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -53,41 +54,33 @@ int main(int argc, char *argv[])
 
     Info<< "\nCalculating temperature distribution\n" << endl;
 
-
     while(runTime < runTime.endTime())
     {
         runTime++;
 
-        Info<< "-----------Time = " << runTime.timeName() << nl << endl;
+        Info<< "Time: " << runTime.timeName() << nl << endl;
 
-//        Info<< "VECTOR CELL FIELD : " <<  U << endl;
+        dgScalarMatrix Te
+        (
+    //        dgm::dgLaplacian(T) +
+           dgm::dgDiv(U, T)
+        +
+           dgm::dgDdt(T)
+        );
 
-    dgScalarMatrix Te
-    (
-        dgm::dgLaplacian(T)// +
-//       dgm::dgDiv(U, T)
-//    +
-//       dgm::dgDdt(T)
-    );
+//        Info << nl << nl << "SOLVER:"<< nl << "MATRIX TE diag: " << Te.diag() << nl << endl;
+//        Info << "MATRIX TE upper: " << Te.upper() << nl << endl;
+//        Info << "MATRIX TE lowa: " << Te.lower() << nl << endl;
+//        Info << "MATRIX TE sors: " << Te.source() << nl << endl;
 
-Info << nl << nl << "SOLVER:"<< nl << "MATRIX TE diag: " << Te.diag() << nl << endl;
-Info << "MATRIX TE upper: " << Te.upper() << nl << endl;
-Info << "MATRIX TE lowa: " << Te.lower() << nl << endl;
-Info << "MATRIX TE sors: " << Te.source() << nl << endl;
+        Te.solve();
 
-    Te.solve();
-
-
-//         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-//             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-//             << nl << endl;
-//     }
 #       include "infoOut.H"
 
         runTime.write();
 
-
     }
+    Info<< "Test harness successfully finished." << endl;
 
     return 0;
 }

@@ -35,14 +35,14 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors * * * * * * * * * * * * * * * //
 
-template<class Type, int Size>
-dgMatrix<Type, Size>::dgMatrix
+template<class Type>
+dgMatrix<Type>::dgMatrix
 (
     const GeometricField<Type, dgPatchField, cellMesh>& psi,
     const dimensionSet& ds
 )
 :
-    BlockLduMatrix<VectorN<scalar, Size> >(psi.mesh()),
+    BlockLduMatrix<VectorN<scalar, Type::coeffLength> >(psi.mesh()),
     psi_(psi),
     dimensions_(ds),
     source_(psi.size(), pTraits<Type>::zero)
@@ -71,10 +71,10 @@ dgMatrix<Type, Size>::dgMatrix
 }
 
 
-template<class Type, int Size>
-dgMatrix<Type, Size>::dgMatrix(const dgMatrix<Type, Size>& dgm)
+template<class Type>
+dgMatrix<Type>::dgMatrix(const dgMatrix<Type>& dgm)
 :
-    BlockLduMatrix<VectorN<scalar, Size> >(dgm),
+    BlockLduMatrix<VectorN<scalar, Type::coeffLength> >(dgm),
     psi_(dgm.psi_),
     dimensions_(dgm.dimensions_),
     source_(dgm.source_)
@@ -88,8 +88,8 @@ dgMatrix<Type, Size>::dgMatrix(const dgMatrix<Type, Size>& dgm)
 }
 
 
-template<class Type, int Size>
-dgMatrix<Type, Size>::~dgMatrix()
+template<class Type>
+dgMatrix<Type>::~dgMatrix()
 {
     if (debug)
     {
@@ -102,8 +102,8 @@ dgMatrix<Type, Size>::~dgMatrix()
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-template<class Type, int Size>
-void dgMatrix<Type, Size>::relax(const scalar alpha)
+template<class Type>
+void dgMatrix<Type>::relax(const scalar alpha)
 {
     if (alpha <= 0)
     {
@@ -114,8 +114,8 @@ void dgMatrix<Type, Size>::relax(const scalar alpha)
 }
 
 
-template<class Type, int Size>
-void dgMatrix<Type, Size>::relax()
+template<class Type>
+void dgMatrix<Type>::relax()
 {
     if (psi_.mesh().solutionDict().relaxEquation(psi_.name()))
     {
@@ -135,8 +135,8 @@ void dgMatrix<Type, Size>::relax()
 
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
 
-template<class Type, int Size>
-void dgMatrix<Type, Size>::operator=(const dgMatrix<Type, Size>& dgmv)
+template<class Type>
+void dgMatrix<Type>::operator=(const dgMatrix<Type>& dgmv)
 {
     if (this == &dgmv)
     {
@@ -157,24 +157,24 @@ void dgMatrix<Type, Size>::operator=(const dgMatrix<Type, Size>& dgmv)
 }
 
 
-template<class Type, int Size>
-void dgMatrix<Type, Size>::operator=(const tmp<dgMatrix<Type, Size> >& tdgmv)
+template<class Type>
+void dgMatrix<Type>::operator=(const tmp<dgMatrix<Type> >& tdgmv)
 {
     operator=(tdgmv());
     tdgmv.clear();
 }
 
 
-template<class Type, int Size>
-void dgMatrix<Type, Size>::negate()
+template<class Type>
+void dgMatrix<Type>::negate()
 {
     MatrixType::negate();
     source_.negate();
 }
 
 
-template<class Type, int Size>
-void dgMatrix<Type, Size>::operator+=(const dgMatrix<Type, Size>& dgmv)
+template<class Type>
+void dgMatrix<Type>::operator+=(const dgMatrix<Type>& dgmv)
 {
     checkMethod(*this, dgmv, "+=");
 
@@ -184,16 +184,16 @@ void dgMatrix<Type, Size>::operator+=(const dgMatrix<Type, Size>& dgmv)
 }
 
 
-template<class Type, int Size>
-void dgMatrix<Type, Size>::operator+=(const tmp<dgMatrix<Type, Size> >& tdgmv)
+template<class Type>
+void dgMatrix<Type>::operator+=(const tmp<dgMatrix<Type> >& tdgmv)
 {
     operator+=(tdgmv());
     tdgmv.clear();
 }
 
 
-template<class Type, int Size>
-void dgMatrix<Type, Size>::operator-=(const dgMatrix<Type, Size>& dgmv)
+template<class Type>
+void dgMatrix<Type>::operator-=(const dgMatrix<Type>& dgmv)
 {
     checkMethod(*this, dgmv, "+=");
 
@@ -203,16 +203,16 @@ void dgMatrix<Type, Size>::operator-=(const dgMatrix<Type, Size>& dgmv)
 }
 
 
-template<class Type, int Size>
-void dgMatrix<Type, Size>::operator-=(const tmp<dgMatrix<Type, Size> >& tdgmv)
+template<class Type>
+void dgMatrix<Type>::operator-=(const tmp<dgMatrix<Type> >& tdgmv)
 {
     operator-=(tdgmv());
     tdgmv.clear();
 }
 
 
-template<class Type, int Size>
-void dgMatrix<Type, Size>::operator*=
+template<class Type>
+void dgMatrix<Type>::operator*=
 (
     const dimensionedDgScalar& ds
 )
@@ -225,11 +225,11 @@ void dgMatrix<Type, Size>::operator*=
 
 // * * * * * * * * * * * * * * * Friend Functions  * * * * * * * * * * * * * //
 
-template<class Type, int Size>
+template<class Type>
 void checkMethod
 (
-    const dgMatrix<Type, Size>& dgm1,
-    const dgMatrix<Type, Size>& dgm2,
+    const dgMatrix<Type>& dgm1,
+    const dgMatrix<Type>& dgm2,
     const char* op
 )
 {
@@ -261,42 +261,42 @@ void checkMethod
 }
 
 
-template<class Type, int Size>
-typename dgMatrix<Type, Size>::SolverPerfType solve
+template<class Type>
+typename dgMatrix<Type>::SolverPerfType solve
 (
-    dgMatrix<Type, Size>& dgm,
+    dgMatrix<Type>& dgm,
     Istream& solverControls
 )
 {
     return dgm.solve(solverControls);
 }
 
-template<class Type, int Size>
-typename dgMatrix<Type, Size>::SolverPerfType solve
+template<class Type>
+typename dgMatrix<Type>::SolverPerfType solve
 (
-    const tmp<dgMatrix<Type, Size> >& tdgm,
+    const tmp<dgMatrix<Type> >& tdgm,
     Istream& solverControls
 )
 {
-    typename dgMatrix<Type, Size>::SolverPerfType solverPerf =
-        const_cast<dgMatrix<Type, Size>&>(tdgm()).solve(solverControls);
+    typename dgMatrix<Type>::SolverPerfType solverPerf =
+        const_cast<dgMatrix<Type>&>(tdgm()).solve(solverControls);
 
     tdgm.clear();
     return solverPerf;
 }
 
 
-template<class Type, int Size>
-typename dgMatrix<Type, Size>::SolverPerfType solve(dgMatrix<Type, Size>& dgm)
+template<class Type>
+typename dgMatrix<Type>::SolverPerfType solve(dgMatrix<Type>& dgm)
 {
     return dgm.solve();
 }
 
-template<class Type, int Size>
-typename dgMatrix<Type, Size>::SolverPerfType solve(const tmp<dgMatrix<Type, Size> >& tdgm)
+template<class Type>
+typename dgMatrix<Type>::SolverPerfType solve(const tmp<dgMatrix<Type> >& tdgm)
 {
-    typename dgMatrix<Type, Size>::SolverPerfType solverPerf =
-        const_cast<dgMatrix<Type, Size>&>(tdgm()).solve();
+    typename dgMatrix<Type>::SolverPerfType solverPerf =
+        const_cast<dgMatrix<Type>&>(tdgm()).solve();
 
     tdgm.clear();
     return solverPerf;
@@ -305,150 +305,150 @@ typename dgMatrix<Type, Size>::SolverPerfType solve(const tmp<dgMatrix<Type, Siz
 
 // * * * * * * * * * * * * * * * Friend Operators  * * * * * * * * * * * * * //
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator+
+template<class Type>
+tmp<dgMatrix<Type> > operator+
 (
-    const dgMatrix<Type, Size>& A,
-    const dgMatrix<Type, Size>& B
+    const dgMatrix<Type>& A,
+    const dgMatrix<Type>& B
 )
 {
     checkMethod(A, B, "+");
-    tmp<dgMatrix<Type, Size> > tC(new dgMatrix<Type, Size>(A));
+    tmp<dgMatrix<Type> > tC(new dgMatrix<Type>(A));
     tC() += B;
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator+
+template<class Type>
+tmp<dgMatrix<Type> > operator+
 (
-    const tmp<dgMatrix<Type, Size> >& tA,
-    const dgMatrix<Type, Size>& B
+    const tmp<dgMatrix<Type> >& tA,
+    const dgMatrix<Type>& B
 )
 {
     checkMethod(tA(), B, "+");
-    tmp<dgMatrix<Type, Size> > tC(tA.ptr());
+    tmp<dgMatrix<Type> > tC(tA.ptr());
     tC() += B;
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator+
+template<class Type>
+tmp<dgMatrix<Type> > operator+
 (
-    const dgMatrix<Type, Size>& A,
-    const tmp<dgMatrix<Type, Size> >& tB
+    const dgMatrix<Type>& A,
+    const tmp<dgMatrix<Type> >& tB
 )
 {
     checkMethod(A, tB(), "+");
-    tmp<dgMatrix<Type, Size> > tC(tB.ptr());
+    tmp<dgMatrix<Type> > tC(tB.ptr());
     tC() += A;
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator+
+template<class Type>
+tmp<dgMatrix<Type> > operator+
 (
-    const tmp<dgMatrix<Type, Size> >& tA,
-    const tmp<dgMatrix<Type, Size> >& tB
+    const tmp<dgMatrix<Type> >& tA,
+    const tmp<dgMatrix<Type> >& tB
 )
 {
     checkMethod(tA(), tB(), "+");
-    tmp<dgMatrix<Type, Size> > tC(tA.ptr());
+    tmp<dgMatrix<Type> > tC(tA.ptr());
     tC() += tB();
     tB.clear();
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const dgMatrix<Type, Size>& A
+    const dgMatrix<Type>& A
 )
 {
-    tmp<dgMatrix<Type, Size> > tC(new dgMatrix<Type, Size>(A));
+    tmp<dgMatrix<Type> > tC(new dgMatrix<Type>(A));
     tC().negate();
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const tmp<dgMatrix<Type, Size> >& tA
+    const tmp<dgMatrix<Type> >& tA
 )
 {
-    tmp<dgMatrix<Type, Size> > tC(tA.ptr());
+    tmp<dgMatrix<Type> > tC(tA.ptr());
     tC().negate();
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const dgMatrix<Type, Size>& A,
-    const dgMatrix<Type, Size>& B
+    const dgMatrix<Type>& A,
+    const dgMatrix<Type>& B
 )
 {
     checkMethod(A, B, "-");
-    tmp<dgMatrix<Type, Size> > tC(new dgMatrix<Type, Size>(A));
+    tmp<dgMatrix<Type> > tC(new dgMatrix<Type>(A));
     tC() -= B;
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const tmp<dgMatrix<Type, Size> >& tA,
-    const dgMatrix<Type, Size>& B
+    const tmp<dgMatrix<Type> >& tA,
+    const dgMatrix<Type>& B
 )
 {
     checkMethod(tA(), B, "-");
-    tmp<dgMatrix<Type, Size> > tC(tA.ptr());
+    tmp<dgMatrix<Type> > tC(tA.ptr());
     tC() -= B;
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const dgMatrix<Type, Size>& A,
-    const tmp<dgMatrix<Type, Size> >& tB
+    const dgMatrix<Type>& A,
+    const tmp<dgMatrix<Type> >& tB
 )
 {
     checkMethod(A, tB(), "-");
-    tmp<dgMatrix<Type, Size> > tC(tB.ptr());
+    tmp<dgMatrix<Type> > tC(tB.ptr());
     tC() -= A;
     tC().negate();
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const tmp<dgMatrix<Type, Size> >& tA,
-    const tmp<dgMatrix<Type, Size> >& tB
+    const tmp<dgMatrix<Type> >& tA,
+    const tmp<dgMatrix<Type> >& tB
 )
 {
     checkMethod(tA(), tB(), "-");
-    tmp<dgMatrix<Type, Size> > tC(tA.ptr());
+    tmp<dgMatrix<Type> > tC(tA.ptr());
     tC() -= tB();
     tB.clear();
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator==
+template<class Type>
+tmp<dgMatrix<Type> > operator==
 (
-    const dgMatrix<Type, Size>& A,
-    const dgMatrix<Type, Size>& B
+    const dgMatrix<Type>& A,
+    const dgMatrix<Type>& B
 )
 {
     checkMethod(A, B, "==");
@@ -456,11 +456,11 @@ tmp<dgMatrix<Type, Size> > operator==
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator==
+template<class Type>
+tmp<dgMatrix<Type> > operator==
 (
-    const tmp<dgMatrix<Type, Size> >& tA,
-    const dgMatrix<Type, Size>& B
+    const tmp<dgMatrix<Type> >& tA,
+    const dgMatrix<Type>& B
 )
 {
     checkMethod(tA(), B, "==");
@@ -468,11 +468,11 @@ tmp<dgMatrix<Type, Size> > operator==
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator==
+template<class Type>
+tmp<dgMatrix<Type> > operator==
 (
-    const dgMatrix<Type, Size>& A,
-    const tmp<dgMatrix<Type, Size> >& tB
+    const dgMatrix<Type>& A,
+    const tmp<dgMatrix<Type> >& tB
 )
 {
     checkMethod(A, tB(), "==");
@@ -480,11 +480,11 @@ tmp<dgMatrix<Type, Size> > operator==
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator==
+template<class Type>
+tmp<dgMatrix<Type> > operator==
 (
-    const tmp<dgMatrix<Type, Size> >& tA,
-    const tmp<dgMatrix<Type, Size> >& tB
+    const tmp<dgMatrix<Type> >& tA,
+    const tmp<dgMatrix<Type> >& tB
 )
 {
     checkMethod(tA(), tB(), "==");
@@ -492,27 +492,27 @@ tmp<dgMatrix<Type, Size> > operator==
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator*
+template<class Type>
+tmp<dgMatrix<Type> > operator*
 (
     const dimensioned<scalar>& ds,
-    const dgMatrix<Type, Size>& A
+    const dgMatrix<Type>& A
 )
 {
-    tmp<dgMatrix<Type, Size> > tC(new dgMatrix<Type, Size>(A));
+    tmp<dgMatrix<Type> > tC(new dgMatrix<Type>(A));
     tC() *= ds;
     return tC;
 }
 
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator*
+template<class Type>
+tmp<dgMatrix<Type> > operator*
 (
     const dimensioned<scalar>& ds,
-    const tmp<dgMatrix<Type, Size> >& tA
+    const tmp<dgMatrix<Type> >& tA
 )
 {
-    tmp<dgMatrix<Type, Size> > tC(tA.ptr());
+    tmp<dgMatrix<Type> > tC(tA.ptr());
     tC() *= ds;
     return tC;
 }
@@ -520,10 +520,10 @@ tmp<dgMatrix<Type, Size> > operator*
 
 // * * * * * * * * * * * * * * * IOstream Operators  * * * * * * * * * * * * //
 
-template<class Type, int Size>
-Ostream& operator<<(Ostream& os, const dgMatrix<Type, Size>& dgm)
+template<class Type>
+Ostream& operator<<(Ostream& os, const dgMatrix<Type>& dgm)
 {
-    os  << static_cast<const typename dgMatrix<Type, Size>::MatrixType&>(dgm) << nl
+    os  << static_cast<const typename dgMatrix<Type>::MatrixType&>(dgm) << nl
         << dgm.dimensions_ << nl
         << dgm.source_ << nl
         << dgm.internalCoeffs_ << nl

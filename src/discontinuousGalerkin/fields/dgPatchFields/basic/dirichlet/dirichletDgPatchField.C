@@ -41,7 +41,6 @@ void dirichletDgPatchField<Type>::calcEta()
         const polyMesh& mesh = this->patch().boundaryMesh().mesh().mesh();
         const dgBase& polynomials =
             this->patch().boundaryMesh().mesh().polynomials();
-//        dgBase::New(mesh);
 
         scalar sqrP = sqr(scalar(polynomials.order()));
 
@@ -70,13 +69,7 @@ void dirichletDgPatchField<Type>::calcEta()
             cellSize[cellI] = cellPtBB.minDim();
         }
 
-//        Info<< "Patch cell sizes: " << cellSize << endl;
-//        Info<< "Patch name: " << this->patch().name() << endl;
-//        Info<< "P: " << sqrP << endl;
-//        Info<< "eta: " << sqrP/cellSize << endl;
-
         etaPtr_ = new scalarField(sqrP/cellSize);
-//        etaPtr_ = new scalarField(cellSize);
     }
 }
 
@@ -189,8 +182,6 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valIntCoeffsLaplace
 
     scalarField& etaCells = *etaPtr_;
 
-//    scalarField etaCells = etaCellsa;
-//    etaCells = 1.0;
 
     const PtrList<scalarField>& gaussEdgeEval = polynomials.gaussPtsEval();
     const PtrList<scalarField>& gaussGradEdgeEval =
@@ -247,7 +238,6 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valIntCoeffsLaplace
         }
     }
 
-//    return tdiagCoeffs;
     return diag;
 }
 
@@ -283,18 +273,12 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valBouCoeffsLaplace
 
     scalarField& etaCells = *etaPtr_;
 
-//    scalarField etaCells = etaCellsa;
-//    etaCells = 1.0;
-
-//Info<< nl << "ETA CELLS: " << etaCells << nl << endl;
 
     forAll(faceCells, faceI)
     {
         const label& faceCell = faceCells[faceI];
         label globalFace = this->patch().patch().start() + faceI;
-//Info << " FACE CELL INDEX : " << faceCell << endl;
         scalar eta = etaCells[faceI];
-//        scalar eta = etaCells[faceCell];
         scalar Sf = mag(faceSf[globalFace]);
 
         // Better name here would be edgePt
@@ -315,10 +299,6 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valBouCoeffsLaplace
         const scalarField& polyGEval = gaussGradEdgeEval[gaussPt];
 
 
-//        Info<< " EVALUATION cell: " << faceCell << ", eval: " << polyEval
-//            << ", and grad eval: " << polyGEval << ", ETA: " << eta << endl;
-// Should be Type templated for vectors and other
-
         // Penalty term
         forAll (polyEval, modJ)
         {
@@ -327,13 +307,7 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valBouCoeffsLaplace
                 sourceCoeffs[faceCell][modJ] +=
                    eta*Sf*polyEval[modI]*polyEval[modJ]*mag(dsf[faceI][modI])
                  - Sf*polyEval[modI]*polyGEval[modJ]*mag(dsf[faceI][modI]);
-//                   eta*Sf*polyEval[modI]*polyEval[modJ]*mag(dsf[faceI][modI])
-//                 - Sf*polyEval[modI]*polyGEval[modJ]*mag(dsf[faceI][modI]);
-
-//                Info<< "ENTERING MODS" << modI << ", " << modJ << endl;
             }
-//        Info<< "SOURCE cell: " << faceCell << ", is: " <<
-//        sourceCoeffs[faceCell][modJ] << endl;
         }
     }
 
@@ -355,6 +329,7 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valIntCoeffsDiv
     typedef FieldField<Field, scalar> scalarFieldField;
 
     const dgMesh& mesh = this->patch().boundaryMesh().mesh();
+
     scalarFieldField diag(mesh.size());
 
     forAll (diag, cellI)
@@ -363,14 +338,13 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valIntCoeffsDiv
     }
 
     label dim = polynomials.size();
-    Field<scalarField> gradCoeffs(diag[0].size(), scalarField(dim, 0.0));
     scalarField coeffs(polynomials.size(), 0.0);
+
+    const scalarField& scaleCells = mesh.cellScaleCoeffs();
 
     scalarList A(dim, 0.0);
 
     const PtrList<scalarField>& gaussEval = polynomials.gaussPtsEval();
-    const PtrList<scalarField>& gaussGEval =
-        polynomials.gaussPtsGradEval();
     // I evaluate polyEval in gauss points and (-1) and (1) so that Ptr
     // size is length+2
 
@@ -383,7 +357,6 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valIntCoeffsDiv
             new dgScalarField(mesh.size(), dgScalar(0.0))
         );
 
-
     forAll(faceCells, faceI)
     {
         const label& faceCell = faceCells[faceI];
@@ -392,15 +365,10 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valIntCoeffsDiv
         scalar Sf = mag(faceSf[globalFace]);
 
         // Better name here would be edgePt
-//        label gaussPt = 0;
-        label gaussPtBou = gaussEval.size() - 1;
+        label gaussPtBou = -1;
         label gaussPtCell = 0;
         // Into cell is -1, out of cell is 1
         scalar flux = - 1.0;
-
-        label ownCo = -1;
-        label bouCo = 1;
-
 
         // Owner local coord = 1 on face
         if
@@ -409,18 +377,13 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valIntCoeffsDiv
           < faceCf[globalFace].component(vector::X)
         )
         {
-//            gaussPt = gaussEval.size() - 1;
-            gaussPtBou = 0;
+            gaussPtBou = 1;
             gaussPtCell = gaussEval.size() - 1;
             flux = 1.0;
-
-            ownCo = 1;
-            bouCo = -1;
         }
 
         // This should be outside of loops
         const scalarField& polyEval = gaussEval[gaussPtCell];
-//        const scalarField& polyGEval = gaussGEval[gaussPtCell];
 
         vector gaussPtVec (gaussPtBou, 0, 0);
         vector faceU = polynomials.evaluate(dvf[faceI], gaussPtVec);
@@ -431,49 +394,21 @@ FieldField<Field, scalar> dirichletDgPatchField<Type>::valIntCoeffsDiv
         scalar w = pos(faceFlux);
 
 
-        forAll (coeffs, modJ)
+        forAll(polynomials, modJ)
         {
-            forAll (coeffs, modI)
+            forAll(polynomials, modI)
             {
-
-                label coeff = modJ*coeffs.size() + modI;
+                label coeff = modJ*polynomials.size() + modI;
 
                 scalarList vectorSize (3, 0.0);
 
-                forAll (vectorSize, inner)
-                {
-                    gradCoeffs[coeff][inner] = polyEval[modJ]
-//                                              *polyEval[inner]
-                                              *polyEval[modI];
-                }
-            }
-        }
-
-        forAll(A, modJ)
-        {
-            forAll(A, modI)
-            {
-                label coeff = modJ*coeffs.size() + modI;
-
-                scalarList vectorSize (3, 0.0);
-
-//                forAll(vectorSize, inner)
-                {
                 diag[faceCell][coeff] += -
                     (w)*
-                    faceFlux*polyEval[modJ]*polyEval[modI]*Sf/2
-                    *mesh.mesh().cellVolumes()[faceCell];
-// Scale cells = cellVolumes/2
-
-//                        + faceFlux*polyEval[modJ]*polyEval[modI]
-//                        ;
-                }
+                    faceFlux*polyEval[modJ]*polyEval[modI];
             }
         }
     }
 
-
-//    return tdiagCoeffs;
     return diag;
 }
 
@@ -495,8 +430,6 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valBouCoeffsDiv
     const dgBase& polynomials = this->polynomials();
 
     const PtrList<scalarField>& gaussEval = polynomials.gaussPtsEval();
-    const PtrList<scalarField>& gaussGradEdgeEval =
-        polynomials.gaussPtsGradEval();
     // I evaluate polyEval in gauss points and (-1) and (1) so that Ptr
     // size is length+2
 
@@ -519,90 +452,12 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valBouCoeffsDiv
 
 //    I need to evaluate diagMat with face-defined values (for velocity)
 
-
-//    forAll(faceCells, faceI)
-//    {
-//        const label& faceCell = faceCells[faceI];
-//        label globalFace = this->patch().patch().start() + faceI;
-//
-//        scalar Sf = mag(faceSf[globalFace]);
-//
-//        // Better name here would be edgePt
-//        label gaussPt = 0;
-//
-//        // Owner local coord = 1 on face
-//        if
-//        (
-//            mesh().cellCentres()[faceCells[faceI]].component(vector::X)
-//          < faceCf[globalFace].component(vector::X)
-//        )
-//        {
-//            gaussPt = gaussEval.size() - 1;
-//        }
-//
-//        // This should be outside of loops
-//        const scalarField& polyEval = gaussEval[gaussPt];
-//        const scalarField& polyGEval = gaussGEval[gaussPt];
-//
-//        forAll (coeffs, modJ)
-//        {
-//            forAll (coeffs, modI)
-//            {
-//
-//                label coeff = modJ*coeffs.size() + modI;
-//
-//                scalarList vectorSize (3, 0.0);
-//
-//                forAll (vectorSize, inner)
-//                {
-//                    gradCoeffs[coeff][inner] = polyEval[modJ]
-//                                              *polyEval[inner]
-//                                              *polyEval[modI];
-//                }
-//            }
-//        }
-//
-//        forAll(A, modJ)
-//        {
-//            forAll(A, modI)
-//            {
-//                label coeff = modJ*coeffs.size() + modI;
-////                label addr = modJ*polyEval.size() + modI;
-//
-//                scalarList vectorSize (3, 0.0);
-//
-//                forAll(vectorSize, inner)
-//                {
-//                    diag[faceCell][coeff] +=
-//                        dvf[faceI][0][inner]*gradCoeffs[coeff][inner]*Sf;
-//                }
-//            }
-//        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     forAll(faceCells, faceI)
     {
         const label& faceCell = faceCells[faceI];
         label globalFace = this->patch().patch().start() + faceI;
 
-
-        label gaussPtBou = gaussEval.size() - 1;
         label gaussPtCell = 0;
-        label ownCo = 1;
         label bouCo = -1;
 
         // Into cell is -1, out of cell is 1
@@ -615,58 +470,52 @@ tmp<dgScalarField> dirichletDgPatchField<Type>::valBouCoeffsDiv
           < faceCf[globalFace].component(vector::X)
         )
         {
-//            gaussPt = gaussEval.size() - 1;
-            gaussPtBou = 0;
             gaussPtCell = gaussEval.size() - 1;
             flux = 1.0;
 
-            ownCo = -1;
             bouCo = 1;
+
+            // Testing
+            Info << "Right edge face." << endl;
         }
+        else
+        {
+            // Testing
+            Info << "Left edge face." << endl;
+        }
+
 
         // This should be outside of loops
         const scalarField& polyEval = gaussEval[gaussPtCell];
-//        const scalarField& polyGEval = gaussGEval[gaussPtCell];
 
         vector gaussPtVec (bouCo, 0, 0);
         vector faceU = polynomials.evaluate(dvf[faceI], gaussPtVec);
         scalar faceFlux = faceSf[faceI] & faceU;
 
-Info << "VECTOR: " << gaussPtVec << ", faceU: " << faceU << ", faceSf: "
-     << faceSf[faceI] << endl;
-
         faceFlux *= flux;
 
         scalar w = pos(faceFlux);
 
-        Info << "BOUDNARY WEIGTH: " << w <<  ", for cell: " << faceCell
-             << ", face flux " << faceFlux << endl;
 
+        // The velocity at boundary is evaluated as a single number (vector)
+        // rather than handled as a dgField of n-modes, therefore for 1-D case
+        // the following is valid while for 2D or 3D all modes should be taken
+        // into account and the following commented out part will be valid (with
+        // modifications)
 
-
-
-        forAll (A, modJ)
+        // 2D and 3D case:
+        forAll (polynomials, modJ)
         {
-            forAll (A, modI)
+            forAll (polynomials, modI)
             {
-                label coeff = modJ*coeffs.size() + modI;
-
-                sourceCoeffs[faceCell][modJ] +=  //2.0*
-                     (1 - w)*faceFlux*polyEval[modJ]*polyEval[modI];
-//                    flux*diagMat[faceCell][coeff]*mag(dsf[faceI][modI]);
-
-
-//                sourceCoeffs[faceCell][modJ] = - mag(dsf[faceI][modJ]);
+                sourceCoeffs[faceCell][modJ] +=
+                    (1 - w)*
+                    faceFlux*polyEval[modJ]*polyEval[modI]*mag(dsf[faceI][modI]);
             }
         }
-
-        Info << "SROUCE COEFFS DIRICL: " << sourceCoeffs[faceCell] << nl
-             << nl << endl;
     }
 
-
     return tsourceCoeffs;
-//    return dgPatchField<Type>::valBouCoeffsDiv();
 }
 
 template<class Type>

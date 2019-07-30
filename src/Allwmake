@@ -10,3 +10,4 @@ wmake dgLaplacianFoam
 wmake dgConvectionFoam
 wmake dgScalarTransport
 wmake fvTransform
+wmake fvPointTransform

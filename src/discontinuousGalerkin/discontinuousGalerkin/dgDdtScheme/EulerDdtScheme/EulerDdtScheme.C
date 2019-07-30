@@ -269,7 +269,7 @@ EulerDdtScheme<Type>::dgmDdt
         new dgMatrix<Type>
         (
             vf,
-            vf.dimensions()///dimTime
+            vf.dimensions()
         )
     );
 
@@ -279,11 +279,7 @@ EulerDdtScheme<Type>::dgmDdt
 
     scalar rDeltaT = 1.0/mesh.time().deltaT().value();
 
-//    label dim = mesh.polynomials().size();
-//    scalarList A(dim, 0.0);
-
     dgScalar rDel(rDeltaT);
-
 
 
     const dgBase& polynomials = mesh.polynomials();
@@ -291,8 +287,6 @@ EulerDdtScheme<Type>::dgmDdt
     const PtrList<scalarField>& polyEval = polynomials.gaussPtsEval();
     const PtrList<scalarField>& polyEvalW = polynomials.wtdGaussEval();
     const scalarField& scaleCells = mesh.cellScaleCoeffs();
-
-
 
 
     typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField&
@@ -307,9 +301,8 @@ EulerDdtScheme<Type>::dgmDdt
                 for (label ptI = 1; ptI < (polyEval.size() - 1); ptI++)
                 {
                     ds[cellI](modJ, modI) +=
-                        rDeltaT*polyEval[ptI][modI]*polyEvalW[ptI][modJ]
-//                        *mesh.mesh().cellVolumes()[cellI];
-                      *scaleCells[cellI]/4;
+                        rDeltaT*polyEval[ptI][modI]*polyEvalW[ptI][modJ]/2
+                        *mesh.mesh().cellVolumes()[cellI];
 
                     if (mag(ds[cellI](modJ, modI)) < SMALL)
                     {
@@ -319,28 +312,9 @@ EulerDdtScheme<Type>::dgmDdt
 
                 dgm.source()[cellI][modJ] += ds[cellI](modJ, modI)
                     *vf.oldTime().internalField()[cellI][modJ];
-
             }
         }
     }
-
-
-//    forAll (vf, cellI)
-//    {
-//        forAll (A, coeffI)
-//        {
-//            forAll (A, coeffJ)
-//            {
-//                dgm.diag() =
-//                rDeltaT*mesh.mesh().cellVolumes();
-//            }
-//        }
-//    }
-
-
-
-//    dgm.source() = //rDel;
-//    rDeltaT*vf.oldTime().internalField()*mesh.mesh().cellVolumes();
 
 
     return tdgm;
@@ -360,26 +334,9 @@ EulerDdtScheme<Type>::dgmDdt
         new dgMatrix<Type>
         (
             vf,
-//            rho.dimensions()*
-            vf.dimensions()//*dimVol/dimTime
+            vf.dimensions()
         )
     );
-//    dgMatrix<Type>& fvm = tfvm();
-//
-//    scalar rDeltaT = 1.0/mesh().time().deltaT().value();
-//
-//    fvm.diag() = rDeltaT*rho.value()*mesh().V();
-//
-//    if (mesh().moving())
-//    {
-//        fvm.source() = rDeltaT
-//            *rho.value()*vf.oldTime().internalField()*mesh().V0();
-//    }
-//    else
-//    {
-//        fvm.source() = rDeltaT
-//            *rho.value()*vf.oldTime().internalField()*mesh().V();
-//    }
 
     return tfvm;
 }
@@ -398,28 +355,9 @@ EulerDdtScheme<Type>::dgmDdt
         new dgMatrix<Type>
         (
             vf,
-//            rho.dimensions()*
-            vf.dimensions()//*dimVol/dimTime
+            vf.dimensions()
         )
     );
-//    dgMatrix<Type>& fvm = tfvm();
-//
-//    scalar rDeltaT = 1.0/mesh().time().deltaT().value();
-//
-//    fvm.diag() = rDeltaT*rho.internalField()*mesh().V();
-//
-//    if (mesh().moving())
-//    {
-//        fvm.source() = rDeltaT
-//            *rho.oldTime().internalField()
-//            *vf.oldTime().internalField()*mesh().V0();
-//    }
-//    else
-//    {
-//        fvm.source() = rDeltaT
-//            *rho.oldTime().internalField()
-//            *vf.oldTime().internalField()*mesh().V();
-//    }
 
     return tfvm;
 }

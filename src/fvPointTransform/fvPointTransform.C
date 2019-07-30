@@ -43,6 +43,24 @@ int main(int argc, char *argv[])
 #   include "setRootCase.H"
 
 #   include "createTime.H"
+
+    instantList times = runTime.times();
+
+// Hack:
+// Added all-times loop (proper way would be - not here)
+forAll (times, timeI)
+{
+    // Break for going out of bounds
+    if ((timeI + 1) == times.size())
+    {
+        return 0;
+    }
+
+    // First entry is '0 constant'
+    dimensionedScalar curTime("curTime", dimTime, times[timeI + 1].value());
+
+    runTime.setTime(curTime, timeI);
+
 #   include "createPolyMesh.H"
 #   include "createDgMesh.H"
 #   include "createFvMesh.H"
@@ -58,12 +76,14 @@ int main(int argc, char *argv[])
 // - Determine in which cell is which point
 // - Interpolate in points and write out to file (regular ascii dat)
 
-    label nPoints = 5;
+    label nPoints = 50;
 
     const vectorField faces = fvMesh.points();
     scalar max = 0;
     scalar min = 0;
 
+
+    // Determine min,max for mesh span
     forAll (faces, faceI)
     {
         if (faces[faceI][0] > max)
@@ -81,11 +101,13 @@ int main(int argc, char *argv[])
 
     // Number of points = 5*number of cells
     const scalar cells = fvMesh.C().size();
-    const scalar pts = 5.0*cells + 1;
+    const scalar pts = nPoints*cells + 1;
+    // For x points there are x-1 increments
     const scalar increment = (max - min)/(pts - 1);
 
     scalarField ptsCoords(pts, 0);
 
+    // Linear coords (global) of the points
     forAll (ptsCoords, ptI)
     {
         ptsCoords[ptI] = min + increment*ptI;
@@ -98,28 +120,15 @@ int main(int argc, char *argv[])
     {
         if(OS.opened())
         {
-            OS << "x coord, y coord, z coord, scalar" << endl;
+            OS << "#x coord, y coord, z coord, scalar" << endl;
         }
     }
 
 
-//    forAll (fvMesh.cells(), cellI)
-//    {
-//        boundBox bb(fvMesh.cells()[cellI].points());
-//
-//        scalar up = bb.max();
-//        scalar dn = bb.min();
-//
-//        scalar increment = (up - dn)/nPoints;
-//        scalarField pts (nPoints, 0);
-//
-//        forAll (pts, ptI)
-//        {
-//            pts[ptI] = dn + increment*ptI;
-//
+    const scalarField& scaleCells = dgMesh.cellScaleCoeffs();
 
 
-
+    // For every point determine the cell it is in and local coord
     forAll (ptsCoords, ptI)
     {
         vector coord (ptsCoords[ptI], 0, 0);
@@ -127,27 +136,37 @@ int main(int argc, char *argv[])
         label cellID = fvMesh.findCell(coord);
         const labelList& cellPts = fvMesh.cellPoints(cellID);
 
-
-//        boundBox bb(fvMesh.cellPoints(cellID));
-//
-        scalar dn = 0;//bb.min()[0];
+        // Lower bound
+        scalar lbound = max;
+        // Upper bound
+        scalar ubound = min;
 
         const pointField& points = fvMesh.points();
 
-        // Find the point most left
+        // Find the point most left and most right (to get cell span)
         forAll (cellPts, cptI)
         {
             // X coord of current point
             scalar curPt = points[cellPts[cptI]][0];
 
-            if (curPt < dn)
+            if (curPt < lbound)
             {
-                dn = curPt;
+                lbound = curPt;
+            }
+
+            if (curPt > ubound)
+            {
+                ubound = curPt;
             }
         }
 
+        scalar cellSpan = ubound - lbound;
 
-        scalar localCoord = ptsCoords[ptI] - dn;
+        // Local coord is globalCoord - minimum local Coord
+        scalar localCoord =
+            (ptsCoords[ptI] - lbound - 0.5*cellSpan)/scaleCells[cellID];
+
+
         vector localVec (localCoord, 0, 0);
 
         scalarField polyEval = polynomials.evaluate(localVec);
@@ -164,72 +183,15 @@ int main(int argc, char *argv[])
         {
             if(OS.opened())
             {
-                OS << ptsCoords[ptI] << ", 0, 0, " << value
+                OS << ptsCoords[ptI]// << ", 0, 0, "
+                   << " "
+                   << value
                    << endl;
             }
         }
     }
 
-
-
-
-
-//    forAll (fvMesh.cells(), cellI)
-//    {
-//        boundBox bb(fvMesh.cells()[cellI].points());
-//
-//        scalar up = bb.max();
-//        scalar dn = bb.min();
-//
-//        scalar increment = (up - dn)/nPoints;
-//        scalarField pts (nPoints, 0);
-//
-//        forAll (pts, ptI)
-//        {
-//            pts[ptI] = dn + increment*ptI;
-//
-//            scalar value = 0;
-//
-//            forAll (polyEval, modI)
-//            {
-//                vector coord (ptsCoords[ptI], 0, 0);
-//
-//                scalarField polyEval = polynomials.evaluate(coord);
-//
-//                value += T[cellI][modI]*polyEval[modI];
-//            }
-//
-//            if (Pstream::master())
-//            {
-//                if(OS.opened())
-//                {
-//                    OS << ptsCoords[ptI] << ",0,0, " << tab << value
-//                       << endl;
-//                }
-//            }
-//        }
-//
-//    }
-
-
-
-//        forAll (polyEval, modI)
-//        {
-//            Tvol[cellI] +=
-//            T[cellI][modI]*polyEval[modI];//*dgMesh.cellScaleCoeffs()[cellI];
-//
-////            Info<< "Cell: " << cellI << ", modI: " << modI << ", polyEval: "
-////                << polyEval[modI] << ", T:" << T[cellI][modI]
-////                << ", calculated: " << Tvol[cellI] << endl;
-//        }
-//    }
-//
-//    // SAMO U OVAJ DG-based solver ubacim da mogu raditi volScalarField i
-//    // evaluiram u cell centreima
-//
-//
-//    Info<< "Tvol: " << Tvol.internalField() << nl << endl;
-
+}
     return 0;
 }
 

@@ -212,6 +212,11 @@ public:
 
             scalar size() const
             {
+                if (!cellScaleCoeffsPtr_)
+                {
+                    calcCellScaleCoeffs();
+                }
+
                 return cellScaleCoeffsPtr_->size();
             }
 

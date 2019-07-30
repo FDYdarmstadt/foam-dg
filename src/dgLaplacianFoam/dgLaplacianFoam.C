@@ -34,7 +34,6 @@ Author
 
 #include "dgCFD.H"
 #include "fvCFD.H"
-//#include "gaussQuadrature.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -57,52 +56,24 @@ int main(int argc, char *argv[])
     {
     runTime++;
 
-    Info<< "-----------Time = " << runTime.timeName() << nl << endl;
-
-    // Testing field I/O
-//    T.write();
+    Info<< "Time: " << runTime.timeName() << nl << endl;
 
     // Testing matrix operations
-    dgScalarMatrix TEqn(T, T.dimensions()/dimTime);
+        dgScalarMatrix TEqn(T, T.dimensions()/dimTime);
 
-    cellScalarField Tintegral = dgc::volumeIntegrate(T);
+        cellScalarField Tintegral = dgc::volumeIntegrate(T);
 
-//Info << "THREE" << Tintegral.boundaryField() << nl
-//     << Tintegral.internalField() << endl;
+        cellScalarField T1 = dgc::dgLaplacian(T);
 
 
-//    forAll (Tintegral.boundaryField(), patchI)
-//    {
-//        Info << nl << "PATCH: " << Tintegral.boundaryField()[patchI] << endl;
-//
-//    }
+        dgScalarMatrix Te
+        (
+            dgm::dgLaplacian(T)
+        );
 
-    cellScalarField T1 = dgc::dgLaplacian(T);
+        Te.solve();
 
-//    dgScalarMatrix Te = dgm::dgLaplacian(T);
-
-    dgScalarMatrix Te
-    (
-        dgm::dgLaplacian(T)
-    );
-
-//    Info << " DIAG IS : " << Te.diag() << endl;
-
-//    Info<< "------- Timing = " << runTime.timeName() << nl << endl;
-    Te.solve();
-
-Info<< " SOLVED" << endl;
-
-//         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-//             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-//             << nl << endl;
-//     }
-//    T.write();
-    runTime.write();
-
-//    Info << T << endl;
-//
-//    Info<< "End\n" << endl;
+        runTime.write();
 
 #       include "infoOut.H"
 

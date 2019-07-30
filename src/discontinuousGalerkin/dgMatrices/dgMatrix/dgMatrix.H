@@ -56,7 +56,6 @@ SourceFiles
 #include "CoeffFieldFunctions.H"
 #include "FieldFunctionsM.H"
 #include "TensorNFields.H"
-#include "dgMatrices.H"
 //#include "blockLduSolvers.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -66,44 +65,42 @@ namespace Foam
 
 // * * * * * * Forward declaration of template friend fuctions * * * * * * * //
 
-template<class Type, int Size>
+template<class Type>
 class dgMatrix;
 
-template<class Type, int Size>
-Ostream& operator<<(Ostream&, const dgMatrix<Type, Size>&);
+template<class Type>
+Ostream& operator<<(Ostream&, const dgMatrix<Type>&);
 
 
 /*---------------------------------------------------------------------------*\
                          Class dgMatrix Declaration
 \*---------------------------------------------------------------------------*/
 
-template<class Type, int Size>
+template<class Type>
 class dgMatrix
 :
-    public BlockLduMatrix<VectorN<scalar, Size> >,
-    public dgMatrices
+    public BlockLduMatrix<VectorN<scalar, Type::coeffLength> >
 //    public BlockLduMatrix<Type>
 {
-
 public:
 
     // Public typedefs
 
         //- Subtype
-        typedef VectorN<scalar, Size> SubType;
+        typedef VectorN<scalar, Type::coeffLength> SubType;
 
         //- BlockMatrix type
-        typedef BlockLduMatrix<VectorN<scalar, Size> > MatrixType;
+        typedef BlockLduMatrix<VectorN<scalar, Type::coeffLength> > MatrixType;
 
         //- Field type
         typedef GeometricField<Type, dgPatchField, cellMesh> FieldType;
 
         //- Solver type
-        typedef BlockLduSolver<VectorN<scalar, Size> > SolverType;
+        typedef BlockLduSolver<VectorN<scalar, Type::coeffLength> > SolverType;
 //        typedef BlockLduSolver<MatrixType> SolverType;
 
         //- Solver performance type
-        typedef BlockSolverPerformance<VectorN<scalar, Size> >
+        typedef BlockSolverPerformance<VectorN<scalar, Type::coeffLength> >
             SolverPerfType;
 
 
@@ -121,6 +118,7 @@ private:
         //- Source term
         Field<Type> source_;
 
+
     // Private member functions
 
 
@@ -132,7 +130,7 @@ public:
         // Private data
 
             //- Reference to matrix
-            dgMatrix<Type, Size>& dgMat_;
+            dgMatrix<Type>& dgMat_;
 
             //- Solver
             autoPtr<SolverType> solver_;
@@ -142,7 +140,7 @@ public:
 
         // Constructors
 
-            dgSolver(dgMatrix<Type, Size>& dgMat, autoPtr<SolverType> sol)
+            dgSolver(dgMatrix<Type>& dgMat, autoPtr<SolverType> sol)
             :
                 dgMat_(dgMat),
                 solver_(sol)
@@ -175,7 +173,7 @@ public:
         );
 
         //- Construct as copy
-        dgMatrix(const dgMatrix<Type, Size>&);
+        dgMatrix(const dgMatrix<Type>&);
 
 
     //- Destructor
@@ -186,37 +184,24 @@ public:
 
         // Access
 
-//            virtual const GeometricField<Type, dgPatchField, cellMesh>& psi() const
-            virtual const GeometricField<dgScalar, dgPatchField, cellMesh>& psi() const
+            const GeometricField<Type, dgPatchField, cellMesh>& psi() const
             {
                 return psi_;
             }
 
-            virtual const dimensionSet& dimensions() const
+            const dimensionSet& dimensions() const
             {
                 return dimensions_;
             }
 
-            virtual Field<dgScalar>& source()
-//            virtual Field<Type>& source()
+            Field<Type>& source()
             {
                 return source_;
             }
 
-            const Field<dgScalar>& source() const
-//            const Field<Type>& source() const
+            const Field<Type>& source() const
             {
                 return source_;
-            }
-
-            virtual CoeffField<dgScalar>& diag()
-            {
-                return BlockLduMatrix<VectorN<scalar, Size> >::diag();
-            }
-
-            virtual const CoeffField<dgScalar>& diag() const
-            {
-                return BlockLduMatrix<VectorN<scalar, Size> >::diag();
             }
 
 
@@ -254,16 +239,16 @@ public:
 
     // Member operators
 
-        void operator=(const dgMatrix<Type, Size>&);
-        void operator=(const tmp<dgMatrix<Type, Size> >&);
+        void operator=(const dgMatrix<Type>&);
+        void operator=(const tmp<dgMatrix<Type> >&);
 
         void negate();
 
-        void operator+=(const dgMatrix<Type, Size>&);
-        void operator+=(const tmp<dgMatrix<Type, Size> >&);
+        void operator+=(const dgMatrix<Type>&);
+        void operator+=(const tmp<dgMatrix<Type> >&);
 
-        void operator-=(const dgMatrix<Type, Size>&);
-        void operator-=(const tmp<dgMatrix<Type, Size> >&);
+        void operator-=(const dgMatrix<Type>&);
+        void operator-=(const tmp<dgMatrix<Type> >&);
 
         // Note: matrix-field operations are not allowed.
         // Su, Sp, SuSp operators to be used instead to handle integration.
@@ -273,160 +258,160 @@ public:
 
     // Ostream operator
 
-        friend Ostream& operator<< <Type, Size>
+        friend Ostream& operator<< <Type>
         (
             Ostream&,
-            const dgMatrix<Type, Size>&
+            const dgMatrix<Type>&
         );
 };
 
 
 // * * * * * * * * * * * * * * * Global functions  * * * * * * * * * * * * * //
 
-template<class Type, int Size>
+template<class Type>
 void checkMethod
 (
-    const dgMatrix<Type, Size>&,
-    const dgMatrix<Type, Size>&,
+    const dgMatrix<Type>&,
+    const dgMatrix<Type>&,
     const char*
 );
 
 //- Solve returning the solution statistics given convergence tolerance,
 //  Solver controls read Istream
-template<class Type, int Size>
-BlockSolverPerformance<Type> solve(const dgMatrix<Type, Size>&, Istream&);
+template<class Type>
+BlockSolverPerformance<Type> solve(const dgMatrix<Type>&, Istream&);
 
 
 //- Solve returning the solution statistics given convergence tolerance,
 //  deleting temporary matrix after solution.
 //  Solver controls read Istream
-template<class Type, int Size>
-BlockSolverPerformance<Type> solve(const tmp<dgMatrix<Type, Size> >&, Istream&);
+template<class Type>
+BlockSolverPerformance<Type> solve(const tmp<dgMatrix<Type> >&, Istream&);
 
 
 //- Solve returning the solution statistics given convergence tolerance
 //  Solver controls read dgSolution
-template<class Type, int Size>
-BlockSolverPerformance<Type> solve(dgMatrix<Type, Size>&);
+template<class Type>
+BlockSolverPerformance<Type> solve(dgMatrix<Type>&);
 
 
 //- Solve returning the solution statistics given convergence tolerance,
 //  deleting temporary matrix after solution.
 //  Solver controls read dgSolution
-template<class Type, int Size>
-BlockSolverPerformance<Type> solve(const tmp<dgMatrix<Type, Size> >&);
+template<class Type>
+BlockSolverPerformance<Type> solve(const tmp<dgMatrix<Type> >&);
 
 
 // * * * * * * * * * * * * * * * Global operators  * * * * * * * * * * * * * //
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const dgMatrix<Type, Size>&
+    const dgMatrix<Type>&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const tmp<dgMatrix<Type, Size> >&
+    const tmp<dgMatrix<Type> >&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator+
+template<class Type>
+tmp<dgMatrix<Type> > operator+
 (
-    const dgMatrix<Type, Size>&,
-    const dgMatrix<Type, Size>&
+    const dgMatrix<Type>&,
+    const dgMatrix<Type>&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator+
+template<class Type>
+tmp<dgMatrix<Type> > operator+
 (
-    const tmp<dgMatrix<Type, Size> >&,
-    const dgMatrix<Type, Size>&
+    const tmp<dgMatrix<Type> >&,
+    const dgMatrix<Type>&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator+
+template<class Type>
+tmp<dgMatrix<Type> > operator+
 (
-    const dgMatrix<Type, Size>&,
-    const tmp<dgMatrix<Type, Size> >&
+    const dgMatrix<Type>&,
+    const tmp<dgMatrix<Type> >&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator+
+template<class Type>
+tmp<dgMatrix<Type> > operator+
 (
-    const tmp<dgMatrix<Type, Size> >&,
-    const tmp<dgMatrix<Type, Size> >&
+    const tmp<dgMatrix<Type> >&,
+    const tmp<dgMatrix<Type> >&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const dgMatrix<Type, Size>&,
-    const dgMatrix<Type, Size>&
+    const dgMatrix<Type>&,
+    const dgMatrix<Type>&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const tmp<dgMatrix<Type, Size> >&,
-    const dgMatrix<Type, Size>&
+    const tmp<dgMatrix<Type> >&,
+    const dgMatrix<Type>&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const dgMatrix<Type, Size>&,
-    const tmp<dgMatrix<Type, Size> >&
+    const dgMatrix<Type>&,
+    const tmp<dgMatrix<Type> >&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator-
+template<class Type>
+tmp<dgMatrix<Type> > operator-
 (
-    const tmp<dgMatrix<Type, Size> >&,
-    const tmp<dgMatrix<Type, Size> >&
+    const tmp<dgMatrix<Type> >&,
+    const tmp<dgMatrix<Type> >&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator==
+template<class Type>
+tmp<dgMatrix<Type> > operator==
 (
-    const dgMatrix<Type, Size>&,
-    const dgMatrix<Type, Size>&
+    const dgMatrix<Type>&,
+    const dgMatrix<Type>&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator==
+template<class Type>
+tmp<dgMatrix<Type> > operator==
 (
-    const tmp<dgMatrix<Type, Size> >&,
-    const dgMatrix<Type, Size>&
+    const tmp<dgMatrix<Type> >&,
+    const dgMatrix<Type>&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator==
+template<class Type>
+tmp<dgMatrix<Type> > operator==
 (
-    const dgMatrix<Type, Size>&,
-    const tmp<dgMatrix<Type, Size> >&
+    const dgMatrix<Type>&,
+    const tmp<dgMatrix<Type> >&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator==
+template<class Type>
+tmp<dgMatrix<Type> > operator==
 (
-    const tmp<dgMatrix<Type, Size> >&,
-    const tmp<dgMatrix<Type, Size> >&
+    const tmp<dgMatrix<Type> >&,
+    const tmp<dgMatrix<Type> >&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator*
+template<class Type>
+tmp<dgMatrix<Type> > operator*
 (
     const dimensioned<scalar>&,
-    const dgMatrix<Type, Size>&
+    const dgMatrix<Type>&
 );
 
-template<class Type, int Size>
-tmp<dgMatrix<Type, Size> > operator*
+template<class Type>
+tmp<dgMatrix<Type> > operator*
 (
     const dimensioned<scalar>&,
-    const tmp<dgMatrix<Type, Size> >&
+    const tmp<dgMatrix<Type> >&
 );
 
 

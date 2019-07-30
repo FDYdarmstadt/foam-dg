@@ -145,7 +145,8 @@ void gaussQuadrature::calcGaussPtsEval() const
     // Go over all Gauss points for the whole mesh and add value*weight
     forAll(*gaussPtsEvalPtr_, ptI)
     {
-        scalarField polyEval(gaussCoords.size(), 0.0);
+//        scalarField polyEval(gaussCoords.size(), 0.0);
+        scalarField polyEval(size(), 0.0);
 
         // Evaluate in -1
         if (ptI == 0)
@@ -190,7 +191,8 @@ void gaussQuadrature::calcGaussPtsGradEval() const
     forAll(*gaussPtsGradEvalPtr_, ptI)
     {
         // This is of size dgScalar.size()
-        scalarField polyEval(gaussCoords.size(), 0.0);
+//        scalarField polyEval(gaussCoords.size(), 0.0);
+        scalarField polyEval(size(), 0.0);
 
         // Evaluate in -1
         if (ptI == 0)

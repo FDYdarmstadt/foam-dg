@@ -50,5 +50,4 @@
 
 
 
-    Info<< "Test harness successfully finished." << endl;
 
