@@ -1,7 +1,7 @@
     Info<< "Reading field T\n" << endl;
 
 
-    cellVectorField U
+    cellScalarField U
     (
         IOobject
         (
@@ -14,32 +14,35 @@
         dgMesh
     );
 
-    cellScalarField T
-    (
-        IOobject
-        (
-            "T",
-            runTime.timeName(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::AUTO_WRITE
-        ),
-        dgMesh
-    );
+    ////////////////////////////////////////////////////////
+    // cellScalarField T				  //
+    // (						  //
+    //     IOobject					  //
+    //     (						  //
+    //         "T",					  //
+    //         runTime.timeName(),			  //
+    //         mesh,					  //
+    //         IOobject::MUST_READ,			  //
+    //         IOobject::AUTO_WRITE			  //
+    //     ),						  //
+    //     dgMesh					  //
+    // );						  //
+    // 							  //
+    // volScalarField Tvol				  //
+    // (						  //
+    //     IOobject					  //
+    //     (						  //
+    //         "Tvol",					  //
+    //         runTime.timeName(),			  //
+    //         mesh,					  //
+    //         IOobject::NO_READ,			  //
+    //         IOobject::AUTO_WRITE			  //
+    //     ),						  //
+    //     fvMesh,					  //
+    //     dimensionedScalar("Tvol", T.dimensions(), 0.0) //
+    // );						  //
+    ////////////////////////////////////////////////////////
 
-    volScalarField Tvol
-    (
-        IOobject
-        (
-            "Tvol",
-            runTime.timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        fvMesh,
-        dimensionedScalar("Tvol", T.dimensions(), 0.0)
-    );
 
 //    Info<< "Reading transportProperties\n" << endl;
 //

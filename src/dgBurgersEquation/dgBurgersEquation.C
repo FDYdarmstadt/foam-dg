@@ -60,20 +60,14 @@ int main(int argc, char *argv[])
 
         Info<< "Time: " << runTime.timeName() << nl << endl;
 
-        dgScalarMatrix Te
+        dgScalarMatrix Be
         (
-    //        dgm::dgLaplacian(T) +
-           dgm::dgDiv(U, T)
+	 dgm::dgDiv2(U, U)
         +
-           dgm::dgDdt(T)
+           dgm::dgDdt(U)
         );
 
-//        Info << nl << nl << "SOLVER:"<< nl << "MATRIX TE diag: " << Te.diag() << nl << endl;
-//        Info << "MATRIX TE upper: " << Te.upper() << nl << endl;
-//        Info << "MATRIX TE lowa: " << Te.lower() << nl << endl;
-//        Info << "MATRIX TE sors: " << Te.source() << nl << endl;
-
-        Te.solve();
+        Be.solve();
 
 #       include "infoOut.H"
 
