@@ -23,19 +23,43 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "upwindDiv2Scheme.H"
-#include "dgMesh.H"
+#include "dgDiv2Scheme.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 namespace dg
 {
-    makeDiv2Scheme(upwindDiv2Scheme)
-}
-}
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// Define the constructor function hash tables
 
+#define makedgDiv2GTypeScheme(Type, GType)                                 \
+    typedef dgDiv2Scheme<Type, GType> dgDiv2Scheme##Type##GType;        \
+    defineTemplateRunTimeSelectionTable(dgDiv2Scheme##Type##GType, Istream);
+
+#define makedgDiv2Scheme(Type)                                             \
+    makedgDiv2GTypeScheme(Type, scalar);
+//    makedgDivGTypeScheme(Type, dgScalar);
+
+makedgDiv2Scheme(dgScalar);
+
+//makeLaplacianScheme(vector);
+//makeLaplacianScheme(sphericalTensor);
+//makeLaplacianScheme(symmTensor);
+//makeLaplacianScheme(diagTensor);
+//makeLaplacianScheme(tensor);
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace fv
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
 
 // ************************************************************************* //
