@@ -58,6 +58,7 @@ upwindDiv2Scheme<Type, GType>::dgcDiv2
     const GeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
+  /*
     // Laplace consists of four terms:
     // Volume term, consistency term, symmetry term and penalty term
 
@@ -71,6 +72,7 @@ upwindDiv2Scheme<Type, GType>::dgcDiv2
     tLaplacianVol().rename("dgDiv2(" + vf.name() + ')');
 
     return tLaplacianVol;
+    */
 }
 //
 //
@@ -82,6 +84,22 @@ upwindDiv2Scheme<Type, GType>::dgmDiv2
     const GeometricField<Type, dgPatchField, cellMesh>& vsf
 )
 {
+
+  // Pseudocode:
+  // ===========
+
+  // (I) Init:
+  // access mesh
+  // create matrix
+  // access/create dgBase object
+  //
+  // (II) Calculation
+  // Calculate Volume Term
+  //   - loop over cells
+  // Calculate Surface term
+  //   - loop over faces
+  // Add boundary conditions
+  
     const dgMesh& mesh = this->mesh();
     const dgBase& polynomials = mesh.polynomials();
 
@@ -95,16 +113,26 @@ upwindDiv2Scheme<Type, GType>::dgmDiv2
     );
     dgMatrix<Type>& dgm = tdgm();
 
+    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ds
+        = dgm.diag().asSquare();
+
+
+    forAll(vsf, cellIndex) { 
+       
+
+    }
+
+
+
+    
     // Volume part
-    label dim = polynomials.size();
+    //label dim = polynomials.size();
 
     // Check if this is weighted or unweighted
     const PtrList<scalarField>& polyEval = polynomials.gaussPtsEval();
     const PtrList<scalarField>& polyEvalW = polynomials.wtdGaussEval();
     const PtrList<scalarField>& polyGEval = polynomials.wtdGaussGradEval();
 
-    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ds
-        = dgm.diag().asSquare();
 
     Field<scalarField> gradCoeffs(ds[0].size(), scalarField(dim, 0.0));
     Field<scalarField> surfaceCoeffsNeg(ds[0].size(), scalarField(dim, 0.0));
@@ -141,7 +169,7 @@ upwindDiv2Scheme<Type, GType>::dgmDiv2
             }
         }
     }
-//        Info << "DIV DIAGONAL IS: " << dgm.diag() << endl;
+
 
     typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ls
         = dgm.lower().asSquare();
