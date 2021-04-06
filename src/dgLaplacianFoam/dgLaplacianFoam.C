@@ -22,15 +22,19 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    dgaplacianFoam
+    dgLaplacianFoam
 
 Description
-    Solves a Laplace equation using the Discontinuous Galerkin Method
+    Solves a Laplace equation using the Discontinuous Galerkin Method.
+    Uses the Implementation in the BoSSS library.
 
 Author
     Hrvoje Jasak.  All rights reserved.
+    Florian Kummer. 
 
 \*---------------------------------------------------------------------------*/
+
+#include <Python.h>
 
 #include "dgCFD.H"
 #include "fvCFD.H"
@@ -39,6 +43,8 @@ Author
 
 int main(int argc, char *argv[])
 {
+    Py_Initialize();
+
 #   include "setRootCase.H"
 
 #   include "createTime.H"
@@ -47,16 +53,44 @@ int main(int argc, char *argv[])
 
 #   include "createFields.H"
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nCalculating temperature distribution\n" << endl;
+    PyObject* pName = PyUnicode_FromString("mypython");
+    //printf("pSame = %i\n", pName);
+	PyObject* pModule = PyImport_Import(pName);
+    //printf("pModule = %i\n", pModule);
+
+	if(pModule)
+	{
+		PyObject* pFunc = PyObject_GetAttrString(pModule, "TrottelFunktion");
+		if(pFunc && PyCallable_Check(pFunc))
+		{
+			PyObject* pValue = PyObject_CallObject(pFunc, NULL);
+
+			//printf_s("C: getInteger() = %ld\n", PyLong_AsLong(pValue));
+		}
+		else
+		{
+			printf("ERROR: function getInteger()\n");
+		}
+
+	}
+	else
+	{
+		printf("ERROR: Module not imported\n");
+	}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+    Info << "\n\n Hello from Flörian" << endl;
+    Info << "\nCalculating temperature distribution\n" << endl;
 
 
     while(runTime < runTime.endTime())
     {
     runTime++;
 
-    Info<< "Time: " << runTime.timeName() << nl << endl;
+
+    Info << "Time: " << runTime.timeName() << nl << endl;
 
     // Testing matrix operations
         dgScalarMatrix TEqn(T, T.dimensions()/dimTime);
@@ -64,6 +98,7 @@ int main(int argc, char *argv[])
         cellScalarField Tintegral = dgc::volumeIntegrate(T);
 
         cellScalarField T1 = dgc::dgLaplacian(T);
+
 
 
         dgScalarMatrix Te

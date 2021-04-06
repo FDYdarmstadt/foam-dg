@@ -87,6 +87,54 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
             << "Creating dgMesh from polyMesh" << endl;
     }
 
+
+    Info << "sizeof int      " << sizeof(int) << endl;
+    Info << "sizeof pointer  " << sizeof(void*) << endl;
+    Info << "sizeof label   " << sizeof(label) << endl;
+    
+    label nPoints = pMesh.nPoints();
+    Info << "Number of Points: " << nPoints << endl;
+
+    Foam::pointField points = pMesh.points();
+    Info << "points.count = " << points.count() << endl;
+    for(label i = 0; i < nPoints; i++) {
+        Info << "pt " << i << " (" << points[i].x() << "|" << points[i].y() << "|" << points[i].z() << ")" << endl;
+    }
+    
+    label nCells = pMesh.nCells();
+    label nFaces = pMesh.nFaces();
+    label nInternalFaces = pMesh.nInternalFaces();
+
+    faceList faces = pMesh.faces();
+
+    for(int iF = 0; iF < nFaces; iF++) {
+        //int vertices_per_face = 
+        face f = faces[iF];
+        int vertices_per_face = f.size();
+        Info << "Face " << iF << " Vtx per face: " << vertices_per_face << " ";
+
+        if(iF < nInternalFaces) {
+            Info << "(" << pMesh.faceOwner()[iF] << "--" << pMesh.faceNeighbour()[iF] << ") ";
+        } else {
+            Info << "(" << pMesh.faceOwner()[iF] << ") ";
+        }
+
+        for(int iVtx = 0; iVtx < vertices_per_face; iVtx++) {
+            Info << f[iVtx];
+            if(iVtx < vertices_per_face - 1)
+                Info << ", ";
+        }
+
+        Info << endl;
+    }
+
+
+
+    
+
+
+
+
 //    dgBasePtr_ = new dgBase::New(pMesh);
 }
 
