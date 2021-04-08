@@ -93,7 +93,7 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
             << "Creating dgMesh from polyMesh" << endl;
     }
 
-
+    /*
     Info << "sizeof int      " << sizeof(int) << endl;
     Info << "sizeof pointer  " << sizeof(void*) << endl;
     Info << "sizeof label   " << sizeof(label) << endl;
@@ -133,7 +133,7 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
 
         Info << endl;
     }
-
+    */
 
     BoSSS::Foundation::Grid::OpenFOAMGrid* grd = 
         new BoSSS::Foundation::Grid::OpenFOAMGrid(0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL);

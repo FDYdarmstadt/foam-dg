@@ -46,13 +46,16 @@ Authors:
 int main(int argc, char *argv[])
 {
     //Py_Initialize();
-    char exedir[] = "/home/flori/foam/foam-dg/src/discontinuousGalerkin/BoSSSwrapper/";
-    BoSSS::Globals::Init(exedir);
-    BoSSS::Application::ExternalBinding::Initializer MyInit;
-    MyInit.BoSSSInitialize();
+
 
 
 #   include "setRootCase.H"
+
+    //char bossslibdir[] = "/home/flori/foam/foam-dg/src/discontinuousGalerkin/BoSSSwrapper/";
+    char bossslibdir[] = "/mnt/c/Users/flori/Documents/BoSSS-bgfx/public/src/L4-application/ExternalBinding.CodeGen/bin/Release/";
+    BoSSS::Globals::Init(bossslibdir);
+    BoSSS::Application::ExternalBinding::Initializer MyInit;
+    MyInit.BoSSSInitialize();
 
 #   include "createTime.H"
 #   include "createPolyMesh.H"
