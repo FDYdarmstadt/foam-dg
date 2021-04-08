@@ -33,5 +33,12 @@ discontinuousGalerkin/dgDivScheme/upwindDivScheme/upwindDivSchemes.C
 discontinuousGalerkin/dgDdtScheme/dgDdtScheme/dgDdtSchemes.C
 discontinuousGalerkin/dgDdtScheme/EulerDdtScheme/EulerDdtSchemes.C
 
+ 
+BoSSSwrapper/FixedOperators.cpp  
+BoSSSwrapper/Globals.cpp  
+BoSSSwrapper/GridData.cpp  
+BoSSSwrapper/Initializer.cpp  
+BoSSSwrapper/OpenFOAMGrid.cpp
+
 
 LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin

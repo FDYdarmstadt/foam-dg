@@ -28,13 +28,15 @@ Description
     Solves a Laplace equation using the Discontinuous Galerkin Method.
     Uses the Implementation in the BoSSS library.
 
-Author
+Authors:
     Hrvoje Jasak.  All rights reserved.
     Florian Kummer. 
 
 \*---------------------------------------------------------------------------*/
 
-#include <Python.h>
+//#include <Python.h>
+
+#include "BoSSScpp.h"
 
 #include "dgCFD.H"
 #include "fvCFD.H"
@@ -43,7 +45,12 @@ Author
 
 int main(int argc, char *argv[])
 {
-    Py_Initialize();
+    //Py_Initialize();
+    char exedir[] = "/home/flori/foam/foam-dg/src/discontinuousGalerkin/BoSSSwrapper/";
+    BoSSS::Globals::Init(exedir);
+    BoSSS::Application::ExternalBinding::Initializer MyInit;
+    MyInit.BoSSSInitialize();
+
 
 #   include "setRootCase.H"
 
@@ -53,7 +60,7 @@ int main(int argc, char *argv[])
 
 #   include "createFields.H"
 
-
+    /*
     PyObject* pName = PyUnicode_FromString("mypython");
     //printf("pSame = %i\n", pName);
 	PyObject* pModule = PyImport_Import(pName);
@@ -78,7 +85,7 @@ int main(int argc, char *argv[])
 	{
 		printf("ERROR: Module not imported\n");
 	}
-
+    */
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
     Info << "\n\n Hello from Flörian" << endl;

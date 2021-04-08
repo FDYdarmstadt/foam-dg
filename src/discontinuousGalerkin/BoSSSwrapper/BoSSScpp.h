@@ -1,0 +1,11 @@
+#pragma once
+#include <mono/metadata/mono-config.h>
+#include <mono/jit/jit.h>
+#include <mono/metadata/assembly.h>
+#include <mono/metadata/debug-helpers.h>
+#include "Prototypes.h"
+#include "GridData.h"
+#include "OpenFOAMGrid.h"
+#include "Initializer.h"
+#include "FixedOperators.h"
+#include "Globals.h"

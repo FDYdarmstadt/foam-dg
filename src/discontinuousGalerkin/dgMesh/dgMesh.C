@@ -33,6 +33,12 @@ Description
 #include "dgMeshLduAddressing.H"
 //#include "dgPolynomials.H"
 
+#include "BoSSScpp.h"
+
+using namespace BoSSS::Application::ExternalBinding;
+using namespace BoSSS::Foundation::Grid;
+using namespace BoSSS::Foundation::Grid::Classic;
+
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
@@ -129,9 +135,8 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     }
 
 
-
-    
-
+    BoSSS::Foundation::Grid::OpenFOAMGrid* grd = 
+        new BoSSS::Foundation::Grid::OpenFOAMGrid(0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL);
 
 
 

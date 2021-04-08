@@ -1,0 +1,10 @@
+EXE_INC = -DFULLDEBUG -g -O0\
+    -I../discontinuousGalerkin/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I/usr/include/python3.8 -I/usr/include/python3.8  -Wno-unused-result -Wsign-compare -g -fdebug-prefix-map=/build/python3.8-wRPQXs/python3.8-3.8.5=. -specs=/usr/share/dpkg/no-pie-compile.specs -fstack-protector -Wformat -Werror=format-security  -DNDEBUG -g -fwrapv -O3 -Wall
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) -ldiscontinuousGalerkin \
+    -lfiniteVolume \
+    -fPIE -lpython3.8
+
