@@ -35,6 +35,8 @@ SourceFiles
 #ifndef dgMesh_H
 #define dgMesh_H
 
+#include "BoSSScpp.h"
+
 #include "GeoMesh.H"
 #include "MeshObject.H"
 #include "polyMesh.H"
@@ -75,6 +77,8 @@ class dgMesh
         dgSchemes schemesDict_;
 
         dgSolution solutionDict_;
+
+        mutable BoSSS::Foundation::Grid::OpenFOAMGrid* bosssmesh_;
 
         mutable scalarField* cellScaleCoeffsPtr_;
 

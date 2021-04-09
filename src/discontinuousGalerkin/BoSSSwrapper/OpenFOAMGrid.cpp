@@ -85,7 +85,7 @@ MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_ctor_0, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
 if (exception != NULL) {
-    printf( "got exception from C#\n");
+    printf( "got exception from C# (constructorr) \n");
 }
 _SetForeignPointer(this);
 }

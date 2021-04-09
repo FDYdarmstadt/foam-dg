@@ -93,18 +93,22 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
             << "Creating dgMesh from polyMesh" << endl;
     }
 
-    /*
-    Info << "sizeof int      " << sizeof(int) << endl;
-    Info << "sizeof pointer  " << sizeof(void*) << endl;
-    Info << "sizeof label   " << sizeof(label) << endl;
     
-    label nPoints = pMesh.nPoints();
-    Info << "Number of Points: " << nPoints << endl;
+    //Info << "sizeof int      " << sizeof(int) << endl;
+    //Info << "sizeof pointer  " << sizeof(void*) << endl;
+    //Info << "sizeof label   " << sizeof(label) << endl;
+    
+    int nPoints = pMesh.nPoints();
+    //Info << "Number of Points: " << nPoints << endl;
 
     Foam::pointField points = pMesh.points();
-    Info << "points.count = " << points.count() << endl;
+    //Info << "points.count = " << points.count() << endl;
+    double* pointsArray = (double*) malloc(sizeof(double)*nPoints*3);
     for(label i = 0; i < nPoints; i++) {
-        Info << "pt " << i << " (" << points[i].x() << "|" << points[i].y() << "|" << points[i].z() << ")" << endl;
+        //Info << "pt " << i << " (" << points[i].x() << "|" << points[i].y() << "|" << points[i].z() << ")" << endl;
+        pointsArray[i*3 + 0] = points[i].x();
+        pointsArray[i*3 + 1] = points[i].y();
+        pointsArray[i*3 + 2] = points[i].z();
     }
     
     label nCells = pMesh.nCells();
@@ -113,33 +117,61 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
 
     faceList faces = pMesh.faces();
 
+    int* vertices_per_face_Array = (int*) malloc(sizeof(int)*nFaces);
+    int* faceOwner_Array = (int*) malloc(sizeof(int)*nFaces);
+    int* faceNeighbor_Array = (int*) malloc(sizeof(int)*nFaces);
+
+    int TotalListLength = 0;
     for(int iF = 0; iF < nFaces; iF++) {
         //int vertices_per_face = 
         face f = faces[iF];
         int vertices_per_face = f.size();
-        Info << "Face " << iF << " Vtx per face: " << vertices_per_face << " ";
+        vertices_per_face_Array[iF] = vertices_per_face;
+        TotalListLength += vertices_per_face;
+        //Info << "Face " << iF << " Vtx per face: " << vertices_per_face << " ";
 
+        faceOwner_Array[iF] = pMesh.faceOwner()[iF];
         if(iF < nInternalFaces) {
-            Info << "(" << pMesh.faceOwner()[iF] << "--" << pMesh.faceNeighbour()[iF] << ") ";
+            //Info << "(" << pMesh.faceOwner()[iF] << "--" << pMesh.faceNeighbour()[iF] << ") ";
+            faceNeighbor_Array[iF] = pMesh.faceNeighbour()[iF];
         } else {
-            Info << "(" << pMesh.faceOwner()[iF] << ") ";
+            //Info << "(" << pMesh.faceOwner()[iF] << ") ";
         }
 
         for(int iVtx = 0; iVtx < vertices_per_face; iVtx++) {
-            Info << f[iVtx];
-            if(iVtx < vertices_per_face - 1)
-                Info << ", ";
+            //Info << f[iVtx];
+            //if(iVtx < vertices_per_face - 1)
+            //    Info << ", ";
         }
 
-        Info << endl;
+        //Info << endl;
     }
-    */
 
-    BoSSS::Foundation::Grid::OpenFOAMGrid* grd = 
-        new BoSSS::Foundation::Grid::OpenFOAMGrid(0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL);
+    int** facesArray = (int**) malloc(sizeof(int*)*nFaces);
+    int* facesContent = (int*) malloc(sizeof(int)*TotalListLength);
+    int* pfacesContent = facesContent;
+    for(int iF = 0; iF < nFaces; iF++) {
+        //int vertices_per_face = 
+        face f = faces[iF];
+        int vertices_per_face = f.size();
+
+        facesArray[iF] = pfacesContent;
+        for(int iVtx = 0; iVtx < vertices_per_face; iVtx++) {
+            *pfacesContent = f[iVtx];
+            pfacesContent++;
+        }
+    }
+
+    this->bosssmesh_ = new BoSSS::Foundation::Grid::OpenFOAMGrid(nPoints, nCells, nFaces, nInternalFaces, facesArray, vertices_per_face_Array, faceNeighbor_Array, faceOwner_Array, pointsArray);
+    free(pointsArray);
+    free(vertices_per_face_Array);
+    free(faceNeighbor_Array);
+    free(faceOwner_Array);
+    free(facesArray);
+    free(facesContent);
 
 
-
+    this->bosssmesh_->TestMethod(88);
 //    dgBasePtr_ = new dgBase::New(pMesh);
 }
 
@@ -147,7 +179,10 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
 Foam::dgMesh::~dgMesh()
-{}
+{
+    if(bosssmesh_ != NULL)
+        delete bosssmesh_;
+}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
