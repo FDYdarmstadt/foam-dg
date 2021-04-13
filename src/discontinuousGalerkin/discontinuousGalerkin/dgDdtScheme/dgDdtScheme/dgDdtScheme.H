@@ -165,19 +165,19 @@ public:
 //
         virtual tmp<dgMatrix<Type> > dgmDdt
         (
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         ) = 0;
 
         virtual tmp<dgMatrix<Type> > dgmDdt
         (
             const dimensionedDgScalar&,
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         ) = 0;
 
         virtual tmp<dgMatrix<Type> > dgmDdt
         (
             const cellScalarField&,
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         ) = 0;
 //
 //

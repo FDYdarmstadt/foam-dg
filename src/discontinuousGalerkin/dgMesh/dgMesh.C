@@ -171,8 +171,7 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     free(facesContent);
 
 
-    this->bosssmesh_->TestMethod(88);
-//    dgBasePtr_ = new dgBase::New(pMesh);
+    //this->bosssmesh_->TestMethod(88);
 }
 
 

@@ -53,7 +53,7 @@ namespace dgm
     template<class Type>
     tmp<dgMatrix<Type> > dgDdt
     (
-        const GeometricField<Type, dgPatchField, cellMesh>&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const word& name
     );
 
@@ -61,7 +61,7 @@ namespace dgm
     tmp<dgMatrix<Type> > dgDdt
     (
         const geometricOneField&,
-        const GeometricField<Type, dgPatchField, cellMesh>&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const word& name
     );
 
@@ -84,14 +84,14 @@ namespace dgm
     template<class Type>
     tmp<dgMatrix<Type> > dgDdt
     (
-        const GeometricField<Type, dgPatchField, cellMesh>&
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
     template<class Type>
     tmp<dgMatrix<Type> > dgDdt
     (
         const geometricOneField&,
-        const GeometricField<Type, dgPatchField, cellMesh>&
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
 //    template<class Type>

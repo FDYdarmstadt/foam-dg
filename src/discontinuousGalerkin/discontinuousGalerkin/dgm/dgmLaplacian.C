@@ -44,7 +44,7 @@ template<class Type>
 tmp<dgMatrix<Type> >
 dgLaplacian
 (
-    const GeometricField<Type, dgPatchField, cellMesh>& vf,
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const word& name
 )
 {
@@ -78,7 +78,7 @@ template<class Type>
 tmp<dgMatrix<Type> >
 dgLaplacian
 (
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
 
@@ -139,7 +139,7 @@ tmp<dgMatrix<Type> >
 dgLaplacian
 (
     const geometricOneField&,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf,
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const word& name
 )
 {
@@ -152,7 +152,7 @@ tmp<dgMatrix<Type> >
 dgLaplacian
 (
     const geometricOneField&,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
     Info << "TEST 2 " << endl;
@@ -191,7 +191,7 @@ tmp<dgMatrix<Type> >
 dgLaplacian
 (
     const dimensioned<GType>& gamma,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
 //    GeometricField<GType, dgsPatchField, surfaceMesh> Gamma
@@ -218,7 +218,7 @@ tmp<dgMatrix<Type> >
 dgLaplacian
 (
     const dimensionedScalar& gamma,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf,
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const word& name
 )
 {
@@ -234,8 +234,8 @@ template<class Type, class GType>
 tmp<dgMatrix<Type> >
 dgLaplacian
 (
-    const tmp<GeometricField<GType, dgPatchField, cellMesh> >& tgamma,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf,
+    const tmp<DgGeometricField<GType, dgPatchField, cellMesh> >& tgamma,
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const word& name
 )
 {
@@ -249,8 +249,8 @@ template<class Type, class GType>
 tmp<dgMatrix<Type> >
 dgLaplacian
 (
-    const GeometricField<GType, dgPatchField, cellMesh>& gamma,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<GType, dgPatchField, cellMesh>& gamma,
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
     return dgm::dgLaplacian
@@ -266,8 +266,8 @@ template<class Type, class GType>
 tmp<dgMatrix<Type> >
 dgLaplacian
 (
-    const tmp<GeometricField<GType, dgPatchField, cellMesh> >& tgamma,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const tmp<DgGeometricField<GType, dgPatchField, cellMesh> >& tgamma,
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
     tmp<dgMatrix<Type> > Laplacian(dgm::dgLaplacian(tgamma(), vf));

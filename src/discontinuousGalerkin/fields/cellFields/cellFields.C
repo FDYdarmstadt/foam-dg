@@ -33,6 +33,12 @@ namespace Foam
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
+//defineTemplateTypeNameAndDebug(preCellScalarField::DimensionedInternalField, 0);
+//defineTemplateTypeNameAndDebug(preCellVectorField::DimensionedInternalField, 0);
+
+defineTemplateTypeNameAndDebug(preCellScalarField, 0);
+defineTemplateTypeNameAndDebug(preCellVectorField, 0);
+
 defineTemplateTypeNameAndDebug(cellScalarField::DimensionedInternalField, 0);
 defineTemplateTypeNameAndDebug(cellVectorField::DimensionedInternalField, 0);
 
@@ -41,6 +47,53 @@ defineTemplateTypeNameAndDebug(cellVectorField, 0);
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+/*
+// Constructor given a DgGeometricField and dimensionSet
+// This allocates storage for the field but not values.
+// Note : This constructor should only be used to
+//       construct TEMPORARY variables
+template<class Type, template<class> class PatchField, class GeoMesh>
+Foam::DgGeometricField<Type, PatchField, GeoMesh>::DgGeometricField
+(
+    const IOobject& io,
+    const Mesh& mesh,
+    const dimensionSet& ds,
+    const word& patchFieldType
+)
+: GeometricField<Type, PatchField, GeoMesh>(io, mesh, ds, patchFieldType)
+{
+    if (debug)
+    {
+        Info<< "DgGeometricField<Type, PatchField, GeoMesh>::GeometricField : "
+               "creating temporary"
+            << endl << this->info() << endl;
+    }
+
+}
+
+
+template<class Type, template<class> class PatchField, class GeoMesh>
+Foam::DgGeometricField<Type, PatchField, GeoMesh>::DgGeometricField
+(
+    const IOobject& io,
+    const Mesh& mesh
+)
+:
+    GeometricField<Type, PatchField, GeoMesh>(io, mesh)
+{
+    
+    if (debug)
+    {
+        Info<< "Finishing read-construct of "
+               "DgGeometricField<Type, PatchField, GeoMesh>"
+            << endl << this->info() << endl;
+    }
+}
+*/
+
+
+
 
 } // End namespace Foam
 

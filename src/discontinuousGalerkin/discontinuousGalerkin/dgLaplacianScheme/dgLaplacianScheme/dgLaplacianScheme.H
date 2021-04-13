@@ -174,7 +174,7 @@ public:
         virtual tmp<dgMatrix<Type> > dgmLaplacian
         (
             const dimensionedScalar&,
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         ) = 0;
 
 //        virtual tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
@@ -183,10 +183,10 @@ public:
 //            const GeometricField<Type, dgPatchField, cellMesh>&
 //        ) = 0;
 
-        virtual tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
+        virtual tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
         (
             const dimensionedScalar&,
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         ) = 0;
 
 //        virtual tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian

@@ -54,14 +54,14 @@ namespace dgm
     template<class Type>
     tmp<dgMatrix<Type> > dgLaplacian
     (
-        const GeometricField<Type, dgPatchField, cellMesh>&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const word&
     );
 
     template<class Type>
     tmp<dgMatrix<Type> > dgLaplacian
     (
-        const GeometricField<Type, dgPatchField, cellMesh>&
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
 
@@ -85,7 +85,7 @@ namespace dgm
     tmp<dgMatrix<Type> > dgLaplacian
     (
         const geometricOneField&,
-        const GeometricField<Type, dgPatchField, cellMesh>&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const word&
     );
 
@@ -93,7 +93,7 @@ namespace dgm
     tmp<dgMatrix<Type> > dgLaplacian
     (
         const geometricOneField&,
-        const GeometricField<Type, dgPatchField, cellMesh>&
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
 
@@ -109,7 +109,7 @@ namespace dgm
     tmp<dgMatrix<Type> > dgLaplacian
     (
         const dimensioned<GType>&,
-        const GeometricField<Type, dgPatchField, cellMesh>&
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
 // WE USE THIS:
@@ -117,31 +117,31 @@ namespace dgm
     tmp<dgMatrix<Type> > dgLaplacian
     (
         const dimensionedScalar&,
-        const GeometricField<Type, dgPatchField, cellMesh>&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const word&
     );
 
     template<class Type, class GType>
     tmp<dgMatrix<Type> > dgLaplacian
     (
-        const GeometricField<GType, dgPatchField, cellMesh>&,
-        const GeometricField<Type, dgPatchField, cellMesh>&
+        const DgGeometricField<GType, dgPatchField, cellMesh>&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
 
     template<class Type, class GType>
     tmp<dgMatrix<Type> > dgLaplacian
     (
-        const tmp<GeometricField<GType, dgPatchField, cellMesh> >&,
-        const GeometricField<Type, dgPatchField, cellMesh>&,
+        const tmp<DgGeometricField<GType, dgPatchField, cellMesh> >&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const word&
     );
 
     template<class Type, class GType>
     tmp<dgMatrix<Type> > dgLaplacian
     (
-        const tmp<GeometricField<GType, dgPatchField, cellMesh> >&,
-        const GeometricField<Type, dgPatchField, cellMesh>&
+        const tmp<DgGeometricField<GType, dgPatchField, cellMesh> >&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
 

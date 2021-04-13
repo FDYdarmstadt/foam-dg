@@ -38,7 +38,7 @@ namespace Foam
 template<class Type>
 dgMatrix<Type>::dgMatrix
 (
-    const GeometricField<Type, dgPatchField, cellMesh>& psi,
+    const DgGeometricField<Type, dgPatchField, cellMesh>& psi,
     const dimensionSet& ds
 )
 :
@@ -55,15 +55,15 @@ dgMatrix<Type>::dgMatrix
         (
             "dgMatrix<Type>\n"
             "(\n"
-            "    const GeometricField<Type, dgPatchField, cellMesh>&,\n"
+            "    const DgGeometricField<Type, dgPatchField, cellMesh>&,\n"
             "    const dimensionSet&\n"
         )   << "constructing dgMatrix<Type> for field " << psi_.name()
             << endl;
     }
 
     // Update the boundary coefficients of psi without changing its event No.
-    GeometricField<Type, dgPatchField, cellMesh>& psiRef =
-       const_cast<GeometricField<Type, dgPatchField, cellMesh>&>(psi_);
+    DgGeometricField<Type, dgPatchField, cellMesh>& psiRef =
+       const_cast<DgGeometricField<Type, dgPatchField, cellMesh>&>(psi_);
 
     label currentStatePsi = psiRef.eventNo();
     psiRef.boundaryField().updateCoeffs();

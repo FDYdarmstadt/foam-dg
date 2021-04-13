@@ -107,18 +107,18 @@ public:
 
 
         // NOT IMPLEMENTED DGC FOR DIV (copied from laplacian)
-        tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcDiv2
+        tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgcDiv2
         (
             const dimensionedScalar&,
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         );
 
 
         tmp<dgMatrix<Type> > dgmDiv2
         (
 //            const dimensionedScalar&,
-            const GeometricField<dgVector, dgPatchField, cellMesh>&,
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<dgVector, dgPatchField, cellMesh>&,
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         );
 
 };

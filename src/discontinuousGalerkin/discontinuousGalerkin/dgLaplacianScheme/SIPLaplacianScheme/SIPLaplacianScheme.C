@@ -45,6 +45,8 @@ namespace dg
 template<class Type, class GType>
 void SIPLaplacianScheme<Type, GType>::calcEta()
 {
+    Info << "Helo from SIP" << endl;
+    
     if (!etaPtr_)
     {
         const polyMesh& mesh = this->mesh().mesh();;
@@ -177,18 +179,20 @@ void SIPLaplacianScheme<Type, GType>::calcEta()
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 template<class Type, class GType>
-tmp<GeometricField<Type, dgPatchField, cellMesh> >
+tmp<DgGeometricField<Type, dgPatchField, cellMesh> >
 SIPLaplacianScheme<Type, GType>::dgcLaplacian
 (
     const dimensionedScalar& gamma,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
+    Info << "Helo from SIP (2)" << endl;
+
     // Laplace consists of four terms:
     // Volume term, consistency term, symmetry term and penalty term
 
     // Volume term is (gradU * gradV):
-    tmp<GeometricField<Type, dgPatchField, cellMesh> > tLaplacianVol
+    tmp<DgGeometricField<Type, dgPatchField, cellMesh> > tLaplacianVol
     (
         // The term is squared in volumeIntegrateGrad - KEEP IN MIND
         dgc::volumeIntegrateGrad(vf)
@@ -256,9 +260,11 @@ tmp<dgMatrix<Type> >
 SIPLaplacianScheme<Type, GType>::dgmLaplacian
 (
     const dimensionedScalar& gamma,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
+    Info << "Helo from SIP (3)" << endl;
+
     const dgMesh& mesh = this->mesh();
 
     tmp<dgMatrix<Type> > tdgm

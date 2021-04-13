@@ -34,7 +34,6 @@ Authors:
 
 \*---------------------------------------------------------------------------*/
 
-//#include <Python.h>
 
 #include "BoSSScpp.h"
 
@@ -60,32 +59,7 @@ int main(int argc, char *argv[])
 
 #   include "createFields.H"
 
-    /*
-    PyObject* pName = PyUnicode_FromString("mypython");
-    //printf("pSame = %i\n", pName);
-	PyObject* pModule = PyImport_Import(pName);
-    //printf("pModule = %i\n", pModule);
 
-	if(pModule)
-	{
-		PyObject* pFunc = PyObject_GetAttrString(pModule, "TrottelFunktion");
-		if(pFunc && PyCallable_Check(pFunc))
-		{
-			PyObject* pValue = PyObject_CallObject(pFunc, NULL);
-
-			//printf_s("C: getInteger() = %ld\n", PyLong_AsLong(pValue));
-		}
-		else
-		{
-			printf("ERROR: function getInteger()\n");
-		}
-
-	}
-	else
-	{
-		printf("ERROR: Module not imported\n");
-	}
-    */
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
     Info << "\n\n Hello from Flörian" << endl;
@@ -94,19 +68,17 @@ int main(int argc, char *argv[])
 
     while(runTime < runTime.endTime())
     {
-    runTime++;
+        runTime++;
 
 
-    Info << "Time: " << runTime.timeName() << nl << endl;
+        Info << "Time: " << runTime.timeName() << nl << endl;
 
-    // Testing matrix operations
-        dgScalarMatrix TEqn(T, T.dimensions()/dimTime);
+        // Testing matrix operations
+        //dgScalarMatrix TEqn(T, T.dimensions()/dimTime);
 
         cellScalarField Tintegral = dgc::volumeIntegrate(T);
 
         cellScalarField T1 = dgc::dgLaplacian(T);
-
-
 
         dgScalarMatrix Te
         (

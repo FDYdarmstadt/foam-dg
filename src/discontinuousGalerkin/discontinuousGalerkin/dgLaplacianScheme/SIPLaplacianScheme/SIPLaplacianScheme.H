@@ -115,10 +115,10 @@ public:
 
     // Member Functions
 
-        tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
+        tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
         (
             const dimensionedScalar&,
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         );
 
 //        tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
@@ -130,7 +130,7 @@ public:
         tmp<dgMatrix<Type> > dgmLaplacian
         (
             const dimensionedScalar&,
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         );
 
 //        tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian

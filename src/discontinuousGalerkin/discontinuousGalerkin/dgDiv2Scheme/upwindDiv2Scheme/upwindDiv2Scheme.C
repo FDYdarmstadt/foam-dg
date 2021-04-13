@@ -51,11 +51,11 @@ namespace dg
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 template<class Type, class GType>
-tmp<GeometricField<Type, dgPatchField, cellMesh> >
+tmp<DgGeometricField<Type, dgPatchField, cellMesh> >
 upwindDiv2Scheme<Type, GType>::dgcDiv2
 (
     const dimensionedScalar& gamma,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
   /*
@@ -63,7 +63,7 @@ upwindDiv2Scheme<Type, GType>::dgcDiv2
     // Volume term, consistency term, symmetry term and penalty term
 
     // Volume term is (gradU * gradV):
-    tmp<GeometricField<Type, dgPatchField, cellMesh> > tLaplacianVol
+    tmp<DgGeometricField<Type, dgPatchField, cellMesh> > tLaplacianVol
     (
         // The term is squared in volumeIntegrateGrad - KEEP IN MIND
         dgc::volumeIntegrateGrad(vf)
@@ -80,8 +80,8 @@ template<class Type, class GType>
 tmp<dgMatrix<Type> >
 upwindDiv2Scheme<Type, GType>::dgmDiv2
 (
-    const GeometricField<dgVector, dgPatchField, cellMesh>& vvf,
-    const GeometricField<Type, dgPatchField, cellMesh>& vsf
+    const DgGeometricField<dgVector, dgPatchField, cellMesh>& vvf,
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vsf
 )
 {
 

@@ -45,7 +45,7 @@ template<class Type>
 tmp<cellScalarField>
 volumeIntegrate
 (
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
 
@@ -153,7 +153,7 @@ template<class Type>
 tmp<Field<Type> >
 volumeIntegrate
 (
-    const tmp<GeometricField<Type, dgPatchField, cellMesh> >& tvf
+    const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >& tvf
 )
 {
     tmp<Field<Type> > tvivf = tvf().mesh().V()*tvf().internalField();
@@ -166,7 +166,7 @@ template<class Type>
 tmp<cellScalarField>
 volumeIntegrateGrad
 (
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
 
@@ -279,7 +279,7 @@ template<class Type>
 dimensioned<Type>
 domainIntegrate
 (
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
     return dimensioned<Type>
@@ -294,7 +294,7 @@ template<class Type>
 dimensioned<Type>
 domainIntegrate
 (
-    const tmp<GeometricField<Type, dgPatchField, cellMesh> >& tvf
+    const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >& tvf
 )
 {
     dimensioned<Type> integral = domainIntegrate(tvf());

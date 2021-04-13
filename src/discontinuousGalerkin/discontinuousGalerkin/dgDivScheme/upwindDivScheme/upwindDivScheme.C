@@ -51,18 +51,18 @@ namespace dg
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 template<class Type, class GType>
-tmp<GeometricField<Type, dgPatchField, cellMesh> >
+tmp<DgGeometricField<Type, dgPatchField, cellMesh> >
 upwindDivScheme<Type, GType>::dgcDiv
 (
     const dimensionedScalar& gamma,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
     // Laplace consists of four terms:
     // Volume term, consistency term, symmetry term and penalty term
 
     // Volume term is (gradU * gradV):
-    tmp<GeometricField<Type, dgPatchField, cellMesh> > tLaplacianVol
+    tmp<DgGeometricField<Type, dgPatchField, cellMesh> > tLaplacianVol
     (
         // The term is squared in volumeIntegrateGrad - KEEP IN MIND
         dgc::volumeIntegrateGrad(vf)
@@ -78,8 +78,8 @@ template<class Type, class GType>
 tmp<dgMatrix<Type> >
 upwindDivScheme<Type, GType>::dgmDiv
 (
-    const GeometricField<dgVector, dgPatchField, cellMesh>& vvf,
-    const GeometricField<Type, dgPatchField, cellMesh>& vsf
+    const DgGeometricField<dgVector, dgPatchField, cellMesh>& vvf,
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vsf
 )
 {
     const dgMesh& mesh = this->mesh();

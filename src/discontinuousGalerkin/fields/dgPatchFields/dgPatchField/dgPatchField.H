@@ -63,6 +63,9 @@ class dgPatchField;
 template<class Type, template<class> class PatchField, class GeoMesh>
 class GeometricField;
 
+template<class Type, template<class> class PatchField, class GeoMesh>
+class DgGeometricField;
+
 template<class Type>
 Ostream& operator<<(Ostream&, const dgPatchField<Type>&);
 

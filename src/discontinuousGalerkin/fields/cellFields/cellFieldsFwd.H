@@ -53,8 +53,15 @@ class dgPatchField;
 template<class Type, template<class> class PatchField, class GeoMesh>
 class GeometricField;
 
-typedef GeometricField<dgScalar, dgPatchField, cellMesh> cellScalarField;
-typedef GeometricField<dgVector, dgPatchField, cellMesh> cellVectorField;
+template<class Type, template<class> class PatchField, class GeoMesh>
+class DgGeometricField;
+
+
+typedef GeometricField<dgScalar, dgPatchField, cellMesh> preCellScalarField;
+typedef GeometricField<dgVector, dgPatchField, cellMesh> preCellVectorField;
+
+typedef DgGeometricField<dgScalar, dgPatchField, cellMesh> cellScalarField;
+typedef DgGeometricField<dgVector, dgPatchField, cellMesh> cellVectorField;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

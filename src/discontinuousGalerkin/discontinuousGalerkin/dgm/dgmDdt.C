@@ -46,7 +46,7 @@ template<class Type>
 tmp<dgMatrix<Type> >
 dgDdt
 (
-    GeometricField<Type, dgPatchField, cellMesh>& vf,
+    DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const word& name
 )
 {
@@ -63,7 +63,7 @@ tmp<dgMatrix<Type> >
 dgDdt
 (
     const geometricOneField&,
-    GeometricField<Type, dgPatchField, cellMesh>& vf,
+    DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const word& name
 )
 {
@@ -109,7 +109,7 @@ template<class Type>
 tmp<dgMatrix<Type> >
 dgDdt
 (
-    GeometricField<Type, dgPatchField, cellMesh>& vf
+    DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
     return dgm::dgDdt(vf, "dgDdt(" + vf.name() + ')');
@@ -121,7 +121,7 @@ tmp<dgMatrix<Type> >
 dgDdt
 (
     const geometricOneField&,
-    GeometricField<Type, dgPatchField, cellMesh>& vf
+    DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
     return dgm::dgDdt(vf);

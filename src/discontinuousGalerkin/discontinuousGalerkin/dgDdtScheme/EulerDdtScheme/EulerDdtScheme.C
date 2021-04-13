@@ -261,7 +261,7 @@ template<class Type>
 tmp<dgMatrix<Type> >
 EulerDdtScheme<Type>::dgmDdt
 (
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
     tmp<dgMatrix<Type> > tdgm
@@ -326,7 +326,7 @@ tmp<dgMatrix<Type> >
 EulerDdtScheme<Type>::dgmDdt
 (
     const dimensionedDgScalar& rho,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
     tmp<dgMatrix<Type> > tfvm
@@ -347,7 +347,7 @@ tmp<dgMatrix<Type> >
 EulerDdtScheme<Type>::dgmDdt
 (
     const cellScalarField& rho,
-    const GeometricField<Type, dgPatchField, cellMesh>& vf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
     tmp<dgMatrix<Type> > tfvm

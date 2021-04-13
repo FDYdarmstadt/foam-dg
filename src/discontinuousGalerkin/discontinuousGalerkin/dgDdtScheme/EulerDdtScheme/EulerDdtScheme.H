@@ -120,19 +120,19 @@ public:
 //
         tmp<dgMatrix<Type> > dgmDdt
         (
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         );
 
         tmp<dgMatrix<Type> > dgmDdt
         (
             const dimensionedDgScalar&,
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         );
 
         tmp<dgMatrix<Type> > dgmDdt
         (
             const cellScalarField&,
-            const GeometricField<Type, dgPatchField, cellMesh>&
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
         );
 //
 //        typedef typename ddtScheme<Type>::fluxFieldType fluxFieldType;

@@ -93,7 +93,7 @@ public:
         typedef BlockLduMatrix<VectorN<scalar, Type::coeffLength> > MatrixType;
 
         //- Field type
-        typedef GeometricField<Type, dgPatchField, cellMesh> FieldType;
+        typedef DgGeometricField<Type, dgPatchField, cellMesh> FieldType;
 
         //- Solver type
         typedef BlockLduSolver<VectorN<scalar, Type::coeffLength> > SolverType;
@@ -109,7 +109,7 @@ private:
     // Private data
 
         // Reference to GeometricField<Type, dgPatchField, cellMesh>
-        const GeometricField<Type, dgPatchField, cellMesh>& psi_;
+        const DgGeometricField<Type, dgPatchField, cellMesh>& psi_;
 //        GeometricField<Type, dgPatchField, cellMesh>& psi_;
 
         //- Dimension set
@@ -168,7 +168,7 @@ public:
         //- Construct given a field to solve for
         dgMatrix
         (
-            const GeometricField<Type, dgPatchField, cellMesh>&,
+            const DgGeometricField<Type, dgPatchField, cellMesh>&,
             const dimensionSet&
         );
 
@@ -184,7 +184,7 @@ public:
 
         // Access
 
-            const GeometricField<Type, dgPatchField, cellMesh>& psi() const
+            const DgGeometricField<Type, dgPatchField, cellMesh>& psi() const
             {
                 return psi_;
             }
@@ -208,7 +208,7 @@ public:
     // Operations
 
             //- Relax matrix (for steady-state solution).
-            //  alpha = 1 : diagonally equal
+            //  alpha = 1 : diagonaly equal
             //  alpha < 1 :    ,,      dominant
             //  alpha = 0 : do nothing
             void relax(const scalar alpha);

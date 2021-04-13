@@ -59,7 +59,7 @@ namespace dgc
     template<class Type>
     tmp<cellScalarField> volumeIntegrate
     (
-        const GeometricField<Type, dgPatchField, cellMesh>&
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
     template<class Type>
@@ -72,14 +72,14 @@ namespace dgc
     template<class Type>
     tmp<Field<Type> > volumeIntegrate
     (
-        const tmp<GeometricField<Type, dgPatchField, cellMesh> >&
+        const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&
     );
 
     // For laplacian calculation
     template<class Type>
     tmp<cellScalarField> volumeIntegrateGrad
     (
-        const GeometricField<Type, dgPatchField, cellMesh>&
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
     // For laplacian calculation
@@ -93,13 +93,13 @@ namespace dgc
     template<class Type>
     dimensioned<Type> domainIntegrate
     (
-        const GeometricField<Type, dgPatchField, cellMesh>&
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
     template<class Type>
     dimensioned<Type> domainIntegrate
     (
-        const tmp<GeometricField<Type, dgPatchField, cellMesh> >&
+        const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&
     );
 }
 
