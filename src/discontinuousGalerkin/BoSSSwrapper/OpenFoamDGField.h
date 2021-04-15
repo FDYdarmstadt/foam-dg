@@ -7,30 +7,29 @@
 #pragma once
 namespace BoSSS
 {
-namespace Foundation
+namespace Application
 {
-namespace Grid
+namespace ExternalBinding
 {
-namespace Classic
-{
-class GridData
+class OpenFoamDGField
 {
 public:
-~GridData();
+~OpenFoamDGField();
 void _ReleaseGChandle();
-GridData(MonoObject* mo);
-static GridData* _FromMonoObject(MonoObject* mo);
+OpenFoamDGField(MonoObject* mo);
+static OpenFoamDGField* _FromMonoObject(MonoObject* mo);
 MonoObject* _GetMonoObject();
+OpenFoamDGField(BoSSS::Foundation::Grid::OpenFOAMGrid* g, int degree, int NoOfComponents);
 void _SetForeignPointer(void* ptr);
 void* _GetForeignPointer();
 private:
 void _InitMonoBindings();
 MonoClass* _ClassHandle;
 uint32_t _MonoGCHandle;
+MonoMethod* _ctor_0;
 MonoMethod* __SetForeignPointer;
 MonoMethod* __GetForeignPointer;
 };
-}
 }
 }
 }

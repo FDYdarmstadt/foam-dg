@@ -5,21 +5,17 @@
 // Creation Date: 15.04.2021 16:46:10
 // ##########################################################################
 #pragma once
-namespace BoSSS
+namespace ilPSP
 {
-namespace Foundation
+namespace LinSolvers
 {
-namespace Grid
-{
-namespace Classic
-{
-class GridData
+class BlockMsrMatrix
 {
 public:
-~GridData();
+~BlockMsrMatrix();
 void _ReleaseGChandle();
-GridData(MonoObject* mo);
-static GridData* _FromMonoObject(MonoObject* mo);
+BlockMsrMatrix(MonoObject* mo);
+static BlockMsrMatrix* _FromMonoObject(MonoObject* mo);
 MonoObject* _GetMonoObject();
 void _SetForeignPointer(void* ptr);
 void* _GetForeignPointer();
@@ -30,7 +26,5 @@ uint32_t _MonoGCHandle;
 MonoMethod* __SetForeignPointer;
 MonoMethod* __GetForeignPointer;
 };
-}
-}
 }
 }

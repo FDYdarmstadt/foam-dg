@@ -193,7 +193,7 @@ int main()
     //char monodir[] = "C:\\Program Files\\Mono";
     char exedir[] = "C:\\Users\\florian\\Documents\\BoSSS-master\\public\\src\\L4-application\\ExternalBinding\\bin\\Debug\\";
 #else
-    char exedir[] = "./";
+    char exedir[] = "./Debug/";
 #endif 
 
     BoSSS::Globals::Init(exedir);

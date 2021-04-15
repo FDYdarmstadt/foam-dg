@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 #   include "setRootCase.H"
 
     //char bossslibdir[] = "/home/flori/foam/foam-dg/src/discontinuousGalerkin/BoSSSwrapper/";
-    char bossslibdir[] = "/mnt/c/Users/flori/Documents/BoSSS-bgfx/public/src/L4-application/ExternalBinding.CodeGen/bin/Release/";
+    char bossslibdir[] = "/mnt/c/Users/flori/Documents/BoSSS-kummer/public/src/L4-application/ExternalBinding.CodeGen/bin/Release/";
     BoSSS::Globals::Init(bossslibdir);
     BoSSS::Application::ExternalBinding::Initializer MyInit;
     MyInit.BoSSSInitialize();
@@ -65,6 +65,8 @@ int main(int argc, char *argv[])
     Info << "\n\n Hello from Flörian" << endl;
     Info << "\nCalculating temperature distribution\n" << endl;
 
+    dgScalar scl = T[0];
+    Info << "T[0,1] = " << scl[1] << endl;
 
     while(runTime < runTime.endTime())
     {

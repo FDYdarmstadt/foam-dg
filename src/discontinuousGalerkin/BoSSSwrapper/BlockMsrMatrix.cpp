@@ -22,21 +22,17 @@
 #include "Initializer.h"
 #include "FixedOperators.h"
 #include "OpenFoamDGField.h"
-namespace BoSSS
+namespace ilPSP
 {
-namespace Foundation
+namespace LinSolvers
 {
-namespace Grid
+void BlockMsrMatrix::_InitMonoBindings()
 {
-namespace Classic
-{
-void GridData::_InitMonoBindings()
-{
-_ClassHandle = BoSSS::Globals::LookupClass(BoSSS::Globals::_image__BoSSS_Foundation, "GridData", "BoSSS.Foundation.Grid.Classic");
-__SetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Foundation.Grid.Classic.GridData:_SetForeignPointer", true);
-__GetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Foundation.Grid.Classic.GridData:_GetForeignPointer", true);
+_ClassHandle = BoSSS::Globals::LookupClass(BoSSS::Globals::_image__BoSSS_Platform, "BlockMsrMatrix", "ilPSP.LinSolvers");
+__SetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "ilPSP.LinSolvers.BlockMsrMatrix:_SetForeignPointer", true);
+__GetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "ilPSP.LinSolvers.BlockMsrMatrix:_GetForeignPointer", true);
 }
-GridData::~GridData()
+BlockMsrMatrix::~BlockMsrMatrix()
 {
 if (_MonoGCHandle != 0)
 {
@@ -46,34 +42,34 @@ _SetForeignPointer(NULL);
 mono_gchandle_free(_MonoGCHandle);
 }
 }
-void GridData::_ReleaseGChandle()
+void BlockMsrMatrix::_ReleaseGChandle()
 {
 mono_gchandle_free(_MonoGCHandle);
 _MonoGCHandle = 0; // blocks destructor functionality
 }
-GridData::GridData(MonoObject* mo)
+BlockMsrMatrix::BlockMsrMatrix(MonoObject* mo)
 {
 _InitMonoBindings();
 _MonoGCHandle = mono_gchandle_new(mo, true);
 }
-GridData* GridData::_FromMonoObject(MonoObject* mo)
+BlockMsrMatrix* BlockMsrMatrix::_FromMonoObject(MonoObject* mo)
 {
-GridData* tmp = new GridData(mo);
+BlockMsrMatrix* tmp = new BlockMsrMatrix(mo);
 void* LoggedRef = tmp->_GetForeignPointer();
 if (LoggedRef != NULL) {
     tmp->_ReleaseGChandle();
     delete tmp;
-    return ((GridData*)LoggedRef);
+    return ((BlockMsrMatrix*)LoggedRef);
 } else {
     tmp->_SetForeignPointer(tmp);
     return tmp;
 }
 }
-MonoObject* GridData::_GetMonoObject()
+MonoObject* BlockMsrMatrix::_GetMonoObject()
 {
 return mono_gchandle_get_target(_MonoGCHandle);
 }
-void GridData::_SetForeignPointer(void* ptr)
+void BlockMsrMatrix::_SetForeignPointer(void* ptr)
 {
 void* args[1];
 args[0] = &ptr;
@@ -81,23 +77,21 @@ MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(__SetForeignPointer, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
 if (exception != NULL) {
-    fprintf( stderr, "got exception from C# (GridData._SetForeignPointer) \n");
+    fprintf( stderr, "got exception from C# (BlockMsrMatrix._SetForeignPointer) \n");
 }
 return;
 }
-void* GridData::_GetForeignPointer()
+void* BlockMsrMatrix::_GetForeignPointer()
 {
 void* args[1];
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(__GetForeignPointer, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
 if (exception != NULL) {
-    fprintf( stderr, "got exception from C# (GridData._GetForeignPointer) \n");
+    fprintf( stderr, "got exception from C# (BlockMsrMatrix._GetForeignPointer) \n");
 }
 void* retptr = mono_object_unbox(retval);
 return *((void**) retptr);
-}
-}
 }
 }
 }

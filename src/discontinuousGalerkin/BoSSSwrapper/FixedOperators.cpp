@@ -1,3 +1,9 @@
+// ##########################################################################
+// This is AUTO-GENERATED code created by the 
+// BoSSS External Language Binding code generator.
+// **Any manual changes are over-written if the code-generator is executed.**
+// Creation Date: 15.04.2021 16:46:10
+// ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
 #define _CRT_SECURE_NO_WARNINGS
@@ -11,9 +17,11 @@
 #include "Globals.h"
 #include "Prototypes.h"
 #include "GridData.h"
+#include "BlockMsrMatrix.h"
 #include "OpenFOAMGrid.h"
 #include "Initializer.h"
 #include "FixedOperators.h"
+#include "OpenFoamDGField.h"
 namespace BoSSS
 {
 namespace Application
@@ -72,7 +80,7 @@ MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(__SetForeignPointer, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
 if (exception != NULL) {
-    printf( "got exception from C#\n");
+    fprintf( stderr, "got exception from C# (FixedOperators._SetForeignPointer) \n");
 }
 return;
 }
@@ -83,7 +91,7 @@ MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(__GetForeignPointer, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
 if (exception != NULL) {
-    printf( "got exception from C#\n");
+    fprintf( stderr, "got exception from C# (FixedOperators._GetForeignPointer) \n");
 }
 void* retptr = mono_object_unbox(retval);
 return *((void**) retptr);
@@ -97,7 +105,7 @@ MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_Laplacian, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
 if (exception != NULL) {
-    printf( "got exception from C#\n");
+    fprintf( stderr, "got exception from C# (FixedOperators.Laplacian) \n");
 }
 return;
 }
