@@ -67,12 +67,15 @@ int main(int argc, char *argv[])
 
     const Foam::dgMesh& meeehsch = T.mesh();//.GetBoSSSobject();
     BoSSS::Foundation::Grid::OpenFOAMGrid* bosssMesh = meeehsch.GetBoSSSobject();
-    bosssMesh->TestMethod();
+    bosssMesh->TestMethod(44);
 
     //T.GetBoSSSobject();
 
-    //T.SyncToBoSSS();
+    T.SyncToBoSSS();
     //T.dgMesh()
+
+    dgScalar scl = T[0];
+
 
     while(runTime < runTime.endTime())
     {
@@ -95,7 +98,7 @@ int main(int argc, char *argv[])
 
         Te.solve();
 
-        //T.SyncFromBoSSS();
+        T.SyncFromBoSSS();
 
         runTime.write();
 
