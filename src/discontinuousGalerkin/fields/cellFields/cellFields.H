@@ -34,17 +34,21 @@ SourceFiles
 #ifndef cellFields_H
 #define cellFields_H
 
+#include "BoSSScpp.h"
+
 #include "objectRegistry.H"
 #include "GeometricFields.H"
 #include "cellMesh.H"
 #include "dgMesh.H"
 #include "dgPatchFields.H"
 #include "cellFieldsFwd.H"
+#include "dgOrder.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
+using BoSSS::Application::ExternalBinding::OpenFoamDGField;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -57,6 +61,11 @@ class DgGeometricField
 :
     public GeometricField<Type, PatchField, GeoMesh>
 {
+private:
+    OpenFoamDGField* bosssObject_ = NULL;
+
+    //dgMesh& dgmesh_;
+
 public:
 
     // Public typedefs
@@ -238,10 +247,67 @@ public:
 
 
     //- Destructor
-    virtual ~DgGeometricField() { }
+    virtual ~DgGeometricField() { 
+        if(bosssObject_ != NULL) {
+            delete bosssObject_;
+        }
+    }
 
 
     // Member Functions
+
+    OpenFoamDGField* GetBoSSSobject() {
+        if(bosssObject_ == NULL) {
+            int NoOfComps;
+            if(typeid(Type) == typeid(dgScalar)) {
+                NoOfComps = 1;
+            } else if(typeid(Type) == typeid(dgVector)) {
+                NoOfComps = dgOrder::dim;
+            } else {
+                NoOfComps = -1;
+            }
+
+            //const GeoMesh& msh = mesh();
+
+            //bosssObject_ = new OpenFoamDGField(mesh().GetBoSSSobject(), dgOrder::order, NoOfComps);
+        }
+        return bosssObject_;
+    }
+    /*
+    void SyncToBoSSS() {
+
+        const Foam::dgMesh& meeehsch = T.mesh();
+        
+        label J = dgMesh().mesh().nCells();
+        OpenFoamDGField* bo = GetBoSSSobject();
+
+        if(typeid(Type) == typeid(dgScalar)) {
+            for(label j = 0; j < J; j++) {
+                dgScalar cellValue = this[j];
+                int N = cellValue.size();
+                for(int n = 0; n < N; n++)
+                    bo->SetDGcoordinate(0, j, n, cellValue[n]);
+            }
+        }
+
+    }
+
+    void SyncFromBoSSS() {
+        label J = dgMesh().mesh().nCells();
+        OpenFoamDGField* bo = GetBoSSSobject();
+
+        if(typeid(Type) == typeid(dgScalar)) {
+            for(label j = 0; j < J; j++) {
+                int N = this[j].size();
+                dgScalar cellValue;
+                for(int n = 0; n < N; n++)
+                    cellValue[n] = bo->GetDGcoordinate(0, j, n);
+                this[j] = cellValue;
+            }
+        }
+
+    }
+*/
 
         
 /*

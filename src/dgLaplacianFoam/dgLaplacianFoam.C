@@ -65,8 +65,14 @@ int main(int argc, char *argv[])
     Info << "\n\n Hello from Flörian" << endl;
     Info << "\nCalculating temperature distribution\n" << endl;
 
-    dgScalar scl = T[0];
-    Info << "T[0,1] = " << scl[1] << endl;
+    const Foam::dgMesh& meeehsch = T.mesh();//.GetBoSSSobject();
+    BoSSS::Foundation::Grid::OpenFOAMGrid* bosssMesh = meeehsch.GetBoSSSobject();
+    bosssMesh->TestMethod();
+
+    //T.GetBoSSSobject();
+
+    //T.SyncToBoSSS();
+    //T.dgMesh()
 
     while(runTime < runTime.endTime())
     {
@@ -88,6 +94,8 @@ int main(int argc, char *argv[])
         );
 
         Te.solve();
+
+        //T.SyncFromBoSSS();
 
         runTime.write();
 

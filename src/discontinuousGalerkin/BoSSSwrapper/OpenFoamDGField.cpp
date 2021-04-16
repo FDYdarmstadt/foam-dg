@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 15.04.2021 16:46:10
+// Creation Date: 15.04.2021 17:47:02
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -32,6 +32,8 @@ void OpenFoamDGField::_InitMonoBindings()
 {
 _ClassHandle = BoSSS::Globals::LookupClass(BoSSS::Globals::_image__BoSSS_Application_ExternalBinding, "OpenFoamDGField", "BoSSS.Application.ExternalBinding");
 _ctor_0 = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:.ctor", true);
+_SetDGcoordinate = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:SetDGcoordinate", true);
+_GetDGcoordinate = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:GetDGcoordinate", true);
 __SetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:_SetForeignPointer", true);
 __GetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:_GetForeignPointer", true);
 }
@@ -88,6 +90,36 @@ if (exception != NULL) {
     fprintf( stderr, "got exception from C# (OpenFoamDGField.ctor_0) \n");
 }
 _SetForeignPointer(this);
+}
+void OpenFoamDGField::SetDGcoordinate(int f, int j, int n, double val)
+{
+void* args[4];
+args[0] = &f;
+args[1] = &j;
+args[2] = &n;
+args[3] = &val;
+MonoObject* exception;
+MonoObject* retval;
+retval = mono_runtime_invoke(_SetDGcoordinate, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
+if (exception != NULL) {
+    fprintf( stderr, "got exception from C# (OpenFoamDGField.SetDGcoordinate) \n");
+}
+return;
+}
+double OpenFoamDGField::GetDGcoordinate(int f, int j, int n)
+{
+void* args[3];
+args[0] = &f;
+args[1] = &j;
+args[2] = &n;
+MonoObject* exception;
+MonoObject* retval;
+retval = mono_runtime_invoke(_GetDGcoordinate, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
+if (exception != NULL) {
+    fprintf( stderr, "got exception from C# (OpenFoamDGField.GetDGcoordinate) \n");
+}
+void* retptr = mono_object_unbox(retval);
+return *((double*) retptr);
 }
 void OpenFoamDGField::_SetForeignPointer(void* ptr)
 {

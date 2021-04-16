@@ -136,6 +136,10 @@ public:
 
     // Member Functions
 
+        BoSSS::Foundation::Grid::OpenFOAMGrid* GetBoSSSobject() const {
+            return bosssmesh_;
+        }
+
         // Database
 
             //- Return access to polyMesh
