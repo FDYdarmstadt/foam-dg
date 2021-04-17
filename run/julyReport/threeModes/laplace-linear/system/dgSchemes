@@ -18,8 +18,8 @@ FoamFile
 
 dgLaplacianSchemes
 {
-    default SIPLaplacian;
-    dgLaplacian(T) SIP;
+    default bosSIPLaplacian;
+    dgLaplacian(T) bosSIP;
 }
 
 fluxRequired

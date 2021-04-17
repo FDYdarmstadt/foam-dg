@@ -28,6 +28,7 @@ dgMatrices/dgMatrices.C
 discontinuousGalerkin/dg/dg.C
 discontinuousGalerkin/dgLaplacianScheme/dgLaplacianScheme/dgLaplacianSchemes.C
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.C
+discontinuousGalerkin/dgLaplacianScheme/bosSIPLaplacianScheme/bosSIPLaplacianSchemes.C
 discontinuousGalerkin/dgDivScheme/dgDivScheme/dgDivSchemes.C
 discontinuousGalerkin/dgDivScheme/upwindDivScheme/upwindDivSchemes.C
 discontinuousGalerkin/dgDdtScheme/dgDdtScheme/dgDdtSchemes.C
