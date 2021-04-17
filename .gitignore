@@ -75,6 +75,10 @@ doc/[Dd]oxygen/man
 # ignore Apple Mac specific stuff
 .DS_Store
 
+# Florian stuff
+__pycache__/
+mono_crash.*.json
+
 
 .gitignore
 # end-of-file
