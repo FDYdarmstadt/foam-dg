@@ -95,6 +95,8 @@ int main(int argc, char *argv[])
             dgm::dgLaplacian(T)
         );
 
+        Te.GetBoSSSobject();
+
         Te.solve();
 
         T.SyncFromBoSSS();

@@ -61,9 +61,10 @@ class DgGeometricField
 :
     public GeometricField<Type, PatchField, GeoMesh>
 {
-private:
+public:
     OpenFoamDGField* bosssObject_ = NULL;
 
+private:
     const dgMesh& dgmesh_;
 
 public:
@@ -122,7 +123,9 @@ public:
         ) : 
             GeometricField<Type, PatchField, GeoMesh>(a, b, c, patchFieldType),
             dgmesh_(b)
-        { }
+        { 
+            GetBoSSSobject();
+        }
  
         //- Constructor given IOobject, mesh, dimensions and patch types.
         //  This allocates storage for the field but not values.
@@ -136,7 +139,9 @@ public:
         ) : 
             GeometricField<Type, PatchField, GeoMesh>(a, b, c, patchFieldTypes),
             dgmesh_(b)
-        { }
+        { 
+            GetBoSSSobject();
+        }
 
         //- Constructor given IOobject, mesh, dimensioned<Type> and patch type.
         DgGeometricField
@@ -147,7 +152,9 @@ public:
             const word& patchFieldType=PatchField<Type>::calculatedType()
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b, c, patchFieldType),
             dgmesh_(b)
-        { }
+        { 
+            GetBoSSSobject();
+        }
         //- Construct given IOobject, mesh, dimensioned<Type> and patch types
         DgGeometricField
         (
@@ -157,7 +164,9 @@ public:
             const wordList& patchFieldTypes
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b, c, patchFieldTypes) ,
             dgmesh_(b)
-        { }
+        { 
+            GetBoSSSobject();
+        }
         //- Construct from components
         DgGeometricField
         (
@@ -168,7 +177,9 @@ public:
             const PtrList<PatchField<Type> >& e
         )  : GeometricField<Type, PatchField, GeoMesh>(a, b, c, d, e) ,
             dgmesh_(b)
-        { }
+        { 
+            GetBoSSSobject();
+        }
         //- Construct and read given IOobject
         DgGeometricField
         (
@@ -176,7 +187,9 @@ public:
             const Mesh& b
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b),
             dgmesh_(b)
-        { }
+        { 
+            GetBoSSSobject();
+        }
 
         //- Construct and read from given stream
         DgGeometricField
@@ -186,7 +199,9 @@ public:
             Istream& c
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b, c) ,
             dgmesh_(b)
-        { }
+        { 
+            GetBoSSSobject();
+        }
 
         //- Construct from dictionary
         DgGeometricField
@@ -196,7 +211,9 @@ public:
             const dictionary& c
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b, c)  ,
             dgmesh_(b)
-        { }
+        { 
+            GetBoSSSobject();
+        }
 
         //- Construct as copy
         DgGeometricField
@@ -204,7 +221,9 @@ public:
             const DgGeometricField<Type, PatchField, GeoMesh>& a
         ) : GeometricField<Type, PatchField, GeoMesh>(a)  ,
             dgmesh_(a.dgmesh_)
-        { }
+        { 
+            GetBoSSSobject();
+        }
 
         //- Construct as copy of tmp<GeometricField> deleting argument
 #       ifdef ConstructFromTmp
@@ -213,7 +232,9 @@ public:
             const tmp<GeometricField<Type, PatchField, GeoMesh> >& a
         ) : GeometricField<Type, PatchField, GeoMesh>(a) ,
             dgmesh_(a.ptr()->dgmesh_)
-        { }
+        { 
+            GetBoSSSobject();
+        }
 #       endif
 
         //- Construct as copy resetting IO parameters
@@ -223,7 +244,9 @@ public:
             const DgGeometricField<Type, PatchField, GeoMesh>& a
         ) : GeometricField<Type, PatchField, GeoMesh>(a),
             dgmesh_(a.dgmesh_)
-        { }
+        { 
+            GetBoSSSobject();
+        }
         //- Construct as copy resetting name
         DgGeometricField
         (
@@ -231,7 +254,9 @@ public:
             const DgGeometricField<Type, PatchField, GeoMesh>& b
         ) : GeometricField<Type, PatchField, GeoMesh>(newName, b),
             dgmesh_(b.dgmesh_)
-        { }
+        { 
+            GetBoSSSobject();
+        }
 
 #       ifdef ConstructFromTmp
         DgGeometricField
@@ -240,7 +265,9 @@ public:
             const tmp<DgGeometricField<Type, PatchField, GeoMesh> >& b
         ) : GeometricField<Type, PatchField, GeoMesh>(newName, b),
             dgmesh_(b.dgmesh_)
-         { }
+        { 
+            GetBoSSSobject();
+        }
 #       endif
 
         //- Construct as copy resetting IO parameters and patch type
@@ -252,7 +279,9 @@ public:
         ) : 
             GeometricField<Type, PatchField, GeoMesh>(a, b, patchFieldType),
             dgmesh_(b.dgmesh_) 
-        { }
+        { 
+            GetBoSSSobject();
+        }
 
         //- Construct as copy resetting IO parameters and boundary types
         DgGeometricField
@@ -262,7 +291,9 @@ public:
             const wordList& patchFieldTypes
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b, patchFieldTypes), 
             dgmesh_(b.dgmesh_)
-         { }
+        { 
+            GetBoSSSobject();
+        }
 
         //- Clone
         tmp<DgGeometricField<Type, PatchField, GeoMesh> > clone() const

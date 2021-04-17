@@ -97,6 +97,10 @@ dgMatrix<Type>::~dgMatrix()
             << "destroying dgMatrix<Type> for field " << psi_.name()
             << endl;
     }
+
+     if(bosssObject_ != NULL) {
+        delete bosssObject_;
+     }
 }
 
 

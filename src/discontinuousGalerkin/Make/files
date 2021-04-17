@@ -35,7 +35,7 @@ discontinuousGalerkin/dgDdtScheme/dgDdtScheme/dgDdtSchemes.C
 discontinuousGalerkin/dgDdtScheme/EulerDdtScheme/EulerDdtSchemes.C
 
 
-BoSSSwrapper/BlockMsrMatrix.cpp
+BoSSSwrapper/OpenFoamMatrix.cpp
 BoSSSwrapper/OpenFoamDGField.cpp
 BoSSSwrapper/FixedOperators.cpp  
 BoSSSwrapper/Globals.cpp  

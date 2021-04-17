@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 15.04.2021 17:47:02
+// Creation Date: 17.04.2021 08:02:20
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -49,21 +49,6 @@ if (_image__BoSSS_Foundation == NULL) {
     fprintf(stderr, "Unable to get assembly image BoSSS.Foundation.dll.\n");
     throw "Unable to get assembly image.";
 }
-if(strlen(ManagedAssemblyDirectory) + 19 >= 1024) {
-    fprintf(stderr, "Path to assembly BoSSS.Platform.dll exceeds 1024 character limit. \n "); 
-}
-strcpy(path, ManagedAssemblyDirectory);
-strcat(path, "BoSSS.Platform.dll");
-_assembly__BoSSS_Platform = mono_domain_assembly_open(_domain, path);
-if (_assembly__BoSSS_Platform == NULL) {
-    fprintf(stderr, "Unable to open assembly: BoSSS.Platform.dll \n "); 
-    throw "Unable to open assembly.";
-}
-_image__BoSSS_Platform = mono_assembly_get_image(_assembly__BoSSS_Platform);
-if (_image__BoSSS_Platform == NULL) {
-    fprintf(stderr, "Unable to get assembly image BoSSS.Platform.dll.\n");
-    throw "Unable to get assembly image.";
-}
 if(strlen(ManagedAssemblyDirectory) + 26 >= 1024) {
     fprintf(stderr, "Path to assembly BoSSS.Foundation.Grid.dll exceeds 1024 character limit. \n "); 
 }
@@ -97,8 +82,6 @@ if (_image__BoSSS_Application_ExternalBinding == NULL) {
 }
 MonoAssembly* Globals::_assembly__BoSSS_Foundation = NULL;
 MonoImage* Globals::_image__BoSSS_Foundation = NULL;
-MonoAssembly* Globals::_assembly__BoSSS_Platform = NULL;
-MonoImage* Globals::_image__BoSSS_Platform = NULL;
 MonoAssembly* Globals::_assembly__BoSSS_Foundation_Grid = NULL;
 MonoImage* Globals::_image__BoSSS_Foundation_Grid = NULL;
 MonoAssembly* Globals::_assembly__BoSSS_Application_ExternalBinding = NULL;

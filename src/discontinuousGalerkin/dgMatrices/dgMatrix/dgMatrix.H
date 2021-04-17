@@ -58,6 +58,8 @@ SourceFiles
 #include "TensorNFields.H"
 //#include "blockLduSolvers.H"
 
+#include "BoSSScpp.h"
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
@@ -105,6 +107,8 @@ public:
 
 
 private:
+
+        BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssObject_ = NULL;
 
     // Private data
 
@@ -156,6 +160,9 @@ public:
             //- Solve returning the solution statistics.
             //  Solver controls read from dgSolution
             SolverPerfType solve();
+
+
+            
     };
 
 
@@ -202,6 +209,19 @@ public:
             const Field<Type>& source() const
             {
                 return source_;
+            }
+
+            BoSSS::Application::ExternalBinding::OpenFoamMatrix* GetBoSSSobject() {
+                if(bosssObject_ == NULL) {
+                    //const DgGeometricField<Type, dgPatchField, cellMesh>& dgField = psi();
+                    //const DgGeometricField<Type, dgPatchField, cellMesh>* pF = &dgField;
+                    //const BoSSS::Application::ExternalBinding::OpenFoamDGField* p = 
+                    BoSSS::Application::ExternalBinding::OpenFoamDGField* p = psi().bosssObject_;
+                    bosssObject_ = new BoSSS::Application::ExternalBinding::OpenFoamMatrix(p);
+                }
+
+
+                return bosssObject_;
             }
 
 
