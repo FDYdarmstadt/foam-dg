@@ -327,8 +327,10 @@ public:
                 //int N = dgOrder::length;
                 int N = (*this)[j].size();
                 dgScalar cellValue;
-                for(int n = 0; n < N; n++)
-                    cellValue[n] = bo->GetDGcoordinate(0, j, n);
+                for (int n = 0; n < N; n++) {
+                  cellValue[n] = bo->GetDGcoordinate(0, j, n);
+                }
+
                 (*this)[j] = cellValue;
             }
         }

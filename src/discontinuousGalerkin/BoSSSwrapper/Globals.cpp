@@ -80,18 +80,18 @@ if (_image__BoSSS_Foundation_Grid == NULL) {
     throw "Unable to get assembly image.";
 }
 if(strlen(ManagedAssemblyDirectory) + 38 >= 1024) {
-    fprintf(stderr, "Path to assembly BoSSS.Application.ExternalBinding.exe exceeds 1024 character limit. \n "); 
+    fprintf(stderr, "Path to assembly BoSSS.Application.ExternalBinding.dll exceeds 1024 character limit. \n ");
 }
 strcpy(path, ManagedAssemblyDirectory);
-strcat(path, "BoSSS.Application.ExternalBinding.exe");
+strcat(path, "BoSSS.Application.ExternalBinding.dll");
 _assembly__BoSSS_Application_ExternalBinding = mono_domain_assembly_open(_domain, path);
 if (_assembly__BoSSS_Application_ExternalBinding == NULL) {
-    fprintf(stderr, "Unable to open assembly: BoSSS.Application.ExternalBinding.exe \n "); 
+    fprintf(stderr, "Unable to open assembly: BoSSS.Application.ExternalBinding.dll \n ");
     throw "Unable to open assembly.";
 }
 _image__BoSSS_Application_ExternalBinding = mono_assembly_get_image(_assembly__BoSSS_Application_ExternalBinding);
 if (_image__BoSSS_Application_ExternalBinding == NULL) {
-    fprintf(stderr, "Unable to get assembly image BoSSS.Application.ExternalBinding.exe.\n");
+    fprintf(stderr, "Unable to get assembly image BoSSS.Application.ExternalBinding.dll.\n");
     throw "Unable to get assembly image.";
 }
 }

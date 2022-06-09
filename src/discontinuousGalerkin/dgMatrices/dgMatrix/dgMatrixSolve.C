@@ -79,7 +79,6 @@ dgMatrix<Type>::solve(const dictionary& solverControls)
         psiI[cellI] = intField[cellI];
     }
 
-
     return solverPerf;
 }
 

@@ -47,9 +47,9 @@ int main(int argc, char *argv[])
 
 #   include "setRootCase.H"
 
-    //char bossslibdir[] = "/home/flori/foam/foam-dg/src/discontinuousGalerkin/BoSSSwrapper/";
-    char bossslibdir[] = "/mnt/c/Users/flori/Documents/BoSSS-kummer/public/src/L4-application/ExternalBinding.CodeGen/bin/Release/";
+    char bossslibdir[] = "/home/klingenberg/BoSSS-experimental/public/src/L4-application/ExternalBinding.CodeGen/bin/Release/net5.0/";
     BoSSS::Globals::Init(bossslibdir);
+    // Smart_Init();
     BoSSS::Application::ExternalBinding::Initializer MyInit;
     MyInit.BoSSSInitialize();
 
@@ -66,16 +66,21 @@ int main(int argc, char *argv[])
     Info << "\nCalculating temperature distribution\n" << endl;
 
     const Foam::dgMesh& meeehsch = T.mesh();//.GetBoSSSobject();
+    // Info << "\Test1\n" << endl;
     BoSSS::Foundation::Grid::OpenFOAMGrid* bosssMesh = meeehsch.GetBoSSSobject();
-    bosssMesh->TestMethod(44);
+    // Info << "\Test2\n" << endl;
+    // bosssMesh->TestMethod(44);
+    // Info << "\Test3\n" << endl;
 
     //T.GetBoSSSobject();
 
     T.SyncToBoSSS();
+    // Info << "\Test4\n" << endl;
     //T.dgMesh()
 
     dgScalar scl = T[0];
 
+    // Info << "\Test5\n" << endl;
 
     while(runTime < runTime.endTime())
     {

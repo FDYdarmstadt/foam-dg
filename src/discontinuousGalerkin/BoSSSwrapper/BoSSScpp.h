@@ -17,3 +17,4 @@
 #include "FixedOperators.h"
 #include "OpenFoamDGField.h"
 #include "Globals.h"
+#include "FindBoSSSLibraries.h"

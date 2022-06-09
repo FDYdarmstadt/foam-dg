@@ -41,6 +41,7 @@ BoSSSwrapper/Globals.cpp
 BoSSSwrapper/GridData.cpp  
 BoSSSwrapper/Initializer.cpp  
 BoSSSwrapper/OpenFOAMGrid.cpp
+BoSSSwrapper/FindBoSSSLibraries.cpp
 
 
 LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin

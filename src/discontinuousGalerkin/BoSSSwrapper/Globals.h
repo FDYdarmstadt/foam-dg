@@ -1,3 +1,4 @@
+// #include <string>
 // ##########################################################################
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
@@ -12,6 +13,7 @@ class Globals
 public:
 static MonoDomain* _domain;
 static void Init(char* ManagedAssemblyDirectory);
+// static void Init(std::string ManagedAssemblyDirectory);
 static MonoAssembly* _assembly__BoSSS_Foundation;
 static MonoImage* _image__BoSSS_Foundation;
 static MonoAssembly* _assembly__BoSSS_Platform;
