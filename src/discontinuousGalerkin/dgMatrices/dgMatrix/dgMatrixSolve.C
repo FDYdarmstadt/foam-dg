@@ -70,7 +70,8 @@ dgMatrix<Type>::solve(const dictionary& solverControls)
 //    Info << "SOLVER PRINT" << endl;
     solverPerf.print();
 
-//    psi().correctBoundaryConditions();
+
+    // psi().correctBoundaryConditions();
 
     Info << "SOLVER OUT" << endl;
 

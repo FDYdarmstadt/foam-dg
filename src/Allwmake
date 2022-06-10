@@ -3,12 +3,11 @@ set -x
 
 wmake libso discontinuousGalerkin
 
-#wmake testDg
-#wmake testDgField
+# wmake testDg
+# wmake testDgField
 
 wmake dgLaplacianFoam
-#wmake dgConvectionFoam
-#wmake dgScalarTransport
-#wmake fvTransform
-#wmake fvPointTransform
-
+# wmake dgConvectionFoam
+# wmake dgScalarTransport
+wmake fvTransform
+wmake fvPointTransform

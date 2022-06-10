@@ -115,13 +115,9 @@ args[1] = &j;
 args[2] = &n;
 MonoObject* exception;
 MonoObject* retval;
-std::cout << "\n Test1\n" << std::endl;
 retval = mono_runtime_invoke(_GetDGcoordinate, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
-std::cout << "\n Test2\n" << std::endl;
-std::cout << retval << std::endl;
 if (exception != NULL) {
     fprintf( stderr, "got exception from C# (OpenFoamDGField.GetDGcoordinate) \n");
-    std::cout << exception << std::endl;
 }
 void* retptr = mono_object_unbox(retval);
 return *((double*) retptr);

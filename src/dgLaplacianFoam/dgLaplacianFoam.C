@@ -47,9 +47,7 @@ int main(int argc, char *argv[])
 
 #   include "setRootCase.H"
 
-    char bossslibdir[] = "/home/klingenberg/BoSSS-experimental/public/src/L4-application/ExternalBinding.CodeGen/bin/Release/net5.0/";
-    BoSSS::Globals::Init(bossslibdir);
-    // Smart_Init();
+    Smart_Init();
     BoSSS::Application::ExternalBinding::Initializer MyInit;
     MyInit.BoSSSInitialize();
 
@@ -66,26 +64,20 @@ int main(int argc, char *argv[])
     Info << "\nCalculating temperature distribution\n" << endl;
 
     const Foam::dgMesh& meeehsch = T.mesh();//.GetBoSSSobject();
-    // Info << "\Test1\n" << endl;
     BoSSS::Foundation::Grid::OpenFOAMGrid* bosssMesh = meeehsch.GetBoSSSobject();
-    // Info << "\Test2\n" << endl;
-    // bosssMesh->TestMethod(44);
-    // Info << "\Test3\n" << endl;
+    bosssMesh->TestMethod(44);
 
-    //T.GetBoSSSobject();
+    T.GetBoSSSobject();
 
     T.SyncToBoSSS();
-    // Info << "\Test4\n" << endl;
-    //T.dgMesh()
+    // T.dgMesh()
 
-    dgScalar scl = T[0];
-
-    // Info << "\Test5\n" << endl;
+    // dgScalar scl = T[0];
+    // Info << scl << endl;
 
     while(runTime < runTime.endTime())
     {
         runTime++;
-
 
         Info << "Time: " << runTime.timeName() << nl << endl;
 
@@ -103,7 +95,7 @@ int main(int argc, char *argv[])
 
         Te.solve();
 
-        T.SyncFromBoSSS();
+        // T.SyncFromBoSSS();
 
         runTime.write();
 

@@ -31,6 +31,7 @@ Author
     Hrvoje Jasak.  All rights reserved.
 
 \*---------------------------------------------------------------------------*/
+#include "BoSSScpp.h"
 
 #include "dgCFD.H"
 #include "fvCFD.H"
@@ -41,6 +42,10 @@ Author
 int main(int argc, char *argv[])
 {
 #   include "setRootCase.H"
+
+    Smart_Init();
+    BoSSS::Application::ExternalBinding::Initializer MyInit;
+    MyInit.BoSSSInitialize();
 
 #   include "createTime.H"
 

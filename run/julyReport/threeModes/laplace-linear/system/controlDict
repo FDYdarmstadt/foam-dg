@@ -16,7 +16,7 @@ FoamFile
 
 application icoDyMFoam;
 
-startFrom       latestTime;//startTime;
+startFrom       startTime;
 
 startTime       0;
 
