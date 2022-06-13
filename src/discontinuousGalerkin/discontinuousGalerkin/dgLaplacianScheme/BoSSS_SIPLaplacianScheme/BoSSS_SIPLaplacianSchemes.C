@@ -23,43 +23,19 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "dgLaplacianScheme.H"
+#include "BoSSS_SIPLaplacianScheme.H"
+#include "dgMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 namespace dg
 {
+    makeDgLaplacianScheme(BoSSS_SIPLaplacianScheme)
+}
+}
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// Define the constructor function hash tables
 
-#define makedgLaplacianGTypeScheme(Type, GType)                                 \
-    typedef dgLaplacianScheme<Type, GType> dgLaplacianScheme##Type##GType;        \
-    defineTemplateRunTimeSelectionTable(dgLaplacianScheme##Type##GType, Istream);
-
-#define makedgLaplacianScheme(Type)                                             \
-    makedgLaplacianGTypeScheme(Type, scalar);
-//    makedgLaplacianGTypeScheme(Type, dgScalar);
-
-makedgLaplacianScheme(dgScalar);
-
-//makeLaplacianScheme(vector);
-//makeLaplacianScheme(sphericalTensor);
-//makeLaplacianScheme(symmTensor);
-//makeLaplacianScheme(diagTensor);
-//makeLaplacianScheme(tensor);
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-} // End namespace dg
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-} // End namespace Foam
 
 // ************************************************************************* //

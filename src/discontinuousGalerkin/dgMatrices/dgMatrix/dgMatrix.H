@@ -58,6 +58,8 @@ SourceFiles
 #include "TensorNFields.H"
 //#include "blockLduSolvers.H"
 
+#include "BlockMsrMatrix.h"
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
@@ -91,6 +93,12 @@ public:
 
         //- BlockMatrix type
         typedef BlockLduMatrix<VectorN<scalar, Type::coeffLength> > MatrixType;
+
+        //- BoSSSBlockMatrix type
+        typedef ilPSP::LinSolvers::BlockMsrMatrix BoSSSMatrixType;
+
+        //- source type
+        typedef ilPSP::LinSolvers::BlockMsrMatrix BoSSSSourceType;
 
         //- Field type
         typedef DgGeometricField<Type, dgPatchField, cellMesh> FieldType;

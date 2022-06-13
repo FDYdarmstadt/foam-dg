@@ -1,0 +1,162 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | foam-extend: Open Source CFD
+   \\    /   O peration     | Version:     4.0
+    \\  /    A nd           | Web:         http://www.foam-extend.org
+     \\/     M anipulation  | For copyright notice see file Copyright
+-------------------------------------------------------------------------------
+License
+    This file is part of foam-extend.
+
+    foam-extend is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or (at your
+    option) any later version.
+
+    foam-extend is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
+
+Class
+    Foam::dg::SIPLaplacianScheme
+
+Description
+    Basic second-order dgLaplacian using face-gradients and Gauss' theorem.
+
+SourceFiles
+    SIPLaplacianScheme.C
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef BoSSS_SIPLaplacianScheme_H
+#define BoSSS_SIPLaplacianScheme_H
+
+#include "dgLaplacianScheme.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace dg
+{
+
+/*---------------------------------------------------------------------------*\
+                       Class SIPLaplacianScheme Declaration
+\*---------------------------------------------------------------------------*/
+
+template<class Type, class GType>
+class BoSSS_SIPLaplacianScheme
+:
+    public dg::dgLaplacianScheme<Type, GType>
+{
+    // Private data
+
+        //- Penalty factor Eta pointer
+        mutable scalarField* etaPtr_;
+
+    // Private Member Functions
+
+        //- Disallow default bitwise copy construct
+        BoSSS_SIPLaplacianScheme(const BoSSS_SIPLaplacianScheme&);
+
+        //- Disallow default bitwise assignment
+        void operator=(const BoSSS_SIPLaplacianScheme&);
+
+        //- Update Eta
+        void calcEta();
+
+
+public:
+
+    //- Runtime type information
+    TypeName("BoSSS_SIP");
+
+
+    // Constructors
+
+        //- Construct null
+        BoSSS_SIPLaplacianScheme(const dgMesh& mesh)
+        :
+            dgLaplacianScheme<Type, GType>(mesh),
+            etaPtr_(NULL)
+        {}
+
+        //- Construct from Istream
+        BoSSS_SIPLaplacianScheme(const dgMesh& mesh, Istream& is)
+        :
+            dgLaplacianScheme<Type, GType>(mesh, is),
+            etaPtr_(NULL)
+        {}
+
+        //- Construct from mesh, interpolation and snGradScheme schemes
+//        SIPLaplacianScheme
+//        (
+//            const dgMesh& mesh
+//            const tmp<surfaceInterpolationScheme<GType> >& igs,
+//            const tmp<snGradScheme<Type> >& sngs
+//        )
+//        :
+//            dgLaplacianScheme<Type, GType>(mesh, igs, sngs)
+//        {}
+
+
+    // Destructor
+
+        virtual ~BoSSS_SIPLaplacianScheme()
+        {}
+
+
+    // Member Functions
+
+        tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
+        (
+            const dimensionedScalar&,
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
+        );
+
+//        tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
+//        (
+//            const dimensionedScalar&,
+//            const GeometricField<Type, dgPatchField, cellMesh>&
+//        );
+
+        tmp<dgMatrix<Type> > dgmLaplacian
+        (
+            const dimensionedScalar&,
+            const DgGeometricField<Type, dgPatchField, cellMesh>&
+        );
+
+//        tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
+//        (
+//            const GeometricField<GType, dgsPatchField, surfaceMesh>&,
+//            const GeometricField<Type, dgPatchField, cellMesh>&
+//        );
+};
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace dg
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#ifdef NoRepository
+#   include "BoSSS_SIPLaplacianScheme.C"
+#endif
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //
