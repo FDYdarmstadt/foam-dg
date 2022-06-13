@@ -332,6 +332,10 @@ public:
         }
         return bosssObject_;
     }
+
+    dgMesh dgmesh() const {
+        return dgmesh_;
+    }
     
     void SyncToBoSSS() {
    

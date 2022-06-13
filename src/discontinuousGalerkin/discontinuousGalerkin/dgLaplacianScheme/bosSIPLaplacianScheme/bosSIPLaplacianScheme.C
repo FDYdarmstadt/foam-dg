@@ -30,6 +30,8 @@ License
 #include "dgMatrices.H"
 #include "ExpandTensorNField.H"
 
+#include "BoSSScpp.h"
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
@@ -186,8 +188,7 @@ bosSIPLaplacianScheme<Type, GType>::dgcLaplacian
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
-    Info << "Helo from BoSSS SIP (2)" << endl;
-
+    
     // Laplace consists of four terms:
     // Volume term, consistency term, symmetry term and penalty term
 
@@ -263,8 +264,7 @@ bosSIPLaplacianScheme<Type, GType>::dgmLaplacian
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
-    Info << "Helo from BoSSS SIP (3)" << endl;
-
+    
     const dgMesh& mesh = this->mesh();
 
     tmp<dgMatrix<Type> > tdgm
@@ -277,6 +277,13 @@ bosSIPLaplacianScheme<Type, GType>::dgmLaplacian
     );
     dgMatrix<Type>& dgm = tdgm();
 
+    BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = dgm.GetBoSSSobject();
+
+    BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
+    BoSSSOp->Laplacian(bosssMtx);
+    delete BoSSSOp;
+
+/*
     const dgBase& polynomials = mesh.polynomials();
 
     // Calculate penalty
@@ -497,7 +504,7 @@ bosSIPLaplacianScheme<Type, GType>::dgmLaplacian
 //    ds = ds*gamma.value();
 //    ls = ls*gamma.value();
 //    us = us*gamma.value();
-
+*/
     return tdgm;
 }
 

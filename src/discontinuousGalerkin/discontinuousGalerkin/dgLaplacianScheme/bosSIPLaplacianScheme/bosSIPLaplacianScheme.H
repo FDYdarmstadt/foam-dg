@@ -37,6 +37,7 @@ SourceFiles
 
 #include "dgLaplacianScheme.H"
 
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam

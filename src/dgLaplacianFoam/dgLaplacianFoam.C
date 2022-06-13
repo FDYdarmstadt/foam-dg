@@ -96,8 +96,9 @@ int main(int argc, char *argv[])
         );
 
         Te.GetBoSSSobject();
+        //Te.SyncFromBoSSS();
 
-        Te.solve();
+        Te.solveBoSSS();
 
         T.SyncFromBoSSS();
 

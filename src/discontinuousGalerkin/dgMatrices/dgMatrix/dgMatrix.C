@@ -117,7 +117,6 @@ void dgMatrix<Type>::relax(const scalar alpha)
     MatrixType::relax(psi_, source_, alpha);
 }
 
-
 template<class Type>
 void dgMatrix<Type>::relax()
 {
@@ -135,6 +134,149 @@ void dgMatrix<Type>::relax()
         }
     }
 }
+
+template<class Type>
+void dgMatrix<Type>::SyncToBoSSS()
+{
+    
+
+
+/*
+    forAll (vf, cellI)
+    {
+        forAll (polynomials, modI)
+        {
+            forAll (polynomials, modJ)
+            {
+                label coeff = modI*polynomials.size() + modJ;
+
+                ds[cellI](modI, modJ) =
+                    gradCoeffs[coeff]/scaleCells[cellI];
+            }
+        }
+    }
+*/
+}
+
+template<class Type>
+void dgMatrix<Type>::SyncFromBoSSS()
+{
+    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ds
+        = (*this).diag().asSquare();
+
+    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ls
+        = (*this).lower().asSquare();
+
+    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& us
+        = (*this).upper().asSquare();
+
+    BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject();
+
+    const labelList& neiList = psi().dgmesh().faceNeighbour();
+
+    // diagonal
+    // Go over all cells
+    forAll (psi(), cellI)
+    {
+        int Nbosss = bosssMtx->GetNoOfRowsInBlock(cellI);
+        int Mbosss = bosssMtx->GetNoOfColsInBlock(cellI);
+        double* tmp = new double[Nbosss*Mbosss];
+        bosssMtx->GetBlock(cellI, cellI, tmp);
+
+        int Nfoam = dgOrder::length;
+        int Mfoam = dgOrder::length;
+
+        // Note (FK, 18apr21): sinde Nfoam and Mfoam are wrong, the following code will never capture the entire matrix
+        int N = Nbosss > Nfoam ? Nfoam : Nbosss;
+        int M = Nbosss > Nfoam ? Nfoam : Nbosss;
+
+        for(int i = 0; i < N; i++) { // row lop
+            for(int j = 0; j < M; j++) { // col loop
+                ds[cellI](i, j) = tmp[i*Mbosss + j];
+            }
+        }
+
+
+        delete tmp;
+    }
+
+    // Upper triangular (or lower???)
+    // Go over all internal faces (only those that have nei)
+    forAll (neiList, faceI)
+    {
+
+        // Nei is -1 for boundary faces
+        const label& own = psi().dgmesh().faceOwner()[faceI];
+        const label& nei = psi().dgmesh().faceNeighbour()[faceI];
+
+        int Nbosss = bosssMtx->GetNoOfRowsInBlock(own);
+        int Mbosss = bosssMtx->GetNoOfColsInBlock(nei);
+        double* tmp = new double[Nbosss*Mbosss];
+        bosssMtx->GetBlock(own, nei, tmp);
+
+        int Nfoam = dgOrder::length;
+        int Mfoam = dgOrder::length;
+
+        // Note (FK, 18apr21): sinde Nfoam and Mfoam are wrong, the following code will never capture the entire matrix
+        int N = Nbosss > Nfoam ? Nfoam : Nbosss;
+        int M = Nbosss > Nfoam ? Nfoam : Nbosss;
+
+        for(int i = 0; i < N; i++) { // row lop
+            for(int j = 0; j < M; j++) { // col loop
+                us[faceI](i, j) = tmp[i*Mbosss + j];
+            }
+        }
+        
+        delete tmp;
+    }
+
+    // lower triangular (or upper???)
+    // Go over all internal faces (only those that have nei)
+    forAll (neiList, faceI)
+    {
+
+        // Nei is -1 for boundary faces
+        const label& own = psi().dgmesh().faceOwner()[faceI];
+        const label& nei = psi().dgmesh().faceNeighbour()[faceI];
+
+        int Nbosss = bosssMtx->GetNoOfRowsInBlock(nei);
+        int Mbosss = bosssMtx->GetNoOfColsInBlock(own);
+        double* tmp = new double[Nbosss*Mbosss];
+        bosssMtx->GetBlock(nei, own, tmp);
+
+        int Nfoam = dgOrder::length;
+        int Mfoam = dgOrder::length;
+
+        // Note (FK, 18apr21): sinde Nfoam and Mfoam are wrong, the following code will never capture the entire matrix
+        int N = Nbosss > Nfoam ? Nfoam : Nbosss;
+        int M = Nbosss > Nfoam ? Nfoam : Nbosss;
+
+        for(int i = 0; i < N; i++) { // row lop
+            for(int j = 0; j < M; j++) { // col loop
+                ds[faceI](i, j) = tmp[i*Mbosss + j];
+            }
+        }
+        
+        delete tmp;
+    }
+  
+}
+
+template<class Type>
+void dgMatrix<Type>::solveBoSSS()
+{
+    BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject();
+
+    bosssMtx->Solve();
+    psi().SyncFromBoSSS();
+    // ../discontinuousGalerkin/lnInclude/dgMatrix.C:271:6: 
+    // error: passing ‘const Foam::DgGeometricField<Foam::DgScalar<double, 3>, Foam::dgPatchField, Foam::cellMesh>’ 
+    // as ‘this’ argument discards qualifiers [-fpermissive]
+    //271 |      psi().SyncFromBoSSS();
+    //  |      ^~~
+
+}
+
 
 
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //

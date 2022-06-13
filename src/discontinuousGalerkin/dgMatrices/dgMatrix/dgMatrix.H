@@ -237,6 +237,12 @@ public:
             //  alpha is read from controlDict
             void relax();
 
+            // Data transfer: OpenFOAM --> BoSSS
+            void SyncToBoSSS();
+
+            // Data transfer: BoSSS --> OpenFOAM 
+            void SyncFromBoSSS();
+
             //- Construct and return the solver
             //  Solver controls read from Istream
             autoPtr<dgSolver> solver(const dictionary&);
@@ -252,6 +258,9 @@ public:
             //- Solve returning the solution statistics.
             //  Solver controls read from dgSolution
             SolverPerfType solve();
+
+            //- solve within BoSSS, solution is stored in psi_
+            void solveBoSSS();
 
             //- Return the matrix residual
             tmp<Field<Type> > residual() const;
