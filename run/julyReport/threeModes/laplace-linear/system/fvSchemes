@@ -31,13 +31,13 @@ divSchemes
 
 laplacianSchemes
 {
-    default         SIPLaplacian;//Gauss linear corrected;
+    default         bosSIPLaplacian;
 }
 
 dgLaplacianSchemes
 {
-    default         SIPLaplacian;//Gauss linear corrected;
-    dgLaplacian(T)         SIPLaplacian;
+    default         bosSIPLaplacian;
+    dgLaplacian(T)         bosSIPLaplacian;
 }
 
 interpolationSchemes

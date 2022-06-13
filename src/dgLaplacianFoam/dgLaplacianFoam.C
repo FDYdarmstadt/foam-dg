@@ -60,7 +60,6 @@ int main(int argc, char *argv[])
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-    Info << "\n\n Hello from Flörian" << endl;
     Info << "\nCalculating temperature distribution\n" << endl;
 
     const Foam::dgMesh& meeehsch = T.mesh();//.GetBoSSSobject();
@@ -93,7 +92,10 @@ int main(int argc, char *argv[])
             dgm::dgLaplacian(T)
         );
 
-        Te.solve();
+        Te.GetBoSSSobject();
+        //Te.SyncFromBoSSS();
+
+        Te.solveBoSSS();
 
         // T.SyncFromBoSSS();
 

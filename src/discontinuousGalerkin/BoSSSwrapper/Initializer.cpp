@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 15.04.2021 17:47:02
+// Creation Date: 03.05.2021 13:19:28
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -17,11 +17,11 @@
 #include "Globals.h"
 #include "Prototypes.h"
 #include "GridData.h"
-#include "BlockMsrMatrix.h"
 #include "OpenFOAMGrid.h"
 #include "Initializer.h"
 #include "FixedOperators.h"
 #include "OpenFoamDGField.h"
+#include "OpenFoamMatrix.h"
 namespace BoSSS
 {
 namespace Application

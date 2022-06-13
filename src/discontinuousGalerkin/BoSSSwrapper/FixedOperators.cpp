@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 15.04.2021 17:47:02
+// Creation Date: 03.05.2021 13:19:28
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -17,11 +17,11 @@
 #include "Globals.h"
 #include "Prototypes.h"
 #include "GridData.h"
-#include "BlockMsrMatrix.h"
 #include "OpenFOAMGrid.h"
 #include "Initializer.h"
 #include "FixedOperators.h"
 #include "OpenFoamDGField.h"
+#include "OpenFoamMatrix.h"
 namespace BoSSS
 {
 namespace Application
@@ -31,6 +31,7 @@ namespace ExternalBinding
 void FixedOperators::_InitMonoBindings()
 {
 _ClassHandle = BoSSS::Globals::LookupClass(BoSSS::Globals::_image__BoSSS_Application_ExternalBinding, "FixedOperators", "BoSSS.Application.ExternalBinding");
+_ctor_0 = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:.ctor", true);
 __SetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:_SetForeignPointer", true);
 __GetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:_GetForeignPointer", true);
 _Laplacian = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:Laplacian", true);
@@ -72,6 +73,20 @@ MonoObject* FixedOperators::_GetMonoObject()
 {
 return mono_gchandle_get_target(_MonoGCHandle);
 }
+FixedOperators::FixedOperators()
+{
+_InitMonoBindings();
+MonoObject* ThisObj = mono_object_new(BoSSS::Globals::_domain, _ClassHandle);
+_MonoGCHandle = mono_gchandle_new(ThisObj, true);
+void* args[1];
+MonoObject* exception;
+MonoObject* retval;
+retval = mono_runtime_invoke(_ctor_0, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
+if (exception != NULL) {
+    fprintf( stderr, "got exception from C# (FixedOperators.ctor_0) \n");
+}
+_SetForeignPointer(this);
+}
 void FixedOperators::_SetForeignPointer(void* ptr)
 {
 void* args[1];
@@ -96,11 +111,10 @@ if (exception != NULL) {
 void* retptr = mono_object_unbox(retval);
 return *((void**) retptr);
 }
-void FixedOperators::Laplacian(BoSSS::Foundation::Grid::OpenFOAMGrid* grid, int DgDegree)
+void FixedOperators::Laplacian(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx)
 {
-void* args[2];
-args[0] = grid->_GetMonoObject();
-args[1] = &DgDegree;
+void* args[1];
+args[0] = mtx->_GetMonoObject();
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_Laplacian, mono_gchandle_get_target(_MonoGCHandle), args, &exception);

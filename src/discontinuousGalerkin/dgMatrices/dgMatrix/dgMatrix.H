@@ -58,7 +58,7 @@ SourceFiles
 #include "TensorNFields.H"
 //#include "blockLduSolvers.H"
 
-#include "BlockMsrMatrix.h"
+#include "BoSSScpp.h"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -114,6 +114,8 @@ public:
 
 private:
 
+        BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssObject_ = NULL;
+
     // Private data
 
         // Reference to GeometricField<Type, dgPatchField, cellMesh>
@@ -164,6 +166,9 @@ public:
             //- Solve returning the solution statistics.
             //  Solver controls read from dgSolution
             SolverPerfType solve();
+
+
+            
     };
 
 
@@ -213,6 +218,19 @@ public:
                 return source_;
             }
 
+            BoSSS::Application::ExternalBinding::OpenFoamMatrix* GetBoSSSobject() {
+                if(bosssObject_ == NULL) {
+                    //const DgGeometricField<Type, dgPatchField, cellMesh>& dgField = psi();
+                    //const DgGeometricField<Type, dgPatchField, cellMesh>* pF = &dgField;
+                    //const BoSSS::Application::ExternalBinding::OpenFoamDGField* p = 
+                    BoSSS::Application::ExternalBinding::OpenFoamDGField* p = psi().bosssObject_;
+                    bosssObject_ = new BoSSS::Application::ExternalBinding::OpenFoamMatrix(p);
+                }
+
+
+                return bosssObject_;
+            }
+
 
     // Operations
 
@@ -225,6 +243,12 @@ public:
             //- Relax matrix (for steadty-state solution).
             //  alpha is read from controlDict
             void relax();
+
+            // Data transfer: OpenFOAM --> BoSSS
+            void SyncToBoSSS();
+
+            // Data transfer: BoSSS --> OpenFOAM 
+            void SyncFromBoSSS();
 
             //- Construct and return the solver
             //  Solver controls read from Istream
@@ -241,6 +265,9 @@ public:
             //- Solve returning the solution statistics.
             //  Solver controls read from dgSolution
             SolverPerfType solve();
+
+            //- solve within BoSSS, solution is stored in psi_
+            void solveBoSSS();
 
             //- Return the matrix residual
             tmp<Field<Type> > residual() const;

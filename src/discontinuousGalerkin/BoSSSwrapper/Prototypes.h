@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 15.04.2021 17:47:02
+// Creation Date: 03.05.2021 13:19:28
 // ##########################################################################
 #pragma once
 namespace BoSSS
@@ -16,13 +16,6 @@ namespace Classic
 class GridData;
 }
 }
-}
-}
-namespace ilPSP
-{
-namespace LinSolvers
-{
-class BlockMsrMatrix;
 }
 }
 namespace BoSSS
@@ -44,6 +37,7 @@ namespace ExternalBinding
 class Initializer;
 class FixedOperators;
 class OpenFoamDGField;
+class OpenFoamMatrix;
 }
 }
 }

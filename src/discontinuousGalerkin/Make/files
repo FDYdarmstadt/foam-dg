@@ -28,14 +28,14 @@ dgMatrices/dgMatrices.C
 discontinuousGalerkin/dg/dg.C
 discontinuousGalerkin/dgLaplacianScheme/dgLaplacianScheme/dgLaplacianSchemes.C
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.C
-discontinuousGalerkin/dgLaplacianScheme/BoSSS_SIPLaplacianScheme/BoSSS_SIPLaplacianSchemes.C
+discontinuousGalerkin/dgLaplacianScheme/bosSIPLaplacianScheme/bosSIPLaplacianSchemes.C
 discontinuousGalerkin/dgDivScheme/dgDivScheme/dgDivSchemes.C
 discontinuousGalerkin/dgDivScheme/upwindDivScheme/upwindDivSchemes.C
 discontinuousGalerkin/dgDdtScheme/dgDdtScheme/dgDdtSchemes.C
 discontinuousGalerkin/dgDdtScheme/EulerDdtScheme/EulerDdtSchemes.C
 
 
-BoSSSwrapper/BlockMsrMatrix.cpp
+BoSSSwrapper/OpenFoamMatrix.cpp
 BoSSSwrapper/OpenFoamDGField.cpp
 BoSSSwrapper/FixedOperators.cpp  
 BoSSSwrapper/Globals.cpp  
