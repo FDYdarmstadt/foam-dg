@@ -24,6 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "cellFields.H"
+#include "dgMatrix.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -79,6 +80,65 @@ dgMatrix<Type>::dgMatrix(const dgMatrix<Type>& dgm)
     dimensions_(dgm.dimensions_),
     source_(dgm.source_)
 {
+    // bosssObject_ = dgm.GetBoSSSobject();
+    Info << "Hello from the constructor" << endl;
+    // Info << dgm << endl;
+    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject();
+    // BoSSS::Application::ExternalBinding::OpenFoamDGField* p = dgm.psi().bosssObject_;
+    // bosssObject_ = new BoSSS::Application::ExternalBinding::OpenFoamMatrix(p);
+    // BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
+    // BoSSSOp->Laplacian(bosssMtx);
+    // double InputReadBuffer[100];
+    // bosssMtx->GetBlock(0,0,InputReadBuffer);
+    // Info << "InputReadBuffer: " << endl;
+    // for (int i = 0; i < 100; i++) {
+    //     Info << InputReadBuffer[i] << endl;
+    // }
+    // SetBoSSSobject(bosssMtx);
+
+    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* bo = BoSSS::Application::ExternalBinding::OpenFoamMatrix::_FromMonoObject(dgm.bosssMonoObject_);
+    BoSSS::Application::ExternalBinding::OpenFoamMatrix* bo = dgm.bosssObject_;
+    // BoSSS::Application::ExternalBinding::OpenFoamMatrix bo = dgm.bosssObjectValue_;
+    // if (bo == NULL){
+    //     Info << "bo == NULL" << endl;
+    // } else {
+    //     Info << "bo != NULL" << endl;
+    //     double InputReadBuffer[100];
+    //     bo->GetBlock(0,0,InputReadBuffer);
+    //     // bo.GetBlock(0,0,InputReadBuffer);
+    //     Info << "InputReadBuffer: " << endl;
+    //     for (int i = 0; i < 100; i++) {
+    //         Info << InputReadBuffer[i] << " ";
+    //     }
+    //     Info << endl;
+    // }
+    // delete BoSSSOp;
+
+    // bosssObject_ = &bo;
+    SetBoSSSobject(bo);
+    // BoSSS::Application::ExternalBinding::OpenFoamMatrix bosssObjectTmp_(*bo);
+    // bosssObject_ = &bosssObjectTmp_;
+    // bo->_ReleaseGChandle();
+    // bo->_MonoGCHandle = 0;
+    // bosssObject_->_ReleaseGChandle();
+    // auto bosssObject_ = GetBoSSSobject();
+    // if (bosssObject_ == NULL){
+    //     Info << "bosssObject_ == NULL" << endl;
+    // } else {
+    //     Info << "bosssObject_ != NULL" << endl;
+    //     double InputReadBuffer[100];
+    //     bo->GetBlock(0,0,InputReadBuffer);
+    //     // bosssObject_->AccBlock(0,0,1,InputReadBuffer);
+    //     Info << "InputReadBuffer: " << endl;
+    //     for (int i = 0; i < 100; i++) {
+    //         Info << InputReadBuffer[i] << " ";
+    //     }
+    //     Info << endl;
+    // }
+    // SetBoSSSobject(bo);
+    // Info << dgm.bosssObject_ << endl;
+
+
     if (debug)
     {
         InfoIn("dgMatrix<Type>::dgMatrix(const dgMatrix<Type>&)")
@@ -87,22 +147,17 @@ dgMatrix<Type>::dgMatrix(const dgMatrix<Type>& dgm)
     }
 }
 
-
-template<class Type>
-dgMatrix<Type>::~dgMatrix()
-{
-    if (debug)
-    {
-        InfoIn("dgMatrix<Type>::~dgMatrix<Type>()")
-            << "destroying dgMatrix<Type> for field " << psi_.name()
-            << endl;
+template <class Type> dgMatrix<Type>::~dgMatrix() {
+  if (bosssObject_ != NULL && blockGC == false) {
+  // if (bosssObject_ != NULL) {
+    if (debug || true) {
+      InfoIn("dgMatrix<Type>::~dgMatrix<Type>()")
+          << "destroying dgMatrix<Type> for field " << psi_.name() << endl;
     }
 
-     if(bosssObject_ != NULL) {
-        delete bosssObject_;
-     }
+    delete bosssObject_;
+  }
 }
-
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
@@ -138,24 +193,19 @@ void dgMatrix<Type>::relax()
 template<class Type>
 void dgMatrix<Type>::SyncToBoSSS()
 {
-    
+    // forAll (vf, cellI)
+    // {
+    //     forAll (polynomials, modI)
+    //     {
+    //         forAll (polynomials, modJ)
+    //         {
+    //             label coeff = modI*polynomials.size() + modJ;
 
-
-/*
-    forAll (vf, cellI)
-    {
-        forAll (polynomials, modI)
-        {
-            forAll (polynomials, modJ)
-            {
-                label coeff = modI*polynomials.size() + modJ;
-
-                ds[cellI](modI, modJ) =
-                    gradCoeffs[coeff]/scaleCells[cellI];
-            }
-        }
-    }
-*/
+    //             ds[cellI](modI, modJ) =
+    //                 gradCoeffs[coeff]/scaleCells[cellI];
+    //         }
+    //     }
+    // }
 }
 
 template<class Type>
@@ -172,7 +222,7 @@ void dgMatrix<Type>::SyncFromBoSSS()
 
     BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject();
 
-    const labelList& neiList = psi().dgmesh().faceNeighbour();
+    // const labelList& neiList = psi().dgmesh().faceNeighbour();
 
     // diagonal
     // Go over all cells
@@ -202,82 +252,209 @@ void dgMatrix<Type>::SyncFromBoSSS()
 
     // Upper triangular (or lower???)
     // Go over all internal faces (only those that have nei)
-    forAll (neiList, faceI)
-    {
+    // forAll (neiList, faceI)
+    // {
 
-        // Nei is -1 for boundary faces
-        const label& own = psi().dgmesh().faceOwner()[faceI];
-        const label& nei = psi().dgmesh().faceNeighbour()[faceI];
+    //     // Nei is -1 for boundary faces
+    //     const label& own = psi().dgmesh().faceOwner()[faceI];
+    //     const label& nei = psi().dgmesh().faceNeighbour()[faceI];
 
-        int Nbosss = bosssMtx->GetNoOfRowsInBlock(own);
-        int Mbosss = bosssMtx->GetNoOfColsInBlock(nei);
-        double* tmp = new double[Nbosss*Mbosss];
-        bosssMtx->GetBlock(own, nei, tmp);
+    //     int Nbosss = bosssMtx->GetNoOfRowsInBlock(own);
+    //     int Mbosss = bosssMtx->GetNoOfColsInBlock(nei);
+    //     double* tmp = new double[Nbosss*Mbosss];
+    //     bosssMtx->GetBlock(own, nei, tmp);
 
-        int Nfoam = dgOrder::length;
-        int Mfoam = dgOrder::length;
+    //     int Nfoam = dgOrder::length;
+    //     int Mfoam = dgOrder::length;
 
-        // Note (FK, 18apr21): sinde Nfoam and Mfoam are wrong, the following code will never capture the entire matrix
-        int N = Nbosss > Nfoam ? Nfoam : Nbosss;
-        int M = Nbosss > Nfoam ? Nfoam : Nbosss;
+    //     // Note (FK, 18apr21): sinde Nfoam and Mfoam are wrong, the following code will never capture the entire matrix
+    //     int N = Nbosss > Nfoam ? Nfoam : Nbosss;
+    //     int M = Nbosss > Nfoam ? Nfoam : Nbosss;
 
-        for(int i = 0; i < N; i++) { // row lop
-            for(int j = 0; j < M; j++) { // col loop
-                us[faceI](i, j) = tmp[i*Mbosss + j];
-            }
-        }
-        
-        delete tmp;
-    }
+    //     for(int i = 0; i < N; i++) { // row lop
+    //         for(int j = 0; j < M; j++) { // col loop
+    //             us[faceI](i, j) = tmp[i*Mbosss + j];
+    //         }
+    //     }
 
-    // lower triangular (or upper???)
-    // Go over all internal faces (only those that have nei)
-    forAll (neiList, faceI)
-    {
+    //     delete tmp;
+    // }
 
-        // Nei is -1 for boundary faces
-        const label& own = psi().dgmesh().faceOwner()[faceI];
-        const label& nei = psi().dgmesh().faceNeighbour()[faceI];
+    // // lower triangular (or upper???)
+    // // Go over all internal faces (only those that have nei)
+    // forAll (neiList, faceI)
+    // {
 
-        int Nbosss = bosssMtx->GetNoOfRowsInBlock(nei);
-        int Mbosss = bosssMtx->GetNoOfColsInBlock(own);
-        double* tmp = new double[Nbosss*Mbosss];
-        bosssMtx->GetBlock(nei, own, tmp);
+    //     // Nei is -1 for boundary faces
+    //     const label& own = psi().dgmesh().faceOwner()[faceI];
+    //     const label& nei = psi().dgmesh().faceNeighbour()[faceI];
 
-        int Nfoam = dgOrder::length;
-        int Mfoam = dgOrder::length;
+    //     int Nbosss = bosssMtx->GetNoOfRowsInBlock(nei);
+    //     int Mbosss = bosssMtx->GetNoOfColsInBlock(own);
+    //     double* tmp = new double[Nbosss*Mbosss];
+    //     bosssMtx->GetBlock(nei, own, tmp);
 
-        // Note (FK, 18apr21): sinde Nfoam and Mfoam are wrong, the following code will never capture the entire matrix
-        int N = Nbosss > Nfoam ? Nfoam : Nbosss;
-        int M = Nbosss > Nfoam ? Nfoam : Nbosss;
+    //     int Nfoam = dgOrder::length;
+    //     int Mfoam = dgOrder::length;
 
-        for(int i = 0; i < N; i++) { // row lop
-            for(int j = 0; j < M; j++) { // col loop
-                ds[faceI](i, j) = tmp[i*Mbosss + j];
-            }
-        }
-        
-        delete tmp;
-    }
+    //     // Note (FK, 18apr21): sinde Nfoam and Mfoam are wrong, the following code will never capture the entire matrix
+    //     int N = Nbosss > Nfoam ? Nfoam : Nbosss;
+    //     int M = Nbosss > Nfoam ? Nfoam : Nbosss;
+
+    //     for(int i = 0; i < N; i++) { // row lop
+    //         for(int j = 0; j < M; j++) { // col loop
+    //             ds[faceI](i, j) = tmp[i*Mbosss + j];
+    //         }
+    //     }
+
+    //     delete tmp;
+    // }
   
 }
 
 template<class Type>
 void dgMatrix<Type>::solveBoSSS()
 {
+    Info << "Hello from SolveBoSSS 1" << endl;
+    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject(); // here, bosssObject_ is still null!
+    // if (bosssObject_ == NULL){
+    //     Info << "bosssObject_ == NULL" << endl;
+    // } else {
+    //     Info << "bosssObject_ != NULL" << endl;
+    //     double InputReadBuffer[100];
+    //     bosssObject_->GetBlock(0,0,InputReadBuffer);
+    //     Info << "InputReadBuffer: " << endl;
+    //     for (int i = 0; i < 100; i++) {
+    //         Info << InputReadBuffer[i] << " ";
+    //     }
+    //     Info << endl;
+    // }
+    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = bosssObject_;
     BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject();
+    Info << "Hello from SolveBoSSS 2" << endl;
 
+    // double InputReadBuffer[100];
+    // bosssMtx->GetBlock(0,0,InputReadBuffer);
+    // Info << "InputReadBuffer: " << endl;
+    // for (int i = 0; i < 100; i++) {
+    //   Info << InputReadBuffer[i] << " ";
+    // }
+    // Info << endl;
+    // SyncToBoSSS();
     bosssMtx->Solve();
-    psi().SyncFromBoSSS();
+
+    Info << "Hello from SolveBoSSS 3" << endl;
+
+    label J = psi_.dgmesh_.mesh().nCells();
+    // OpenFoamDGField *bo = GetBoSSSobject();
+
+    DgGeometricField<Type, dgPatchField, cellMesh>& psiRef =
+       const_cast<DgGeometricField<Type, dgPatchField, cellMesh>&>(psi_);
+    if (typeid(Type) == typeid(dgScalar)) {
+      for (label j = 0; j < J; j++) {
+        // int N = dgOrder::length;
+        // int N = (*this)[j].size();
+        int N = psiRef[j].size();
+        dgScalar cellValue;
+        for (int n = 0; n < N; n++) {
+          cellValue[n] = bosssObject_->GetSolCoordinate(0, j, n);
+          // cellValue[n] = bosssObject_->GetRHSCoordinate(0, j, n);
+        }
+
+        Info << cellValue << endl;
+        psiRef[j] = cellValue;
+        // psi_[j] = cellValue;
+      }
+    }
+
+    // psi_.SyncFromBoSSS();
     // ../discontinuousGalerkin/lnInclude/dgMatrix.C:271:6: 
     // error: passing ‘const Foam::DgGeometricField<Foam::DgScalar<double, 3>, Foam::dgPatchField, Foam::cellMesh>’ 
     // as ‘this’ argument discards qualifiers [-fpermissive]
     //271 |      psi().SyncFromBoSSS();
     //  |      ^~~
+    // SyncFromBoSSS();
+    // psiRef.SyncFromBoSSS();
+    // AllowGC();
 
 }
 
+template<class Type>
+void dgMatrix<Type>::print(Ostream& os)
+{
+    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ds
+        = (*this).diag().asSquare();
 
+    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ls
+        = (*this).lower().asSquare();
+
+    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& us
+        = (*this).upper().asSquare();
+
+    // const labelList& neiList = psi().dgmesh().interfaces();
+
+    // diagonal
+    // Go over all cells
+    forAll (psi(), cellI)
+    {
+        int Nfoam = dgOrder::length;
+        int Mfoam = dgOrder::length;
+
+        // Note (FK, 18apr21): sinde Nfoam and Mfoam are wrong, the following code will never capture the entire matrix
+        int N = Nfoam;
+        int M = Nfoam;
+
+        for(int i = 0; i < N; i++) { // row lop
+            for(int j = 0; j < M; j++) { // col loop
+                os <<
+                ds[cellI](i, j)
+                    << " ";
+            }
+            os << endl;
+        }
+        os << endl;
+    }
+
+    // Upper triangular (or lower???)
+    // Go over all internal faces (only those that have nei)
+    // forAll (neiList, faceI)
+    // {
+    //     int Nfoam = dgOrder::length;
+    //     int Mfoam = dgOrder::length;
+
+    //     int N = Nfoam;
+    //     int M = Nfoam;
+
+    //     for(int i = 0; i < N; i++) { // row lop
+    //         for(int j = 0; j < M; j++) { // col loop
+    //             os <<
+    //             us[faceI](i, j)
+    //                 << endl;
+    //         }
+    //     }
+    // }
+
+    // // lower triangular (or upper???)
+    // // Go over all internal faces (only those that have nei)
+    // forAll (neiList, faceI)
+    // {
+
+    //     int Nfoam = dgOrder::length;
+    //     int Mfoam = dgOrder::length;
+
+    //     // Note (FK, 18apr21): sinde Nfoam and Mfoam are wrong, the following code will never capture the entire matrix
+    //     int N = Nfoam;
+    //     int M = Nfoam;
+
+    //     for(int i = 0; i < N; i++) { // row lop
+    //         for(int j = 0; j < M; j++) { // col loop
+    //             os <<
+    //             ds[faceI](i, j)
+    //                 << endl;
+    //         }
+    //     }
+    // }
+}
 
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
 
@@ -322,11 +499,26 @@ void dgMatrix<Type>::negate()
 template<class Type>
 void dgMatrix<Type>::operator+=(const dgMatrix<Type>& dgmv)
 {
+    // also add to the BoSSSMatrix
+    dgmv.SyncFromBoSSS();
+    cout << "Hello from += operator" << endl;
+    cout << dgmv << endl;
     checkMethod(*this, dgmv, "+=");
 
     dimensions_ += dgmv.dimensions_;
     MatrixType::operator+=(dgmv);
     source_ += dgmv.source_;
+    dgmv.SyncToBoSSS();
+
+    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject();
+    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx2 = dgmv.GetBoSSSobject();
+
+    // int rows = bosssMtx.GetNoOfRowsInBlock(0); // TODO multiple MPI processes
+    // int cols = bosssMtx.GetNoOfColsInBlock(0); // TODO multiple MPI processes
+
+    // bosssMtx.AccBlock(rows, cols, 1, &bosssMtx2);
+
+
 }
 
 
@@ -672,10 +864,19 @@ Ostream& operator<<(Ostream& os, const dgMatrix<Type>& dgm)
     os  << static_cast<const typename dgMatrix<Type>::MatrixType&>(dgm) << nl
         << dgm.dimensions_ << nl
         << dgm.source_ << nl
-        << dgm.internalCoeffs_ << nl
-        << dgm.boundaryCoeffs_ << endl;
+        // << dgm.internalCoeffs_ << nl
+        // << dgm.boundaryCoeffs_ << endl
+        ;
 
-    os.check("Ostream& operator<<(Ostream&, dgMatrix<Type>&");
+    tmp<dgMatrix<Type> > tdgm
+    (
+        dgm
+    );
+    dgMatrix<Type>& dgmCopy = tdgm();
+
+    dgmCopy.print(os);
+
+    // os.check("Ostream& operator<<(Ostream&, dgMatrix<Type>&");
 
     return os;
 }

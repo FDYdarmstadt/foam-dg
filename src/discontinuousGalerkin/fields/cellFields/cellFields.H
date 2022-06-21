@@ -64,8 +64,7 @@ class DgGeometricField
 public:
     OpenFoamDGField* bosssObject_ = NULL;
 
-private:
-    const dgMesh& dgmesh_;
+    public: const dgMesh& dgmesh_;
 
 public:
 
@@ -333,12 +332,8 @@ public:
         return bosssObject_;
     }
 
-    dgMesh dgmesh() const {
-        return dgmesh_;
-    }
-    
     void SyncToBoSSS() {
-   
+
         label J = dgmesh_.mesh().nCells();
         OpenFoamDGField* bo = GetBoSSSobject();
 
@@ -370,6 +365,10 @@ public:
             }
         }
 
+    }
+
+    dgMesh dgmesh() const {
+        return dgmesh_;
     }
 
 

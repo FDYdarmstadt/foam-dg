@@ -264,7 +264,8 @@ bosSIPLaplacianScheme<Type, GType>::dgmLaplacian
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
-    
+
+    Info << "Hello from dgmLaplacian" << endl;
     const dgMesh& mesh = this->mesh();
 
     tmp<dgMatrix<Type> > tdgm
@@ -283,228 +284,52 @@ bosSIPLaplacianScheme<Type, GType>::dgmLaplacian
     BoSSSOp->Laplacian(bosssMtx);
     delete BoSSSOp;
 
-/*
-    const dgBase& polynomials = mesh.polynomials();
+    dgm.SetBoSSSobject(bosssMtx);
 
-    // Calculate penalty
-    calcEta();
-    scalarField& etaCells = *etaPtr_;
+    // Info << "Setting up BCs" << endl;
+    // // Setup BC's
+    // forAll(mesh.mesh().boundaryMesh(), patchI)
+    // {
+    //     const dgPatchField<Type>& pf = vf.boundaryField()[patchI];
 
-    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ds
-        = dgm.diag().asSquare();
-
-{
-    scalarField gradCoeffs(ds[0].size(), 0.0);
-    scalarField coeffs(polynomials.quadratureOrder(), 0.0);
-
-    const PtrList<scalarField> polyEval = polynomials.wtdGaussGradEval();
-    const PtrList<scalarField>& unwPolyEval = polynomials.gaussPtsGradEval();
-
-    // Go over all Gaussian points for the whole mesh and add value*weight
-    forAll(coeffs, pti)
-    {
-        // Zeroth entry is for coordinate -1
-        label ptI = pti + 1;
-
-        forAll (polynomials, modI)
-        {
-            label coeff = modI*polynomials.size() + modI;
-            gradCoeffs[coeff] += unwPolyEval[ptI][modI]*polyEval[ptI][modI];
-        }
-    }
-
-    const scalarField& scaleCells = mesh.cellScaleCoeffs();
-
-    forAll (vf, cellI)
-    {
-        forAll (polynomials, modI)
-        {
-            forAll (polynomials, modJ)
-            {
-                label coeff = modI*polynomials.size() + modJ;
-
-                ds[cellI](modI, modJ) =
-                    gradCoeffs[coeff]/scaleCells[cellI];
-            }
-        }
-    }
-}
-
-    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& ls
-        = dgm.lower().asSquare();
-
-    typename CoeffField<VectorN<scalar, Type::coeffLength> >::squareTypeField& us
-        = dgm.upper().asSquare();
-
-// CONSISTENCY TERM
-{
-    // Go over all faces, if nei exists it is an internal face - do:
-    // In d(cellID, cellID) insert owner contrib, in M(cellID, neiID) insert nei
-    // contrib.
-    // Do this both for owner and neighbour (each has both diag and off diag
-    // contrib)
-
-    // Evaluate grad in ref cell boundaries (x=-1,1)
-    const PtrList<scalarField>& gaussEdgeEval = polynomials.gaussPtsEval();
-    const PtrList<scalarField>& gaussGradEdgeEval =
-        polynomials.gaussPtsGradEval();
-    // I evaluate polyEval in gauss points and (-1) and (1) so that Ptr
-    // size is length+2
-
-    const vectorField& faceSf = mesh().faceAreas();
-
-    const labelList& neiList = mesh().faceNeighbour();
-
-    // Go over all internal faces (only those that have nei)
-    forAll (neiList, faceI)
-    {
-
-        // Nei is -1 for boundary faces
-        const label& own = mesh().faceOwner()[faceI];
-        const label& nei = mesh().faceNeighbour()[faceI];
+    //     FieldField<Field, scalar> vic = pf.valIntCoeffsLaplace();
+    //     tmp<dgScalarField> vbc = pf.valBouCoeffsLaplace();
 
 
-        scalar eta = etaCells[own];
+    //     Info << "gamma value: " << endl;
+    //     forAll(vbc(), cellI)
+    //     {
+    //         auto tmp = - vbc()[cellI]*gamma.value();
+    //         Info << tmp << " ";
+    //         // bosssMtx->_SetRHScoordinate(0, cellI, 0, tmp);
+    //         for (int j = 0; j < dgOrder::length; j++)
+    //             bosssMtx->SetRHScoordinate(0, cellI, j, tmp[j]);
+    //         // dgm.source()[cellI] -= vbc()[cellI]*gamma.value();
 
+    //         forAll (vbc()[cellI], addrI)
+    //         {
+    //             forAll (vbc()[cellI], addrJ)
+    //             {
+    //                 label addr = addrI*vbc()[cellI].size() + addrJ;
 
-        // Greater eta is chosen between owner and neighbour
-        if (etaCells[own] < etaCells[nei])
-        {
-            eta = etaCells[nei];
-        }
+    //                 int addrIInt = addrI;
+    //                 int addrJInt = addrJ;
+    //                 double inputBuffer[] = {-vic[cellI][addr]};
+    //                 double* inputBufPtr = inputBuffer;
+    //                 Info << -vic[cellI][addr] << endl;
+    //                 // inputBuffer[0] = -vic[cellI][addr];
+    //                 bosssMtx->AccBlock(addrIInt,addrJInt,1.0,inputBufPtr);
+    //                 // ds[cellI](addrI, addrJ) -= vic[cellI][addr];
+    //             }
+    //         }
+    //     }
+    //     Info << endl;
+    // }
 
+    // TODO sync this stuff from BoSSS
+    // Info << tdgm.GetBoSSSobject() << endl;
+    // dgm.SyncFromBoSSS();
 
-        // Matrix size
-        scalar mtxSize = Type::coeffLength;
-        mtxSize *= mtxSize;
-
-        scalarField diagCoeffOwn(mtxSize, 0.0);
-        scalarField offCoeffOwn(mtxSize, 0.0);
-
-        scalarField diagCoeffNei(mtxSize, 0.0);
-        scalarField offCoeffNei(mtxSize, 0.0);
-
-        scalar Sf = mag(faceSf[faceI]);
-
-        label gaussPt = 0;
-        label  gaussPtNei = gaussEdgeEval.size() - 1;
-
-        // Owner local coord = 1 on face
-        if
-        (
-            mesh().cellCentres()[own].component(vector::X)
-          < mesh().cellCentres()[nei].component(vector::X)
-        )
-        {
-            gaussPt = gaussEdgeEval.size() - 1;
-            gaussPtNei = 0;
-        }
-        // Owner local coord = -1 on face
-        else
-        {
-            gaussPt = 0;
-            gaussPtNei = gaussEdgeEval.size() - 1;
-        }
-
-        // This should be outside of loops
-        const scalarField& polyEval = gaussEdgeEval[gaussPt];
-        const scalarField& polyEvalNei = gaussEdgeEval[gaussPtNei];
-        const scalarField& polyGEval = gaussGradEdgeEval[gaussPt];
-        const scalarField& polyGEvalNei = gaussGradEdgeEval[gaussPtNei];
-
-
-        // For owner, calculate diag and off-diag contrib
-        forAll (polyEval, coeffJ)
-        {
-            forAll (polyEval, coeffI)
-            {
-
-                label mtxCoeff = coeffJ*polyEval.size() + coeffI;
-
-                // Consistency term - diag and offdiag contrib
-                diagCoeffOwn[mtxCoeff] = -
-                    polyGEval[coeffI]*polyEval[coeffJ]*Sf/2.0;
-
-                offCoeffOwn[mtxCoeff] = -(
-                  - polyGEval[coeffI]*polyEvalNei[coeffJ]*Sf/2.0);
-
-                offCoeffNei[mtxCoeff] = -(
-                    polyGEvalNei[coeffI]*polyEval[coeffJ]*Sf/2.0);
-
-                diagCoeffNei[mtxCoeff] = -(
-                  - polyGEvalNei[coeffI]*polyEvalNei[coeffJ]*Sf/2.0);
-
-                // Symmetry term - diag and offdiag contrib
-                diagCoeffOwn[mtxCoeff] += -(
-                    polyEval[coeffI]*polyGEval[coeffJ]*Sf/2.0);
-
-                offCoeffOwn[mtxCoeff] += -(
-                    polyEval[coeffI]*polyGEvalNei[coeffJ]*Sf/2.0);
-
-                offCoeffNei[mtxCoeff] += -(
-                    - polyEvalNei[coeffI]*polyGEval[coeffJ]*Sf/2.0);
-
-                diagCoeffNei[mtxCoeff] += -(
-                    - polyEvalNei[coeffI]*polyGEvalNei[coeffJ]*Sf/2.0);
-
-
-                // Penalty term T1
-                diagCoeffOwn[mtxCoeff] +=
-                    polyEval[coeffI]*polyEval[coeffJ]*Sf*eta;
-
-                // Penalty term T3
-                offCoeffOwn[mtxCoeff] +=
-                  - polyEval[coeffI]*polyEvalNei[coeffJ]*Sf*eta;
-
-                // Penalty term T2
-                offCoeffNei[mtxCoeff] +=
-                  - polyEvalNei[coeffI]*polyEval[coeffJ]*Sf*eta;
-
-                // Penalty term T4
-                diagCoeffNei[mtxCoeff] +=
-                    polyEvalNei[coeffI]*polyEvalNei[coeffJ]*Sf*eta;
-
-
-                // For cell owner
-                ds[own](coeffJ, coeffI) += diagCoeffOwn[mtxCoeff];
-                us[faceI](coeffJ, coeffI) += offCoeffNei[mtxCoeff];
-
-                ds[nei](coeffJ, coeffI) += diagCoeffNei[mtxCoeff];
-                ls[faceI](coeffJ, coeffI) += offCoeffOwn[mtxCoeff];
-            }
-        }
-    }
-}
-
-    // Setup BC's
-    forAll(mesh.mesh().boundaryMesh(), patchI)
-    {
-        const dgPatchField<Type>& pf = vf.boundaryField()[patchI];
-
-        FieldField<Field, scalar> vic = pf.valIntCoeffsLaplace();
-        tmp<dgScalarField> vbc = pf.valBouCoeffsLaplace();
-
-
-        forAll(vbc(), cellI)
-        {
-            dgm.source()[cellI] -= vbc()[cellI]*gamma.value();
-
-            forAll (vbc()[cellI], addrI)
-            {
-                forAll (vbc()[cellI], addrJ)
-                {
-                    label addr = addrI*vbc()[cellI].size() + addrJ;
-
-                    ds[cellI](addrI, addrJ) -= vic[cellI][addr];
-                }
-            }
-        }
-    }
-
-//    ds = ds*gamma.value();
-//    ls = ls*gamma.value();
-//    us = us*gamma.value();
-*/
     return tdgm;
 }
 

@@ -34,7 +34,6 @@ Authors:
 
 \*---------------------------------------------------------------------------*/
 
-
 #include "BoSSScpp.h"
 
 #include "dgCFD.H"
@@ -61,6 +60,8 @@ int main(int argc, char *argv[])
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
     Info << "\nCalculating temperature distribution\n" << endl;
+
+    // mono_profiler_install_gc_moves();
 
     const Foam::dgMesh& meeehsch = T.mesh();//.GetBoSSSobject();
     BoSSS::Foundation::Grid::OpenFOAMGrid* bosssMesh = meeehsch.GetBoSSSobject();
@@ -90,15 +91,31 @@ int main(int argc, char *argv[])
         dgScalarMatrix Te
         (
             dgm::dgLaplacian(T)
-        );
+        )
+        ;
 
-        Te.GetBoSSSobject();
-        //Te.SyncFromBoSSS();
-
-        Te.solveBoSSS();
-
+        // Info << "Hello again from dgLaplacianFoam" << endl;
+        // BoSSS::Application::ExternalBinding::OpenFoamMatrix *bo = Te.GetBoSSSobject();
+        // if (bo == NULL) {
+        //   Info << "bo == NULL" << endl;
+        // } else {
+        //   Info << "bo != NULL" << endl;
+        //   double InputReadBuffer[100];
+        //   bo->GetBlock(0, 0, InputReadBuffer);
+        //   Info << "InputReadBuffer: " << endl;
+        //   for (int i = 0; i < 100; i++) {
+        //   Info << InputReadBuffer[i] << " ";
+        // }
+        // Info << endl;
+        // }
+        // Info << Te << endl;
         // T.SyncFromBoSSS();
 
+        Te.solveBoSSS();
+        // Te.solve();
+
+        T.SyncFromBoSSS();
+        Te.AllowGC();
         runTime.write();
 
 #       include "infoOut.H"

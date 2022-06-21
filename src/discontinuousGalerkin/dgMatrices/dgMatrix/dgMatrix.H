@@ -94,12 +94,6 @@ public:
         //- BlockMatrix type
         typedef BlockLduMatrix<VectorN<scalar, Type::coeffLength> > MatrixType;
 
-        //- BoSSSBlockMatrix type
-        typedef ilPSP::LinSolvers::BlockMsrMatrix BoSSSMatrixType;
-
-        //- source type
-        typedef ilPSP::LinSolvers::BlockMsrMatrix BoSSSSourceType;
-
         //- Field type
         typedef DgGeometricField<Type, dgPatchField, cellMesh> FieldType;
 
@@ -111,10 +105,11 @@ public:
         typedef BlockSolverPerformance<VectorN<scalar, Type::coeffLength> >
             SolverPerfType;
 
-
 private:
 
         BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssObject_ = NULL;
+
+        bool blockGC = true;
 
     // Private data
 
@@ -128,44 +123,37 @@ private:
         //- Source term
         Field<Type> source_;
 
+        // BoSSS::Application::ExternalBinding::OpenFoamMatrix bosssObjectValue_ = BoSSS::Application::ExternalBinding::OpenFoamMatrix(psi_.bosssObject_);
+        // double* buffer_;
 
-    // Private member functions
+        // Private member functions
 
+      public:
+        //- Solver class returned by the solver function
+        class dgSolver {
+          // Private data
 
-public:
+          //- Reference to matrix
+          dgMatrix<Type> &dgMat_;
 
-    //- Solver class returned by the solver function
-    class dgSolver
-    {
-        // Private data
+          //- Solver
+          autoPtr<SolverType> solver_;
 
-            //- Reference to matrix
-            dgMatrix<Type>& dgMat_;
+        public:
+          // Constructors
 
-            //- Solver
-            autoPtr<SolverType> solver_;
+          dgSolver(dgMatrix<Type> &dgMat, autoPtr<SolverType> sol)
+              : dgMat_(dgMat), solver_(sol) {}
 
+          // Member functions
 
-    public:
+          //- Solve returning the solution statistics.
+          //  Solver controls read from dictionary
+          SolverPerfType solve(const dictionary &);
 
-        // Constructors
-
-            dgSolver(dgMatrix<Type>& dgMat, autoPtr<SolverType> sol)
-            :
-                dgMat_(dgMat),
-                solver_(sol)
-            {}
-
-
-        // Member functions
-
-            //- Solve returning the solution statistics.
-            //  Solver controls read from dictionary
-            SolverPerfType solve(const dictionary&);
-
-            //- Solve returning the solution statistics.
-            //  Solver controls read from dgSolution
-            SolverPerfType solve();
+          //- Solve returning the solution statistics.
+          //  Solver controls read from dgSolution
+          SolverPerfType solve();
 
 
             
@@ -220,17 +208,75 @@ public:
 
             BoSSS::Application::ExternalBinding::OpenFoamMatrix* GetBoSSSobject() {
                 if(bosssObject_ == NULL) {
+                    // Info << "Hello from GetBoSSSobject" << endl;
                     //const DgGeometricField<Type, dgPatchField, cellMesh>& dgField = psi();
                     //const DgGeometricField<Type, dgPatchField, cellMesh>* pF = &dgField;
-                    //const BoSSS::Application::ExternalBinding::OpenFoamDGField* p = 
+                    //const BoSSS::Application::ExternalBinding::OpenFoamDGField* p =
                     BoSSS::Application::ExternalBinding::OpenFoamDGField* p = psi().bosssObject_;
                     bosssObject_ = new BoSSS::Application::ExternalBinding::OpenFoamMatrix(p);
+                    // bosssMonoObject_ = bosssObject_->_GetMonoObject();
+                    // auto bosssObjectVal_ = BoSSS::Application::ExternalBinding::OpenFoamMatrix(p);
+                    // bosssObject_ = &bosssObjectVal_;
                 }
-
-
+                // BoSSS::Application::ExternalBinding::OpenFoamDGField* p = psi().bosssObject_;
+                // bosssObject_ = new BoSSS::Application::ExternalBinding::OpenFoamMatrix(p);
+                // bosssObject_->AccBlock(0, 0, 1.0, buffer_);
                 return bosssObject_;
+                // return BoSSS::Application::ExternalBinding::OpenFoamMatrix::_FromMonoObject(bosssMonoObject_);
+                // return &bosssObjectValue_;
+            }
+            void SetBoSSSobject(BoSSS::Application::ExternalBinding::OpenFoamMatrix* bo) {
+                // if (buffer_ == NULL){
+                //     int size = bo->GetNoOfRowsInBlock(0) * bo->GetNoOfColsInBlock(0);
+                //     // int size = 100;
+                //     Info << "size is " << size << endl;
+                //     buffer_ = new double[size]; // TODO auto determine size
+                // }
+                // if(bosssObject_ == NULL) {
+                Info << "Hello from SetBoSSSobject" << endl;
+                // gchandle_ = mono_gchandle_new(bo->_GetMonoObject(), true);
+
+                if(bosssObject_ == NULL) {
+                    // const DgGeometricField<Type, dgPatchField, cellMesh>& dgField = psi();
+                    // const DgGeometricField<Type, dgPatchField, cellMesh>* pF = &dgField;
+                    // // const BoSSS::Application::ExternalBinding::OpenFoamDGField* p =
+                    // BoSSS::Application::ExternalBinding::OpenFoamDGField* p = psi().bosssObject_;
+                    Info << "Setting bosssobject (none already exists)" << endl;
+                    // BoSSS::Application::ExternalBinding::OpenFoamMatrix bosssObjectValue_ = *bo;
+                    // bosssObject_ = &bosssObjectValue_;
+                    // BoSSS::Application::ExternalBinding::OpenFoamDGField* p = psi().bosssObject_;
+                    // BoSSS::Application::ExternalBinding::OpenFoamMatrix bosssObjectVal_ = BoSSS::Application::ExternalBinding::OpenFoamMatrix(p) ;
+                    // bo->GetBlock(0, 0, buffer_);
+                    // bosssObject_ = BoSSS::Application::ExternalBinding::OpenFoamMatrix::_FromMonoObject(boc);
+                    // bosssObjectVal_.AccBlock(0,0,1,InputReadBuffer);
+                    // bosssObject_ = &bosssObjectVal_;
+                    // bosssMonoObject_ = mono_object_clone(bo->_GetMonoObject());
+                    bosssObject_ = bo;
+                    // BoSSS::Application::ExternalBinding::OpenFoamMatrix bosssObjectTmp_(*bo);
+                    // bosssObject_ = &bosssObjectTmp_;
+                }
+                else {
+                    Info << "Setting bosssobject even though one exists already" << endl;
+                    // BoSSS::Application::ExternalBinding::OpenFoamMatrix bosssObjectValue_ = *bo;
+                    // bosssObject_ = &bosssObjectValue_;
+                    // bo->GetBlock(0, 0, buffer_);
+                    // MonoObject* boc = mono_object_clone(bo->_GetMonoObject());
+                    bosssObject_ = bo;
+                    // BoSSS::Application::ExternalBinding::OpenFoamMatrix bosssObjectTmp_(*bo);
+                    // bosssObject_ = &bosssObjectTmp_;
+                    // bosssObject_ = BoSSS::Application::ExternalBinding::OpenFoamMatrix::_FromMonoObject(boc);
+                    // bosssMonoObject_ = bo->_GetMonoObject();
+                    // bosssMonoObject_ = mono_object_clone(bo->_GetMonoObject());
+                }
+                // gchandle_ = mono_gchandle_new(bosssObject_->_GetMonoObject(), true);
+                // gchandle_ = bo->_MonoGCHandle;
+                // Info << "gchandle: " << gchandle_ << endl;
+
             }
 
+        void AllowGC(){
+            blockGC = false;
+        }
 
     // Operations
 
@@ -268,6 +314,8 @@ public:
 
             //- solve within BoSSS, solution is stored in psi_
             void solveBoSSS();
+
+            void print(Ostream& os);
 
             //- Return the matrix residual
             tmp<Field<Type> > residual() const;

@@ -140,6 +140,10 @@ public:
             return bosssmesh_;
         }
 
+        void SetBoSSSobject(BoSSS::Foundation::Grid::OpenFOAMGrid* bo) const {
+            bosssmesh_ = bo;
+        }
+
         // Database
 
             //- Return access to polyMesh
