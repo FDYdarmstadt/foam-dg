@@ -105,6 +105,7 @@ public:
     //- Runtime type information
     TypeName("dgPatchField");
 
+    // OpenFoamPatchField* bosssObject_ = NULL;
 
     // Declare run-time constructor selection tables
 
