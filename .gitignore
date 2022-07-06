@@ -79,6 +79,7 @@ doc/[Dd]oxygen/man
 __pycache__/
 mono_crash.*.json
 
+.ccls-cache/
 
 .gitignore
 # end-of-file

@@ -29,16 +29,14 @@ namespace Application
 {
 namespace ExternalBinding
 {
-void Initializer::_InitMonoBindings()
+void OpenFoamPatchField::_InitMonoBindings()
 {
-_ClassHandle = BoSSS::Globals::LookupClass(BoSSS::Globals::_image__BoSSS_Application_ExternalBinding, "Initializer", "BoSSS.Application.ExternalBinding");
-_ctor_0 = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.Initializer:.ctor", true);
-_BoSSSInitialize = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.Initializer:BoSSSInitialize", true);
-_BoSSSFinalize = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.Initializer:BoSSSFinalize", true);
-__SetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.Initializer:_SetForeignPointer", true);
-__GetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.Initializer:_GetForeignPointer", true);
+_ClassHandle = BoSSS::Globals::LookupClass(BoSSS::Globals::_image__BoSSS_Application_ExternalBinding, "OpenFoamPatchField", "BoSSS.Application.ExternalBinding");
+_ctor_0 = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamPatchField:.ctor", true);
+__SetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamPatchField:_SetForeignPointer", true);
+__GetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamPatchField:_GetForeignPointer", true);
 }
-Initializer::~Initializer()
+OpenFoamPatchField::~OpenFoamPatchField()
 {
 if (_MonoGCHandle != 0)
 {
@@ -48,70 +46,53 @@ _SetForeignPointer(NULL);
 mono_gchandle_free(_MonoGCHandle);
 }
 }
-void Initializer::_ReleaseGChandle()
+void OpenFoamPatchField::_ReleaseGChandle()
 {
 mono_gchandle_free(_MonoGCHandle);
 _MonoGCHandle = 0; // blocks destructor functionality
 }
-Initializer::Initializer(MonoObject* mo)
+OpenFoamPatchField::OpenFoamPatchField(MonoObject* mo)
 {
 _InitMonoBindings();
 _MonoGCHandle = mono_gchandle_new(mo, true);
 }
-Initializer* Initializer::_FromMonoObject(MonoObject* mo)
+OpenFoamPatchField* OpenFoamPatchField::_FromMonoObject(MonoObject* mo)
 {
-Initializer* tmp = new Initializer(mo);
+OpenFoamPatchField* tmp = new OpenFoamPatchField(mo);
 void* LoggedRef = tmp->_GetForeignPointer();
 if (LoggedRef != NULL) {
     tmp->_ReleaseGChandle();
     delete tmp;
-    return ((Initializer*)LoggedRef);
+    return ((OpenFoamPatchField*)LoggedRef);
 } else {
     tmp->_SetForeignPointer(tmp);
     return tmp;
 }
 }
-MonoObject* Initializer::_GetMonoObject()
+MonoObject* OpenFoamPatchField::_GetMonoObject()
 {
 return mono_gchandle_get_target(_MonoGCHandle);
 }
-Initializer::Initializer()
+OpenFoamPatchField::OpenFoamPatchField(BoSSS::Foundation::Grid::OpenFOAMGrid* grdDat, int nBoundaries, int* edgeTags, int* edgeTypes, double* edgeValues)
 {
 _InitMonoBindings();
 MonoObject* ThisObj = mono_object_new(BoSSS::Globals::_domain, _ClassHandle);
 _MonoGCHandle = mono_gchandle_new(ThisObj, true);
-void* args[1];
+void* args[5];
+args[0] = grdDat->_GetMonoObject();
+args[1] = &nBoundaries;
+args[2] = edgeTags;
+args[3] = edgeTypes;
+args[4] = edgeValues;
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_ctor_0, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
 if (exception != NULL) {
-    fprintf( stderr, "got exception from C# (Initializer.ctor_0) \n");
+    fprintf( stderr, "got exception from C# (OpenFoamPatchField.ctor_0) \n");
 }
 _SetForeignPointer(this);
 }
-void Initializer::BoSSSInitialize()
-{
-void* args[1];
-MonoObject* exception;
-MonoObject* retval;
-retval = mono_runtime_invoke(_BoSSSInitialize, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
-if (exception != NULL) {
-    fprintf( stderr, "got exception from C# (Initializer.BoSSSInitialize) \n");
-}
-return;
-}
-void Initializer::BoSSSFinalize()
-{
-void* args[1];
-MonoObject* exception;
-MonoObject* retval;
-retval = mono_runtime_invoke(_BoSSSFinalize, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
-if (exception != NULL) {
-    fprintf( stderr, "got exception from C# (Initializer.BoSSSFinalize) \n");
-}
-return;
-}
-void Initializer::_SetForeignPointer(void* ptr)
+void OpenFoamPatchField::_SetForeignPointer(void* ptr)
 {
 void* args[1];
 args[0] = &ptr;
@@ -119,18 +100,18 @@ MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(__SetForeignPointer, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
 if (exception != NULL) {
-    fprintf( stderr, "got exception from C# (Initializer._SetForeignPointer) \n");
+    fprintf( stderr, "got exception from C# (OpenFoamPatchField._SetForeignPointer) \n");
 }
 return;
 }
-void* Initializer::_GetForeignPointer()
+void* OpenFoamPatchField::_GetForeignPointer()
 {
 void* args[1];
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(__GetForeignPointer, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
 if (exception != NULL) {
-    fprintf( stderr, "got exception from C# (Initializer._GetForeignPointer) \n");
+    fprintf( stderr, "got exception from C# (OpenFoamPatchField._GetForeignPointer) \n");
 }
 void* retptr = mono_object_unbox(retval);
 return *((void**) retptr);

@@ -101,6 +101,20 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     int nPoints = pMesh.nPoints();
     //Info << "Number of Points: " << nPoints << endl;
 
+    const Foam::polyBoundaryMesh& bm = pMesh.boundaryMesh();
+    Info <<
+        "bmnames: " <<
+    bm.names() <<
+    bm.findIndex("left")
+        <<
+        bm.neighbourEdges()
+        <<
+        // pMesh.points()[0].x() <<
+        pMesh.faces()
+        // bm.mesh().points()[0].x() <<
+        <<
+        endl;
+
     Foam::pointField points = pMesh.points();
     //Info << "points.count = " << points.count() << endl;
     double* pointsArray = (double*) malloc(sizeof(double)*nPoints*3);
@@ -170,6 +184,7 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     free(facesArray);
     free(facesContent);
 
+    // bosssmesh_->AddEdgeTag("left");
 
     //this->bosssmesh_->TestMethod(88);
 }

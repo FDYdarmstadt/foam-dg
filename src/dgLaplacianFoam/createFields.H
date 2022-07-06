@@ -1,5 +1,7 @@
     Info<< "Reading field T\n" << endl;
 
+    auto ioobj = IOobject ("T", runTime.timeName(), mesh, IOobject::MUST_READ, IOobject::AUTO_WRITE);
+
     cellScalarField T
     (
         IOobject

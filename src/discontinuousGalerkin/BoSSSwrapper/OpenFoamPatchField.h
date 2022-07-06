@@ -11,17 +11,15 @@ namespace Application
 {
 namespace ExternalBinding
 {
-class OpenFoamDGField
+class OpenFoamPatchField
 {
 public:
-~OpenFoamDGField();
+~OpenFoamPatchField();
 void _ReleaseGChandle();
-OpenFoamDGField(MonoObject* mo);
-static OpenFoamDGField* _FromMonoObject(MonoObject* mo);
+OpenFoamPatchField(MonoObject* mo);
+static OpenFoamPatchField* _FromMonoObject(MonoObject* mo);
 MonoObject* _GetMonoObject();
-OpenFoamDGField(BoSSS::Foundation::Grid::OpenFOAMGrid* g, int degree, int NoOfComponents);
-void SetDGcoordinate(int f, int j, int n, double val);
-double GetDGcoordinate(int f, int j, int n);
+OpenFoamPatchField(BoSSS::Foundation::Grid::OpenFOAMGrid* grdDat, int nBoundaries, int* edgeTags, int* edgeTypes, double* edgeValues);
 void _SetForeignPointer(void* ptr);
 void* _GetForeignPointer();
 private:
@@ -29,8 +27,6 @@ void _InitMonoBindings();
 MonoClass* _ClassHandle;
 uint32_t _MonoGCHandle;
 MonoMethod* _ctor_0;
-MonoMethod* _SetDGcoordinate;
-MonoMethod* _GetDGcoordinate;
 MonoMethod* __SetForeignPointer;
 MonoMethod* __GetForeignPointer;
 };

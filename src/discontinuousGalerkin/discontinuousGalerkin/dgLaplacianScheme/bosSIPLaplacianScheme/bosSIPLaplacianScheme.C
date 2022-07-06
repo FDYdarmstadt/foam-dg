@@ -276,12 +276,15 @@ bosSIPLaplacianScheme<Type, GType>::dgmLaplacian
             vf.dimensions()
         )
     );
+    // Info << "vf.PatchFieldType" << endl;
+    // Info << vf.PatchFieldType << endl;
     dgMatrix<Type>& dgm = tdgm();
 
     BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = dgm.GetBoSSSobject();
+    BoSSS::Application::ExternalBinding::OpenFoamPatchField* bosssPtch = vf.bosssObjectPatchField_;
 
     BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
-    BoSSSOp->Laplacian(bosssMtx);
+    BoSSSOp->Laplacian(bosssMtx, bosssPtch);
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);

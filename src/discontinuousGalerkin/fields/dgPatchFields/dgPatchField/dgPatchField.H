@@ -105,8 +105,6 @@ public:
     //- Runtime type information
     TypeName("dgPatchField");
 
-    // OpenFoamPatchField* bosssObject_ = NULL;
-
     // Declare run-time constructor selection tables
 
         declareRunTimeSelectionTable
@@ -360,7 +358,6 @@ Info<< " DG PATCH FIELD two in" << endl;
 Info<< " DG PATCH FIELD two out" << endl;
                 return nullField;
             }
-
 
         // I-O
 

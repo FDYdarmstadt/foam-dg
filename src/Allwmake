@@ -9,5 +9,5 @@ wmake libso discontinuousGalerkin
 wmake dgLaplacianFoam
 # wmake dgConvectionFoam
 # wmake dgScalarTransport
-wmake fvTransform
-wmake fvPointTransform
+# wmake fvTransform
+# wmake fvPointTransform

@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 6/20/2022 3:26:26 PM
+// Creation Date: 6/28/2022 11:23:48 AM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -22,6 +22,7 @@
 #include "Initializer.h"
 #include "OpenFoamDGField.h"
 #include "OpenFoamMatrix.h"
+#include "OpenFoamPatchField.h"
 namespace BoSSS
 {
 namespace Application
@@ -111,10 +112,11 @@ if (exception != NULL) {
 void* retptr = mono_object_unbox(retval);
 return *((void**) retptr);
 }
-void FixedOperators::Laplacian(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx)
+void FixedOperators::Laplacian(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch)
 {
-void* args[1];
+void* args[2];
 args[0] = mtx->_GetMonoObject();
+args[1] = ptch->_GetMonoObject();
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_Laplacian, mono_gchandle_get_target(_MonoGCHandle), args, &exception);

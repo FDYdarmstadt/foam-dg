@@ -49,6 +49,7 @@ SourceFiles
 namespace Foam
 {
 using BoSSS::Application::ExternalBinding::OpenFoamDGField;
+using BoSSS::Application::ExternalBinding::OpenFoamPatchField;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -63,6 +64,7 @@ class DgGeometricField
 {
 public:
     OpenFoamDGField* bosssObject_ = NULL;
+    OpenFoamPatchField* bosssObjectPatchField_ = NULL;
 
     public: const dgMesh& dgmesh_;
 
@@ -124,6 +126,7 @@ public:
             dgmesh_(b)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
  
         //- Constructor given IOobject, mesh, dimensions and patch types.
@@ -140,6 +143,7 @@ public:
             dgmesh_(b)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
 
         //- Constructor given IOobject, mesh, dimensioned<Type> and patch type.
@@ -153,6 +157,7 @@ public:
             dgmesh_(b)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
         //- Construct given IOobject, mesh, dimensioned<Type> and patch types
         DgGeometricField
@@ -165,6 +170,7 @@ public:
             dgmesh_(b)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
         //- Construct from components
         DgGeometricField
@@ -178,6 +184,7 @@ public:
             dgmesh_(b)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
         //- Construct and read given IOobject
         DgGeometricField
@@ -188,6 +195,7 @@ public:
             dgmesh_(b)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
 
         //- Construct and read from given stream
@@ -200,6 +208,7 @@ public:
             dgmesh_(b)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
 
         //- Construct from dictionary
@@ -212,6 +221,7 @@ public:
             dgmesh_(b)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
 
         //- Construct as copy
@@ -222,6 +232,7 @@ public:
             dgmesh_(a.dgmesh_)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
 
         //- Construct as copy of tmp<GeometricField> deleting argument
@@ -233,6 +244,7 @@ public:
             dgmesh_(a.ptr()->dgmesh_)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
 #       endif
 
@@ -245,6 +257,7 @@ public:
             dgmesh_(a.dgmesh_)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
         //- Construct as copy resetting name
         DgGeometricField
@@ -255,6 +268,7 @@ public:
             dgmesh_(b.dgmesh_)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
 
 #       ifdef ConstructFromTmp
@@ -266,6 +280,7 @@ public:
             dgmesh_(b.dgmesh_)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
 #       endif
 
@@ -280,6 +295,7 @@ public:
             dgmesh_(b.dgmesh_) 
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
 
         //- Construct as copy resetting IO parameters and boundary types
@@ -292,6 +308,7 @@ public:
             dgmesh_(b.dgmesh_)
         { 
             GetBoSSSobject();
+            GetBoSSSPatchobject();
         }
 
         //- Clone
@@ -308,6 +325,9 @@ public:
     virtual ~DgGeometricField() { 
         if(bosssObject_ != NULL) {
             delete bosssObject_;
+        }
+        if(bosssObjectPatchField_ != NULL) {
+            delete bosssObjectPatchField_;
         }
     }
 
@@ -330,6 +350,75 @@ public:
             bosssObject_ = new OpenFoamDGField(dgmesh_.GetBoSSSobject(), dgOrder::order, NoOfComps);
         }
         return bosssObject_;
+    }
+    OpenFoamPatchField* GetBoSSSPatchobject() {
+        if(bosssObjectPatchField_ == NULL) {
+            int NoOfComps;
+            if(typeid(Type) == typeid(dgScalar)) {
+                NoOfComps = 1;
+            } else if(typeid(Type) == typeid(dgVector)) {
+                NoOfComps = dgOrder::dim;
+            } else {
+                NoOfComps = -1;
+            }
+            List<int> edgeTags;
+            List<int> edgeTypes;
+            List<double> edgeValues;
+            int i = 0;
+            int noOfNonEmptyFaces = 0;
+            for (auto bf : this->boundaryField()){
+              string bcType = bf.type();
+              int bcTypeInt = -1;
+
+              // if (i < 2){ // TODO
+              bcTypeInt = 0;
+                  // Info << "bcType: " << bf.type() << endl;
+                  // Info << "bcVal" << bf[0] << endl;
+              // }
+              // if (bcType == "dirichlet"){
+              //     Info << "Dirichlet boundary encountered" << endl;
+              //     bcTypeInt = 0;
+              // } else if (bcType == "neumann"){
+              //     Info << "Neumann boundary encountered" << endl;
+              //     bcTypeInt = 1;
+              // }
+              if (dgmesh_.boundary()[i].type() == "empty") {
+                  // Info << "Empty boundary encountered" << endl;
+                  bcTypeInt = -1;
+              }
+              if (bcTypeInt >= 0) {
+                  double bcVal = bf[0][0];
+                  Info << "bcType: " << bf.type() << endl;
+                  Info << "bcVal" << bf[0] << endl;
+                  noOfNonEmptyFaces++;
+              // for (int j = 1; j < dgOrder::order; j++) {
+                // if (abs(bf[0][j] - 0) > 1e-20) {
+                //   fprintf(stderr,
+                //           "Invalid Boundary Condition specification: Expecting "
+                //           "all higher polynomial coefficients to be zero");
+                //   throw "Invalid Boundary Condition specification: Expecting "
+                //         "all higher polynomial coefficients to be zero";
+                // }
+                // }
+                edgeTags.append(i);
+                edgeTypes.append(bcTypeInt);
+                edgeValues.append(bcVal);
+              }
+              i++;
+            }
+            int edgeTagsArr[edgeTags.size()];
+            std::copy(edgeTags.begin(), edgeTags.end(), edgeTagsArr);
+
+            int edgeTypesArr[edgeTypes.size()];
+            std::copy(edgeTypes.begin(), edgeTypes.end(), edgeTypesArr);
+
+            double edgeValuesArr[edgeValues.size()];
+            std::copy(edgeValues.begin(), edgeValues.end(), edgeValuesArr);
+
+            bosssObjectPatchField_ =
+                new OpenFoamPatchField(dgmesh_.GetBoSSSobject(), noOfNonEmptyFaces, edgeTagsArr, edgeTypesArr, edgeValuesArr);
+        }
+        return bosssObjectPatchField_;
     }
 
     void SyncToBoSSS() {
