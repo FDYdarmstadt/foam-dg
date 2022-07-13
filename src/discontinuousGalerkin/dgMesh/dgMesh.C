@@ -102,18 +102,23 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     //Info << "Number of Points: " << nPoints << endl;
 
     const Foam::polyBoundaryMesh& bm = pMesh.boundaryMesh();
+    // const UList<wordRe> patchNames = 
     Info <<
         "bmnames: " <<
     bm.names() <<
     bm.findIndex("left")
+        // <<
+        // bm.neighbourEdges()
+        // <<
+        // bm.patchSet(const UList<wordRe> &patchNames)
         <<
-        bm.neighbourEdges()
-        <<
+        bm.patchID()
         // pMesh.points()[0].x() <<
-        pMesh.faces()
+        // pMesh.faces()
         // bm.mesh().points()[0].x() <<
         <<
         endl;
+// TODO find correlation between bm.name and Edge indices
 
     Foam::pointField points = pMesh.points();
     //Info << "points.count = " << points.count() << endl;
@@ -175,8 +180,24 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
             pfacesContent++;
         }
     }
+    int noOfBmNames = bm.names().size();
+    int* nameLengths = (int*) malloc(sizeof(int) * noOfBmNames);
+    int** names = (int**) malloc(sizeof(int*) * noOfBmNames);
+    for (int i = 0; i < noOfBmNames; i++){
+        int len = bm.names()[i].size();
+        nameLengths[i] = len;
+        names[i] = (int*) malloc(sizeof(int) * len);
+        for (int j = 0; j < len; j++){
+            names[i][j] = (int)bm.names()[i][j];
+        }
+    }
+    int* patches = (int*) malloc(sizeof(int) * (nFaces - nInternalFaces));
+    for (int i = 0; i < (nFaces - nInternalFaces); i++){
+        patches[i] = bm.patchID()[i];
+    }
 
-    this->bosssmesh_ = new BoSSS::Foundation::Grid::OpenFOAMGrid(nPoints, nCells, nFaces, nInternalFaces, facesArray, vertices_per_face_Array, faceNeighbor_Array, faceOwner_Array, pointsArray);
+    // this->bosssmesh_ = new BoSSS::Foundation::Grid::OpenFOAMGrid(nPoints, nCells, nFaces, nInternalFaces, facesArray, vertices_per_face_Array, faceNeighbor_Array, faceOwner_Array, pointsArray);
+    this->bosssmesh_ = new BoSSS::Foundation::Grid::OpenFOAMGrid(nPoints, nCells, nFaces, nInternalFaces, noOfBmNames, nameLengths, facesArray, vertices_per_face_Array, faceNeighbor_Array, faceOwner_Array, pointsArray, names, patches);
     free(pointsArray);
     free(vertices_per_face_Array);
     free(faceNeighbor_Array);

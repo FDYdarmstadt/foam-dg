@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 6/28/2022 11:23:48 AM
+// Creation Date: 7/11/2022 12:42:12 PM
 // ##########################################################################
 #pragma once
 namespace BoSSS
@@ -19,7 +19,7 @@ void _ReleaseGChandle();
 OpenFOAMGrid(MonoObject* mo);
 static OpenFOAMGrid* _FromMonoObject(MonoObject* mo);
 MonoObject* _GetMonoObject();
-OpenFOAMGrid(int nPoints, int nCells, int nFaces, int nInternalFaces, int** faces, int* vertices_per_face, int* neighbour, int* owner, double* points);
+OpenFOAMGrid(int nPoints, int nCells, int nFaces, int nInternalFaces, int nNames, int* nameLenghts, int** faces, int* vertices_per_face, int* neighbour, int* owner, double* points, int** names, int* patchIDs);
 void _SetForeignPointer(void* ptr);
 void* _GetForeignPointer();
 int TestMethod(int a);

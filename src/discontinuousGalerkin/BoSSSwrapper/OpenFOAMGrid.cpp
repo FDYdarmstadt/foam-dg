@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 6/28/2022 11:23:48 AM
+// Creation Date: 7/11/2022 12:42:12 PM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -75,21 +75,25 @@ MonoObject* OpenFOAMGrid::_GetMonoObject()
 {
 return mono_gchandle_get_target(_MonoGCHandle);
 }
-OpenFOAMGrid::OpenFOAMGrid(int nPoints, int nCells, int nFaces, int nInternalFaces, int** faces, int* vertices_per_face, int* neighbour, int* owner, double* points)
+OpenFOAMGrid::OpenFOAMGrid(int nPoints, int nCells, int nFaces, int nInternalFaces, int nNames, int* nameLenghts, int** faces, int* vertices_per_face, int* neighbour, int* owner, double* points, int** names, int* patchIDs)
 {
 _InitMonoBindings();
 MonoObject* ThisObj = mono_object_new(BoSSS::Globals::_domain, _ClassHandle);
 _MonoGCHandle = mono_gchandle_new(ThisObj, true);
-void* args[9];
+void* args[13];
 args[0] = &nPoints;
 args[1] = &nCells;
 args[2] = &nFaces;
 args[3] = &nInternalFaces;
-args[4] = faces;
-args[5] = vertices_per_face;
-args[6] = neighbour;
-args[7] = owner;
-args[8] = points;
+args[4] = &nNames;
+args[5] = nameLenghts;
+args[6] = faces;
+args[7] = vertices_per_face;
+args[8] = neighbour;
+args[9] = owner;
+args[10] = points;
+args[11] = names;
+args[12] = patchIDs;
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_ctor_0, mono_gchandle_get_target(_MonoGCHandle), args, &exception);

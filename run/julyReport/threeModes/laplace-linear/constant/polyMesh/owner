@@ -10,66 +10,36 @@ FoamFile
     version     2.0;
     format      ascii;
     class       labelList;
-    note        "nPoints: 44 nCells: 10 nFaces: 51 nInternalFaces: 9";
+    note        "nPoints: 20 nCells: 4 nFaces: 21 nInternalFaces: 3";
     location    "constant/polyMesh";
     object      owner;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 
-51
+21
 (
 0
 1
 2
-3
-4
-5
-6
-7
-8
 0
-9
+3
 0
 1
 2
 3
-4
-5
-6
-7
-8
-9
 0
 1
 2
 3
-4
-5
-6
-7
-8
-9
 0
 1
 2
 3
-4
-5
-6
-7
-8
-9
 0
 1
 2
 3
-4
-5
-6
-7
-8
-9
 )
 
 
