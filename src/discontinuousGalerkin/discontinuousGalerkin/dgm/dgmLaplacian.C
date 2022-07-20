@@ -155,7 +155,6 @@ dgLaplacian
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf
 )
 {
-    Info << "TEST 2 " << endl;
     return dgm::dgLaplacian(vf); //Geo one field
 }
 

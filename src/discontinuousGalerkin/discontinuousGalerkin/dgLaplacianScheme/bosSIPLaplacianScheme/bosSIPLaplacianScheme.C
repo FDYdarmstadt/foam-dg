@@ -265,7 +265,6 @@ bosSIPLaplacianScheme<Type, GType>::dgmLaplacian
 )
 {
 
-    Info << "Hello from dgmLaplacian" << endl;
     const dgMesh& mesh = this->mesh();
 
     tmp<dgMatrix<Type> > tdgm

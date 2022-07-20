@@ -80,64 +80,8 @@ dgMatrix<Type>::dgMatrix(const dgMatrix<Type>& dgm)
     dimensions_(dgm.dimensions_),
     source_(dgm.source_)
 {
-    // bosssObject_ = dgm.GetBoSSSobject();
-    Info << "Hello from the constructor" << endl;
-    // Info << dgm << endl;
-    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject();
-    // BoSSS::Application::ExternalBinding::OpenFoamDGField* p = dgm.psi().bosssObject_;
-    // bosssObject_ = new BoSSS::Application::ExternalBinding::OpenFoamMatrix(p);
-    // BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
-    // BoSSSOp->Laplacian(bosssMtx);
-    // double InputReadBuffer[100];
-    // bosssMtx->GetBlock(0,0,InputReadBuffer);
-    // Info << "InputReadBuffer: " << endl;
-    // for (int i = 0; i < 100; i++) {
-    //     Info << InputReadBuffer[i] << endl;
-    // }
-    // SetBoSSSobject(bosssMtx);
-
-    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* bo = BoSSS::Application::ExternalBinding::OpenFoamMatrix::_FromMonoObject(dgm.bosssMonoObject_);
     BoSSS::Application::ExternalBinding::OpenFoamMatrix* bo = dgm.bosssObject_;
-    // BoSSS::Application::ExternalBinding::OpenFoamMatrix bo = dgm.bosssObjectValue_;
-    // if (bo == NULL){
-    //     Info << "bo == NULL" << endl;
-    // } else {
-    //     Info << "bo != NULL" << endl;
-    //     double InputReadBuffer[100];
-    //     bo->GetBlock(0,0,InputReadBuffer);
-    //     // bo.GetBlock(0,0,InputReadBuffer);
-    //     Info << "InputReadBuffer: " << endl;
-    //     for (int i = 0; i < 100; i++) {
-    //         Info << InputReadBuffer[i] << " ";
-    //     }
-    //     Info << endl;
-    // }
-    // delete BoSSSOp;
-
-    // bosssObject_ = &bo;
     SetBoSSSobject(bo);
-    // BoSSS::Application::ExternalBinding::OpenFoamMatrix bosssObjectTmp_(*bo);
-    // bosssObject_ = &bosssObjectTmp_;
-    // bo->_ReleaseGChandle();
-    // bo->_MonoGCHandle = 0;
-    // bosssObject_->_ReleaseGChandle();
-    // auto bosssObject_ = GetBoSSSobject();
-    // if (bosssObject_ == NULL){
-    //     Info << "bosssObject_ == NULL" << endl;
-    // } else {
-    //     Info << "bosssObject_ != NULL" << endl;
-    //     double InputReadBuffer[100];
-    //     bo->GetBlock(0,0,InputReadBuffer);
-    //     // bosssObject_->AccBlock(0,0,1,InputReadBuffer);
-    //     Info << "InputReadBuffer: " << endl;
-    //     for (int i = 0; i < 100; i++) {
-    //         Info << InputReadBuffer[i] << " ";
-    //     }
-    //     Info << endl;
-    // }
-    // SetBoSSSobject(bo);
-    // Info << dgm.bosssObject_ << endl;
-
 
     if (debug)
     {
@@ -315,35 +259,9 @@ void dgMatrix<Type>::SyncFromBoSSS()
 template<class Type>
 void dgMatrix<Type>::solveBoSSS()
 {
-    Info << "Hello from SolveBoSSS 1" << endl;
-    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject(); // here, bosssObject_ is still null!
-    // if (bosssObject_ == NULL){
-    //     Info << "bosssObject_ == NULL" << endl;
-    // } else {
-    //     Info << "bosssObject_ != NULL" << endl;
-    //     double InputReadBuffer[100];
-    //     bosssObject_->GetBlock(0,0,InputReadBuffer);
-    //     Info << "InputReadBuffer: " << endl;
-    //     for (int i = 0; i < 100; i++) {
-    //         Info << InputReadBuffer[i] << " ";
-    //     }
-    //     Info << endl;
-    // }
-    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = bosssObject_;
     BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject();
-    Info << "Hello from SolveBoSSS 2" << endl;
 
-    // double InputReadBuffer[100];
-    // bosssMtx->GetBlock(0,0,InputReadBuffer);
-    // Info << "InputReadBuffer: " << endl;
-    // for (int i = 0; i < 100; i++) {
-    //   Info << InputReadBuffer[i] << " ";
-    // }
-    // Info << endl;
-    // SyncToBoSSS();
     bosssMtx->Solve();
-
-    Info << "Hello from SolveBoSSS 3" << endl;
 
     label J = psi_.dgmesh_.mesh().nCells();
     // OpenFoamDGField *bo = GetBoSSSobject();
@@ -361,7 +279,7 @@ void dgMatrix<Type>::solveBoSSS()
           // cellValue[n] = bosssObject_->GetRHSCoordinate(0, j, n);
         }
 
-        Info << cellValue << endl;
+        // Info << cellValue << endl;
         psiRef[j] = cellValue;
         // psi_[j] = cellValue;
       }

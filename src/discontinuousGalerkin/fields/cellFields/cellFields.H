@@ -367,42 +367,23 @@ public:
             int i = 0;
             int noOfNonEmptyFaces = 0;
             for (auto bf : this->boundaryField()){
-              string bcType = bf.type();
-              int bcTypeInt = -1;
+              string bcType = this->boundaryField().types()[i];
 
-              // if (i < 2){ // TODO
-              bcTypeInt = 0;
-                  // Info << "bcType: " << bf.type() << endl;
-                  // Info << "bcVal" << bf[0] << endl;
-              // }
-              // if (bcType == "dirichlet"){
-              //     Info << "Dirichlet boundary encountered" << endl;
-              //     bcTypeInt = 0;
-              // } else if (bcType == "neumann"){
-              //     Info << "Neumann boundary encountered" << endl;
-              //     bcTypeInt = 1;
-              // }
+              int bcTypeInt;
+
               if (dgmesh_.boundary()[i].type() == "empty") {
-                  // Info << "Empty boundary encountered" << endl;
                   bcTypeInt = -1;
-              }
-              if (bcTypeInt >= 0) {
+              } else {
                   double bcVal = bf[0][0];
-                  Info << "bcType: " << bf.type() << endl;
-                  Info << "bcVal" << bf[0] << endl;
+                  if (bcType == "dirichlet"){
+                      bcTypeInt = 0;
+                  } else if (bcType == "homogenous"){
+                      bcTypeInt = 1;
+                  }
                   noOfNonEmptyFaces++;
-              // for (int j = 1; j < dgOrder::order; j++) {
-                // if (abs(bf[0][j] - 0) > 1e-20) {
-                //   fprintf(stderr,
-                //           "Invalid Boundary Condition specification: Expecting "
-                //           "all higher polynomial coefficients to be zero");
-                //   throw "Invalid Boundary Condition specification: Expecting "
-                //         "all higher polynomial coefficients to be zero";
-                // }
-                // }
-                edgeTags.append(i);
-                edgeTypes.append(bcTypeInt);
-                edgeValues.append(bcVal);
+                  edgeTags.append(noOfNonEmptyFaces);
+                  edgeTypes.append(bcTypeInt);
+                  edgeValues.append(bcVal);
               }
               i++;
             }

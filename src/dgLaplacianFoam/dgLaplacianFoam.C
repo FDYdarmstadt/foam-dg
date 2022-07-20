@@ -71,34 +71,7 @@ int main(int argc, char *argv[])
     T.GetBoSSSobject();
 
     T.SyncToBoSSS();
-    // T.dgMesh()
 
-    // dgScalar scl = T[0];
-    // Info << scl << endl;
-    Info << "boundary: " << meeehsch.boundary()[1].type() << nl << endl;
-    Info << "boundary: " << meeehsch.boundary()[2].type() << nl << endl;
-
-    Info << "patch: " << T.boundaryField() << nl << endl;
-    Info << "patchtype: " << T.boundaryField()[0].type() << nl << endl;
-    Info << "patchtype: " << T.boundaryField()[1].type() << nl << endl;
-    Info << "patchtype: " << T.boundaryField()[2].type() << nl << endl;
-
-    // T.boundaryField()[0].writeEntry("value", Info);
-    // (T.boundaryField()[0])[0];
-
-    Info << T.boundaryField()[0][0] << nl << endl;
-    Info << (*(T.boundaryField()[0].dictionaryConstructorTablePtr_)).found("boundaryField") << nl << endl;
-    T.boundaryField()[0].dictionaryConstructorTablePtr_->printInfo(Info);
-    // T.boundaryField()[0].
-    // Info << "patch value: " << T.boundaryField()[0].patch().name() << nl << endl;
-
-    // auto ioobj = IOobject("T", runTime.timeName(), mesh, IOobject::MUST_READ,
-    //                     IOobject::AUTO_WRITE);
-    // auto dict = Foam::dictionary(ioobj);
-    // Info << dict.subDict["boundaryField"];
-
-    // Info << "patchtype: " << typeid(T.boundaryField()[0]).name() << nl << endl;
-    // Info << "patchtype: " << T.boundaryField()[0].value << nl << endl;
     while(runTime < runTime.endTime())
     {
         runTime++;
@@ -118,25 +91,7 @@ int main(int argc, char *argv[])
         )
         ;
 
-        // Info << "Hello again from dgLaplacianFoam" << endl;
-        // BoSSS::Application::ExternalBinding::OpenFoamMatrix *bo = Te.GetBoSSSobject();
-        // if (bo == NULL) {
-        //   Info << "bo == NULL" << endl;
-        // } else {
-        //   Info << "bo != NULL" << endl;
-        //   double InputReadBuffer[100];
-        //   bo->GetBlock(0, 0, InputReadBuffer);
-        //   Info << "InputReadBuffer: " << endl;
-        //   for (int i = 0; i < 100; i++) {
-        //   Info << InputReadBuffer[i] << " ";
-        // }
-        // Info << endl;
-        // }
-        // Info << Te << endl;
-        // T.SyncFromBoSSS();
-
         Te.solveBoSSS();
-        // Te.solve();
 
         T.SyncFromBoSSS();
         Te.AllowGC();

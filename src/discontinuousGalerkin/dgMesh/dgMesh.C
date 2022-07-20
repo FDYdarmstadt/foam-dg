@@ -93,38 +93,15 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
             << "Creating dgMesh from polyMesh" << endl;
     }
 
-    
-    //Info << "sizeof int      " << sizeof(int) << endl;
-    //Info << "sizeof pointer  " << sizeof(void*) << endl;
-    //Info << "sizeof label   " << sizeof(label) << endl;
-    
+
     int nPoints = pMesh.nPoints();
-    //Info << "Number of Points: " << nPoints << endl;
 
     const Foam::polyBoundaryMesh& bm = pMesh.boundaryMesh();
     // const UList<wordRe> patchNames = 
-    Info <<
-        "bmnames: " <<
-    bm.names() <<
-    bm.findIndex("left")
-        // <<
-        // bm.neighbourEdges()
-        // <<
-        // bm.patchSet(const UList<wordRe> &patchNames)
-        <<
-        bm.patchID()
-        // pMesh.points()[0].x() <<
-        // pMesh.faces()
-        // bm.mesh().points()[0].x() <<
-        <<
-        endl;
-// TODO find correlation between bm.name and Edge indices
 
     Foam::pointField points = pMesh.points();
-    //Info << "points.count = " << points.count() << endl;
     double* pointsArray = (double*) malloc(sizeof(double)*nPoints*3);
     for(label i = 0; i < nPoints; i++) {
-        //Info << "pt " << i << " (" << points[i].x() << "|" << points[i].y() << "|" << points[i].z() << ")" << endl;
         pointsArray[i*3 + 0] = points[i].x();
         pointsArray[i*3 + 1] = points[i].y();
         pointsArray[i*3 + 2] = points[i].z();
@@ -135,6 +112,21 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     label nInternalFaces = pMesh.nInternalFaces();
 
     faceList faces = pMesh.faces();
+    int emptyTag = -1;
+
+    int i = 0;
+    int found = 0;
+    for (auto patch : bm.types()){
+        if (patch == "empty"){
+            if (found == 1){
+                throw "more than one empty patch found; please subsume all empty patches into one in blockMeshDict.";
+            }
+            emptyTag = i;
+            found = 1;
+        }
+        i++;
+    }
+    // emptyTag=-1;
 
     int* vertices_per_face_Array = (int*) malloc(sizeof(int)*nFaces);
     int* faceOwner_Array = (int*) malloc(sizeof(int)*nFaces);
@@ -197,7 +189,7 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     }
 
     // this->bosssmesh_ = new BoSSS::Foundation::Grid::OpenFOAMGrid(nPoints, nCells, nFaces, nInternalFaces, facesArray, vertices_per_face_Array, faceNeighbor_Array, faceOwner_Array, pointsArray);
-    this->bosssmesh_ = new BoSSS::Foundation::Grid::OpenFOAMGrid(nPoints, nCells, nFaces, nInternalFaces, noOfBmNames, nameLengths, facesArray, vertices_per_face_Array, faceNeighbor_Array, faceOwner_Array, pointsArray, names, patches);
+    this->bosssmesh_ = new BoSSS::Foundation::Grid::OpenFOAMGrid(nPoints, nCells, nFaces, nInternalFaces, noOfBmNames, nameLengths, emptyTag, facesArray, vertices_per_face_Array, faceNeighbor_Array, faceOwner_Array, pointsArray, names, patches);
     free(pointsArray);
     free(vertices_per_face_Array);
     free(faceNeighbor_Array);

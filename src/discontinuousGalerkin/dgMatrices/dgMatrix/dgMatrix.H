@@ -208,7 +208,6 @@ private:
 
             BoSSS::Application::ExternalBinding::OpenFoamMatrix* GetBoSSSobject() {
                 if(bosssObject_ == NULL) {
-                    // Info << "Hello from GetBoSSSobject" << endl;
                     //const DgGeometricField<Type, dgPatchField, cellMesh>& dgField = psi();
                     //const DgGeometricField<Type, dgPatchField, cellMesh>* pF = &dgField;
                     //const BoSSS::Application::ExternalBinding::OpenFoamDGField* p =
@@ -233,7 +232,6 @@ private:
                 //     buffer_ = new double[size]; // TODO auto determine size
                 // }
                 // if(bosssObject_ == NULL) {
-                Info << "Hello from SetBoSSSobject" << endl;
                 // gchandle_ = mono_gchandle_new(bo->_GetMonoObject(), true);
 
                 if(bosssObject_ == NULL) {
