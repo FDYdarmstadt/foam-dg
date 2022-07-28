@@ -41,6 +41,7 @@ SourceFiles
 #include "cellMesh.H"
 #include "dgMesh.H"
 #include "dgPatchFields.H"
+#include "OpenFoamPatchField.h"
 #include "cellFieldsFwd.H"
 #include "dgOrder.H"
 
@@ -351,71 +352,18 @@ public:
         }
         return bosssObject_;
     }
+
     OpenFoamPatchField* GetBoSSSPatchobject() {
+        Info << "Hello from GetBoSSSpatchobject" << endl;
         if(bosssObjectPatchField_ == NULL) {
-            int NoOfComps;
-            if(typeid(Type) == typeid(dgScalar)) {
-                NoOfComps = 1;
-            } else if(typeid(Type) == typeid(dgVector)) {
-                NoOfComps = dgOrder::dim;
-            } else {
-                NoOfComps = -1;
-            }
-            List<int> edgeTags;
-            List<int> edgeTypes;
-            List<double> edgeValues;
-            int i = 0;
-            int noOfNonEmptyFaces = 0;
-            for (auto bf : this->boundaryField()){
-              string bcType = this->boundaryField().types()[i];
-
-              int bcTypeInt;
-
-              if (dgmesh_.boundary()[i].type() == "empty") {
-                  bcTypeInt = -1;
-              } else {
-                  double bcVal = bf[0][0];
-                  if (bcType == "dirichlet"){
-                      bcTypeInt = 0;
-                  } else if (bcType == "homogenous"){
-                      bcTypeInt = 1;
-                  }
-                  noOfNonEmptyFaces++;
-                  edgeTags.append(noOfNonEmptyFaces);
-                  edgeTypes.append(bcTypeInt);
-                  edgeValues.append(bcVal);
-              }
-              i++;
-            }
-            int edgeTagsArr[edgeTags.size()];
-            std::copy(edgeTags.begin(), edgeTags.end(), edgeTagsArr);
-
-            int edgeTypesArr[edgeTypes.size()];
-            std::copy(edgeTypes.begin(), edgeTypes.end(), edgeTypesArr);
-
-            double edgeValuesArr[edgeValues.size()];
-            std::copy(edgeValues.begin(), edgeValues.end(), edgeValuesArr);
-
-            bosssObjectPatchField_ =
-                new OpenFoamPatchField(dgmesh_.GetBoSSSobject(), noOfNonEmptyFaces, edgeTagsArr, edgeTypesArr, edgeValuesArr);
+            bosssObjectPatchField_ = GenericGetBoSSSPatchobject(*this);
         }
+        Info << "Hello from GetBoSSSpatchobject 2" << endl;
         return bosssObjectPatchField_;
     }
 
     void SyncToBoSSS() {
-
-        label J = dgmesh_.mesh().nCells();
-        OpenFoamDGField* bo = GetBoSSSobject();
-
-        if(typeid(Type) == typeid(dgScalar)) {
-            for(label j = 0; j < J; j++) {
-                dgScalar cellValue = (*this)[j];
-                int N = cellValue.size();
-                for(int n = 0; n < N; n++)
-                    bo->SetDGcoordinate(0, j, n, cellValue[n]);
-            }
-        }
-
+        GenericSyncToBoSSS(*this);
     }
 
     void SyncFromBoSSS() {
@@ -430,6 +378,9 @@ public:
                 for (int n = 0; n < N; n++) {
                   cellValue[n] = bo->GetDGcoordinate(0, j, n);
                 }
+                // cellValue[0] = bo->GetDGcoordinate(0, j, 0); // TODO unhardcode
+                // cellValue[1] = - bo->GetDGcoordinate(0, j, 2);
+                // cellValue[2] = bo->GetDGcoordinate(0, j, 4);
 
                 (*this)[j] = cellValue;
             }
@@ -458,7 +409,152 @@ public:
 */
 };
 
+template<class Type, template<class> class PatchField, class GeoMesh>
+OpenFoamPatchField* GenericGetBoSSSPatchobject(DgGeometricField<Type, PatchField, GeoMesh> &dgf);
 
+template<template<class> class PatchField, class GeoMesh>
+OpenFoamPatchField* GenericGetBoSSSPatchobject(DgGeometricField<dgScalar, PatchField, GeoMesh> &dgf) {
+    int NoOfComps = 1;
+    List<int> edgeTags;
+    List<int> edgeTypes;
+    List<double> edgeValues;
+    // List<List<double>> edgeValues;
+    int i = 0;
+    int noOfNonEmptyFaces = 0;
+    for (auto bf : dgf.boundaryField()) {
+      string bcType = dgf.boundaryField().types()[i];
+
+      int bcTypeInt;
+
+      if (dgf.dgmesh_.boundary()[i].type() == "empty") {
+        bcTypeInt = -1;
+      } else {
+          // List<double> bcVal;
+          double bcVal = bf[0][0];
+          // edgeValues.append(bcVal);
+        if (bcType == "dirichlet") {
+          bcTypeInt = 0;
+        } else if (bcType == "homogenous") {
+          bcTypeInt = 1;
+        }
+        noOfNonEmptyFaces++;
+        edgeTags.append(noOfNonEmptyFaces);
+        edgeTypes.append(bcTypeInt);
+        edgeValues.append(bcVal);
+      }
+      i++;
+    }
+    int edgeTagsArr[edgeTags.size()];
+    std::copy(edgeTags.begin(), edgeTags.end(), edgeTagsArr);
+
+    int edgeTypesArr[edgeTypes.size()];
+    std::copy(edgeTypes.begin(), edgeTypes.end(), edgeTypesArr);
+
+    double edgeValuesArr[edgeValues.size()];
+    std::copy(edgeValues.begin(), edgeValues.end(), edgeValuesArr);
+    // double* edgeValuesArr = (double*) malloc(sizeof(double)*edgeValues.size());
+    // for (int i = 0; i < edgeValues.size(); i++){
+    //     // edgeValuesArrContent[0] = edgeValues[i][0];
+    //     // edgeValuesArr[i] = edgeValuesArrContent;
+    //     edgeValuesArr[i] = edgeValues[i][0];
+    // }
+
+  OpenFoamPatchField* bosssObjectPatchField_ =
+        new OpenFoamPatchField(dgf.dgmesh_.GetBoSSSobject(), 1, noOfNonEmptyFaces,
+                               edgeTagsArr, edgeTypesArr, edgeValuesArr);
+  return bosssObjectPatchField_;
+}
+
+template<template<class> class PatchField, class GeoMesh>
+OpenFoamPatchField* GenericGetBoSSSPatchobject(DgGeometricField<dgVector, PatchField, GeoMesh> &dgf) {
+    int NoOfComps = dgOrder::dim;
+    List<int> edgeTags;
+    List<int> edgeTypes;
+    List<List<double>> edgeValues;
+    int i = 0;
+    int noOfNonEmptyFaces = 0;
+    for (auto bf : dgf.boundaryField()) {
+      string bcType = dgf.boundaryField().types()[i];
+
+      int bcTypeInt;
+
+      if (dgf.dgmesh_.boundary()[i].type() == "empty") {
+        bcTypeInt = -1;
+      } else {
+        List<double> bcVal;
+        for (int d = 0; d < NoOfComps; d++)
+            bcVal.append(bf[0][0][d]);
+        if (bcType == "dirichlet") {
+          bcTypeInt = 0;
+        } else if (bcType == "homogenous") {
+          bcTypeInt = 1;
+        }
+        noOfNonEmptyFaces++;
+        edgeTags.append(noOfNonEmptyFaces);
+        edgeTypes.append(bcTypeInt);
+        edgeValues.append(bcVal);
+      }
+      i++;
+    }
+    int edgeTagsArr[edgeTags.size()];
+    std::copy(edgeTags.begin(), edgeTags.end(), edgeTagsArr);
+
+    int edgeTypesArr[edgeTypes.size()];
+    std::copy(edgeTypes.begin(), edgeTypes.end(), edgeTypesArr);
+
+    // double edgeValuesArr[edgeValues.size()][dgOrder::dim];
+    // double** edgeValuesArr = (double**) malloc(sizeof(double*)*edgeValues.size());
+    // double* edgeValuesArrContent = (double*) malloc(sizeof(double)*dgOrder::dim);
+    double* edgeValuesArr = (double*) malloc(sizeof(double)*dgOrder::dim * edgeValues.size());
+    for (int i = 0; i < edgeValues.size(); i++){
+        for (int d = 0; d < dgOrder::dim; d++){
+            edgeValuesArr[i * dgOrder::dim + d] = edgeValues[i][d];
+        }
+        // edgeValuesArr[i] = edgeValuesArrContent;
+    }
+
+  OpenFoamPatchField* bosssObjectPatchField_ =
+        new OpenFoamPatchField(dgf.dgmesh_.GetBoSSSobject(), dgOrder::dim, noOfNonEmptyFaces,
+                               edgeTagsArr, edgeTypesArr, edgeValuesArr);
+  return bosssObjectPatchField_;
+}
+
+template<class Type, template<class> class PatchField, class GeoMesh>
+OpenFoamPatchField* GenericSyncToBoSSS(DgGeometricField<Type, PatchField, GeoMesh> &dgf);
+
+template<template<class> class PatchField, class GeoMesh>
+void GenericSyncToBoSSS(DgGeometricField<dgScalar, PatchField, GeoMesh> &dgf) {
+
+        label J = dgf.dgmesh_.mesh().nCells();
+        OpenFoamDGField* bo = dgf.GetBoSSSobject();
+
+            for(label j = 0; j < J; j++) {
+                dgScalar cellValue = dgf[j];
+                int N = cellValue.size();
+                // for(int n = 0; n < N; n++){
+                //     bo->SetDGcoordinate(0, j, n, cellValue[n]);
+                // }
+                bo->SetDGcoordinate(0, j, 0, cellValue[0]); // TODO unhardcode
+                bo->SetDGcoordinate(0, j, 2, cellValue[1]);
+                bo->SetDGcoordinate(0, j, 4, cellValue[2]);
+            }
+    }
+
+template<template<class> class PatchField, class GeoMesh>
+void GenericSyncToBoSSS(DgGeometricField<dgVector, PatchField, GeoMesh> &dgf) {
+  label J = dgf.dgmesh_.mesh().nCells();
+  OpenFoamDGField *bo = dgf.GetBoSSSobject();
+
+  for (label j = 0; j < J; j++) {
+    dgVector cellValue = dgf[j];
+    int N = cellValue.size();
+    for (int d = 0; d < 3; d++) {
+      for (int n = 0; n < N; n++) {
+        bo->SetDGcoordinate(d, j, n, cellValue[n][d]);
+      }
+    }
+  }
+}
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam

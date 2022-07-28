@@ -29,6 +29,8 @@ discontinuousGalerkin/dg/dg.C
 discontinuousGalerkin/dgLaplacianScheme/dgLaplacianScheme/dgLaplacianSchemes.C
 discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianSchemes.C
 discontinuousGalerkin/dgLaplacianScheme/bosSIPLaplacianScheme/bosSIPLaplacianSchemes.C
+discontinuousGalerkin/dgCahnHilliardScheme/dgCahnHilliardScheme/dgCahnHilliardSchemes.C
+discontinuousGalerkin/dgCahnHilliardScheme/bosssCahnHilliardScheme/bosssCahnHilliardSchemes.C
 discontinuousGalerkin/dgDivScheme/dgDivScheme/dgDivSchemes.C
 discontinuousGalerkin/dgDivScheme/upwindDivScheme/upwindDivSchemes.C
 discontinuousGalerkin/dgDdtScheme/dgDdtScheme/dgDdtSchemes.C
@@ -44,6 +46,5 @@ BoSSSwrapper/GridData.cpp
 BoSSSwrapper/Initializer.cpp  
 BoSSSwrapper/OpenFOAMGrid.cpp
 BoSSShelper/FindBoSSSLibraries.cpp
-
 
 LIB = $(FOAM_USER_LIBBIN)/libdiscontinuousGalerkin

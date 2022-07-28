@@ -21,53 +21,21 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Class
-    Foam::dgOrder
-
-Description
-    Definition of a Discontinuous Galerkin Order
-
-Author
-    Hrvoje Jasak.  All rights reserved.
-
 \*---------------------------------------------------------------------------*/
 
-#ifndef dgOrder_H
-#define dgOrder_H
+#include "bosssCahnHilliardScheme.H"
+#include "dgMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-
-/*---------------------------------------------------------------------------*\
-                          Class dgOrder Declaration
-\*---------------------------------------------------------------------------*/
-
-class dgOrder
+namespace dg
 {
-public:
-
-    // Member constants
-
-    enum
-    {
-        dim = 3,         // Dimensionality of space
-        rank = 0,        // Rank of Scalar is 0
-        nComponents = 1, // Number of components in Scalar
-        order = 2,       // DG order.  Order of discretisation = order + 1
-        length = order + 1
-       // length = (order + 3)*(order + 2)*(order + 1)/6  // Coeffs
-    };
-};
+    makeDgCahnHilliardScheme(bosssCahnHilliardScheme)
+}
+}
 
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-} // End namespace Foam
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#endif
 
 // ************************************************************************* //

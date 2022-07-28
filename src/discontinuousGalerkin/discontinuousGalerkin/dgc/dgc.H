@@ -51,6 +51,7 @@ Description
 //#include "fvcSnGrad.H"
 //#include "fvcCurl.H"
 #include "dgcLaplacian.H"
+#include "dgcCahnHilliard.H"
 //#include "fvcSup.H"
 //#include "fvcMeshPhi.H"
 //

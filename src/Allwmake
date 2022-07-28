@@ -7,6 +7,7 @@ wmake libso discontinuousGalerkin
 # wmake testDgField
 
 wmake dgLaplacianFoam
+wmake CahnHilliardFoam
 # wmake dgConvectionFoam
 # wmake dgScalarTransport
 # wmake fvTransform

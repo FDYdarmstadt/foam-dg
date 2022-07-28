@@ -48,6 +48,7 @@ Description
 //#include "dgmGrad.H"
 //#include "dgmAdjDiv.H"
 #include "dgmLaplacian.H"
+#include "dgmCahnHilliard.H"
 //#include "dgmSup.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

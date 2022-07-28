@@ -76,6 +76,9 @@ class dgSchemes
         dictionary dgLaplacianSchemes_;
         ITstream defaultDgLaplacianScheme_;
 
+        dictionary dgCahnHilliardSchemes_;
+        ITstream defaultDgCahnHilliardScheme_;
+
         mutable dictionary fluxRequired_;
         bool defaultFluxRequired_;
 
@@ -123,6 +126,25 @@ public:
 //            ITstream& snGradScheme(const word& name) const;
 
             ITstream& dgLaplacianScheme(const word& name) const;
+
+            // ITstream& dgCahnHilliardScheme(const word& name) const;
+            ITstream& dgCahnHilliardScheme(const word& name) const
+{
+    if (debug)
+    {
+        Info<< "Lookup dgCahnHilliardScheme for " << name << endl;
+    }
+
+    if (dgCahnHilliardSchemes_.found(name) || defaultDgCahnHilliardScheme_.empty())
+    {
+        return dgCahnHilliardSchemes_.lookup(name);
+    }
+    else
+    {
+        const_cast<ITstream&>(defaultDgCahnHilliardScheme_).rewind();
+        return const_cast<ITstream&>(defaultDgCahnHilliardScheme_);
+    }
+}
 
             void setFluxRequired(const word& name) const;
 
@@ -172,6 +194,12 @@ public:
             {
                 return dgLaplacianSchemes_;
             }
+
+            dictionary& dgCahnHilliardSchemes()
+            {
+                return dgCahnHilliardSchemes_;
+            }
+
 
             //- Return access to flux required
             dictionary& fluxRequired()

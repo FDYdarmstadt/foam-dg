@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 7/14/2022 1:09:54 PM
+// Creation Date: 7/27/2022 9:23:21 AM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -35,6 +35,7 @@ _ClassHandle = BoSSS::Globals::LookupClass(BoSSS::Globals::_image__BoSSS_Applica
 _ctor_0 = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:.ctor", true);
 __SetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:_SetForeignPointer", true);
 __GetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:_GetForeignPointer", true);
+_CahnHilliard = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:CahnHilliard", true);
 _Laplacian = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:Laplacian", true);
 }
 FixedOperators::~FixedOperators()
@@ -111,6 +112,19 @@ if (exception != NULL) {
 }
 void* retptr = mono_object_unbox(retval);
 return *((void**) retptr);
+}
+void FixedOperators::CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch)
+{
+void* args[2];
+args[0] = mtx->_GetMonoObject();
+args[1] = ptch->_GetMonoObject();
+MonoObject* exception;
+MonoObject* retval;
+retval = mono_runtime_invoke(_CahnHilliard, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
+if (exception != NULL) {
+    fprintf( stderr, "got exception from C# (FixedOperators.CahnHilliard) \n");
+}
+return;
 }
 void FixedOperators::Laplacian(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch)
 {

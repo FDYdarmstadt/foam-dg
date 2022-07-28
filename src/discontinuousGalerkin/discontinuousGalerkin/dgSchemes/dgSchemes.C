@@ -53,6 +53,8 @@ void Foam::dgSchemes::clear()
 //    defaultSnGradScheme_.clear();
     dgLaplacianSchemes_.clear(); // optional
     defaultDgLaplacianScheme_.clear();
+    dgCahnHilliardSchemes_.clear(); // optional
+    defaultDgCahnHilliardScheme_.clear();
 
     // Set up special handling for fluxRequired: do not clear
     // HJ, 25/Jul/2016
@@ -165,6 +167,19 @@ Foam::dgSchemes::dgSchemes(const objectRegistry& obr)
         dgLaplacianSchemes_.name() + "::default",
         tokenList()
     ),
+    dgCahnHilliardSchemes_
+    (
+        ITstream
+        (
+            objectPath() + "::dgCahnHilliardSchemes",
+            tokenList()
+        )()
+    ),
+    defaultDgCahnHilliardScheme_
+    (
+        dgCahnHilliardSchemes_.name() + "::default",
+        tokenList()
+    ),
     fluxRequired_(),  // Do not read flux required option
     defaultFluxRequired_(false)
 {
@@ -185,6 +200,38 @@ Foam::dgSchemes::dgSchemes(const objectRegistry& obr)
     read();
 }
 
+//     dgCahnHilliardSchemes_
+//     (
+//         ITstream
+//         (
+//             objectPath() + "::dgCahnHilliardSchemes",
+//             tokenList()
+//         )()
+//     ),
+//     defaultDgCahnHilliardScheme_
+//     (
+//         dgCahnHilliardSchemes_.name() + "::default",
+//         tokenList()
+//     ),
+//     fluxRequired_(),  // Do not read flux required option
+//     defaultFluxRequired_(false)
+// {
+//     if (!headerOk())
+//     {
+//         if (debug)
+//         {
+//             InfoIn
+//             (
+//                 "dgSchemes::dgSchemes(const objectRegistry& obr)"
+//             )   << "dgSchemes dictionary not found.  Creating default."
+//                 << endl;
+//         }
+
+//         regIOobject::write();
+//     }
+
+//     read();
+// }
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
@@ -376,6 +423,20 @@ bool Foam::dgSchemes::read()
         {
             defaultDgLaplacianScheme_ = dgLaplacianSchemes_.lookup("default");
         }
+
+        if (dict.found("dgCahnHilliardSchemes"))
+        {
+            dgCahnHilliardSchemes_ = dict.subDict("dgCahnHilliardSchemes");
+        }
+
+        if
+        (
+            dgCahnHilliardSchemes_.found("default")
+         && word(dgCahnHilliardSchemes_.lookup("default")) != "none"
+        )
+        {
+            defaultDgCahnHilliardScheme_ = dgCahnHilliardSchemes_.lookup("default");
+        }
 //
 //
 //        // if (dict.found("fluxRequired"))
@@ -550,6 +611,24 @@ Foam::ITstream& Foam::dgSchemes::dgLaplacianScheme(const word& name) const
     }
 }
 
+// Foam::ITstream& Foam::dgSchemes::dgCahnHilliardScheme(const word& name) const
+// {
+//     if (debug)
+//     {
+//         Info<< "Lookup dgCahnHilliardScheme for " << name << endl;
+//     }
+
+//     if (dgCahnHilliardSchemes_.found(name) || defaultDgCahnHilliardScheme_.empty())
+//     {
+//         return dgCahnHilliardSchemes_.lookup(name);
+//     }
+//     else
+//     {
+//         const_cast<ITstream&>(defaultDgCahnHilliardScheme_).rewind();
+//         return const_cast<ITstream&>(defaultDgCahnHilliardScheme_);
+//     }
+// }
+
 
 void Foam::dgSchemes::setFluxRequired(const word& name) const
 {
@@ -602,6 +681,10 @@ bool Foam::dgSchemes::writeData(Ostream& os) const
 
     os << nl << "dgLaplacianSchemes";
     dgLaplacianSchemes_.write(os, true);
+
+    os << nl << "dgCahnHilliardSchemes";
+    dgCahnHilliardSchemes_.write(os, true);
+
 
     os << nl << "fluxRequired";
     fluxRequired_.write(os, true);

@@ -93,6 +93,13 @@ int main(int argc, char *argv[])
 
         Te.solveBoSSS();
 
+        for (int iCell = 0; iCell < 5; iCell++){
+            Info << "cell number " << iCell << endl;
+            for (int iMode = 0; iMode < 10; iMode++){
+                Info << T.GetBoSSSobject()->GetDGcoordinate(0, iCell, iMode) << endl;
+            }
+        }
+
         T.SyncFromBoSSS();
         Te.AllowGC();
         runTime.write();

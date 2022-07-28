@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | foam-extend: Open Source CFD
-   \\    /   O peration     | Version:     4.1
+   \\    /   O peration     | Version:     4.0
     \\  /    A nd           | Web:         http://www.foam-extend.org
      \\/     M anipulation  | For copyright notice see file Copyright
 -------------------------------------------------------------------------------
@@ -21,48 +21,45 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Application
-    CahnHilliardFoam
-
 \*---------------------------------------------------------------------------*/
 
-#include "fvCFD.H"
-#include "fvBlockMatrix.H"
+#include "dgCahnHilliardScheme.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-int main(int argc, char *argv[])
+namespace Foam
 {
 
-#   include "setRootCase.H"
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#   include "createTime.H"
-#   include "createMesh.H"
+namespace dg
+{
 
-#   include "createFields.H"
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// Define the constructor function hash tables
+
+#define makedgCahnHilliardVTypeScheme(Type, VType)                                 \
+    typedef dgCahnHilliardScheme<Type, VType> dgCahnHilliardScheme##Type##VType;        \
+    defineTemplateRunTimeSelectionTable(dgCahnHilliardScheme##Type##VType, Istream);
+
+#define makedgCahnHilliardScheme(Type)                                             \
+    makedgCahnHilliardVTypeScheme(Type, dgVector);
+//    makedgCahnHilliardVTypeScheme(Type, dgScalar);
+
+makedgCahnHilliardScheme(dgScalar);
+
+//makeCahnHilliardScheme(vector);
+//makeCahnHilliardScheme(sphericalTensor);
+//makeCahnHilliardScheme(symmTensor);
+//makeCahnHilliardScheme(diagTensor);
+//makeCahnHilliardScheme(tensor);
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nRunning\n" << endl;
+} // End namespace dg
 
-    while (runTime.loop())
-    {
-        Info<< "Time = " << runTime.timeName() << nl << endl;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-        #include "CEqn.H"
-
-        #include "writeEnergyAndMass.H"
-        runTime.write();
-
-        Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-            << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-            << nl << endl;
-    }
-
-    Info<< "End\n" << endl;
-
-    return 0;
-}
-
+} // End namespace Foam
 
 // ************************************************************************* //
