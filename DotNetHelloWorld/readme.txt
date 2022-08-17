@@ -9,7 +9,7 @@ Run:
     or 
   dotnet ./bin/Debug/net5.0/hello.dll
 
-Check dotnet with
+Check dotnet with:
   dotnet --list-sdks
   dotnet --list-runtimes
   
@@ -20,4 +20,3 @@ The output should look like:
    
    # dotnet --list-sdks
    5.0.408 [/usr/share/dotnet/sdk]
-
