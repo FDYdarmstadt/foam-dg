@@ -38,6 +38,8 @@ SourceFiles
 #include "VectorSpace.H"
 #include "VectorN.H"
 #include "tensor.H"
+// #include "Field.H"
+// #include "CoeffField.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -48,11 +50,30 @@ namespace Foam
                            Class DgScalar Declaration
 \*---------------------------------------------------------------------------*/
 
+template <class Cmpt, int length>
+inline void expandScalar(VectorN<Cmpt, length>& result, const Cmpt& v)
+{
+    result = Vector<Cmpt>(v, v, v);
+}
+
+template <class Cmpt, int length>
+inline void expandScalar(TensorN<Cmpt, length>& result, const Cmpt& v)
+{
+    result = Tensor<Cmpt>
+    (
+        v,                    pTraits<Cmpt>::zero,     pTraits<Cmpt>::zero,
+        pTraits<Cmpt>::zero,  v,                       pTraits<Cmpt>::zero,
+        pTraits<Cmpt>::zero,  pTraits<Cmpt>::zero,     v
+    );
+}
+
+
 template<class Cmpt, int length>
 class DgScalar
 :
-//    public VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>
-    public VectorN<Cmpt, length>
+   public UList<Cmpt>
+   // public VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>
+    // public VectorN<Cmpt, length>
 {
 
 //        scalarField gaussPoints_;
@@ -66,18 +87,22 @@ public:
         enum
         {
             rank = 0, // Rank of DgScalar is 0
-            coeffLength = length // Number of components in this DgScalar
+            coeffLength = length, // Number of components in this DgScalar
         };
 
 
     // Static data members
 
+        // static string cmptType;
+        // static string cmptType = typeid(Cmpt).name();
         static const char* const typeName;
         static const char* componentNames[];
         static const DgScalar zero;
         static const DgScalar one;
         static const DgScalar max;
         static const DgScalar min;
+        // static const int nComponents = coeffLength;
+        // static const DgScalar v_;
 
 
     // Constructors
@@ -88,8 +113,9 @@ public:
         //- Construct given VectorN of the same rank
         inline DgScalar
         (
-//            const VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>&
-            const VectorN<Cmpt, length>&
+            const UList<Cmpt>&
+           // const VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>&
+            // const VectorN<Cmpt, length>&
         );
 
         //- Construct given component value.  Special use only!
@@ -101,10 +127,14 @@ public:
 
     // Member Functions
 
-//    scalarField gaussPoints();
-//
-//    scalarField gaussWeights();
-
+        // bool operator==(DgScalar s2);
+        // bool operator!=(DgScalar s2);
+        // inline const Cmpt& operator()(int i);
+        // inline Cmpt& operator[](int i) const;
+        // bool operator<<(DgScalar s1);
+        //    scalarField gaussPoints();
+        //
+        //    scalarField gaussWeights();
 };
 
 

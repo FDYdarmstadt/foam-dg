@@ -51,6 +51,11 @@ namespace Foam
 //    typedef VectorN<scalar, dgOrder::length> dgScalar;
 
 
+// template<>
+// pTraits<dgScalar>::pTraits(const dgScalar& p) {}
+
+// template<>
+// int pTraits<dgScalar>::cmptType = 0;
 //- Specify data associated with dgScalar type is contiguous
 template<>
 inline bool contiguous<dgScalar>() {return true;}

@@ -117,6 +117,7 @@ private:
         const DgGeometricField<Type, dgPatchField, cellMesh>& psi_;
        // GeometricField<Type, dgPatchField, cellMesh>& psi_;
 
+
         //- Dimension set
         dimensionSet dimensions_;
 
@@ -156,7 +157,6 @@ private:
           SolverPerfType solve();
 
 
-            
     };
 
 
@@ -172,6 +172,12 @@ private:
             const DgGeometricField<Type, dgPatchField, cellMesh>&,
             const dimensionSet&
         );
+        // dgMatrix
+        // (
+        //     const DgGeometricField<Type, dgPatchField, cellMesh>&,
+        //     DgGeometricField<dgVector, dgPatchField, cellMesh>,
+        //     const dimensionSet&
+        // );
 
         //- Construct as copy
         dgMatrix(const dgMatrix<Type>&);
@@ -190,6 +196,12 @@ private:
             {
                 return psi_;
             }
+
+        // DgGeometricField<dgVector, dgPatchField, cellMesh> U_;
+            // DgGeometricField<dgVector, dgPatchField, cellMesh>& U__()
+            // {
+            //     return U_;
+            // }
 
             const dimensionSet& dimensions() const
             {
@@ -212,7 +224,14 @@ private:
                     //const DgGeometricField<Type, dgPatchField, cellMesh>* pF = &dgField;
                     //const BoSSS::Application::ExternalBinding::OpenFoamDGField* p =
                     BoSSS::Application::ExternalBinding::OpenFoamDGField* p = psi().bosssObject_;
-                    bosssObject_ = new BoSSS::Application::ExternalBinding::OpenFoamMatrix(p);
+                    BoSSS::Foundation::Grid::OpenFOAMGrid* grd = psi().dgmesh_.GetBoSSSobject();
+                    // BoSSS::Application::ExternalBinding::OpenFoamDGField* U = U__().bosssObject_;
+                    // BoSSS::Application::ExternalBinding::OpenFoamDGField* U = U_.bosssObject_;
+                    // if (U == NULL){
+                        bosssObject_ = new BoSSS::Application::ExternalBinding::OpenFoamMatrix(grd, p);
+                    // } else {
+                    //     bosssObject_ = new BoSSS::Application::ExternalBinding::OpenFoamMatrix(grd, p, U);
+                    // }
                     // bosssMonoObject_ = bosssObject_->_GetMonoObject();
                     // auto bosssObjectVal_ = BoSSS::Application::ExternalBinding::OpenFoamMatrix(p);
                     // bosssObject_ = &bosssObjectVal_;

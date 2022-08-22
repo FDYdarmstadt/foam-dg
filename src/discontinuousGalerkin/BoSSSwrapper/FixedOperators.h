@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 7/27/2022 9:23:21 AM
+// Creation Date: 8/5/2022 4:14:06 PM
 // ##########################################################################
 #pragma once
 namespace BoSSS
@@ -22,7 +22,7 @@ MonoObject* _GetMonoObject();
 FixedOperators();
 void _SetForeignPointer(void* ptr);
 void* _GetForeignPointer();
-void CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch);
+void CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamDGField* U, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptchU);
 void Laplacian(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch);
 private:
 void _InitMonoBindings();

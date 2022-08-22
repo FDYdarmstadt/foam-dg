@@ -41,7 +41,7 @@ namespace dg
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 // Define the constructor function hash tables
 
-defineTemplateRunTimeSelectionTable(dgDdtScheme<dgScalar>, Istream);
+// defineTemplateRunTimeSelectionTable(dgDdtScheme<dgScalar>, Istream);
 //defineTemplateRunTimeSelectionTable(dgDdtScheme<dgVector>, Istream);
 //defineTemplateRunTimeSelectionTable(dgDdtScheme<dgSphericalTensor>, Istream);
 //defineTemplateRunTimeSelectionTable(dgDdtScheme<dgSymmTensor>, Istream);

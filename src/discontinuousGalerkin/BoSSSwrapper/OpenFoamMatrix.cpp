@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 7/27/2022 9:23:21 AM
+// Creation Date: 8/5/2022 4:14:06 PM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -81,13 +81,14 @@ MonoObject* OpenFoamMatrix::_GetMonoObject()
 {
 return mono_gchandle_get_target(_MonoGCHandle);
 }
-OpenFoamMatrix::OpenFoamMatrix(BoSSS::Application::ExternalBinding::OpenFoamDGField* f)
+OpenFoamMatrix::OpenFoamMatrix(BoSSS::Foundation::Grid::OpenFOAMGrid* grd, BoSSS::Application::ExternalBinding::OpenFoamDGField* f)
 {
 _InitMonoBindings();
 MonoObject* ThisObj = mono_object_new(BoSSS::Globals::_domain, _ClassHandle);
 _MonoGCHandle = mono_gchandle_new(ThisObj, true);
-void* args[1];
-args[0] = f->_GetMonoObject();
+void* args[2];
+args[0] = grd->_GetMonoObject();
+args[1] = f->_GetMonoObject();
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_ctor_0, mono_gchandle_get_target(_MonoGCHandle), args, &exception);

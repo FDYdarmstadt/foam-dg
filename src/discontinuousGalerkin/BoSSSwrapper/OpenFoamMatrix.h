@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 7/27/2022 9:23:21 AM
+// Creation Date: 8/5/2022 4:14:06 PM
 // ##########################################################################
 #pragma once
 namespace BoSSS
@@ -19,7 +19,7 @@ void _ReleaseGChandle();
 OpenFoamMatrix(MonoObject* mo);
 static OpenFoamMatrix* _FromMonoObject(MonoObject* mo);
 MonoObject* _GetMonoObject();
-OpenFoamMatrix(BoSSS::Application::ExternalBinding::OpenFoamDGField* f);
+OpenFoamMatrix(BoSSS::Foundation::Grid::OpenFOAMGrid* grd, BoSSS::Application::ExternalBinding::OpenFoamDGField* f);
 double GetRHScoordinate(int f, int j, int n);
 double GetSolCoordinate(int f, int j, int n);
 void Solve();

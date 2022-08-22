@@ -32,7 +32,7 @@ namespace Foam
 {
 namespace dg
 {
-    makeDgDdtScheme(EulerDdtScheme)
+    // makeDgDdtScheme(EulerDdtScheme)
 }
 }
 

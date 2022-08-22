@@ -98,11 +98,27 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     // Info << vf.PatchFieldType << endl;
     dgMatrix<Type>& dgm = tdgm();
 
+    // tmp<dgMatrix<VType> > Utdgm
+    // (
+    //     new dgMatrix<VType>
+    //     (
+    //         Uf,
+    //         Uf.dimensions()
+    //     )
+    // );
+    // Info << "vf.PatchFieldType" << endl;
+    // Info << vf.PatchFieldType << endl;
+    // dgMatrix<Type>& Udgm = Utdgm();
+
     BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = dgm.GetBoSSSobject();
+    // BoSSS::Application::ExternalBinding::OpenFoamMatrix* UbosssMtx = Udgm.GetBoSSSobject();
     BoSSS::Application::ExternalBinding::OpenFoamPatchField* bosssPtch = vf.bosssObjectPatchField_;
+    BoSSS::Application::ExternalBinding::OpenFoamPatchField* bosssPtchU = Uf.bosssObjectPatchField_;
+    BoSSS::Application::ExternalBinding::OpenFoamDGField* U = Uf.bosssObject_;
 
     BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
-    BoSSSOp->CahnHilliard(bosssMtx, bosssPtch);
+    // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
+    BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);

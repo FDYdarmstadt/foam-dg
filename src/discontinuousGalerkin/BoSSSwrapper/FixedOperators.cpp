@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 7/27/2022 9:23:21 AM
+// Creation Date: 8/5/2022 4:14:06 PM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -113,11 +113,13 @@ if (exception != NULL) {
 void* retptr = mono_object_unbox(retval);
 return *((void**) retptr);
 }
-void FixedOperators::CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch)
+void FixedOperators::CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamDGField* U, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptchU)
 {
-void* args[2];
+void* args[4];
 args[0] = mtx->_GetMonoObject();
-args[1] = ptch->_GetMonoObject();
+args[1] = U->_GetMonoObject();
+args[2] = ptch->_GetMonoObject();
+args[3] = ptchU->_GetMonoObject();
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_CahnHilliard, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
