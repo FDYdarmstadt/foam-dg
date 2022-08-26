@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | foam-extend: Open Source CFD
-   \\    /   O peration     | Version:     4.0
+   \\    /   O peration     | Version:     4.1
     \\  /    A nd           | Web:         http://www.foam-extend.org
      \\/     M anipulation  | For copyright notice see file Copyright
 -------------------------------------------------------------------------------
@@ -21,54 +21,58 @@ License
     You should have received a copy of the GNU General Public License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
-Class
-    Foam::dgOrder
-
-Description
-    Definition of a Discontinuous Galerkin Order
-
-Author
-    Hrvoje Jasak.  All rights reserved.
+Application
+    CahnHilliardFoam
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef dgOrder_H
-#define dgOrder_H
+#include "BoSSScpp.h"
+#include "FindBoSSSLibraries.h"
+
+#include "dgCFD.H"
+#include "fvCFD.H"
+#include "fvBlockMatrix.H"
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-namespace Foam
+int main(int argc, char *argv[])
 {
 
-/*---------------------------------------------------------------------------*\
-                          Class dgOrder Declaration
-\*---------------------------------------------------------------------------*/
+#   include "setRootCase.H"
 
-class dgOrder
-{
-public:
+  Smart_Init();
+  BoSSS::Application::ExternalBinding::Initializer MyInit;
+  MyInit.BoSSSInitialize();
 
-    // Member constants
+#   include "createTime.H"
+#   include "createPolyMesh.H"
+#   include "createDgMesh.H"
 
-    enum
+#   include "createFields.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    Info<< "\nRunning\n" << endl;
+
+    while (runTime.loop())
     {
-        dim = 3,         // Dimensionality of space
-        rank = 0,        // Rank of Scalar is 0
-        nComponents = 1, // Number of components in Scalar
-        order = 2,       // DG order.  Order of discretisation = order + 1
-        length = order + 1
-        // length = (order + 3)*(order + 2)*(order + 1)/6  // Coeffs
-        // length = 10
-    };
-};
+        Info<< "Time = " << runTime.timeName() << nl << endl;
 
+        #include "CEqn.H"
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+        // #include "writeEnergyAndMass.H"
+        runTime.write();
 
-} // End namespace Foam
+        Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+            << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+            << nl << endl;
+    }
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+    Info<< "End\n" << endl;
 
-#endif
+    return 0;
+}
+
 
 // ************************************************************************* //

@@ -119,6 +119,8 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
     BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
+    dgm.Phi = BoSSSOp->GetPhi();
+    Info << *dgm.Phi->operator[](0) << endl;
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);

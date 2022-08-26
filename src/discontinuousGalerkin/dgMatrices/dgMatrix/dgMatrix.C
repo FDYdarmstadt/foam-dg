@@ -297,6 +297,13 @@ void dgMatrix<Type>::solveBoSSS()
 
 }
 
+// template<class Type>
+// OpenFoamDGField dgMatrix<Type>::GetPhi(){
+//     BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = GetBoSSSobject();
+
+//     return bosssMtx->GetPhi();
+// }
+
 template<class Type>
 void dgMatrix<Type>::print(Ostream& os)
 {

@@ -50,30 +50,30 @@ namespace Foam
                            Class DgScalar Declaration
 \*---------------------------------------------------------------------------*/
 
-template <class Cmpt, int length>
-inline void expandScalar(VectorN<Cmpt, length>& result, const Cmpt& v)
-{
-    result = Vector<Cmpt>(v, v, v);
-}
+// template <class Cmpt, int length>
+// inline void expandScalar(VectorN<Cmpt, length>& result, const Cmpt& v)
+// {
+//     result = Vector<Cmpt>(v, v, v);
+// }
 
-template <class Cmpt, int length>
-inline void expandScalar(TensorN<Cmpt, length>& result, const Cmpt& v)
-{
-    result = Tensor<Cmpt>
-    (
-        v,                    pTraits<Cmpt>::zero,     pTraits<Cmpt>::zero,
-        pTraits<Cmpt>::zero,  v,                       pTraits<Cmpt>::zero,
-        pTraits<Cmpt>::zero,  pTraits<Cmpt>::zero,     v
-    );
-}
+// template <class Cmpt, int length>
+// inline void expandScalar(TensorN<Cmpt, length>& result, const Cmpt& v)
+// {
+//     result = Tensor<Cmpt>
+//     (
+//         v,                    pTraits<Cmpt>::zero,     pTraits<Cmpt>::zero,
+//         pTraits<Cmpt>::zero,  v,                       pTraits<Cmpt>::zero,
+//         pTraits<Cmpt>::zero,  pTraits<Cmpt>::zero,     v
+//     );
+// }
 
 
 template<class Cmpt, int length>
 class DgScalar
 :
-   public UList<Cmpt>
+   // public UList<Cmpt>
    // public VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>
-    // public VectorN<Cmpt, length>
+    public VectorN<Cmpt, length>
 {
 
 //        scalarField gaussPoints_;
@@ -113,9 +113,9 @@ public:
         //- Construct given VectorN of the same rank
         inline DgScalar
         (
-            const UList<Cmpt>&
+            // const UList<Cmpt>&
            // const VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>&
-            // const VectorN<Cmpt, length>&
+            const VectorN<Cmpt, length>&
         );
 
         //- Construct given component value.  Special use only!

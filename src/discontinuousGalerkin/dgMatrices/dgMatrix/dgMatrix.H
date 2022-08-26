@@ -332,6 +332,8 @@ private:
             //- solve within BoSSS, solution is stored in psi_
             void solveBoSSS();
 
+            OpenFoamDGField* Phi;
+
             void print(Ostream& os);
 
             //- Return the matrix residual

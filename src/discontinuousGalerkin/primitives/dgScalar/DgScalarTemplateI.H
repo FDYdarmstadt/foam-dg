@@ -59,14 +59,14 @@ inline DgScalar<Cmpt, length>::DgScalar()
 template <class Cmpt, int length>
 inline DgScalar<Cmpt, length>::DgScalar
 (
-            const UList<Cmpt>& vs
+            // const UList<Cmpt>& vs
    // const VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>& vs
-    // const VectorN<Cmpt, length>& vs
+    const VectorN<Cmpt, length>& vs
 )
 :
-   UList<Cmpt>(vs)
+   // UList<Cmpt>(vs)
    // VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>(vs)
-    // VectorN<Cmpt, length>(vs)
+    VectorN<Cmpt, length>(vs)
 {}
 
 
@@ -75,12 +75,12 @@ template <class Cmpt, int length>
 inline DgScalar<Cmpt, length>::DgScalar(const Cmpt& vx)
 {
     // Set all components to zero
-    // VectorSpaceOps<DgScalar<Cmpt, length>::nComponents, 0>::eqOpS
-    //     (*this, pTraits<Cmpt>::zero, eqOp<Cmpt>());
+    VectorSpaceOps<DgScalar<Cmpt, length>::nComponents, 0>::eqOpS
+        (*this, pTraits<Cmpt>::zero, eqOp<Cmpt>());
 
-    for (int i = 1; i < length; i++){
-        this->operator[](i) = 0;
-    }
+    // for (int i = 1; i < length; i++){
+    //     this->operator[](i) = 0;
+    // }
     // Set the zeroth (mean) component to a given value
     this->operator[](0) = vx;
 }
@@ -90,9 +90,9 @@ inline DgScalar<Cmpt, length>::DgScalar(const Cmpt& vx)
 template <class Cmpt, int length>
 inline DgScalar<Cmpt, length>::DgScalar(Istream& is)
 :
-   UList<Cmpt>(is)
+   // UList<Cmpt>(is)
    // VectorSpace<DgScalar<Cmpt, length>, Cmpt, length>(is)
-    // VectorN<Cmpt, length>(is)
+    VectorN<Cmpt, length>(is)
 {}
 
 

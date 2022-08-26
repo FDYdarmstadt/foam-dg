@@ -1,0 +1,9 @@
+EXE_INC = -DFULLDEBUG -g -O0\
+    -I../discontinuousGalerkin/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -D_REENTRANT -I/usr/lib/pkgconfig/../../include/mono-2.0
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) -ldiscontinuousGalerkin \
+    -lfiniteVolume \
+    -L/usr/lib/pkgconfig/../../lib -lmono-2.0 -lm -lrt -ldl -lpthread

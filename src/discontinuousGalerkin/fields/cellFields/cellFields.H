@@ -378,11 +378,11 @@ public:
                 for (int n = 0; n < N; n++) {
                   cellValue[n] = bo->GetDGcoordinate(0, j, n);
                 }
-                // cellValue[0] = bo->GetDGcoordinate(0, j, 0); // TODO unhardcode
-                // cellValue[1] = - bo->GetDGcoordinate(0, j, 2);
-                // cellValue[2] = bo->GetDGcoordinate(0, j, 4);
+                cellValue[0] = bo->GetDGcoordinate(0, j, 0); // TODO unhardcode
+                cellValue[1] = - bo->GetDGcoordinate(0, j, 2);
+                cellValue[2] = bo->GetDGcoordinate(0, j, 4);
 
-                (*this)[j] = cellValue;
+                // (*this)[j] = cellValue;
             }
         }
 
