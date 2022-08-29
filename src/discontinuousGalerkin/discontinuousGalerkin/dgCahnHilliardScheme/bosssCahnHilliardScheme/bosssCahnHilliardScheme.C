@@ -120,7 +120,7 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
     BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
     dgm.Phi = BoSSSOp->GetPhi();
-    Info << *dgm.Phi->operator[](0) << endl;
+    // Info << *dgm.Phi->operator[](0) << endl;
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);
