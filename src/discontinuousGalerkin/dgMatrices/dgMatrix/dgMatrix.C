@@ -381,6 +381,11 @@ void dgMatrix<Type>::print(Ostream& os)
     // }
 }
 
+template<class Type>
+double dgMatrix<Type>::flux(){
+    return 0.0; // TODO
+}
+
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
 
 template<class Type>

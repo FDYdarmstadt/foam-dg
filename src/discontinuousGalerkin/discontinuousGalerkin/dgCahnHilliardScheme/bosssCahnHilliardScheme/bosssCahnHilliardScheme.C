@@ -29,6 +29,7 @@ License
 #include "dgcVolumeIntegrate.H"
 #include "dgMatrices.H"
 #include "ExpandTensorNField.H"
+#include "cellFields.H"
 
 #include "BoSSScpp.h"
 
@@ -55,7 +56,8 @@ bosssCahnHilliardScheme<Type, VType>::dgcCahnHilliard
 (
     // const dimensionedScalar& gamma,
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf
+    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<VType, dgPatchField, cellMesh>& phif
 )
 {
     
@@ -80,7 +82,8 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
 (
     // const dimensionedScalar& gamma,
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf
+    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<VType, dgPatchField, cellMesh>& phif
 )
 {
 
@@ -115,12 +118,17 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     BoSSS::Application::ExternalBinding::OpenFoamPatchField* bosssPtch = vf.bosssObjectPatchField_;
     BoSSS::Application::ExternalBinding::OpenFoamPatchField* bosssPtchU = Uf.bosssObjectPatchField_;
     BoSSS::Application::ExternalBinding::OpenFoamDGField* U = Uf.bosssObject_;
+    // cellScalarField Phi(vf);
 
     BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
     BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
-    dgm.Phi = BoSSSOp->GetPhi();
-    // Info << *dgm.Phi->operator[](0) << endl;
+    BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetPhi();
+    // dgm.Phi->SyncFromBoSSSDGField(PhiDGField);
+    // dgm.Phi.SyncFromBoSSS();
+    // Info << "hello " << (dgm.Phi)->GetDGcoordinate(0,0,0) << endl;
+    // phif.SyncFromBoSSSDGField(PhiDGField);
+    // vf.SyncFromBoSSSDGField(*PhiDGField);
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);

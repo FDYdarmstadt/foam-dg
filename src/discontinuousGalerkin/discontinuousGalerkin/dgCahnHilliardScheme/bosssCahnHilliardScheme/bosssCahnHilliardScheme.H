@@ -126,6 +126,7 @@ public:
         (
             // const dimensionedScalar&,
             const DgGeometricField<Type, dgPatchField, cellMesh>&,
+            const DgGeometricField<VType, dgPatchField, cellMesh>&,
             const DgGeometricField<VType, dgPatchField, cellMesh>&
         );
 
@@ -139,6 +140,7 @@ public:
         (
             // const dimensionedScalar&,
             const DgGeometricField<Type, dgPatchField, cellMesh>&,
+            const DgGeometricField<VType, dgPatchField, cellMesh>&,
             const DgGeometricField<VType, dgPatchField, cellMesh>&
         );
 

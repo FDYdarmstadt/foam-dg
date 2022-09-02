@@ -65,6 +65,7 @@ dgCahnHilliard
     // const dimensionedScalar& gamma,
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const DgGeometricField<dgVector, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<dgVector, dgPatchField, cellMesh>& phif,
     const word& name
 )
 {
@@ -72,7 +73,7 @@ dgCahnHilliard
     (
         vf.mesh(),
         vf.mesh().schemesDict().dgCahnHilliardScheme(name)
-    )().dgmCahnHilliard(vf, Uf);
+    )().dgmCahnHilliard(vf, Uf, phif);
 }
 
 template<class Type, class VType>
@@ -80,7 +81,8 @@ tmp<dgMatrix<Type> >
 dgCahnHilliard
 (
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf
+    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<VType, dgPatchField, cellMesh>& phif
 )
 {
 
@@ -101,6 +103,7 @@ dgCahnHilliard
     (
         vf,
         Uf,
+        phif,
         "dgCahnHilliard(" + vf.name() + Uf.name() + ')'
     );
 }
@@ -112,10 +115,11 @@ dgCahnHilliard
     const geometricOneField&,
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<VType, dgPatchField, cellMesh>& phif,
     const word& name
 )
 {
-    return dgm::dgCahnHilliard(vf, Uf, name);
+    return dgm::dgCahnHilliard(vf, Uf, phif, name);
 }
 
 
@@ -125,26 +129,28 @@ dgCahnHilliard
 (
     const geometricOneField&,
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf
+    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<VType, dgPatchField, cellMesh>& phif
 )
 {
-    return dgm::dgCahnHilliard(vf, Uf); //Geo one field
+    return dgm::dgCahnHilliard(vf, Uf, phif); //Geo one field
 }
 
-template<class Type, class GType>
-tmp<dgMatrix<Type> >
-dgCahnHilliard
-(
-    // const tmp<DgGeometricField<GType, dgPatchField, cellMesh> >& tgamma,
-    const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-    const DgGeometricField<Type, dgPatchField, cellMesh>& Uf
-)
-{
-    // tmp<dgMatrix<Type> > CahnHilliardOp(dgm::dgCahnHilliard(tgamma(), vf));
-    tmp<dgMatrix<Type> > CahnHilliardOp(dgm::dgCahnHilliard(vf, Uf));
-    // tgamma.clear();
-    return CahnHilliardOp;
-}
+// template<class Type, class VType>
+// tmp<dgMatrix<Type> >
+// dgCahnHilliard
+// (
+//     // const tmp<DgGeometricField<GType, dgPatchField, cellMesh> >& tgamma,
+//     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
+//     const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+//     const DgGeometricField<VType, dgPatchField, cellMesh>& phif
+// )
+// {
+//     // tmp<dgMatrix<Type> > CahnHilliardOp(dgm::dgCahnHilliard(tgamma(), vf));
+//     tmp<dgMatrix<Type> > CahnHilliardOp(dgm::dgCahnHilliard(vf, Uf, phif));
+//     // tgamma.clear();
+//     return CahnHilliardOp;
+// }
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -156,6 +162,7 @@ dgCahnHilliard
    // const GeometricField<GType, dgsPatchField, surfaceMesh>& gamma,
    const GeometricField<Type, dgPatchField, cellMesh>& vf,
    const GeometricField<VType, dgPatchField, cellMesh>& Uf,
+   const GeometricField<VType, dgPatchField, cellMesh>& phif,
    const word& name
 )
 {
@@ -163,7 +170,7 @@ dgCahnHilliard
    (
        vf.mesh(),
        vf.mesh().schemesDict().dgCahnHilliardScheme(name)
-   )().dgmCahnHilliard(vf, Uf);
+   )().dgmCahnHilliard(vf, Uf, phif);
 }
 
 template<class Type, class VType>
@@ -172,7 +179,8 @@ dgCahnHilliard
 (
    // const GeometricField<GType, dgsPatchField, surfaceMesh>& gamma,
    const GeometricField<Type, dgPatchField, cellMesh>& vf,
-   const GeometricField<VType, dgPatchField, cellMesh>& Uf
+   const GeometricField<VType, dgPatchField, cellMesh>& Uf,
+   const GeometricField<VType, dgPatchField, cellMesh>& phif
 )
 {
    return dgm::dgCahnHilliard
@@ -180,6 +188,7 @@ dgCahnHilliard
        // gamma,
        vf,
        Uf,
+       phif,
        "dgCahnHilliard( vf.name() + Uf.name() + ')'"
    );
 }

@@ -332,12 +332,14 @@ private:
             //- solve within BoSSS, solution is stored in psi_
             void solveBoSSS();
 
-            OpenFoamDGField* Phi;
+            // cellScalarField* Phi;
 
             void print(Ostream& os);
 
             //- Return the matrix residual
             tmp<Field<Type> > residual() const;
+
+        double flux();
 
 
     // Member operators

@@ -212,7 +212,8 @@ public:
         (
             // const dimensionedScalar&,
             const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-            const DgGeometricField<VType, dgPatchField, cellMesh>& Uf
+            const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+            const DgGeometricField<VType, dgPatchField, cellMesh>& phif
         ) = 0;
 // {
 //    return dgmCahnHilliard(vf, Uf);//tinterpGammaScheme_().interpolate(gamma)(), vf);
@@ -228,7 +229,8 @@ public:
         (
             // const dimensionedScalar&,
             const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-            const DgGeometricField<VType, dgPatchField, cellMesh>& Uf
+            const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+            const DgGeometricField<VType, dgPatchField, cellMesh>& phif
         ) = 0;
 // {
 //    return dgcCahnHilliard(vf, Uf);//tinterpGammaScheme_().interpolate(gamma)(), vf);

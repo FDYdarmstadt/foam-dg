@@ -45,11 +45,12 @@ dgCahnHilliard
 (
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<VType, dgPatchField, cellMesh>& phif,
     const word& name
 )
 {
 
-    return dgc::dgCahnHilliard(vf, Uf, name);
+    return dgc::dgCahnHilliard(vf, Uf, phif, name);
 
 
 //    return dg::dgCahnHilliard<Type, scalar>::New
@@ -66,6 +67,7 @@ dgCahnHilliard
 (
     const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >& tvf,
     const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >& tUf,
+    const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >& tPhif,
     const word& name
 )
 {
@@ -95,10 +97,11 @@ tmp<DgGeometricField<Type, dgPatchField, cellMesh> >
 dgCahnHilliard
 (
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-    const DgGeometricField<Type, dgPatchField, cellMesh>& Uf
+    const DgGeometricField<Type, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<Type, dgPatchField, cellMesh>& phif
 )
 {
-    return dgc::dgCahnHilliard(vf, Uf, "dgCahnHilliard(" + vf.name() + Uf.name() + ')');
+    return dgc::dgCahnHilliard(vf, Uf, phif, "dgCahnHilliard(" + vf.name() + Uf.name() + ')');
 }
 
 
@@ -107,15 +110,17 @@ tmp<DgGeometricField<Type, dgPatchField, cellMesh> >
 dgCahnHilliard
 (
     const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >& tvf,
-    const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >& tUf
+    const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >& tUf,
+    const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >& tPhif
 )
 {
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > CahnHilliard
     (
-        dgc::dgCahnHilliard(tvf(), tUf())
+        dgc::dgCahnHilliard(tvf(), tUf(), tPhif())
     );
     tvf.clear();
     tUf.clear();
+    tPhif.clear();
     return CahnHilliard;
 }
 
@@ -159,12 +164,13 @@ tmp<DgGeometricField<Type, dgPatchField, cellMesh> >
 dgCahnHilliard
 (
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf
+    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<VType, dgPatchField, cellMesh>& Phif
 )
 {
     return dgc::dgCahnHilliard
     (
-        vf, Uf, "dgCahnHilliard(" + vf.name() + ',' + Uf.name() + ')'
+        vf, Uf, Phif, "dgCahnHilliard(" + vf.name() + ',' + Uf.name() + ')'
     );
 }
 
@@ -194,6 +200,7 @@ dgCahnHilliard
 (
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const DgGeometricField<dgVector, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<dgVector, dgPatchField, cellMesh>& Phif,
     const word& name
 )
 {
@@ -203,7 +210,7 @@ dgCahnHilliard
     (
         vf.mesh(),
         vf.mesh().schemesDict().dgCahnHilliard(name)
-    )().dgcCahnHilliard(vf, Uf);
+    )().dgcCahnHilliard(vf, Uf, Phif);
 }
 
 
@@ -213,14 +220,16 @@ dgCahnHilliard
 (
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const tmp<DgGeometricField<Type, dgPatchField, cellMesh>>& Uf,
+    const tmp<DgGeometricField<Type, dgPatchField, cellMesh>>& Phif,
     const word& name
 )
 {
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > CahnHilliard
     (
-        dgc::dgCahnHilliard(vf, Uf(), name)
+        dgc::dgCahnHilliard(vf, Uf(), Phif(), name)
     );
     Uf.clear();
+    Phif.clear();
     return CahnHilliard;
 }
 
@@ -231,12 +240,13 @@ dgCahnHilliard
 (
     const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >& tvf,
     const DgGeometricField<VType, dgPatchField, cellMesh> & Uf,
+    const DgGeometricField<VType, dgPatchField, cellMesh> & Phif,
     const word& name
 )
 {
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > CahnHilliard
     (
-        dgc::dgCahnHilliard(tvf(), Uf, name)
+        dgc::dgCahnHilliard(tvf(), Uf, Phif, name)
     );
     tvf.clear();
     return CahnHilliard;
@@ -285,13 +295,15 @@ dgCahnHilliard
 (
     // const tmp<DgGeometricField<GType, dgPatchField, cellMesh> >& tgamma,
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-    const tmp<DgGeometricField<VType, dgPatchField, cellMesh>>& Uf
+    const tmp<DgGeometricField<VType, dgPatchField, cellMesh>>& Uf,
+    const tmp<DgGeometricField<VType, dgPatchField, cellMesh>>& Phif
 )
 {
     return dgc::dgCahnHilliard
     (
         vf,
         Uf,
+        Phif,
         "dgCahnHilliard(" + vf.name() + ',' + Uf().name() + ')'
     );
 }
@@ -303,13 +315,15 @@ dgCahnHilliard
 (
     // const DgGeometricField<GType, dgPatchField, cellMesh>& gamma,
     const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >& tvf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf
+    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+    const DgGeometricField<VType, dgPatchField, cellMesh>& Phif
 )
 {
     return dgc::dgCahnHilliard
     (
         tvf,
         Uf,
+        Phif,
         "dgCahnHilliard(" + tvf().name() + ',' + Uf.name() + ')'
     );
 }

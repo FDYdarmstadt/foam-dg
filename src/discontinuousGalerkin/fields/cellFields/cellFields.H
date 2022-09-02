@@ -362,13 +362,8 @@ public:
         return bosssObjectPatchField_;
     }
 
-    void SyncToBoSSS() {
-        GenericSyncToBoSSS(*this);
-    }
-
-    void SyncFromBoSSS() {
+    void SyncFromBoSSSDGField(OpenFoamDGField* bo) {
         label J = dgmesh_.mesh().nCells();
-        OpenFoamDGField* bo = GetBoSSSobject();
 
         if(typeid(Type) == typeid(dgScalar)) {
             for(label j = 0; j < J; j++) {
@@ -386,6 +381,15 @@ public:
             }
         }
 
+    }
+
+    void SyncToBoSSS() {
+        GenericSyncToBoSSS(*this);
+    }
+
+    void SyncFromBoSSS() {
+        OpenFoamDGField* bo = GetBoSSSobject();
+        SyncFromBoSSSDGField(bo);
     }
 
     dgMesh dgmesh() const {

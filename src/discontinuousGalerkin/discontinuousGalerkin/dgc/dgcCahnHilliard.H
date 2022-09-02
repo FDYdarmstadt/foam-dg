@@ -56,6 +56,7 @@ namespace dgc
     (
         const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const DgGeometricField<VType, dgPatchField, cellMesh>&,
+        const DgGeometricField<VType, dgPatchField, cellMesh>&,
         const word&
     );
 
@@ -63,6 +64,7 @@ namespace dgc
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgCahnHilliard
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
+        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
         const word&
     );
@@ -78,6 +80,7 @@ namespace dgc
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgCahnHilliard
     (
         const DgGeometricField<Type, dgPatchField, cellMesh>&,
+        const DgGeometricField<VType, dgPatchField, cellMesh>&,
         const DgGeometricField<VType, dgPatchField, cellMesh>&
     );
 
@@ -85,6 +88,7 @@ namespace dgc
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgCahnHilliard
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
+        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&
     );
 
@@ -102,6 +106,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
+        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
         const word&
     );
 
@@ -116,6 +121,7 @@ namespace dgc
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgCahnHilliard
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
+        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&
     );
 
@@ -125,6 +131,7 @@ namespace dgc
     (
         const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const DgGeometricField<dgVector, dgPatchField, cellMesh>&,
+        const DgGeometricField<dgVector, dgPatchField, cellMesh>&,
         const word&
     );
 
@@ -132,6 +139,7 @@ namespace dgc
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgCahnHilliard
     (
         const DgGeometricField<Type, dgPatchField, cellMesh>&,
+        const tmp<DgGeometricField<VType, dgPatchField, cellMesh>>&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh>>&,
         const word&
     );
@@ -141,6 +149,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const DgGeometricField<VType, dgPatchField, cellMesh>&,
+        const DgGeometricField<VType, dgPatchField, cellMesh>&,
         const word&
     );
 
@@ -149,6 +158,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
+        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
         const word&
     );
 
@@ -156,6 +166,7 @@ namespace dgc
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgCahnHilliard
     (
         const DgGeometricField<GType, dgPatchField, cellMesh>&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
@@ -163,6 +174,7 @@ namespace dgc
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgCahnHilliard
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
+        const DgGeometricField<VType, dgPatchField, cellMesh>&,
         const DgGeometricField<VType, dgPatchField, cellMesh>&
     );
 
@@ -170,6 +182,7 @@ namespace dgc
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgCahnHilliard
     (
         const DgGeometricField<Type, dgPatchField, cellMesh>&,
+        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&
     );
 
@@ -177,6 +190,7 @@ namespace dgc
     tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgCahnHilliard
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
+        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&
     );
 

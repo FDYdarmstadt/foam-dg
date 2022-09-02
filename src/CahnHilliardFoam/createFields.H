@@ -42,20 +42,20 @@
         dgMesh
     );
 
-    // Info<< "Reading field Phi\n" << endl;
+    Info<< "Reading field Phi\n" << endl;
 
-    // cellScalarField Phi
-    // (
-    //     IOobject
-    //     (
-    //         "Phi",
-    //         runTime.timeName(),
-    //         mesh,
-    //         IOobject::MUST_READ,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     dgMesh
-    // );
+    cellVectorField Phi
+    (
+        IOobject
+        (
+            "Phi",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        dgMesh
+    );
 
     Info<< "Reading field U\n" << endl;
 

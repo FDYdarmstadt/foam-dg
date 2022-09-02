@@ -49,16 +49,26 @@ do {
   dgScalarMatrix CEqn(
       // dgm::ddt(C)
       //     +
-      dgm::dgCahnHilliard(C, U)
+      dgm::dgCahnHilliard(C, U, Phi)
       // dgm::dgCahnHilliard(C, C)
       // dgm::dgLaplacian(C)
       // + fvm::Sp(dfdcCoeffs,C)
       // + dfdcSource
   );
 
+  // double rhob_ = 1;
+  // double rhoa_ = 2;
+
+  // rhoPhi =
+  //   CEqn().flux()/2 * (rhob_ - rhoa_)
+  //   + CEqn.Phi * (rhob_ + rhoa_)/2;
+
   // CEqn.solveBoSSS();
   C.SyncFromBoSSS();
+  // Info << "hello from ceqn " << (CEqn.Phi)->GetDGcoordinate(0,0,0) << endl;
+  // Info << "hello from ceqn " << CEqn.Phi[0] << endl;
   // Info << CEqn.Phi << endl;
+  // *(CEqn.Phi)[0];
   // Phi.SyncFromBoSSS(); // TODO
   U.SyncFromBoSSS();
 
