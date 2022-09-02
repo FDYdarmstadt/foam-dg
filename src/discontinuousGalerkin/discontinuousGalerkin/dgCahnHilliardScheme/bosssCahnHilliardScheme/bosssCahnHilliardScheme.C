@@ -83,7 +83,8 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     // const dimensionedScalar& gamma,
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& phif
+    // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
+    DgGeometricField<VType, dgPatchField, cellMesh>& phif
 )
 {
 
@@ -124,11 +125,8 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
     BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
     BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetPhi();
-    // dgm.Phi->SyncFromBoSSSDGField(PhiDGField);
-    // dgm.Phi.SyncFromBoSSS();
-    // Info << "hello " << (dgm.Phi)->GetDGcoordinate(0,0,0) << endl;
-    // phif.SyncFromBoSSSDGField(PhiDGField);
-    // vf.SyncFromBoSSSDGField(*PhiDGField);
+    phif.SyncFromBoSSSDGField(PhiDGField);
+    Info << "hello from bosssCahnHilliardScheme " << phif[30] << endl;
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);

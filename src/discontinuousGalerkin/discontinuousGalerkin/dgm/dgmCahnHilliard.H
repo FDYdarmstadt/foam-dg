@@ -65,7 +65,8 @@ dgCahnHilliard
     // const dimensionedScalar& gamma,
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const DgGeometricField<dgVector, dgPatchField, cellMesh>& Uf,
-    const DgGeometricField<dgVector, dgPatchField, cellMesh>& phif,
+    // const DgGeometricField<dgVector, dgPatchField, cellMesh>& phif,
+    DgGeometricField<dgVector, dgPatchField, cellMesh>& phif,
     const word& name
 )
 {
@@ -82,7 +83,8 @@ dgCahnHilliard
 (
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& phif
+    // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
+    DgGeometricField<VType, dgPatchField, cellMesh>& phif
 )
 {
 
@@ -181,6 +183,26 @@ dgCahnHilliard
    const GeometricField<Type, dgPatchField, cellMesh>& vf,
    const GeometricField<VType, dgPatchField, cellMesh>& Uf,
    const GeometricField<VType, dgPatchField, cellMesh>& phif
+)
+{
+   return dgm::dgCahnHilliard
+   (
+       // gamma,
+       vf,
+       Uf,
+       phif,
+       "dgCahnHilliard( vf.name() + Uf.name() + ')'"
+   );
+}
+
+template<class Type, class VType>
+tmp<dgMatrix<Type> >
+dgCahnHilliard
+(
+   // const GeometricField<GType, dgsPatchField, surfaceMesh>& gamma,
+   const GeometricField<Type, dgPatchField, cellMesh>& vf,
+   const GeometricField<VType, dgPatchField, cellMesh>& Uf,
+   GeometricField<VType, dgPatchField, cellMesh>& phif
 )
 {
    return dgm::dgCahnHilliard

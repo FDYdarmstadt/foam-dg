@@ -45,6 +45,7 @@ do {
   //     fvm::ddt(C)
   // );
 
+  Info << "hello from ceqn b4" << Phi[30] << endl;
   // //- Assemble equations
   dgScalarMatrix CEqn(
       // dgm::ddt(C)
@@ -65,12 +66,9 @@ do {
 
   // CEqn.solveBoSSS();
   C.SyncFromBoSSS();
-  // Info << "hello from ceqn " << (CEqn.Phi)->GetDGcoordinate(0,0,0) << endl;
-  // Info << "hello from ceqn " << CEqn.Phi[0] << endl;
-  // Info << CEqn.Phi << endl;
-  // *(CEqn.Phi)[0];
-  // Phi.SyncFromBoSSS(); // TODO
   U.SyncFromBoSSS();
+  Info << "hello from ceqn " << Phi[30] << endl;
+  Info << "hello from ceqn " << C[30] << endl;
 
   // CEqn.relax();
 
