@@ -67,8 +67,8 @@ do {
   // CEqn.solveBoSSS();
   C.SyncFromBoSSS();
   U.SyncFromBoSSS();
-  Info << "hello from ceqn " << Phi[30] << endl;
-  Info << "hello from ceqn " << C[30] << endl;
+  // Info << "hello from ceqn " << Phi[30] << endl;
+  // Info << "hello from ceqn " << C[30] << endl;
 
   // CEqn.relax();
 

@@ -126,7 +126,6 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
     BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetPhi();
     phif.SyncFromBoSSSDGField(PhiDGField);
-    Info << "hello from bosssCahnHilliardScheme " << phif[30] << endl;
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);
