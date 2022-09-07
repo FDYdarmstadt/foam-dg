@@ -339,7 +339,15 @@ private:
             //- Return the matrix residual
             tmp<Field<Type> > residual() const;
 
-        double flux();
+        Field<Vector<Type>> flux_ = Field<Vector<Type>>(psi_.size());
+        // cellVectorField flux_ = cellVectorField::null();
+        // cellVectorField flux_ = cellVectorField(nullptr, psi_.mesh(), psi_.dimensions(), nullptr);
+        // cellVectorField flux_ = cellVectorField();
+
+        // cellVectorField flux(){
+        Field<Vector<Type>> flux(){
+            return flux_;
+        }
 
 
     // Member operators

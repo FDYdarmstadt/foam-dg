@@ -125,7 +125,32 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
     BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
     BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetPhi();
+    BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField = BoSSSOp->GetFlux();
     phif.SyncFromBoSSSDGField(PhiDGField);
+    // dgm.flux_.SyncFromBoSSSDGField(FluxDGField);
+
+    // label J = dgm.flux_.dgmesh_.mesh().nCells();
+    label J = mesh().nCells();
+    // dgm.flux_ = Field<Vector<Type>>(J);
+    // OpenFoamDGField *bo = dgf.GetBoSSSobject();
+
+    for (label j = 0; j < J; j++) {
+      // dgVector cellValue = dgf[j];
+      // int N = dgm.flux_[j].size();
+      int N = 3;
+      // int N = 1;
+      for (int n = 0; n < N; n++) {
+        for (int d = 0; d < dgOrder::length; d++) {
+          dgm.flux_[j][n][d] = FluxDGField->GetDGcoordinate(n, j, d);
+          if (d > 0 && FluxDGField->GetDGcoordinate(n, j, d) > 1e-30){
+              Info << "Unexpected return value from BoSSS! " << FluxDGField->GetDGcoordinate(n, j, d) << endl;
+          }
+          // dgm.flux_[j][n][0] = FluxDGField->GetDGcoordinate(n, j, 0);
+          // dgm.flux_[j][n][1] = 0;
+          // dgm.flux_[j][n][2] = 0;
+        }
+      }
+    }
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);

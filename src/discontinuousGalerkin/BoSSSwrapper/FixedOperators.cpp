@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 9/2/2022 4:14:20 PM
+// Creation Date: 9/5/2022 1:55:34 PM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -35,6 +35,7 @@ _ClassHandle = BoSSS::Globals::LookupClass(BoSSS::Globals::_image__BoSSS_Applica
 _ctor_0 = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:.ctor", true);
 __SetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:_SetForeignPointer", true);
 __GetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:_GetForeignPointer", true);
+_GetFlux = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:GetFlux", true);
 _GetPhi = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:GetPhi", true);
 _CahnHilliard = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:CahnHilliard", true);
 _Laplacian = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:Laplacian", true);
@@ -113,6 +114,17 @@ if (exception != NULL) {
 }
 void* retptr = mono_object_unbox(retval);
 return *((void**) retptr);
+}
+BoSSS::Application::ExternalBinding::OpenFoamDGField* FixedOperators::GetFlux()
+{
+void* args[1];
+MonoObject* exception;
+MonoObject* retval;
+retval = mono_runtime_invoke(_GetFlux, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
+if (exception != NULL) {
+    fprintf( stderr, "got exception from C# (FixedOperators.GetFlux) \n");
+}
+return BoSSS::Application::ExternalBinding::OpenFoamDGField::_FromMonoObject(retval);
 }
 BoSSS::Application::ExternalBinding::OpenFoamDGField* FixedOperators::GetPhi()
 {

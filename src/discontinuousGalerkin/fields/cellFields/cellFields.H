@@ -109,9 +109,26 @@ public:
 
         //- Return a null geometric field
         inline static const DgGeometricField<Type, PatchField, GeoMesh>& null();
+        // inline static const DgGeometricField<Type, PatchField, GeoMesh>& null(){}
 
 
     // Constructors
+
+        //- empty Constructor
+        //  This allocates storage for the field but not values.
+        //  Used only within this class to create TEMPORARY variables
+        // DgGeometricField
+        // (
+        //     const Mesh& b,
+        //     const dimensionSet& c,
+        //     const word& patchFieldType=PatchField<Type>::calculatedType()
+        // ) :
+        //     GeometricField<Type, PatchField, GeoMesh>(nullptr, b, c, patchFieldType),
+        //     dgmesh_(b)
+        // {
+        //     GetBoSSSobject();
+        //     GetBoSSSPatchobject();
+        // }
 
         //- Constructor given IOobject, mesh, dimensions and patch type.
         //  This allocates storage for the field but not values.
@@ -537,7 +554,7 @@ void GenericSyncToBoSSS(DgGeometricField<dgVector, PatchField, GeoMesh> &dgf) {
     int N = cellValue.size();
     for (int d = 0; d < 3; d++) {
       for (int n = 0; n < N; n++) {
-        bo->SetDGcoordinate(d, j, n, cellValue[n][d]);
+        bo->SetDGcoordinate(d, j, n, cellValue[d][n]);
       }
     }
   }
@@ -550,14 +567,8 @@ template<template<class> class PatchField, class GeoMesh>
 void GenericSyncFromBoSSSDGField(DgGeometricField<dgScalar, PatchField, GeoMesh> &dgf, OpenFoamDGField* bo) {
 
         label J = dgf.dgmesh_.mesh().nCells();
-        // OpenFoamDGField* bo = dgf.GetBoSSSobject();
-
             for(label j = 0; j < J; j++) {
-                // dgScalar cellValue = dgf[j];
                 int N = dgf[j].size();
-                // for(int n = 0; n < N; n++){
-                //     bo->SetDGcoordinate(0, j, n, cellValue[n]);
-                // }
                 dgf[j][0] = bo->GetDGcoordinate(0, j, 0); // TODO unhardcode
                 dgf[j][1] = bo->GetDGcoordinate(0, j, 2); // TODO unhardcode
                 dgf[j][2] = bo->GetDGcoordinate(0, j, 4); // TODO unhardcode
@@ -570,14 +581,11 @@ void GenericSyncFromBoSSSDGField(DgGeometricField<dgVector, PatchField, GeoMesh>
   // OpenFoamDGField *bo = dgf.GetBoSSSobject();
 
   for (label j = 0; j < J; j++) {
-    // dgVector cellValue = dgf[j];
     int N = dgf[j].size();
-    // int N = 1;
     int D = 3;
-    // int D = 1;
     for (int d = 0; d < D; d++) {
       for (int n = 0; n < N; n++) {
-          dgf[j][n][d] = bo->GetDGcoordinate(d, j, n);
+          dgf[j][d][n] = bo->GetDGcoordinate(d, j, n);
       }
     }
   }

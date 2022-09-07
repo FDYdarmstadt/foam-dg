@@ -9,6 +9,7 @@ do {
   // psi.storePrevIter();
   U.storePrevIter();
 
+
   U.SyncToBoSSS();
   // //- Assemble equations
   // fvScalarMatrix CEqn
@@ -45,7 +46,6 @@ do {
   //     fvm::ddt(C)
   // );
 
-  Info << "hello from ceqn b4" << Phi[30] << endl;
   // //- Assemble equations
   dgScalarMatrix CEqn(
       // dgm::ddt(C)
@@ -63,12 +63,14 @@ do {
   // rhoPhi =
   //   CEqn().flux()/2 * (rhob_ - rhoa_)
   //   + CEqn.Phi * (rhob_ + rhoa_)/2;
+  Info << CEqn.flux() << endl;
+  // Info << U << endl;
+  // Info << CEqn.flux_ << endl;
 
   // CEqn.solveBoSSS();
   C.SyncFromBoSSS();
   U.SyncFromBoSSS();
-  // Info << "hello from ceqn " << Phi[30] << endl;
-  // Info << "hello from ceqn " << C[30] << endl;
+
 
   // CEqn.relax();
 

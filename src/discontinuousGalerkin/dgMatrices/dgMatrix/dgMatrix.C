@@ -89,6 +89,7 @@ dgMatrix<Type>::dgMatrix(const dgMatrix<Type>& dgm)
             << "copying dgMatrix<Type> for field " << psi_.name()
             << endl;
     }
+    flux_ = dgm.flux_;
 }
 
 template <class Type> dgMatrix<Type>::~dgMatrix() {
@@ -381,10 +382,10 @@ void dgMatrix<Type>::print(Ostream& os)
     // }
 }
 
-template<class Type>
-double dgMatrix<Type>::flux(){
-    return 0.0; // TODO
-}
+// template<class Type>
+// cellVectorField dgMatrix<Type>::flux(){
+//     return flux_;
+// }
 
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
 
