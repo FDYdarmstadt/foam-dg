@@ -1,3 +1,4 @@
+
 label cCorr(0);
 Switch converged(false);
 
@@ -50,7 +51,7 @@ do {
   dgScalarMatrix CEqn(
       // dgm::ddt(C)
       //     +
-      dgm::dgCahnHilliard(C, U, Phi)
+      dgm::dgCahnHilliard(C, U, Phi, Flux)
       // dgm::dgCahnHilliard(C, C)
       // dgm::dgLaplacian(C)
       // + fvm::Sp(dfdcCoeffs,C)
@@ -63,7 +64,7 @@ do {
   // rhoPhi =
   //   CEqn().flux()/2 * (rhob_ - rhoa_)
   //   + CEqn.Phi * (rhob_ + rhoa_)/2;
-  Info << CEqn.flux() << endl;
+  // Info << CEqn.flux() << endl;
   // Info << U << endl;
   // Info << CEqn.flux_ << endl;
 

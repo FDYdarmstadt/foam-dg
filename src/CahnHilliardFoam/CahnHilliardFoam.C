@@ -33,6 +33,7 @@ Application
 #include "fvCFD.H"
 #include "fvBlockMatrix.H"
 
+#include "GeometricField.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

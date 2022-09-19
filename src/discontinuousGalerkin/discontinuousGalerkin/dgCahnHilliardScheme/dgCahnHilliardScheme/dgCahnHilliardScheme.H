@@ -43,6 +43,9 @@ SourceFiles
 #include "typeInfo.H"
 #include "runTimeSelectionTables.H"
 #include "dimensionedTypes.H"
+
+#include "surfaceFieldsFwd.H"
+
 // #include "dg.H"
 // #include "HashTable.H"
 // //#include "linear.H"
@@ -214,7 +217,8 @@ public:
             const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
             const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
             // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
-            DgGeometricField<VType, dgPatchField, cellMesh>& phif
+            DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+            surfaceScalarField& Flux
         ) = 0;
 // {
 //    return dgmCahnHilliard(vf, Uf);//tinterpGammaScheme_().interpolate(gamma)(), vf);
@@ -231,7 +235,8 @@ public:
             // const dimensionedScalar&,
             const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
             const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-            const DgGeometricField<VType, dgPatchField, cellMesh>& phif
+            const DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+            const surfaceScalarField& Flux
         ) = 0;
 // {
 //    return dgcCahnHilliard(vf, Uf);//tinterpGammaScheme_().interpolate(gamma)(), vf);

@@ -89,7 +89,7 @@ dgMatrix<Type>::dgMatrix(const dgMatrix<Type>& dgm)
             << "copying dgMatrix<Type> for field " << psi_.name()
             << endl;
     }
-    flux_ = dgm.flux_;
+    // flux_ = dgm.flux_;
 }
 
 template <class Type> dgMatrix<Type>::~dgMatrix() {

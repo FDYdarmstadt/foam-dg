@@ -1,3 +1,5 @@
+#include "linear.H"
+
     Info<< "Reading transportProperties\n" << endl;
 
     IOdictionary transportProperties
@@ -70,6 +72,63 @@
             IOobject::AUTO_WRITE
         ),
         dgMesh
+    );
+
+fvMesh myMesh(
+        IOobject
+        (
+            "myMesh",
+            runTime.timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        )
+);
+
+    volVectorField fvU
+    // GeometricField<dgScalar, fvsPatchField, surfaceMesh> Flux
+    (
+        IOobject
+        (
+            "fvU",
+            runTime.timeName(),
+            myMesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        // mesh
+        // ,
+        // dimensionedVector("fvU0", dimVelocity, vector::zero),
+        // zeroGradientFvPatchVectorField::typeName
+        // linearInterpolate(U) & mesh.Sf()
+        // linearInterpolate(U) & dgMesh
+        // mesh
+        // C.mesh().Sf()
+        // dgMesh
+        myMesh
+        // dgMesh.mesh()
+    );
+
+    surfaceScalarField Flux
+    // GeometricField<dgScalar, fvsPatchField, surfaceMesh> Flux
+    (
+        IOobject
+        (
+            "Flux",
+            runTime.timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        // mesh,
+        // dimensionedScalar("flux0", dimVelocity*dimArea, 0),
+        // zeroGradientFvPatchScalarField::typeName
+        linearInterpolate(fvU) & myMesh.Sf()
+        // linearInterpolate(U) & dgMesh
+        // mesh
+        // C.mesh().Sf()
+        // dgMesh
+        // dgMesh.mesh()
     );
 
     Info<< "Reading coefficient fa\n" << endl;

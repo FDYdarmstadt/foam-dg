@@ -1,5 +1,6 @@
 EXE_INC = \
     -I$(LIB_SRC)/foam/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
     -D_REENTRANT -I/usr/lib/pkgconfig/../../include/mono-2.0
 
 LIB_LIBS = \

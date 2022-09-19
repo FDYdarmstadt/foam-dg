@@ -57,6 +57,15 @@ SourceFiles
 #include "FieldFunctionsM.H"
 #include "TensorNFields.H"
 //#include "blockLduSolvers.H"
+#include "surfaceFields.H"
+#include "IOobject.H"
+#include "GeometricField.H"
+
+#include "volFields.H"
+#include "calculatedFvPatchFields.H"
+#include "zeroGradientFvPatchFields.H"
+#include "coupledFvPatchFields.H"
+#include "transformField.H"
 
 #include "BoSSScpp.h"
 
@@ -339,43 +348,86 @@ private:
             //- Return the matrix residual
             tmp<Field<Type> > residual() const;
 
-        Field<Vector<Type>> flux_ = Field<Vector<Type>>(psi_.size());
+        // Field<Vector<Type>> flux_ = Field<Vector<Type>>(psi_.size());
+        // const word& n = "sfield";
+        // const Time& t = psi_.time();
+        // const IOobject& ioo =
+        //             IOobject("surfaceField",
+        //                      psi_.time(),
+        //                      IOobject::NO_READ,
+        //                      IOobject::NO_WRITE
+        //                     );
+                    // IOobject(n,
+                    //          // psi_.instance(),
+                    //          t,
+                    //          // psi_.mesh(),
+                    //          IOobject::NO_READ,
+                    //          IOobject::NO_WRITE
+                    //         );
+            // tmp<surfaceScalarField> tflux_ = surfaceScalarField(
+            // surfaceScalarField flux_ = surfaceScalarField::null();
+            // surfaceScalarField flux_ = surfaceScalarField(
+
+        // tmp<GeometricField<Type, fvsPatchField, surfaceMesh>> tfieldFlux
+        // (
+        //     new GeometricField<Type, fvsPatchField, surfaceMesh>(
+        //         ioo,
+        //         psi_.dgmesh_.mesh(),
+        //         dimensions()));
+        // tmp<surfaceScalarField> tfieldFlux
+        // (
+        //     new surfaceScalarField(
+        //         ioo,
+        //         psi_.dgmesh_.mesh(),
+        //         dimensions()));
+// GeometricField<Type, fvsPatchField, surfaceMesh>& flux_ = tfieldFlux();
+        // surfaceScalarField& flux_ = tfieldFlux();
+        // GeometricField<Type, fvsPatchField, surfaceMesh> flux_
+        // =
+        //     GeometricField<Type, fvsPatchField, surfaceMesh>(
+        //         ioo,
+        //         psi_.mesh()
+        //         );
+        // GeometricField<Type, fvsPatchField, surfaceMesh> flux_
+        // =
+        //     GeometricField<Type, fvsPatchField, surfaceMesh>(
+        //         ioo,
+        //         psi_.mesh()
+        //         // psi_.dgmesh_.boundary(),
+        //         // dimensions()
+        //         );
         // cellVectorField flux_ = cellVectorField::null();
-        // cellVectorField flux_ = cellVectorField(nullptr, psi_.mesh(), psi_.dimensions(), nullptr);
-        // cellVectorField flux_ = cellVectorField();
+        // cellVectorField flux_ = cellVectorField(nullptr, psi_.mesh(),
+        // psi_.dimensions(), nullptr); cellVectorField flux_ =
+        // cellVectorField();
 
         // cellVectorField flux(){
-        Field<Vector<Type>> flux(){
-            return flux_;
-        }
+        // Field<Vector<Type>> flux(){ return flux_; }
+        // GeometricField<Type, fvsPatchField, surfaceMesh>& flux() { return flux_; }
+        // GeometricField<Type, fvsPatchField, surfaceMesh> flux() { return flux_; }
+        // surfaceScalarField& flux() { return flux_; }
 
+        // Member operators
 
-    // Member operators
-
-        void operator=(const dgMatrix<Type>&);
-        void operator=(const tmp<dgMatrix<Type> >&);
+        void operator=(const dgMatrix<Type> &);
+        void operator=(const tmp<dgMatrix<Type>> &);
 
         void negate();
 
-        void operator+=(const dgMatrix<Type>&);
-        void operator+=(const tmp<dgMatrix<Type> >&);
+        void operator+=(const dgMatrix<Type> &);
+        void operator+=(const tmp<dgMatrix<Type>> &);
 
-        void operator-=(const dgMatrix<Type>&);
-        void operator-=(const tmp<dgMatrix<Type> >&);
+        void operator-=(const dgMatrix<Type> &);
+        void operator-=(const tmp<dgMatrix<Type>> &);
 
         // Note: matrix-field operations are not allowed.
         // Su, Sp, SuSp operators to be used instead to handle integration.
         // HJ, 10/Mar/2017
-        void operator*=(const dimensionedDgScalar&);
+        void operator*=(const dimensionedDgScalar &);
 
+        // Ostream operator
 
-    // Ostream operator
-
-        friend Ostream& operator<< <Type>
-        (
-            Ostream&,
-            const dgMatrix<Type>&
-        );
+        friend Ostream &operator<< <Type>(Ostream &, const dgMatrix<Type> &);
 };
 
 

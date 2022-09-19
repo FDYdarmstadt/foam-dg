@@ -57,7 +57,8 @@ bosssCahnHilliardScheme<Type, VType>::dgcCahnHilliard
     // const dimensionedScalar& gamma,
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& phif
+    const DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+    const surfaceScalarField& Flux
 )
 {
     
@@ -84,7 +85,8 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
     // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
-    DgGeometricField<VType, dgPatchField, cellMesh>& phif
+    DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+    surfaceScalarField& Flux
 )
 {
 
@@ -127,30 +129,25 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetPhi();
     BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField = BoSSSOp->GetFlux();
     phif.SyncFromBoSSSDGField(PhiDGField);
-    // dgm.flux_.SyncFromBoSSSDGField(FluxDGField);
+    // Flux.SyncFromBoSSSDGField(FluxDGField);
 
-    // label J = dgm.flux_.dgmesh_.mesh().nCells();
-    label J = mesh().nCells();
-    // dgm.flux_ = Field<Vector<Type>>(J);
-    // OpenFoamDGField *bo = dgf.GetBoSSSobject();
+    // // label J = dgm.flux_.dgmesh_.mesh().nCells();
+    // label J = mesh().nCells();
+    // // dgm.flux_ = Field<Vector<Type>>(J);
+    // // OpenFoamDGField *bo = dgf.GetBoSSSobject();
 
-    for (label j = 0; j < J; j++) {
-      // dgVector cellValue = dgf[j];
-      // int N = dgm.flux_[j].size();
-      int N = 3;
-      // int N = 1;
-      for (int n = 0; n < N; n++) {
-        for (int d = 0; d < dgOrder::length; d++) {
-          dgm.flux_[j][n][d] = FluxDGField->GetDGcoordinate(n, j, d);
-          if (d > 0 && FluxDGField->GetDGcoordinate(n, j, d) > 1e-30){
-              Info << "Unexpected return value from BoSSS! " << FluxDGField->GetDGcoordinate(n, j, d) << endl;
-          }
-          // dgm.flux_[j][n][0] = FluxDGField->GetDGcoordinate(n, j, 0);
-          // dgm.flux_[j][n][1] = 0;
-          // dgm.flux_[j][n][2] = 0;
-        }
-      }
-    }
+    // for (label j = 0; j < J; j++) {
+    //   // dgVector cellValue = dgf[j];
+    //   // int N = dgm.flux_[j].size();
+    //   int N = 3;
+    //   // int N = 1;
+    //   for (int n = 0; n < N; n++) {
+    //     for (int d = 0; d < dgOrder::length; d++) {
+    //       Info << dgm.flux_[j] << endl;
+    //       // dgm.flux_[j][n][d] = FluxDGField->GetDGcoordinate(n, j, d);
+    //     }
+    //   }
+    // }
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);
