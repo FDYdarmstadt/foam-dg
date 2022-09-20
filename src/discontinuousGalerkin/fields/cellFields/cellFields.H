@@ -40,6 +40,7 @@ SourceFiles
 #include "GeometricFields.H"
 #include "cellMesh.H"
 #include "dgMesh.H"
+#include "volMesh.H"
 #include "dgPatchFields.H"
 #include "OpenFoamPatchField.h"
 #include "cellFieldsFwd.H"
@@ -392,12 +393,46 @@ public:
         SyncFromBoSSSDGField(bo);
     }
 
-    dgMesh dgmesh() const {
+    const dgMesh& dgmesh() {
         return dgmesh_;
     }
 
+        // TODO
+        GeometricField<scalar, fvPatchField, volMesh> volScaField(){
 
-        
+            if (std::is_same<Type, dgVector>()){
+                throw "Cannot return volScalarField of dgVectorField";
+            }
+            return GeometricField<scalar, fvPatchField, volMesh>(
+                IOobject
+                (
+                "fv" + this->name(),
+                this->time().timeName(),
+                *dgmesh().finVolMesh(),
+                IOobject::MUST_READ,
+                IOobject::NO_WRITE
+                ),
+            *dgmesh().finVolMesh()
+            );
+        };
+        GeometricField<vector, fvPatchField, volMesh> volVecField(){
+            if (std::is_same<Type, dgScalar>()){
+                throw "Cannot return volVectorField of dgScalarField";
+            }
+
+            return GeometricField<vector, fvPatchField, volMesh>(
+                IOobject
+                (
+                "fv" + this->name(),
+                this->time().timeName(),
+                *dgmesh().finVolMesh(),
+                IOobject::MUST_READ,
+                IOobject::NO_WRITE
+                ),
+            *dgmesh().finVolMesh()
+            );
+        };
+
 /*
         //- Return a component of the field
         tmp<DgGeometricField<cmptType, PatchField, GeoMesh> > component

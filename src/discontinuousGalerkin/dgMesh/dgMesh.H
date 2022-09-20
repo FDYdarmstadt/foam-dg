@@ -41,6 +41,7 @@ SourceFiles
 #include "MeshObject.H"
 #include "polyMesh.H"
 #include "lduMesh.H"
+#include "fvMesh.H"
 #include "primitiveMesh.H"
 #include "dgBoundaryMesh.H"
 #include "DimensionedField.H"
@@ -155,6 +156,40 @@ public:
             //- Return reference to time
             const Time& time() const;
 
+        const IOobject meshIOobj =
+                IOobject
+                (
+                "myMesh",
+                // runTime.timeName(),
+                "0",
+                mesh(),
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+                );
+
+        fvMesh* finVolMesh() const {
+            return new Foam::fvMesh(
+                // IOobject
+                // (
+                // "myMesh",
+                // // runTime.timeName(),
+                // "0",
+                // mesh(),
+                // IOobject::NO_READ,
+                // IOobject::NO_WRITE
+                // )
+                meshIOobj
+                ,
+                Xfer<pointField>(mesh().points()),
+                // mesh().allPoints(),
+                // mesh().pointPoints(),
+                Xfer<faceList>(mesh().faces()),
+                // mesh().allFaces(),
+                Xfer<cellList>(mesh().cells()),
+                true
+            );
+            // return myMesh;
+        }
 
     // Access
 

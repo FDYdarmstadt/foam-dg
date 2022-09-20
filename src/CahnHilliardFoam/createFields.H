@@ -74,43 +74,32 @@
         dgMesh
     );
 
-fvMesh myMesh(
-        IOobject
-        (
-            "myMesh",
-            runTime.timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        )
-);
+    // fvMesh myMesh(
+    //     IOobject
+    //     (
+    //         "myMesh",
+    //         runTime.timeName(),
+    //         mesh,
+    //         IOobject::NO_READ,
+    //         IOobject::NO_WRITE
+    //     )
+    // );
 
-    volVectorField fvU
-    // GeometricField<dgScalar, fvsPatchField, surfaceMesh> Flux
-    (
-        IOobject
-        (
-            "fvU",
-            runTime.timeName(),
-            myMesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        // mesh
-        // ,
-        // dimensionedVector("fvU0", dimVelocity, vector::zero),
-        // zeroGradientFvPatchVectorField::typeName
-        // linearInterpolate(U) & mesh.Sf()
-        // linearInterpolate(U) & dgMesh
-        // mesh
-        // C.mesh().Sf()
-        // dgMesh
-        myMesh
-        // dgMesh.mesh()
-    );
+    // volVectorField fvU
+    // (
+    //     IOobject
+    //     (
+    //         "fvU",
+    //         runTime.timeName(),
+    //         // myMesh,
+    //         *dgMesh.finVolMesh(),
+    //         IOobject::MUST_READ,
+    //         IOobject::NO_WRITE
+    //     ),
+    //     *dgMesh.finVolMesh()
+    // );
 
     surfaceScalarField Flux
-    // GeometricField<dgScalar, fvsPatchField, surfaceMesh> Flux
     (
         IOobject
         (
@@ -120,15 +109,8 @@ fvMesh myMesh(
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
-        // mesh,
-        // dimensionedScalar("flux0", dimVelocity*dimArea, 0),
-        // zeroGradientFvPatchScalarField::typeName
-        linearInterpolate(fvU) & myMesh.Sf()
-        // linearInterpolate(U) & dgMesh
-        // mesh
-        // C.mesh().Sf()
-        // dgMesh
-        // dgMesh.mesh()
+        // linearInterpolate(fvU) & dgMesh.finVolMesh()->Sf()
+        linearInterpolate(U.volVecField()) & dgMesh.finVolMesh()->Sf()
     );
 
     Info<< "Reading coefficient fa\n" << endl;

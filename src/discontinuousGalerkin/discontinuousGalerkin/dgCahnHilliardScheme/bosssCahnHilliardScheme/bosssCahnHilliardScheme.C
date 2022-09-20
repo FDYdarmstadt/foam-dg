@@ -131,23 +131,23 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     phif.SyncFromBoSSSDGField(PhiDGField);
     // Flux.SyncFromBoSSSDGField(FluxDGField);
 
-    // // label J = dgm.flux_.dgmesh_.mesh().nCells();
-    // label J = mesh().nCells();
-    // // dgm.flux_ = Field<Vector<Type>>(J);
-    // // OpenFoamDGField *bo = dgf.GetBoSSSobject();
+    // label J = dgm.flux_.dgmesh_.mesh().nCells();
+    label J = mesh().nCells();
+    // dgm.flux_ = Field<Vector<Type>>(J);
+    // OpenFoamDGField *bo = dgf.GetBoSSSobject();
 
-    // for (label j = 0; j < J; j++) {
-    //   // dgVector cellValue = dgf[j];
-    //   // int N = dgm.flux_[j].size();
-    //   int N = 3;
-    //   // int N = 1;
-    //   for (int n = 0; n < N; n++) {
-    //     for (int d = 0; d < dgOrder::length; d++) {
-    //       Info << dgm.flux_[j] << endl;
-    //       // dgm.flux_[j][n][d] = FluxDGField->GetDGcoordinate(n, j, d);
-    //     }
-    //   }
-    // }
+    for (label j = 0; j < J; j++) {
+      // dgVector cellValue = dgf[j];
+      // int N = Flux[j].size();
+      int N = 3;
+      // int N = 1;
+      for (int n = 0; n < N; n++) {
+        for (int d = 0; d < dgOrder::length; d++) {
+          Info << Flux[j] << endl;
+          // Flux[j][n][d] = FluxDGField->GetDGcoordinate(n, j, d);
+        }
+      }
+    }
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);
