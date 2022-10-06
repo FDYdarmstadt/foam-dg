@@ -159,7 +159,7 @@ public:
         const IOobject meshIOobj =
                 IOobject
                 (
-                "myMesh",
+                "fvMesh",
                 // runTime.timeName(),
                 "0",
                 mesh(),

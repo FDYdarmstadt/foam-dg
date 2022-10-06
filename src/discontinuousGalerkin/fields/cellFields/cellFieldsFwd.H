@@ -38,6 +38,16 @@ SourceFiles
 
 #include "dgFieldTypes.H"
 
+#include "BoSSScpp.h"
+
+#include "objectRegistry.H"
+#include "GeometricFields.H"
+#include "cellMesh.H"
+#include "dgMesh.H"
+#include "volMesh.H"
+#include "dgPatchFields.H"
+#include "OpenFoamPatchField.h"
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
@@ -62,6 +72,7 @@ typedef GeometricField<dgVector, dgPatchField, cellMesh> preCellVectorField;
 
 typedef DgGeometricField<dgScalar, dgPatchField, cellMesh> cellScalarField;
 typedef DgGeometricField<dgVector, dgPatchField, cellMesh> cellVectorField;
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

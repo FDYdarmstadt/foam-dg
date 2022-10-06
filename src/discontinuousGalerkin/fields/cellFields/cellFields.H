@@ -352,6 +352,32 @@ public:
 
 
     // Member Functions
+// template<>
+// template<template<class> class PatchField, class GeoMesh>
+    void GenericSyncMeanFromBoSSSDGScalarField(
+        GeometricField<scalar, fvPatchField, volMesh> &dgf) {
+
+        BoSSS::Application::ExternalBinding::OpenFoamDGField *bo = GetBoSSSobject();
+      label J = dgf.mesh().nCells();
+      for (label j = 0; j < J; j++) {
+        dgf[j] = bo->GetMean(0, j);
+      }
+    }
+
+// template<>
+// template<template<class> class PatchField, class GeoMesh>
+    void GenericSyncMeanFromBoSSSDGVectorField(
+        GeometricField<vector, fvPatchField, volMesh> &dgf) {
+
+        BoSSS::Application::ExternalBinding::OpenFoamDGField *bo = GetBoSSSobject();
+      label J = dgf.mesh().nCells();
+      for (label j = 0; j < J; j++) {
+        int N = dgf[j].size();
+        for (int i = 0; i < N; i++) {
+          dgf[j][i] = bo->GetMean(i, j);
+        }
+      }
+    }
 
     OpenFoamDGField* GetBoSSSobject() {
         if(bosssObject_ == NULL) {
@@ -403,7 +429,7 @@ public:
             if (std::is_same<Type, dgVector>()){
                 throw "Cannot return volScalarField of dgVectorField";
             }
-            return GeometricField<scalar, fvPatchField, volMesh>(
+            GeometricField<scalar, fvPatchField, volMesh> svF = GeometricField<scalar, fvPatchField, volMesh>(
                 IOobject
                 (
                 "fv" + this->name(),
@@ -414,13 +440,15 @@ public:
                 ),
             *dgmesh().finVolMesh()
             );
+            GenericSyncMeanFromBoSSSDGScalarField(svF);
+            return svF;
         };
         GeometricField<vector, fvPatchField, volMesh> volVecField(){
             if (std::is_same<Type, dgScalar>()){
                 throw "Cannot return volVectorField of dgScalarField";
             }
 
-            return GeometricField<vector, fvPatchField, volMesh>(
+            GeometricField<vector, fvPatchField, volMesh> vvF = GeometricField<vector, fvPatchField, volMesh>(
                 IOobject
                 (
                 "fv" + this->name(),
@@ -431,6 +459,8 @@ public:
                 ),
             *dgmesh().finVolMesh()
             );
+            GenericSyncMeanFromBoSSSDGVectorField(vvF);
+            return vvF;
         };
 
 /*
@@ -559,7 +589,7 @@ OpenFoamPatchField* GenericGetBoSSSPatchobject(DgGeometricField<dgVector, PatchF
 }
 
 template<class Type, template<class> class PatchField, class GeoMesh>
-OpenFoamPatchField* GenericSyncToBoSSS(DgGeometricField<Type, PatchField, GeoMesh> &dgf);
+void GenericSyncToBoSSS(DgGeometricField<Type, PatchField, GeoMesh> &dgf);
 
 template<template<class> class PatchField, class GeoMesh>
 void GenericSyncToBoSSS(DgGeometricField<dgScalar, PatchField, GeoMesh> &dgf) {
@@ -625,6 +655,11 @@ void GenericSyncFromBoSSSDGField(DgGeometricField<dgVector, PatchField, GeoMesh>
     }
   }
 }
+
+// template<class Type>
+// void GenericSyncMeanFromBoSSSDGField(GeometricField<Type, fvPatchField, volMesh> &dgf, BoSSS::Application::ExternalBinding::OpenFoamDGField* bo);
+
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam

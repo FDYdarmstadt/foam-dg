@@ -170,7 +170,8 @@ dgCahnHilliard
 {
     return dgc::dgCahnHilliard
     (
-        vf, Uf, Phif, "dgCahnHilliard(" + vf.name() + ',' + Uf.name() + ')'
+        // vf, Uf, Phif, "dgCahnHilliard(" + vf.name() + ',' + Uf.name() + ')'
+        vf, Uf, Phif, "dgCahnHilliard(" + vf.name() + Uf.name() + ')'
     );
 }
 
@@ -304,7 +305,8 @@ dgCahnHilliard
         vf,
         Uf,
         Phif,
-        "dgCahnHilliard(" + vf.name() + ',' + Uf().name() + ')'
+        // "dgCahnHilliard(" + vf.name() + ',' + Uf().name() + ')'
+        "dgCahnHilliard(" + vf.name() + Uf().name() + ')'
     );
 }
 
@@ -324,7 +326,8 @@ dgCahnHilliard
         tvf,
         Uf,
         Phif,
-        "dgCahnHilliard(" + tvf().name() + ',' + Uf.name() + ')'
+        // "dgCahnHilliard(" + tvf().name() + ',' + Uf.name() + ')'
+        "dgCahnHilliard(" + tvf().name() + Uf.name() + ')'
     );
 }
 

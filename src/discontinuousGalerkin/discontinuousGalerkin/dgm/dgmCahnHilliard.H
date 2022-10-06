@@ -199,7 +199,7 @@ dgCahnHilliard
        Uf,
        phif,
        Flux,
-       "dgCahnHilliard( vf.name() + Uf.name() + ')'"
+       "dgCahnHilliard(" + vf.name() + Uf.name() + ')'
    );
 }
 
@@ -221,7 +221,7 @@ dgCahnHilliard
        Uf,
        phif,
        Flux,
-       "dgCahnHilliard( vf.name() + Uf.name() + ')'"
+       "dgCahnHilliard(" + vf.name() + Uf.name() + ')'
    );
 }
 //     template<class Type>
