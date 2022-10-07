@@ -86,6 +86,18 @@ class dgMesh
         autoPtr<dgBase> dgBasePtr_;
         //dgPolynomials polynomials_;
 
+        const IOobject meshIOobj =
+                IOobject
+                (
+                "fvMesh",
+                // runTime.timeName(),
+                "0",
+                mesh(),
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+                );
+
+        fvMesh* finVolMesh_;
     // Demand-driven data
 
         //- ldu addressing
@@ -156,39 +168,22 @@ public:
             //- Return reference to time
             const Time& time() const;
 
-        const IOobject meshIOobj =
-                IOobject
-                (
-                "fvMesh",
-                // runTime.timeName(),
-                "0",
-                mesh(),
-                IOobject::NO_READ,
-                IOobject::NO_WRITE
-                );
+        // const IOobject meshIOobj =
+        //         IOobject
+        //         (
+        //         "fvMesh",
+        //         // runTime.timeName(),
+        //         "0",
+        //         mesh(),
+        //         IOobject::NO_READ,
+        //         IOobject::NO_WRITE
+        //         );
 
         fvMesh* finVolMesh() const {
-            return new Foam::fvMesh(
-                // IOobject
-                // (
-                // "myMesh",
-                // // runTime.timeName(),
-                // "0",
-                // mesh(),
-                // IOobject::NO_READ,
-                // IOobject::NO_WRITE
-                // )
-                meshIOobj
-                ,
-                Xfer<pointField>(mesh().points()),
-                // mesh().allPoints(),
-                // mesh().pointPoints(),
-                Xfer<faceList>(mesh().faces()),
-                // mesh().allFaces(),
-                Xfer<cellList>(mesh().cells()),
-                true
-            );
-            // return myMesh;
+            if (finVolMesh_ == NULL){
+                Info << "finVolMesh not initialized" << endl;
+            }
+            return finVolMesh_;
         }
 
     // Access

@@ -149,13 +149,6 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
             //Info << "(" << pMesh.faceOwner()[iF] << ") ";
         }
 
-        for(int iVtx = 0; iVtx < vertices_per_face; iVtx++) {
-            //Info << f[iVtx];
-            //if(iVtx < vertices_per_face - 1)
-            //    Info << ", ";
-        }
-
-        //Info << endl;
     }
 
     int** facesArray = (int**) malloc(sizeof(int*)*nFaces);
@@ -188,7 +181,6 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
         patches[i] = bm.patchID()[i];
     }
 
-    // this->bosssmesh_ = new BoSSS::Foundation::Grid::OpenFOAMGrid(nPoints, nCells, nFaces, nInternalFaces, facesArray, vertices_per_face_Array, faceNeighbor_Array, faceOwner_Array, pointsArray);
     this->bosssmesh_ = new BoSSS::Foundation::Grid::OpenFOAMGrid(nPoints, nCells, nFaces, nInternalFaces, noOfBmNames, nameLengths, emptyTag, facesArray, vertices_per_face_Array, faceNeighbor_Array, faceOwner_Array, pointsArray, names, patches);
     free(pointsArray);
     free(vertices_per_face_Array);
@@ -197,11 +189,27 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     free(facesArray);
     free(facesContent);
 
-    // bosssmesh_->AddEdgeTag("left");
-
-    //this->bosssmesh_->TestMethod(88);
+    Info << "Hello from dgMesh 1" << endl;
+    fvMesh *finVolMesh__ = new Foam::fvMesh(
+        IOobject
+        (
+        "fvMesh",
+        // runTime.timeName(),
+        "0",
+        mesh(),
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+        ),
+        // meshIOobj,
+        Xfer<pointField>(pMesh.points()),
+        // mesh().allPoints(),
+        // mesh().pointPoints(),
+        Xfer<faceList>(pMesh.faces()),
+        // mesh().allFaces(),
+        Xfer<cellList>(pMesh.cells()), true);
+    this->finVolMesh_ = finVolMesh__;
+    Info << "Hello from dgMesh 2" << endl;
 }
-
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 

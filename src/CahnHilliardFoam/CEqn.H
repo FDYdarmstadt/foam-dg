@@ -66,6 +66,8 @@ do {
   //   + CEqn.Phi * (rhob_ + rhoa_)/2;
   // Info << CEqn.flux() << endl;
   // Info << U << endl;
+  Info << Flux << endl;
+  Info << Phi << endl;
   // Info << CEqn.flux_ << endl;
 
   // CEqn.solveBoSSS();

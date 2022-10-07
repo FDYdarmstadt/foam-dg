@@ -423,7 +423,6 @@ public:
         return dgmesh_;
     }
 
-        // TODO
         GeometricField<scalar, fvPatchField, volMesh> volScaField(){
 
             if (std::is_same<Type, dgVector>()){
@@ -433,7 +432,8 @@ public:
                 IOobject
                 (
                 "fv" + this->name(),
-                this->time().timeName(),
+                // this->time().timeName(),
+                "0",
                 *dgmesh().finVolMesh(),
                 IOobject::MUST_READ,
                 IOobject::NO_WRITE
@@ -452,7 +452,8 @@ public:
                 IOobject
                 (
                 "fv" + this->name(),
-                this->time().timeName(),
+                // this->time().timeName(),
+                "0",
                 *dgmesh().finVolMesh(),
                 IOobject::MUST_READ,
                 IOobject::NO_WRITE

@@ -214,8 +214,8 @@ public:
         virtual tmp<dgMatrix<Type> > dgmCahnHilliard
         (
             // const dimensionedScalar&,
-            const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-            const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+            DgGeometricField<Type, dgPatchField, cellMesh>& vf,
+            DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
             // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
             DgGeometricField<VType, dgPatchField, cellMesh>& phif,
             surfaceScalarField& Flux
@@ -233,10 +233,10 @@ public:
         virtual tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgcCahnHilliard
         (
             // const dimensionedScalar&,
-            const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-            const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-            const DgGeometricField<VType, dgPatchField, cellMesh>& phif,
-            const surfaceScalarField& Flux
+            DgGeometricField<Type, dgPatchField, cellMesh>& vf,
+            DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+            DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+            surfaceScalarField& Flux
         ) = 0;
 // {
 //    return dgcCahnHilliard(vf, Uf);//tinterpGammaScheme_().interpolate(gamma)(), vf);

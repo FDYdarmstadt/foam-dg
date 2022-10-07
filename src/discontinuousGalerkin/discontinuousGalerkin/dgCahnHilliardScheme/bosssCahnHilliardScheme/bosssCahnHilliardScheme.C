@@ -30,6 +30,7 @@ License
 #include "dgMatrices.H"
 #include "ExpandTensorNField.H"
 #include "cellFields.H"
+#include "linear.H"
 
 #include "BoSSScpp.h"
 
@@ -55,10 +56,10 @@ tmp<DgGeometricField<Type, dgPatchField, cellMesh> >
 bosssCahnHilliardScheme<Type, VType>::dgcCahnHilliard
 (
     // const dimensionedScalar& gamma,
-    const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& phif,
-    const surfaceScalarField& Flux
+    DgGeometricField<Type, dgPatchField, cellMesh>& vf,
+    DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+    DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+    surfaceScalarField& Flux
 )
 {
     
@@ -82,8 +83,8 @@ tmp<dgMatrix<Type> >
 bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
 (
     // const dimensionedScalar& gamma,
-    const DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-    const DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+    DgGeometricField<Type, dgPatchField, cellMesh>& vf,
+    DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
     // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
     DgGeometricField<VType, dgPatchField, cellMesh>& phif,
     surfaceScalarField& Flux
@@ -127,27 +128,47 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
     BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
     BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetPhi();
-    BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField = BoSSSOp->GetFlux();
+    // BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField = BoSSSOp->GetFlux();
     phif.SyncFromBoSSSDGField(PhiDGField);
     // Flux.SyncFromBoSSSDGField(FluxDGField);
 
-    // label J = dgm.flux_.dgmesh_.mesh().nCells();
     label J = mesh().nCells();
     // dgm.flux_ = Field<Vector<Type>>(J);
     // OpenFoamDGField *bo = dgf.GetBoSSSobject();
 
-    for (label j = 0; j < J; j++) {
-      // dgVector cellValue = dgf[j];
-      // int N = Flux[j].size();
-      int N = 3;
-      // int N = 1;
-      for (int n = 0; n < N; n++) {
-        for (int d = 0; d < dgOrder::length; d++) {
-          Info << Flux[j] << endl;
-          // Flux[j][n][d] = FluxDGField->GetDGcoordinate(n, j, d);
-        }
-      }
-    }
+    Info << "sizes: " << endl;
+    Info << Flux.size() << endl;
+    Info << J << endl;
+    Uf.SyncFromBoSSS();
+    Info << "Uf.dgmesh().finVolMesh():" << endl;
+    Info << Uf.dgmesh().finVolMesh() << endl;
+    Info << "Uf.dgmesh().finVolMesh()->Sf():" << endl;
+    Info << Uf.dgmesh().finVolMesh()->Sf() << endl;
+    Info << "Uf.volVecField():" << endl;
+    Info << Uf.volVecField() << endl;
+
+    Flux = linearInterpolate(Uf.volVecField()) & Uf.dgmesh().finVolMesh()->Sf(); // TODO introduce C here, if possible from the DG representation directly
+
+    // forAll(Flux.mesh().interfaces(), interfaceI){
+    //     int cellA = Flux.mesh().faceOwner()[interfaceI];
+    //     double fA = U[cellA] &
+    //     Flux[interfaceI] = Flux.
+    // }
+    // for (label j = 0; j < J; j++) {
+    //   // dgVector cellValue = dgf[j];
+    //   // int N = Flux[j].size();
+    //   int N = 3;
+    //   // int N = 1;
+    //   for (int n = 0; n < N; n++) {
+    //     for (int d = 0; d < dgOrder::length; d++) {
+    //       Info << "flux: " << endl;
+    //       Info << Flux[j] << endl;
+    //       Info << "Uf: " << endl;
+    //       Info << Uf[j][0] << endl;
+    //       // Flux[j][n][d] = FluxDGField->GetDGcoordinate(n, j, d);
+    //     }
+    //   }
+    // }
     delete BoSSSOp;
 
     dgm.SetBoSSSobject(bosssMtx);

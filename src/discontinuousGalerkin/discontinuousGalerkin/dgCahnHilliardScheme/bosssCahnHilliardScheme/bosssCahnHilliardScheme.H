@@ -125,10 +125,10 @@ public:
         tmp<DgGeometricField<Type, dgPatchField, cellMesh> > dgcCahnHilliard
         (
             // const dimensionedScalar&,
-            const DgGeometricField<Type, dgPatchField, cellMesh>&,
-            const DgGeometricField<VType, dgPatchField, cellMesh>&,
-            const DgGeometricField<VType, dgPatchField, cellMesh>&,
-            const surfaceScalarField&
+            DgGeometricField<Type, dgPatchField, cellMesh>&,
+            DgGeometricField<VType, dgPatchField, cellMesh>&,
+            DgGeometricField<VType, dgPatchField, cellMesh>&,
+            surfaceScalarField&
         );
 
 //        tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
@@ -140,8 +140,8 @@ public:
         tmp<dgMatrix<Type> > dgmCahnHilliard
         (
             // const dimensionedScalar&,
-            const DgGeometricField<Type, dgPatchField, cellMesh>&,
-            const DgGeometricField<VType, dgPatchField, cellMesh>&,
+            DgGeometricField<Type, dgPatchField, cellMesh>&,
+            DgGeometricField<VType, dgPatchField, cellMesh>&,
             // const DgGeometricField<VType, dgPatchField, cellMesh>&
             DgGeometricField<VType, dgPatchField, cellMesh>&,
             surfaceScalarField&
