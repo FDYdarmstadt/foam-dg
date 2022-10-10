@@ -147,7 +147,7 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     Info << "Uf.volVecField():" << endl;
     Info << Uf.volVecField() << endl;
 
-    Flux = linearInterpolate(Uf.volVecField()) & Uf.dgmesh().finVolMesh()->Sf(); // TODO introduce C here, if possible from the DG representation directly
+    Flux = linearInterpolate(Uf.volVecField() * vf.volScaField()) & Uf.dgmesh().finVolMesh()->Sf(); // TODO introduce vf here, if possible from the DG representation directly
 
     // forAll(Flux.mesh().interfaces(), interfaceI){
     //     int cellA = Flux.mesh().faceOwner()[interfaceI];
