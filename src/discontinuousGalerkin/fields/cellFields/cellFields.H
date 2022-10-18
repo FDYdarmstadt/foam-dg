@@ -601,12 +601,12 @@ void GenericSyncToBoSSS(DgGeometricField<dgScalar, PatchField, GeoMesh> &dgf) {
             for(label j = 0; j < J; j++) {
                 dgScalar cellValue = dgf[j];
                 int N = cellValue.size();
-                // for(int n = 0; n < N; n++){
-                //     bo->SetDGcoordinate(0, j, n, cellValue[n]);
-                // }
-                bo->SetDGcoordinate(0, j, 0, cellValue[0]); // TODO unhardcode
-                bo->SetDGcoordinate(0, j, 2, cellValue[1]);
-                bo->SetDGcoordinate(0, j, 4, cellValue[2]);
+                for(int n = 0; n < N; n++){
+                    bo->SetDGcoordinate(0, j, n, cellValue[n]);
+                }
+                // bo->SetDGcoordinate(0, j, 0, cellValue[0]); // TODO unhardcode
+                // bo->SetDGcoordinate(0, j, 2, cellValue[1]);
+                // bo->SetDGcoordinate(0, j, 4, cellValue[2]);
             }
     }
 
@@ -635,9 +635,12 @@ void GenericSyncFromBoSSSDGField(DgGeometricField<dgScalar, PatchField, GeoMesh>
         label J = dgf.dgmesh_.mesh().nCells();
             for(label j = 0; j < J; j++) {
                 int N = dgf[j].size();
-                dgf[j][0] = bo->GetDGcoordinate(0, j, 0); // TODO unhardcode
-                dgf[j][1] = bo->GetDGcoordinate(0, j, 2); // TODO unhardcode
-                dgf[j][2] = bo->GetDGcoordinate(0, j, 4); // TODO unhardcode
+                for (int n = 0; n < N; n++) {
+                    dgf[j][n] = bo->GetDGcoordinate(0, j, n);
+                }
+                // dgf[j][0] = bo->GetDGcoordinate(0, j, 0); // TODO unhardcode
+                // dgf[j][1] = bo->GetDGcoordinate(0, j, 2); // TODO unhardcode
+                // dgf[j][2] = bo->GetDGcoordinate(0, j, 4); // TODO unhardcode
             }
     }
 

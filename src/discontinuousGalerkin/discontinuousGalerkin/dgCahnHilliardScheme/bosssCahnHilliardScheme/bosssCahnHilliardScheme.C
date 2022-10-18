@@ -129,6 +129,8 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
     BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetPhi();
     // BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField = BoSSSOp->GetFlux();
+    vf.SyncFromBoSSS();
+    Uf.SyncFromBoSSS();
     phif.SyncFromBoSSSDGField(PhiDGField);
     // Flux.SyncFromBoSSSDGField(FluxDGField);
 

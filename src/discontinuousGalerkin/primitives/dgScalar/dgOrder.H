@@ -56,8 +56,8 @@ public:
         rank = 0,        // Rank of Scalar is 0
         nComponents = 1, // Number of components in Scalar
         order = 2,       // DG order.  Order of discretisation = order + 1
-        length = order + 1
-        // length = (order + 3)*(order + 2)*(order + 1)/6  // Coeffs
+        // length = order + 1
+        length = (order + 3)*(order + 2)*(order + 1)/6  // Coeffs
         // length = 10
     };
 };
