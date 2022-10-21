@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 9/5/2022 1:55:34 PM
+// Creation Date: 10/21/2022 8:10:43 AM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -35,6 +35,7 @@ _ClassHandle = BoSSS::Globals::LookupClass(BoSSS::Globals::_image__BoSSS_Applica
 _ctor_0 = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:.ctor", true);
 _SetDGcoordinate = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:SetDGcoordinate", true);
 _GetDGcoordinate = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:GetDGcoordinate", true);
+_SetMean = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:SetMean", true);
 _GetMean = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:GetMean", true);
 __SetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:_SetForeignPointer", true);
 __GetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.OpenFoamDGField:_GetForeignPointer", true);
@@ -122,6 +123,20 @@ if (exception != NULL) {
 }
 void* retptr = mono_object_unbox(retval);
 return *((double*) retptr);
+}
+void OpenFoamDGField::SetMean(int f, int j, double val)
+{
+void* args[3];
+args[0] = &f;
+args[1] = &j;
+args[2] = &val;
+MonoObject* exception;
+MonoObject* retval;
+retval = mono_runtime_invoke(_SetMean, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
+if (exception != NULL) {
+    fprintf( stderr, "got exception from C# (OpenFoamDGField.SetMean) \n");
+}
+return;
 }
 double OpenFoamDGField::GetMean(int f, int j)
 {

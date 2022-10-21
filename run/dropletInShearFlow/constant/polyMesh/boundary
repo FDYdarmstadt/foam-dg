@@ -43,7 +43,7 @@ FoamFile
     }
     frontAndBack
     {
-        type            empty;
+        type            patch;
         nFaces          80000;
         startFace       80400;
     }

@@ -29,6 +29,7 @@
     //     mesh
     // );
 
+
     Info<< "Reading field C\n" << endl;
 
     cellScalarField C
@@ -46,7 +47,7 @@
 
     Info<< "Reading field Phi\n" << endl;
 
-    cellVectorField Phi
+    cellScalarField Phi
     (
         IOobject
         (
@@ -73,6 +74,7 @@
         ),
         dgMesh
     );
+
 
     // fvMesh myMesh(
     //     IOobject
@@ -163,6 +165,9 @@
     (
         readScalar(transportProperties.lookup("UTol"))
     );
+
+    C.importFromVolScaField();
+    U.importFromVolVecField();
 
     // Switch mixedCH
     // (

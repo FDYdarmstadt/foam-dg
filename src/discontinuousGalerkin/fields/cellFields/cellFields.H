@@ -440,9 +440,10 @@ public:
                 ),
             *dgmesh().finVolMesh()
             );
-            GenericSyncMeanFromBoSSSDGScalarField(svF);
+            importFromVolScalarField(*this, svF);
             return svF;
         };
+
         GeometricField<vector, fvPatchField, volMesh> volVecField(){
             if (std::is_same<Type, dgScalar>()){
                 throw "Cannot return volVectorField of dgScalarField";
@@ -464,6 +465,47 @@ public:
             return vvF;
         };
 
+        GeometricField<scalar, fvPatchField, volMesh> importFromVolScaField(){
+
+            if (std::is_same<Type, dgVector>()){
+                throw "Cannot return volScalarField of dgVectorField";
+            }
+            GeometricField<scalar, fvPatchField, volMesh> svF = GeometricField<scalar, fvPatchField, volMesh>(
+                IOobject
+                (
+                "fv" + this->name(),
+                // this->time().timeName(),
+                "0",
+                *dgmesh().finVolMesh(),
+                IOobject::MUST_READ,
+                IOobject::NO_WRITE
+                ),
+            *dgmesh().finVolMesh()
+            );
+            importFromVolScalarField(*this, svF);
+            return svF;
+        };
+
+        GeometricField<vector, fvPatchField, volMesh> importFromVolVecField(){
+            if (std::is_same<Type, dgScalar>()){
+                throw "Cannot return volVectorField of dgScalarField";
+            }
+
+            GeometricField<vector, fvPatchField, volMesh> vvF = GeometricField<vector, fvPatchField, volMesh>(
+                IOobject
+                (
+                "fv" + this->name(),
+                // this->time().timeName(),
+                "0",
+                *dgmesh().finVolMesh(),
+                IOobject::MUST_READ,
+                IOobject::NO_WRITE
+                ),
+            *dgmesh().finVolMesh()
+            );
+            importFromVolVectorField(*this, vvF);
+            return vvF;
+        };
 /*
         //- Return a component of the field
         tmp<DgGeometricField<cmptType, PatchField, GeoMesh> > component
@@ -589,6 +631,30 @@ OpenFoamPatchField* GenericGetBoSSSPatchobject(DgGeometricField<dgVector, PatchF
   return bosssObjectPatchField_;
 }
 
+template<template<class> class PatchField, class GeoMesh>
+void importFromVolScalarField(DgGeometricField<dgScalar, PatchField, GeoMesh> &dgf, GeometricField<scalar, fvPatchField, volMesh> volField){
+    OpenFoamDGField* bo = dgf.GetBoSSSobject();
+    label J = dgf.dgmesh_.mesh().nCells();
+    for (label j = 0; j < J; j++) {
+        bo->SetMean(0, j, volField[j]);
+        dgf[j][0] = bo->GetDGcoordinate(0, j, 0);
+    }
+}
+
+template<template<class> class PatchField, class GeoMesh>
+void importFromVolVectorField(DgGeometricField<dgVector, PatchField, GeoMesh> &dgf, GeometricField<vector, fvPatchField, volMesh> volField){
+    OpenFoamDGField* bo = dgf.GetBoSSSobject();
+    label J = dgf.dgmesh_.mesh().nCells();
+    for (label j = 0; j < J; j++) {
+        for (label d = 0; d < 3; d++) {
+            // Info << "Hello from importfromvolvecfield " << j << " " << d << endl;
+            bo->SetMean(d, j, volField[j][d]);
+            dgf[j][d][0] = bo->GetDGcoordinate(d, j, 0);
+        }
+    }
+}
+
+
 template<class Type, template<class> class PatchField, class GeoMesh>
 void GenericSyncToBoSSS(DgGeometricField<Type, PatchField, GeoMesh> &dgf);
 
@@ -603,10 +669,8 @@ void GenericSyncToBoSSS(DgGeometricField<dgScalar, PatchField, GeoMesh> &dgf) {
                 int N = cellValue.size();
                 for(int n = 0; n < N; n++){
                     bo->SetDGcoordinate(0, j, n, cellValue[n]);
+                    // Info << "cv: " << cellValue[n] << " dgc: " << bo->GetDGcoordinate(0,j,n) << endl;
                 }
-                // bo->SetDGcoordinate(0, j, 0, cellValue[0]); // TODO unhardcode
-                // bo->SetDGcoordinate(0, j, 2, cellValue[1]);
-                // bo->SetDGcoordinate(0, j, 4, cellValue[2]);
             }
     }
 
@@ -638,9 +702,6 @@ void GenericSyncFromBoSSSDGField(DgGeometricField<dgScalar, PatchField, GeoMesh>
                 for (int n = 0; n < N; n++) {
                     dgf[j][n] = bo->GetDGcoordinate(0, j, n);
                 }
-                // dgf[j][0] = bo->GetDGcoordinate(0, j, 0); // TODO unhardcode
-                // dgf[j][1] = bo->GetDGcoordinate(0, j, 2); // TODO unhardcode
-                // dgf[j][2] = bo->GetDGcoordinate(0, j, 4); // TODO unhardcode
             }
     }
 
@@ -659,9 +720,6 @@ void GenericSyncFromBoSSSDGField(DgGeometricField<dgVector, PatchField, GeoMesh>
     }
   }
 }
-
-// template<class Type>
-// void GenericSyncMeanFromBoSSSDGField(GeometricField<Type, fvPatchField, volMesh> &dgf, BoSSS::Application::ExternalBinding::OpenFoamDGField* bo);
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
