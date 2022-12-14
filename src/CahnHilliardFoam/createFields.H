@@ -45,20 +45,34 @@
         dgMesh
     );
 
-    Info<< "Reading field Phi\n" << endl;
-
-    cellScalarField Phi
+    dimensionedScalar rhoa
     (
-        IOobject
-        (
-            "Phi",
-            runTime.timeName(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::AUTO_WRITE
-        ),
-        dgMesh
+        transportProperties.lookup("rhoa")
     );
+    dimensionedScalar rhob
+    (
+        transportProperties.lookup("rhob")
+    );
+
+
+    // Need to store rho for ddt(rho, U)
+    // volScalarField rho
+    // (
+    //     IOobject
+    //     (
+    //         "rho",
+    //         runTime.timeName(),
+    //         mesh,
+    //         IOobject::READ_IF_PRESENT
+    //     ),
+    //     // C*rhoa + (scalar(1) - C)*rhob,
+    //     // C.volScaField()*rhoa, // TODO
+    //     // C.volScaField().boundaryField().types()
+    //     *dgMesh.finVolMesh()
+    // );
+
+    // rho.oldTime();
+
 
     Info<< "Reading field U\n" << endl;
 
@@ -74,6 +88,38 @@
         ),
         dgMesh
     );
+
+    Info<< "Reading field Phi\n" << endl;
+
+    // surfaceScalarField Phi
+    cellScalarField Phi
+    (
+        IOobject
+        (
+            "Phi",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        dgMesh
+        // linearInterpolate(U.volVecField()) & dgMesh.finVolMesh()->Sf()
+    );
+
+    // surfaceScalarField rhoPhi
+    // (
+    //     IOobject
+    //     (
+    //         "rho*phi",
+    //         runTime.timeName(),
+    //         mesh,
+    //         IOobject::NO_READ,
+    //         IOobject::NO_WRITE
+    //     ),
+    //     // rhoa*Phi.volScaField()
+    //     linearInterpolate(U.volVecField()) & dgMesh.finVolMesh()->Sf()
+    // );
+
 
 
     // fvMesh myMesh(
@@ -166,8 +212,6 @@
         readScalar(transportProperties.lookup("UTol"))
     );
 
-    C.importFromVolScaField();
-    U.importFromVolVecField();
 
     // Switch mixedCH
     // (

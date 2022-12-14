@@ -11,6 +11,7 @@ std::string GetBoSSSLibraryDirectory(){
   std::string bosssinstall = getenv("BOSSS_INSTALL");
   // std::string bossslibdir = bosssinstall + "/public/src/L4-application/ExternalBinding.CodeGen/bin/Release/net5.0/";
   std::string bossslibdir = bosssinstall + "/public/src/L4-application/ExternalBinding.CodeGen/bin/Debug/net6.0/";
+  // std::string bossslibdir = bosssinstall + "/public/src/L4-application/ExternalBinding.CodeGen/bin/Debug/netstandard2.0/";
   if (! DoesPathExist(bossslibdir)){
     fprintf(stderr, "Expecting to find the BoSSS libraries in \n ");
     fprintf(stderr, bossslibdir.c_str());

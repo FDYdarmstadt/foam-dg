@@ -11,7 +11,6 @@ do {
   U.storePrevIter();
 
 
-  U.SyncToBoSSS();
   // //- Assemble equations
   // fvScalarMatrix CEqn
   // (
@@ -47,6 +46,10 @@ do {
   //     fvm::ddt(C)
   // );
 
+  double rhob_ = 1261;
+  double rhoa_ = 1261;
+
+
   // //- Assemble equations
   dgScalarMatrix CEqn(
       // dgm::ddt(C)
@@ -58,12 +61,29 @@ do {
       // + dfdcSource
   );
 
+  // rhoPhi =
+  //   // Flux/2 * 0
+  //   Phi * rhob_;
+  //   // Flux/2 * (rhob - rhoa)
+  //   // + Phi * (rhob + rhoa)/2;
+
+  // fvVectorMatrix UEqn
+  //   (
+  //     fvm::ddt(rho, U.volVecField())
+  //     + fvm::div(rhoPhi, U.volVecField())
+  //     // - fvm::laplacian(muEff, U)
+  //     // - (fvc::grad(U) & fvc::grad(muEff))
+  //   //- fvc::div(muEff*(fvc::interpolate(dev(fvc::grad(U))) & mesh.Sf()))
+  //   );
+
+  //   UEqn.relax();
+  //   // UEqn.solve();
+
+  //   U.importFromVolVecField();
+  //   U.SyncToBoSSS();
   // double rhob_ = 1;
   // double rhoa_ = 2;
 
-  // rhoPhi =
-  //   CEqn().flux()/2 * (rhob_ - rhoa_)
-  //   + CEqn.Phi * (rhob_ + rhoa_)/2;
 
   // CEqn.relax();
 
