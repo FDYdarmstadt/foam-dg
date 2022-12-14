@@ -18,6 +18,7 @@ FoamFile
 application     phaseFieldFoam;
 
 startFrom       startTime;
+// startFrom       latestTime;
 
 startTime       0;
 
@@ -26,15 +27,15 @@ stopAt          endTime;
 endTime         0.01;//0.015;
 
 // deltaT          1e-6;
-deltaT          1e-3;
+deltaT          2e-3;
 
-writeControl    adjustableRunTime;//timeStep;//
+writeControl    timeStep;//
 
-writeInterval   5e-4;//25;//
+writeInterval   1;
 
 purgeWrite      0;
 
-writeFormat     ascii;
+writeFormat     binary;
 
 writePrecision  12;
 

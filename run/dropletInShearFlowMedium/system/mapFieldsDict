@@ -1,27 +1,23 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
-| \\      /  F ield         | foam-extend: Open Source CFD                    |
-|  \\    /   O peration     | Version:     4.1                                |
-|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
     format      ascii;
-    class       regIOobject;
-    location    "constant/polyMesh";
-    object      cellZones;
+    class       dictionary;
+    location    "system";
+    object      mapFieldsDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-1
-(
-background
-{
-    type cellZone;
-    cellLabels      List<label> 5(0 1 2 3 4);
-}
-)
+patchMap        ( lid movingWall );
+
+cuttingPatches  ( fixedWalls );
+
 
 // ************************************************************************* //

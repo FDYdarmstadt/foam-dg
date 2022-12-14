@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | foam-extend: Open Source CFD                    |
-|  \\    /   O peration     | Version:     4.1                                |
+|  \\    /   O peration     | Version:     4.0                                |
 |   \\  /    A nd           | Web:         http://www.foam-extend.org         |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -9,45 +9,44 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       polyBoundaryMesh;
-    location    "constant/polyMesh";
-    object      boundary;
+    class       preCellScalarField;
+    location    "0";
+    object      C;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-5
-(
+dimensions      [0 0 0 0 0 0 0];
+
+internalField   uniform (0 0 0 0 0 0 0 0 0 0);
+
+boundaryField
+{
     top
     {
-        type            patch;
-        nFaces          10;
-        startFace       180;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     bottom
     {
-        type            patch;
-        nFaces          10;
-        startFace       190;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     left
     {
-        type            patch;
-        nFaces          10;
-        startFace       200;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     right
     {
-        type            patch;
-        nFaces          10;
-        startFace       210;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     frontAndBack
     {
-        type            patch;
-        nFaces          200;
-        startFace       220;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
-)
+}
 
 
 // ************************************************************************* //

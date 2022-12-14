@@ -20,20 +20,20 @@ FoamFile
     left
     {
         type            patch;
-        nFaces          40;
-        startFace       1020;
+        nFaces          1;
+        startFace       4;
     }
     right
     {
         type            patch;
-        nFaces          40;
-        startFace       1060;
+        nFaces          1;
+        startFace       5;
     }
     sides
     {
         type            patch;
-        nFaces          280;
-        startFace       1100;
+        nFaces          20;
+        startFace       6;
     }
 )
 
