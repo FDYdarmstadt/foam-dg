@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     Info<< "\nRunning\n" << endl;
+    Info << "Time = " << runTime.timeName() << nl << endl;
 
     if (runTime.timeName() == "0") {
       Info << "Initializing from Scalar fields" << endl;
