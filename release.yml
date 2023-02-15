@@ -10,6 +10,7 @@ Release:
 Tests:
   stage: test
   script:
+     - source ~/foam/foam-extend-4.1/etc/bashrc
      - cd ./run/dropletInShearFlowSmall/
      - CahnHilliardFoam
   needs:
