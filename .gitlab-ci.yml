@@ -5,16 +5,6 @@ Integration:
   rules:
     - if: $CI_MERGE_REQUEST_ID 
   trigger:
-  stage: build
-  script:
-    - dotnet clean ./internal/src/Master.sln -c Debug -v q
-    - dotnet build ./internal/src/Master.sln -c Debug -v q
-  tags:
-    - C#7.0
-    - big_server
-  artifacts:
-    paths:
-      - internal/src/experimental/L4-application/InternalTestRunner/bin/Debug/net6.0
-      - public/src/L4-application/PublicTestRunner/bin/Debug/net6.0
-    expire_in: 8 hrs
+    include:
+      - local: integration.yml
     strategy: depend
