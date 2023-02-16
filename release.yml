@@ -6,7 +6,9 @@ Release:
     - mkdir ~/foam
     - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
     - source ~/foam/foam-extend-4.1/etc/bashrc
-    - ./src/Allwmake
+    - cd src
+    - ./Allwmake
+    - cd ..
   tags:
     - linux
 
