@@ -4,7 +4,7 @@ Release:
     - echo $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - echo $CI_MERGE_REQUEST_EVENT_TYPE
     - cp -r /home/administrator/foam/foam-extend-4.1/ ~ || echo
-    - source ~/foam/foam-extend-4.1/etc/bashrc
+    - source ~/foam-extend-4.1/etc/bashrc
     - ./src/Allwmake
   tags:
     - linux
@@ -13,7 +13,7 @@ Tests:
   stage: test
   script:
     - cp -r /home/administrator/foam/foam-extend-4.1/ ~ || echo
-    - source ~/foam/foam-extend-4.1/etc/bashrc
+    - source ~/foam-extend-4.1/etc/bashrc
     - cd ./run/dropletInShearFlowSmall/
     - CahnHilliardFoam
   needs:
