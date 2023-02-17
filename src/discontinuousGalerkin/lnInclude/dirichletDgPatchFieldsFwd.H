@@ -1,1 +1,0 @@
-../fields/dgPatchFields/basic/dirichlet/dirichletDgPatchFieldsFwd.H

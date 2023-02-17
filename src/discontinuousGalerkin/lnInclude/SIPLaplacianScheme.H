@@ -1,1 +1,0 @@
-../discontinuousGalerkin/dgLaplacianScheme/SIPLaplacianScheme/SIPLaplacianScheme.H

@@ -1,8 +1,9 @@
 #!/bin/sh
 set -x
 
+rm -r ./discontinuousGalerkin/lnInclude
 wmakeLnInclude discontinuousGalerkin
-wmakeLnInclude CahnHilliardFoam
+# wmakeLnInclude CahnHilliardFoam
 
 wmake libso discontinuousGalerkin
 

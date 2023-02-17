@@ -1,1 +1,0 @@
-../fields/dgPatchFields/basic/homogenous/homogenousDgPatchFields.C
