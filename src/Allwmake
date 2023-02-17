@@ -1,6 +1,9 @@
 #!/bin/sh
 set -x
 
+wmakeLnInclude discontinuousGalerkin
+wmakeLnInclude CahnHilliardFoam
+
 wmake libso discontinuousGalerkin
 
 # wmake testDg
