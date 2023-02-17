@@ -3,7 +3,16 @@ Release:
   script:
     - echo $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     - echo $CI_MERGE_REQUEST_EVENT_TYPE
-    - echo $FOAM_USER_LIBBIN
+    - export FOAM_USER_LIBBIN=/home/administrator/foam/administrator-4.1/lib/linux64GccDPInt32Opt
+    - mkdir ~/foam || echo
+    - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
+    - source ~/foam/foam-extend-4.1/etc/bashrc
+    - mkdir Make/linux64GccDPInt32Opt/ || echo
+    - rm -r Make/linux64GccDPInt32Opt/dontIncludeDeps || echo
+    - touch Make/linux64GccDPInt32Opt/dontIncludeDeps || echo
+    - cd src
+    - ./Allwmake
+    - cd ..
   tags:
     - linux
 
