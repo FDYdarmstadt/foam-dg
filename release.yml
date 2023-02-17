@@ -6,6 +6,7 @@ Release:
     - mkdir ~/foam || echo
     - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
     - source ~/foam/foam-extend-4.1/etc/bashrc
+    - echo $FOAM_USER_LIBBIN
     - mkdir Make/linux64GccDPInt32Opt/ || echo
     - rm -r Make/linux64GccDPInt32Opt/dontIncludeDeps || echo
     - touch Make/linux64GccDPInt32Opt/dontIncludeDeps || echo

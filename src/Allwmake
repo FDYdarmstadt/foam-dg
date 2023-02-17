@@ -1,7 +1,7 @@
 #!/bin/sh
 set -x
 
-export FOAM_USER_LIBBIN=/home/gitlab-runner/foam/administrator-4.1/lib/linux64GccDPInt32Opt
+# export FOAM_USER_LIBBIN=/home/gitlab-runner/foam/administrator-4.1/lib/linux64GccDPInt32Opt
 
 rm -r ./discontinuousGalerkin/lnInclude
 wmakeLnInclude discontinuousGalerkin
