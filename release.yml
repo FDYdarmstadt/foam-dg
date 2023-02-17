@@ -5,11 +5,8 @@ Release:
     - echo $CI_MERGE_REQUEST_EVENT_TYPE
     - mkdir ~/foam || echo
     - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
+    - mv ~/foam/administrator-4.1/ ~/foam/gitlab-runner-4.1 || echo
     - source ~/foam/foam-extend-4.1/etc/bashrc
-    - echo $FOAM_USER_LIBBIN
-    - mkdir Make/linux64GccDPInt32Opt/ || echo
-    - rm -r Make/linux64GccDPInt32Opt/dontIncludeDeps || echo
-    - touch Make/linux64GccDPInt32Opt/dontIncludeDeps || echo
     - cd src
     - ./Allwmake
     - cd ..
