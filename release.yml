@@ -6,6 +6,7 @@ Release:
     - mkdir ~/foam || echo
     - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
     - cp -r /home/administrator/foam/administrator-4.1/ ~/foam || echo
+    - rm -rf ~/foam/gitlab-runner-4.1 || echo
     - mv ~/foam/administrator-4.1/ ~/foam/gitlab-runner-4.1 || echo
     - source ~/foam/foam-extend-4.1/etc/bashrc
     - cd src
