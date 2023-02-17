@@ -7,6 +7,7 @@ Release:
     - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
     - source ~/foam/foam-extend-4.1/etc/bashrc
     - mkdir Make/linux64GccDPInt32Opt/ || echo
+    - mkdir Make/linux64GccDPInt32Opt/dontIncludeDeps || echo
     - cd src
     - ./Allwmake
     - cd ..
