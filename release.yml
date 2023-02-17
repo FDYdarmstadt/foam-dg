@@ -5,6 +5,7 @@ Release:
     - echo $CI_MERGE_REQUEST_EVENT_TYPE
     - mkdir ~/foam || echo
     - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
+    - cp -r /home/administrator/foam/administrator-4.1/ ~/foam || echo
     - mv ~/foam/administrator-4.1/ ~/foam/gitlab-runner-4.1 || echo
     - source ~/foam/foam-extend-4.1/etc/bashrc
     - cd src
