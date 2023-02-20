@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ilPSP.LinSolvers.MUMPS</name>
+    </assembly>
+    <members>
+        <member name="F:ilPSP.LinSolvers.MUMPS.Matrix.RowPart">
+            <summary>
+            row partiton of the matrix;
+            </summary>
+        </member>
+        <member name="F:ilPSP.LinSolvers.MUMPS.Matrix.n">
+            <summary>
+            Dimension of the MUMPS Matrix
+            </summary>
+        </member>
+        <member name="F:ilPSP.LinSolvers.MUMPS.Matrix.nz">
+            <summary>
+            Number of nonzero entries in MUMPS Matrix
+            </summary>
+        </member>
+        <member name="F:ilPSP.LinSolvers.MUMPS.Matrix.irn">
+            <summary>
+            Array of row indices
+            </summary>
+        </member>
+        <member name="F:ilPSP.LinSolvers.MUMPS.Matrix.jrn">
+            <summary>
+            Array of col indices
+            </summary>
+        </member>
+        <member name="F:ilPSP.LinSolvers.MUMPS.Matrix.a">
+            <summary>
+            Array of values
+            </summary>
+        </member>
+        <member name="F:ilPSP.LinSolvers.MUMPS.Matrix.Symmetric">
+            <summary>
+            0: unsymmetric
+            1: assumed to be symmetric positive definite so that pivots are taken from the diagonal
+            without numerical pivoting during the factorization.With this option, non-positive definite
+            matrices that do not require pivoting can also be treated in certain cases (see remark below).
+            2: general symmetric
+            </summary>
+        </member>
+        <member name="T:ilPSP.LinSolvers.MUMPS.MUMPSStatistics">
+            <summary>
+            MUMPS parameter ICNTL(11)
+            </summary>
+        </member>
+        <member name="F:ilPSP.LinSolvers.MUMPS.MUMPSStatistics.NoErrorAnalysis">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ilPSP.LinSolvers.MUMPS.MUMPSStatistics.AllStatistics">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ilPSP.LinSolvers.MUMPS.MUMPSStatistics.MainStatistics">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:ilPSP.LinSolvers.MUMPS.MUMPSSolver">
+            <summary>
+            Wrapper class around MUMPS, 
+            see http://mumps.enseeiht.fr/
+            </summary>
+        </member>
+        <member name="P:ilPSP.LinSolvers.MUMPS.MUMPSSolver.Statistics">
+            <summary>
+            Adjust if e.g. 
+            </summary>
+        </member>
+        <member name="P:ilPSP.LinSolvers.MUMPS.MUMPSSolver.LastCondNo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ilPSP.LinSolvers.MUMPS.MUMPSSolver.#ctor(System.Boolean)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ilPSP.LinSolvers.MUMPS.MUMPSSolver.Parallelism">
+            <summary>
+            Level of parallelism, which should be used for this solver instance 
+            </summary>
+        </member>
+        <member name="M:ilPSP.LinSolvers.MUMPS.MUMPSSolver.DefineMatrix(ilPSP.LinSolvers.IMutableMatrixEx)">
+            <summary>
+            <see cref="M:ilPSP.LinSolvers.ISparseSolver.DefineMatrix(ilPSP.LinSolvers.IMutableMatrixEx)"/>
+            </summary>
+        </member>
+        <member name="M:ilPSP.LinSolvers.MUMPS.MUMPSSolver.Solve``2(``0,``1)">
+            <summary>
+            <see cref="M:ilPSP.LinSolvers.ISparseSolver.Solve``2(``0,``1)"/>
+            </summary>
+        </member>
+        <member name="M:ilPSP.LinSolvers.MUMPS.MUMPSSolver.Solve``3(System.Double,``0,``1,``2)">
+            <summary>
+            <see cref="M:ilPSP.LinSolvers.ISparseSolverExt.Solve``3(System.Double,``0,``1,``2)"/>
+            </summary>
+        </member>
+        <member name="M:ilPSP.LinSolvers.MUMPS.MUMPSSolver.ScatterFromProc0(System.Double[],System.Double[])">
+            <summary>
+            Scatters solution vector from process 0 to other MPI processors.
+            </summary>
+            <param name="__x">
+            input; long vector on proc 0
+            </param>
+            <param name="_x">
+            output;
+            </param>
+        </member>
+        <member name="M:ilPSP.LinSolvers.MUMPS.MUMPSSolver.GatherOnProc0(System.Double[],System.Double[],System.Double[]@,System.Double[]@)">
+            <summary>
+            Gathers RHS and solution vector on process 0 for more than one MPI process.
+            </summary>
+            <param name="__b">local part of rhs</param>
+            <param name="__x">local part of solution/initial guess</param>
+            <param name="_x">gathered rhs</param>
+            <param name="_b">gathered solution vectors</param>
+        </member>
+        <member name="M:ilPSP.LinSolvers.MUMPS.MUMPSSolver.Finalize">
+            <summary>
+            Disposing/release of internal data structures
+            </summary>
+        </member>
+        <member name="M:ilPSP.LinSolvers.MUMPS.MUMPSSolver.Dispose">
+            <summary>
+            Disposing/release of internal data structures
+            </summary>
+        </member>
+        <member name="T:ilPSP.LinSolvers.MUMPS.MUMPS_csharp">
+            <summary>
+            Wrapper for the Wrapper
+            </summary>
+        </member>
+        <member name="T:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS">
+            <summary>
+            Native library wrapper for MUMPS library (v 5.0.2)
+            </summary>
+        </member>
+        <member name="M:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS.SelectLibrary(ilPSP.LinSolvers.Parallelism)">
+            <summary>
+            Read from Environment which type of parallel library should be used.
+            Returns a list of libraries in specific order to search for.
+            </summary>
+        </member>
+        <member name="M:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS.#ctor(ilPSP.LinSolvers.Parallelism)">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="T:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS._MUMPS_GET_MAPPING">
+            <summary>
+            see MUMS manual
+            </summary>
+        </member>
+        <member name="P:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS.MUMPS_GET_MAPPING">
+            <summary>
+            see MUMS manual
+            </summary>
+        </member>
+        <member name="T:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS._MUMPS_GET_PIVNUL_LIST">
+            <summary>
+            see MUMS manual
+            </summary>
+        </member>
+        <member name="P:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS.MUMPS_GET_PIVNUL_LIST">
+            <summary>
+            see MUMS manual
+            </summary>
+        </member>
+        <member name="T:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS._MUMPS_GET_SYM_PERM">
+            <summary>
+            see MUMS manual
+            </summary>
+        </member>
+        <member name="P:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS.MUMPS_GET_SYM_PERM">
+            <summary>
+            see MUMS manual
+            </summary>
+        </member>
+        <member name="T:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS._MUMPS_GET_UNS_PERM">
+            <summary>
+            see MUMS manual
+            </summary>
+        </member>
+        <member name="P:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS.MUMPS_GET_UNS_PERM">
+            <summary>
+            see MUMS manual
+            </summary>
+        </member>
+        <member name="T:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS._DMUMPS_F77_">
+            <summary>
+            signature of MUMPS main routine
+            </summary>
+        </member>
+        <member name="P:ilPSP.LinSolvers.MUMPS.UnsafeMUMPS.DMUMPS_F77_">
+            <summary>
+            MUMPS main routine
+            </summary>
+        </member>
+    </members>
+</doc>
