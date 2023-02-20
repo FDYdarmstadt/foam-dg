@@ -1,5 +1,5 @@
 variables:
-    - FOAM_DG_ROOT=/home/gitlab-runner/
+    - FOAM_DG_ROOT: /home/gitlab-runner/
 
 Release:
   stage: build
