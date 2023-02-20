@@ -217,7 +217,7 @@ public:
             DgGeometricField<Type, dgPatchField, cellMesh>& vf,
             DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
             // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
-            DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+            DgGeometricField<Type, dgPatchField, cellMesh>& phif,
             surfaceScalarField& Flux
         ) = 0;
 // {
@@ -235,7 +235,7 @@ public:
             // const dimensionedScalar&,
             DgGeometricField<Type, dgPatchField, cellMesh>& vf,
             DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-            DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+            DgGeometricField<Type, dgPatchField, cellMesh>& phif,
             surfaceScalarField& Flux
         ) = 0;
 // {

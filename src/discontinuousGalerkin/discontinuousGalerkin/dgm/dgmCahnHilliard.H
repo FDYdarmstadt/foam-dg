@@ -66,7 +66,7 @@ dgCahnHilliard
     DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     DgGeometricField<dgVector, dgPatchField, cellMesh>& Uf,
     // const DgGeometricField<dgVector, dgPatchField, cellMesh>& phif,
-    DgGeometricField<dgVector, dgPatchField, cellMesh>& phif,
+    DgGeometricField<dgScalar, dgPatchField, cellMesh>& phif,
     surfaceScalarField& Flux,
     const word& name
 )
@@ -86,7 +86,7 @@ dgCahnHilliard
     DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
     // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
     surfaceScalarField& Flux,
-    DgGeometricField<VType, dgPatchField, cellMesh>& phif
+    DgGeometricField<Type, dgPatchField, cellMesh>& phif
 )
 {
 
@@ -120,7 +120,7 @@ dgCahnHilliard
     const geometricOneField&,
     DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-    DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+    DgGeometricField<Type, dgPatchField, cellMesh>& phif,
     surfaceScalarField& Flux,
     const word& name
 )
@@ -136,7 +136,7 @@ dgCahnHilliard
     const geometricOneField&,
     DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-    DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+    DgGeometricField<Type, dgPatchField, cellMesh>& phif,
     surfaceScalarField& Flux
 )
 {
@@ -162,24 +162,24 @@ dgCahnHilliard
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-template<class Type, class VType>
-tmp<dgMatrix<Type> >
-dgCahnHilliard
-(
-   // const GeometricField<GType, dgsPatchField, surfaceMesh>& gamma,
-   DgGeometricField<Type, dgPatchField, cellMesh>& vf,
-   DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-   DgGeometricField<VType, dgPatchField, cellMesh>& phif,
-   surfaceScalarField& Flux,
-   const word& name
-)
-{
-   return dg::dgCahnHilliardScheme<Type, VType>::New
-   (
-       vf.mesh(),
-       vf.mesh().schemesDict().dgCahnHilliardScheme(name)
-   )().dgmCahnHilliard(vf, Uf, phif, Flux);
-}
+// template<class Type, class VType>
+// tmp<dgMatrix<Type> >
+// dgCahnHilliard
+// (
+//    // const GeometricField<GType, dgsPatchField, surfaceMesh>& gamma,
+//    DgGeometricField<Type, dgPatchField, cellMesh>& vf,
+//    DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
+//    DgGeometricField<Type, dgPatchField, cellMesh>& phif,
+//    surfaceScalarField& Flux,
+//    const word& name
+// )
+// {
+//    return dg::dgCahnHilliardScheme<Type, VType>::New
+//    (
+//        vf.mesh(),
+//        vf.mesh().schemesDict().dgCahnHilliardScheme(name)
+//    )().dgmCahnHilliard(vf, Uf, phif, Flux);
+// }
 
 template<class Type, class VType>
 tmp<dgMatrix<Type> >
@@ -188,7 +188,7 @@ dgCahnHilliard
    // const GeometricField<GType, dgsPatchField, surfaceMesh>& gamma,
    GeometricField<Type, dgPatchField, cellMesh>& vf,
    GeometricField<VType, dgPatchField, cellMesh>& Uf,
-   GeometricField<VType, dgPatchField, cellMesh>& phif,
+   GeometricField<Type, dgPatchField, cellMesh>& phif,
    surfaceScalarField& Flux
 )
 {
@@ -210,7 +210,7 @@ dgCahnHilliard
    // const GeometricField<GType, dgsPatchField, surfaceMesh>& gamma,
    DgGeometricField<Type, dgPatchField, cellMesh>& vf,
    DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-   DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+   DgGeometricField<Type, dgPatchField, cellMesh>& phif,
    surfaceScalarField& Flux
 )
 {

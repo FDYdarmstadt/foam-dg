@@ -1,12 +1,16 @@
 #!/bin/sh
 set -x
 
+rm -r ./discontinuousGalerkin/lnInclude
+wmakeLnInclude discontinuousGalerkin
+# wmakeLnInclude CahnHilliardFoam
+
 wmake libso discontinuousGalerkin
 
 # wmake testDg
 # wmake testDgField
 
-wmake dgLaplacianFoam
+# wmake dgLaplacianFoam
 wmake CahnHilliardFoam
 # wmake dgConvectionFoam
 # wmake dgScalarTransport

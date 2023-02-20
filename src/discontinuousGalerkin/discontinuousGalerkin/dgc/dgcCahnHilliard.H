@@ -56,7 +56,7 @@ namespace dgc
     (
         const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const DgGeometricField<VType, dgPatchField, cellMesh>&,
-        const DgGeometricField<VType, dgPatchField, cellMesh>&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const word&
     );
 
@@ -65,7 +65,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
-        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
+        const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const word&
     );
 
@@ -81,7 +81,7 @@ namespace dgc
     (
         const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const DgGeometricField<VType, dgPatchField, cellMesh>&,
-        const DgGeometricField<VType, dgPatchField, cellMesh>&
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
     template<class Type, class VType>
@@ -89,7 +89,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
-        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&
+        const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&
     );
 
 
@@ -106,7 +106,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
-        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
+        const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const word&
     );
 
@@ -122,7 +122,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
-        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&
+        const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&
     );
 
 // WE USE THIS:
@@ -131,7 +131,7 @@ namespace dgc
     (
         const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const DgGeometricField<dgVector, dgPatchField, cellMesh>&,
-        const DgGeometricField<dgVector, dgPatchField, cellMesh>&,
+        const DgGeometricField<dgScalar, dgPatchField, cellMesh>&,
         const word&
     );
 
@@ -140,7 +140,7 @@ namespace dgc
     (
         const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh>>&,
-        const tmp<DgGeometricField<VType, dgPatchField, cellMesh>>&,
+        const tmp<DgGeometricField<Type, dgPatchField, cellMesh>>&,
         const word&
     );
 
@@ -149,7 +149,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const DgGeometricField<VType, dgPatchField, cellMesh>&,
-        const DgGeometricField<VType, dgPatchField, cellMesh>&,
+        const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const word&
     );
 
@@ -158,7 +158,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
-        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
+        const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const word&
     );
 
@@ -175,7 +175,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const DgGeometricField<VType, dgPatchField, cellMesh>&,
-        const DgGeometricField<VType, dgPatchField, cellMesh>&
+        const DgGeometricField<Type, dgPatchField, cellMesh>&
     );
 
     template<class Type, class VType>
@@ -183,7 +183,7 @@ namespace dgc
     (
         const DgGeometricField<Type, dgPatchField, cellMesh>&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
-        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&
+        const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&
     );
 
     template<class Type, class VType>
@@ -191,7 +191,7 @@ namespace dgc
     (
         const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&,
         const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&,
-        const tmp<DgGeometricField<VType, dgPatchField, cellMesh> >&
+        const tmp<DgGeometricField<Type, dgPatchField, cellMesh> >&
     );
 
 

@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 9/5/2022 1:55:34 PM
+// Creation Date: 2/10/2023 4:19:36PM
 // ##########################################################################
 #pragma once
 namespace BoSSS
@@ -22,6 +22,7 @@ MonoObject* _GetMonoObject();
 OpenFoamDGField(BoSSS::Foundation::Grid::OpenFOAMGrid* g, int degree, int NoOfComponents);
 void SetDGcoordinate(int f, int j, int n, double val);
 double GetDGcoordinate(int f, int j, int n);
+void SetMean(int f, int j, double val);
 double GetMean(int f, int j);
 void _SetForeignPointer(void* ptr);
 void* _GetForeignPointer();
@@ -32,6 +33,7 @@ uint32_t _MonoGCHandle;
 MonoMethod* _ctor_0;
 MonoMethod* _SetDGcoordinate;
 MonoMethod* _GetDGcoordinate;
+MonoMethod* _SetMean;
 MonoMethod* _GetMean;
 MonoMethod* __SetForeignPointer;
 MonoMethod* __GetForeignPointer;

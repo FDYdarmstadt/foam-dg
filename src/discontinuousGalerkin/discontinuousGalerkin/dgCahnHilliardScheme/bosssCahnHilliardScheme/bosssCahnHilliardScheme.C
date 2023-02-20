@@ -58,7 +58,7 @@ bosssCahnHilliardScheme<Type, VType>::dgcCahnHilliard
     // const dimensionedScalar& gamma,
     DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-    DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+    DgGeometricField<Type, dgPatchField, cellMesh>& phif,
     surfaceScalarField& Flux
 )
 {
@@ -86,7 +86,7 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
     // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
-    DgGeometricField<VType, dgPatchField, cellMesh>& phif,
+    DgGeometricField<Type, dgPatchField, cellMesh>& phif,
     surfaceScalarField& Flux
 )
 {
@@ -127,8 +127,10 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
     BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
-    BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetPhi();
+    BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetMu();
     // BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField = BoSSSOp->GetFlux();
+    vf.SyncFromBoSSS();
+    Uf.SyncFromBoSSS();
     phif.SyncFromBoSSSDGField(PhiDGField);
     // Flux.SyncFromBoSSSDGField(FluxDGField);
 
@@ -136,18 +138,9 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     // dgm.flux_ = Field<Vector<Type>>(J);
     // OpenFoamDGField *bo = dgf.GetBoSSSobject();
 
-    Info << "sizes: " << endl;
-    Info << Flux.size() << endl;
-    Info << J << endl;
     Uf.SyncFromBoSSS();
-    Info << "Uf.dgmesh().finVolMesh():" << endl;
-    Info << Uf.dgmesh().finVolMesh() << endl;
-    Info << "Uf.dgmesh().finVolMesh()->Sf():" << endl;
-    Info << Uf.dgmesh().finVolMesh()->Sf() << endl;
-    Info << "Uf.volVecField():" << endl;
-    Info << Uf.volVecField() << endl;
 
-    Flux = linearInterpolate(Uf.volVecField() * vf.volScaField()) & Uf.dgmesh().finVolMesh()->Sf(); // TODO introduce vf here, if possible from the DG representation directly
+    Flux = linearInterpolate(Uf.volVecField() * vf.volScaField()) & Uf.dgmesh().finVolMesh()->Sf();
 
     // forAll(Flux.mesh().interfaces(), interfaceI){
     //     int cellA = Flux.mesh().faceOwner()[interfaceI];

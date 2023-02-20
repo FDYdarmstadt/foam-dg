@@ -55,10 +55,15 @@ int main(int argc, char *argv[])
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     Info<< "\nRunning\n" << endl;
+    Info << "Time = " << runTime.timeName() << nl << endl;
 
-    while (runTime.loop())
-    {
-        Info<< "Time = " << runTime.timeName() << nl << endl;
+    if (runTime.timeName() == "0") {
+      Info << "Initializing from Scalar fields" << endl;
+      C.importFromVolScaField();
+      U.importFromVolVecField();
+    }
+    while (runTime.loop()) {
+      Info << "Time = " << runTime.timeName() << nl << endl;
 
         #include "CEqn.H"
 

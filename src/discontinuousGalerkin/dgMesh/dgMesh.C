@@ -93,7 +93,6 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
             << "Creating dgMesh from polyMesh" << endl;
     }
 
-
     int nPoints = pMesh.nPoints();
 
     const Foam::polyBoundaryMesh& bm = pMesh.boundaryMesh();
@@ -126,7 +125,6 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
         }
         i++;
     }
-    // emptyTag=-1;
 
     int* vertices_per_face_Array = (int*) malloc(sizeof(int)*nFaces);
     int* faceOwner_Array = (int*) malloc(sizeof(int)*nFaces);
@@ -189,7 +187,6 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     free(facesArray);
     free(facesContent);
 
-    Info << "Hello from dgMesh 1" << endl;
     fvMesh *finVolMesh__ = new Foam::fvMesh(
         IOobject
         (
@@ -208,7 +205,6 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
         // mesh().allFaces(),
         Xfer<cellList>(pMesh.cells()), true);
     this->finVolMesh_ = finVolMesh__;
-    Info << "Hello from dgMesh 2" << endl;
 }
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //

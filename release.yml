@@ -1,0 +1,29 @@
+Release:
+  stage: build
+  script:
+    - echo $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - echo $CI_MERGE_REQUEST_EVENT_TYPE
+    - mkdir ~/foam || echo
+    - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
+    - cp -r /home/administrator/foam/administrator-4.1/ ~/foam || echo
+    - rm -rf ~/foam/gitlab-runner-4.1 || echo
+    - mv ~/foam/administrator-4.1/ ~/foam/gitlab-runner-4.1 || echo
+    - source ~/foam/foam-extend-4.1/etc/bashrc
+    - cd src
+    - ./Allwmake
+    - cd ..
+  tags:
+    - linux
+
+Tests:
+  stage: test
+  script:
+    - mkdir ~/foam || echo
+    - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
+    - source ~/foam/foam-extend-4.1/etc/bashrc
+    - cd ./run/dropletInShearFlowSmall/
+    - CahnHilliardFoam
+  needs:
+    - Release
+  tags:
+    - linux

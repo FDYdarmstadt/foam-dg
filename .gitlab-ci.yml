@@ -1,0 +1,12 @@
+variables:
+  GIT_DEPTH: 10
+  FOAM_DG_ROOT: /home/gitlab-runner/builds/4AssrEmF/0/bosss1/foam-dg/
+
+
+Integration:
+  rules:
+    - if: $CI_MERGE_REQUEST_ID 
+  trigger:
+    include:
+      - local: integration.yml
+    strategy: depend

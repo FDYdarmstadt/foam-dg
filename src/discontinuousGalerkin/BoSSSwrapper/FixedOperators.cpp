@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 9/5/2022 1:55:34 PM
+// Creation Date: 2/10/2023 4:19:36PM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -36,7 +36,7 @@ _ctor_0 = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.External
 __SetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:_SetForeignPointer", true);
 __GetForeignPointer = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:_GetForeignPointer", true);
 _GetFlux = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:GetFlux", true);
-_GetPhi = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:GetPhi", true);
+_GetMu = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:GetMu", true);
 _CahnHilliard = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:CahnHilliard", true);
 _Laplacian = BoSSS::Globals::LookupMethod(_ClassHandle, "BoSSS.Application.ExternalBinding.FixedOperators:Laplacian", true);
 }
@@ -126,14 +126,14 @@ if (exception != NULL) {
 }
 return BoSSS::Application::ExternalBinding::OpenFoamDGField::_FromMonoObject(retval);
 }
-BoSSS::Application::ExternalBinding::OpenFoamDGField* FixedOperators::GetPhi()
+BoSSS::Application::ExternalBinding::OpenFoamDGField* FixedOperators::GetMu()
 {
 void* args[1];
 MonoObject* exception;
 MonoObject* retval;
-retval = mono_runtime_invoke(_GetPhi, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
+retval = mono_runtime_invoke(_GetMu, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
 if (exception != NULL) {
-    fprintf( stderr, "got exception from C# (FixedOperators.GetPhi) \n");
+    fprintf( stderr, "got exception from C# (FixedOperators.GetMu) \n");
 }
 return BoSSS::Application::ExternalBinding::OpenFoamDGField::_FromMonoObject(retval);
 }
