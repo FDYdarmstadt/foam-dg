@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      fvMesh/fvC;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 0 0 0 0];
+
+internalField   nonuniform List<scalar> 
+25
+(
+-1
+-1
+-1
+-1
+-1
+-1
+-0.99999999969
+-0.999999649254
+-0.999999999689
+-1
+-1
+-0.999999650244
+0.60796864781
+-0.99999964826
+-1
+-1
+-0.99999999969
+-0.999999649254
+-0.999999999689
+-1
+-1
+-1
+-1
+-1
+-1
+)
+;
+
+boundaryField
+{
+    top
+    {
+        type            zeroGradient;
+    }
+    bottom
+    {
+        type            zeroGradient;
+    }
+    left
+    {
+        type            zeroGradient;
+    }
+    right
+    {
+        type            zeroGradient;
+    }
+    frontAndBack
+    {
+        type            zeroGradient;
+    }
+}
+
+
+// ************************************************************************* //
