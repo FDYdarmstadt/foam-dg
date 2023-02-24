@@ -34,7 +34,7 @@ setFormat raw;
 // Note:
 // other formats such as obj, stl, etc can also be written (by proxy)
 // but without any values!
-surfaceFormat vtk;
+// surfaceFormat vtk;
 
 // optionally define extra controls for the output formats
 
@@ -48,12 +48,12 @@ surfaceFormat vtk;
 // 1] vertex values determined from neighbouring cell-centre values
 // 2] face values determined using the current face interpolation scheme
 //    for the field (linear, gamma, etc.)
-interpolationScheme cellPoint;
+interpolationScheme cell;
 
 // Fields to sample.
 fields
 (
-    ordPar
+    fvC
 );
 
 // Set sampling definition: choice of
@@ -83,13 +83,12 @@ sets
 (
     lineX1
     {
-        type        uniform;
+        type        midPoint;
         axis        x;
 
-        //- cavity. Slightly perturbed so not to align with face or edge.
-        start       (0 0.05 0.00001);
-        end         (1 0.05 0.00001);
-        nPoints     100;
+        start       (-1 0.05 0.05);
+        end         (1  0.05 0.05);
+        // nPoints     100;
     }
 
   /*  lineX2

@@ -23,10 +23,10 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         0.01;//0.015;
+endTime         0.025;
 
 // deltaT          1e-6;
-deltaT          1e-3;
+deltaT          1e-2;
 
 writeControl    adjustableRunTime;//timeStep;//
 
