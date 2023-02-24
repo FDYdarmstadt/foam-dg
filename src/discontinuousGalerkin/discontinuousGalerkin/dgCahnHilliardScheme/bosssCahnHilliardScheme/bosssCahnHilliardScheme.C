@@ -130,7 +130,8 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
 
     BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
-    BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU);
+    double dt = vf.time().deltaT().value();
+    BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU, dt);
     BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetMu();
     // BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField = BoSSSOp->GetFlux();
     vf.SyncFromBoSSS();

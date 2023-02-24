@@ -19,7 +19,7 @@ params = {'text.latex.preamble' : [r'\usepackage{siunitx}', r'\usepackage{amsmat
 
 def runOFCase(casePath):
     # cleanup
-    timeDirectories = glob.glob(casePath + '/[0-9].*')
+    timeDirectories = glob.glob(casePath + '/[0-9]*')
     plotFiles = glob.glob(casePath + '/*.plt')
     try:
         shutil.rmtree(casePath + "/postProcessing")
@@ -35,7 +35,7 @@ def runOFCase(casePath):
     subprocess.run(["CahnHilliardFoam"], cwd=casePath)
 
 def prepareOFDir(casePath):
-    timeDirectories = glob.glob(casePath + '/[0-9].*')
+    timeDirectories = glob.glob(casePath + '/[0-9]*')
     for timeDir in timeDirectories:
         baseDir = timeDir
         sourceDir = baseDir + "/fvMesh/"
@@ -79,7 +79,7 @@ def plotAnalytical(cahn):
 def plotOF(basePath, size):
     casePath = basePath + "/" + size
     postprocessOFCase(casePath)
-    timeDirectories = glob.glob(casePath + '/postProcessing/sets/[0-9].*')
+    timeDirectories = glob.glob(casePath + '/postProcessing/sets/[0-9]*')
     time = timeDirectories[-1]
     xs, cs = readDataOF(time + "/lineX1_fvC.xy")
     plt.plot(xs, cs, ".", label=size+ "(OF)")
@@ -102,7 +102,7 @@ def getOFError(basePath, size, cahn, rerun=False):
     if rerun:
         runOFCase(basePath + "/" + size)
     postprocessOFCase(casePath)
-    timeDirectories = glob.glob(casePath + '/postProcessing/sets/[0-9].*')
+    timeDirectories = glob.glob(casePath + '/postProcessing/sets/[0-9]*')
     time = timeDirectories[-1]
     xs, cs = readDataOF(time + "/lineX1_fvC.xy")
     ys = np.fromiter(map(lambda x: math.tanh(x/(math.sqrt(2) * cahn)), xs), dtype=np.double)
