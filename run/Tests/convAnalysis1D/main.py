@@ -129,7 +129,7 @@ def main(inp):
     # plotEverything(caseDir, cahn, rerun)
     ooc = getOOC(caseDir, cahn, rerun)
     print(ooc)
-    return ooc > 2.999
+    return ooc > 2.99
 
 ret = main(sys.argv)
 if not ret:
