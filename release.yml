@@ -35,6 +35,7 @@ ConvergenceTest1D:
     - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
     - source ~/foam/foam-extend-4.1/etc/bashrc
     - cd ./run/Tests/convAnalysis1D/
+    - pip3 install scipy
     - python3 main.py True
     - cd ../../../
   needs:
