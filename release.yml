@@ -23,6 +23,10 @@ Tests:
     - source ~/foam/foam-extend-4.1/etc/bashrc
     - cd ./run/dropletInShearFlowSmall/
     - CahnHilliardFoam
+    - cd ../../
+    - cd ./run/Tests/convAnalysis1D/
+    - python main.py True
+    - cd ../../../
   needs:
     - Release
   tags:

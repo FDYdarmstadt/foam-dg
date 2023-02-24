@@ -118,7 +118,6 @@ def getOOC(basePath, cahn, rerun=False):
         return a + b*x
     result = optimization.curve_fit(fittingFunc, DOFslog, errorslog)
     ooc = -result[0][1]
-    offset = result[0][0]
     return(ooc)
 
 def main(inp):
@@ -129,6 +128,9 @@ def main(inp):
     caseDir = os.path.dirname(os.path.realpath(sys.argv[0]))
     # plotEverything(caseDir, cahn, rerun)
     ooc = getOOC(caseDir, cahn, rerun)
-    return ooc > 2.99
+    print(ooc)
+    return ooc > 2.999
 
-main(sys.argv)
+ret = main(sys.argv)
+if not ret:
+    raise Exception("Convergence order threshold not reached")
