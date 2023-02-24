@@ -13,6 +13,7 @@
           "BoSSS.Foundation.Grid": "1.0.0",
           "BoSSS.Platform": "1.0.0",
           "BoSSS.Solution": "1.0.0",
+          "BoSSS.Solution.ASCIIExport": "1.0.0",
           "BoSSS.Solution.NSECommon": "1.0.0",
           "BoSSS.Solution.Tecplot": "1.0.0",
           "CahnHilliard": "1.0.0",
@@ -20,8 +21,7 @@
           "NETStandard.Library": "2.0.3",
           "ilPSP": "1.0.0",
           "ilPSP.LinSolvers": "1.0.0",
-          "ilPSP.LinSolvers.PARDISO": "1.0.0",
-          "nunit.framework": "3.13.2.0"
+          "ilPSP.LinSolvers.PARDISO": "1.0.0"
         },
         "runtime": {
           "BoSSS.Application.ExternalBinding.dll": {}
@@ -38,10 +38,41 @@
           }
         }
       },
+      "MathNet.Numerics/5.0.0": {
+        "runtime": {
+          "lib/netstandard2.0/MathNet.Numerics.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.0.0"
+          }
+        }
+      },
       "Microsoft.NETCore.Platforms/1.1.0": {},
       "NETStandard.Library/2.0.3": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
+        }
+      },
+      "NUnit/3.13.3": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/nunit.framework.dll": {
+            "assemblyVersion": "3.13.3.0",
+            "fileVersion": "3.13.3.0"
+          }
+        }
+      },
+      "NUnitLite/3.13.3": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.3",
+          "NUnit": "3.13.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/nunitlite.dll": {
+            "assemblyVersion": "3.13.3.0",
+            "fileVersion": "3.13.3.0"
+          }
         }
       },
       "System.Buffers/4.4.0": {
@@ -203,6 +234,7 @@
           "BoSSS.Foundation.XDG": "1.0.0",
           "BoSSS.Platform": "1.0.0",
           "MPI.Wrappers": "1.0.0",
+          "MathNet.Numerics": "5.0.0",
           "ilPSP": "1.0.0",
           "ilPSP.Connectors.Matlab": "1.0.0"
         },
@@ -231,6 +263,17 @@
         },
         "runtime": {
           "BoSSS.Solution.AdvancedSolvers.dll": {}
+        }
+      },
+      "BoSSS.Solution.ASCIIExport/1.0.0": {
+        "dependencies": {
+          "BoSSS.Foundation": "1.0.0",
+          "BoSSS.Platform": "1.0.0",
+          "BoSSS.Solution": "1.0.0",
+          "ilPSP": "1.0.0"
+        },
+        "runtime": {
+          "BoSSS.Solution.ASCIIExport.dll": {}
         }
       },
       "BoSSS.Solution.Gnuplot/1.0.0": {
@@ -454,18 +497,11 @@
       },
       "MPI.Wrappers/1.0.0": {
         "dependencies": {
+          "NUnitLite": "3.13.3",
           "log4net": "2.0.15"
         },
         "runtime": {
           "MPI.Wrappers.dll": {}
-        }
-      },
-      "nunit.framework/3.13.2.0": {
-        "runtime": {
-          "nunit.framework.dll": {
-            "assemblyVersion": "3.13.2.0",
-            "fileVersion": "3.13.2.0"
-          }
         }
       },
       "Newtonsoft.Json/6.0.0.0": {
@@ -524,14 +560,6 @@
           }
         }
       },
-      "MathNet.Numerics/4.15.0.0": {
-        "runtime": {
-          "MathNet.Numerics.dll": {
-            "assemblyVersion": "4.15.0.0",
-            "fileVersion": "4.15.0.0"
-          }
-        }
-      },
       "System.Collections.Immutable/5.0.0.0": {
         "runtime": {
           "System.Collections.Immutable.dll": {
@@ -571,6 +599,13 @@
       "path": "log4net/2.0.15",
       "hashPath": "log4net.2.0.15.nupkg.sha512"
     },
+    "MathNet.Numerics/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pg1W2VwaEQMAiTpGK840hZgzavnqjlCMTVSbtVCXVyT+7AX4mc1o89SPv4TBlAjhgCOo9c1Y+jZ5m3ti2YgGgA==",
+      "path": "mathnet.numerics/5.0.0",
+      "hashPath": "mathnet.numerics.5.0.0.nupkg.sha512"
+    },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
       "serviceable": true,
@@ -584,6 +619,20 @@
       "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "path": "netstandard.library/2.0.3",
       "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
+    },
+    "NUnit/3.13.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KNPDpls6EfHwC3+nnA67fh5wpxeLb3VLFAfLxrug6JMYDLHH6InaQIWR7Sc3y75d/9IKzMksH/gi08W7XWbmnQ==",
+      "path": "nunit/3.13.3",
+      "hashPath": "nunit.3.13.3.nupkg.sha512"
+    },
+    "NUnitLite/3.13.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-w0UmxCB+rilBhqAjjPDDwUc7luFlMaKofG6t/JUVe82ywZcAthoUGs1BpX8ifSLrgtDTZ1LG8l5cHMUXvnd9rw==",
+      "path": "nunitlite/3.13.3",
+      "hashPath": "nunitlite.3.13.3.nupkg.sha512"
     },
     "System.Buffers/4.4.0": {
       "type": "package",
@@ -683,6 +732,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "BoSSS.Solution.ASCIIExport/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "BoSSS.Solution.Gnuplot/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -768,11 +822,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "nunit.framework/3.13.2.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
     "Newtonsoft.Json/6.0.0.0": {
       "type": "reference",
       "serviceable": false,
@@ -804,11 +853,6 @@
       "sha512": ""
     },
     "Microsoft.CodeAnalysis.CSharp.Scripting/4.2.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "MathNet.Numerics/4.15.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

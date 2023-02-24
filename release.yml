@@ -15,13 +15,26 @@ Release:
   tags:
     - linux
 
-Tests:
+ConvergenceTest1D:
   stage: test
   script:
     - mkdir ~/foam || echo
     - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
     - source ~/foam/foam-extend-4.1/etc/bashrc
-    - cd ./run/dropletInShearFlowSmall/
+    - cd ./run/Tests/convAnalysis1D/
+    - python3 main.py True
+  needs:
+    - Release
+  tags:
+    - linux
+
+DropletTest:
+  stage: test
+  script:
+    - mkdir ~/foam || echo
+    - cp -r /home/administrator/foam/foam-extend-4.1/ ~/foam || echo
+    - source ~/foam/foam-extend-4.1/etc/bashrc
+    - cd ./run/Tests/dropletInShearFlowSmall/
     - CahnHilliardFoam
   needs:
     - Release

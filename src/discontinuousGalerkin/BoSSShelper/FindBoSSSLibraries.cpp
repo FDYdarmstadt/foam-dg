@@ -1,5 +1,6 @@
 #include "FindBoSSSLibraries.h"
 #include <sys/stat.h>
+#include <string.h>
 
 bool DoesPathExist(const std::string &s)
 {
@@ -8,8 +9,13 @@ bool DoesPathExist(const std::string &s)
 }
 
 std::string GetBoSSSLibraryDirectory(){
-  std::string bosssinstall = getenv("BOSSS_INSTALL");
-  std::string rootdir = getenv("FOAM_DG_ROOT");
+  // std::string bosssinstall = getenv("BOSSS_INSTALL");
+  char* rootdirCh = getenv("FOAM_DG_ROOT");
+  if (rootdirCh == NULL){
+    throw "Please set the environment variable $FOAM_DG_ROOT to the absolute path of your foam-dg repository location.";
+  }
+  std::string rootdir;
+  rootdir = rootdirCh;
   // std::string bossslibdir = bosssinstall + "/public/src/L4-application/ExternalBinding.CodeGen/bin/Release/net5.0/";
   // std::string bossslibdir = bosssinstall + "/public/src/L4-application/ExternalBinding.CodeGen/bin/Debug/net6.0/";
   // std::string bossslibdir = bosssinstall + "/public/src/L4-application/ExternalBinding.CodeGen/bin/Release/netstandard2.0/";

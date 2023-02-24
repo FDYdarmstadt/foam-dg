@@ -117,7 +117,11 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     // Info << vf.PatchFieldType << endl;
     // dgMatrix<Type>& Udgm = Utdgm();
 
-    BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = dgm.GetBoSSSobject();
+    // bosssMtx = dgm.GetBoSSSobject();
+    if (bosssMtx == NULL) {
+        Info << "bosssMtx is null, creating it" << endl;
+        bosssMtx = dgm.GetBoSSSobject();
+    }
     // BoSSS::Application::ExternalBinding::OpenFoamMatrix* UbosssMtx = Udgm.GetBoSSSobject();
     BoSSS::Application::ExternalBinding::OpenFoamPatchField* bosssPtch = vf.bosssObjectPatchField_;
     BoSSS::Application::ExternalBinding::OpenFoamPatchField* bosssPtchU = Uf.bosssObjectPatchField_;

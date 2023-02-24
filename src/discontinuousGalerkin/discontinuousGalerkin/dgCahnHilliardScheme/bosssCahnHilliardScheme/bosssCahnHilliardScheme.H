@@ -152,6 +152,8 @@ public:
 //            const GeometricField<GType, dgsPatchField, surfaceMesh>&,
 //            const GeometricField<Type, dgPatchField, cellMesh>&
 //        );
+
+        BoSSS::Application::ExternalBinding::OpenFoamMatrix* bosssMtx = NULL;
 };
 
 
