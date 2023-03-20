@@ -54,6 +54,15 @@
         transportProperties.lookup("rhob")
     );
 
+    dimensionedScalar nua
+    (
+        transportProperties.lookup("nua")
+    );
+    dimensionedScalar nub
+    (
+        transportProperties.lookup("nub")
+    );
+
 
     // Need to store rho for ddt(rho, U)
     // volScalarField rho
@@ -146,6 +155,12 @@
     //     ),
     //     *dgMesh.finVolMesh()
     // );
+
+    if (runTime.timeName() == "0") {
+      Info << "Initializing from Scalar fields" << endl;
+      C.importFromVolScaField();
+      U.importFromVolVecField();
+    }
 
     surfaceScalarField Flux
     (
