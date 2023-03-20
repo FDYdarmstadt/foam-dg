@@ -481,7 +481,6 @@ public:
                 IOobject
                 (
                 "fv" + this->name(),
-                // this->time().timeName(),
                 "0",
                 *dgmesh().finVolMesh(),
                 IOobject::MUST_READ,
@@ -502,7 +501,6 @@ public:
                 IOobject
                 (
                 "fv" + this->name(),
-                // this->time().timeName(),
                 "0",
                 *dgmesh().finVolMesh(),
                 IOobject::MUST_READ,
@@ -674,7 +672,6 @@ void importFromVolVectorField(DgGeometricField<dgVector, PatchField, GeoMesh> &d
     label J = dgf.dgmesh_.mesh().nCells();
     for (label j = 0; j < J; j++) {
         for (label d = 0; d < 3; d++) {
-            // Info << "Hello from importfromvolvecfield " << j << " " << d << endl;
             bo->SetMean(d, j, volField[j][d]);
             dgf[j][d][0] = bo->GetDGcoordinate(d, j, 0);
         }
