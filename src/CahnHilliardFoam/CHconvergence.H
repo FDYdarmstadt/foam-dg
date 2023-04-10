@@ -10,18 +10,18 @@
     //- Residuals on C
     scalar resC
     (
-        fvc::domainIntegrate(mag(C-C.prevIter())).value()
-        /fvc::domainIntegrate(mag(C)).value()
+        fvc::domainIntegrate(mag(c-c.prevIter())).value()
+        /fvc::domainIntegrate(mag(c)).value()
     );
 
     scalar resU
     (
-        fvc::domainIntegrate(mag(U-U.prevIter())).value()
-        /fvc::domainIntegrate(mag(U)).value()
+        fvc::domainIntegrate(mag(u-u.prevIter())).value()
+        /fvc::domainIntegrate(mag(u)).value()
     );
 
-    Info<< "Residuals on U: " << resU
-        << "    Residuals on C: " << resC;
+    Info<< "Residuals on u: " << resU
+        << "    Residuals on c: " << resC;
 
     if(resU < UTol && resC < CTol )
     {

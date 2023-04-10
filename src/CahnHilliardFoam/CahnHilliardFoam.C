@@ -32,6 +32,7 @@ Application
 #include "dgCFD.H"
 #include "fvCFD.H"
 #include "fvBlockMatrix.H"
+#include "pimpleControl.H"
 
 #include "GeometricField.H"
 
@@ -50,18 +51,37 @@ int main(int argc, char *argv[])
 #   include "createPolyMesh.H"
 #   include "createDgMesh.H"
 
+    pimpleControl pimple(mesh);
+
+#   include "readGravitationalAcceleration.H"
+#   include "initContinuityErrs.H"
 #   include "createFields.H"
+#   include "correctPhi.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     Info<< "\nRunning\n" << endl;
     Info << "Time = " << runTime.timeName() << nl << endl;
 
-    while (runTime.loop()) {
-      Info << "Time = " << runTime.timeName() << nl << endl;
+    while (runTime.loop())
+    {
+        Info << "Time = " << runTime.timeName() << nl << endl;
 
-        #include "CEqn.H"
-        // #include "UEqn.H"
+        // Pressure-velocity corrector
+        while (pimple.loop())
+        {
+#           include "CEqn.H"
+#           include "UEqn.H"
+
+            // --- PISO loop
+            while (pimple.correct())
+            {
+#               include "pEqn.H"
+            }
+
+#           include "continuityErrs.H"
+
+        }
 
         // #include "writeEnergyAndMass.H"
         runTime.write();

@@ -1,5 +1,111 @@
 #include "linear.H"
 
+    Info<< "Reading FV field p\n" << endl;
+    volScalarField pd
+    (
+        IOobject
+        (
+            "pd",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh
+    );
+
+    // Order paremeter C
+    Info<< "Reading FV field C\n" << endl;
+    volScalarField C
+    (
+        IOobject
+        (
+            "C",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh
+    );
+
+    // Chemical potential Psi
+    Info<< "Reading FV field Psi\n" << endl;
+    volScalarField Psi
+    (
+        IOobject
+        (
+            "Psi",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh
+    );
+
+    Info<< "Reading FV field U\n" << endl;
+    volVectorField U
+    (
+        IOobject
+        (
+            "U",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh
+    );
+
+    // Order parameter c
+    Info<< "Reading DG field c\n" << endl;
+
+    cellScalarField c
+    (
+        IOobject
+        (
+            "c",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        dgMesh
+    );
+
+    Info<< "Reading DG field u\n" << endl;
+
+    cellVectorField u
+    (
+        IOobject
+        (
+            "u",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        dgMesh
+    );
+
+    // Chemical potential psi
+    Info<< "Reading DG field psi\n" << endl;
+
+    cellScalarField psi
+    (
+        IOobject
+        (
+            "psi",
+            runTime.timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        dgMesh
+    );
+
+
     Info<< "Reading transportProperties\n" << endl;
 
     IOdictionary transportProperties
@@ -12,37 +118,6 @@
             IOobject::MUST_READ_IF_MODIFIED,
             IOobject::NO_WRITE
         )
-    );
-
-    // Info<< "Reading field psi\n" << endl;
-
-    // volScalarField psi
-    // (
-    //     IOobject
-    //     (
-    //         "psi",
-    //         runTime.timeName(),
-    //         mesh,
-    //         IOobject::MUST_READ,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh
-    // );
-
-
-    Info<< "Reading field C\n" << endl;
-
-    cellScalarField C
-    (
-        IOobject
-        (
-            "C",
-            runTime.timeName(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::AUTO_WRITE
-        ),
-        dgMesh
     );
 
     dimensionedScalar rhoa
@@ -64,6 +139,21 @@
     );
 
 
+    // Info<< "Reading field psi\n" << endl;
+
+    // volScalarField psi
+    // (
+    //     IOobject
+    //     (
+    //         "psi",
+    //         runTime.timeName(),
+    //         mesh,
+    //         IOobject::MUST_READ,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     mesh
+    // );
+
     // Need to store rho for ddt(rho, U)
     // volScalarField rho
     // (
@@ -81,39 +171,6 @@
     // );
 
     // rho.oldTime();
-
-
-    Info<< "Reading field U\n" << endl;
-
-    cellVectorField U
-    (
-        IOobject
-        (
-            "U",
-            runTime.timeName(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::AUTO_WRITE
-        ),
-        dgMesh
-    );
-
-    Info<< "Reading field Phi\n" << endl;
-
-    // surfaceScalarField Phi
-    cellScalarField Phi
-    (
-        IOobject
-        (
-            "Phi",
-            runTime.timeName(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::AUTO_WRITE
-        ),
-        dgMesh
-        // linearInterpolate(U.volVecField()) & dgMesh.finVolMesh()->Sf()
-    );
 
     // surfaceScalarField rhoPhi
     // (
@@ -156,17 +213,19 @@
     //     *dgMesh.finVolMesh()
     // );
 
-    if (runTime.timeName() == "0") {
-      Info << "Initializing from Scalar fields" << endl;
+    if (runTime.timeName() == "0")
+    {
+      Info << "Initializing DG fields from FV fields" << endl;
       C.importFromVolScaField();
       U.importFromVolVecField();
     }
 
-    surfaceScalarField Flux
+    // Volunetric face flux
+    surfaceScalarField phi
     (
         IOobject
         (
-            "Flux",
+            "phi",
             runTime.timeName(),
             mesh,
             IOobject::READ_IF_PRESENT,
@@ -175,6 +234,66 @@
         // linearInterpolate(fvU) & dgMesh.finVolMesh()->Sf()
         linearInterpolate(U.volVecField()) & dgMesh.finVolMesh()->Sf()
     );
+
+    // Mixture density
+    // Need to store rho for ddt(rho, U)
+    volScalarField rho
+    (
+        IOobject
+        (
+            "rho",
+            runTime.timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT
+        ),
+        (scalar(1) + C)/2.*rhoa + (scalar(1) - C)/2.*rhob,
+        C.boundaryField().types()
+    );
+    rho.oldTime();
+
+    // Mixture viscosity
+    volScalarField mu
+    (
+        IOobject
+        (
+            "mu",
+            runTime.timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT
+        ),
+        (scalar(1) + C)/2.*rhoa*nua + (scalar(1) - C)/2.*rhob*nub,
+        C.boundaryField().types()
+    );
+
+    // Mass flux
+    // Initialisation does not matter because rhoPhi is reset after the
+    // alpha1 solution before it is used in the U equation.
+    surfaceScalarField rhoPhi
+    (
+        IOobject
+        (
+            "rho*phi",
+            runTime.timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        rhoa*phi
+    );
+
+
+    Info<< "Calculating field g.h\n" << endl;
+    volScalarField gh("gh", g & mesh.C());
+    surfaceScalarField ghf("gh", g & mesh.Cf());
+
+    label pdRefCell = 0;
+    scalar pdRefValue = 0.0;
+    setRefCell(pd, pimple.dict(), pdRefCell, pdRefValue);
+    mesh.schemesDict().setFluxRequired(pd.name());
+
+    scalar pRefValue = 0.0;
+
+
 
     Info<< "Reading coefficient fa\n" << endl;
 

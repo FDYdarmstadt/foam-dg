@@ -54,7 +54,7 @@ do {
   dgScalarMatrix CEqn(
       // dgm::ddt(C)
       //     +
-      dgm::dgCahnHilliard(C, U, Phi, Flux)
+      dgm::dgCahnHilliard(c, u, Psi, phi) //phi : volumetric face flux
       // dgm::dgCahnHilliard(C, C)
       // dgm::dgLaplacian(C)
       // + fvm::Sp(dfdcCoeffs,C)
@@ -155,3 +155,16 @@ do {
 
   converged = true;
 } while (!converged);
+
+// After solution of the CH equation:
+
+//- Update FV fields from DG fields
+// TODO (Dario): c -> C and psi -> Psi
+
+//- Update mixture properties
+rho == (scalar(1) + C)/2.*rhoa + (scalar(1) - C)/2.*rhob;
+mu == (scalar(1) + C)/2.*rhoa*nua + (scalar(1) - C)/2.*rhob*nub;
+
+//- Update mass flux from dgScalarMatrix CEqn
+rhoPhi = CEqn.flux()/2*(rhob - rhoa) + phi*(rhob + rhoa)/2;
+
