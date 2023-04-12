@@ -21,7 +21,7 @@
                   fvc::interpolate(Psi)*fvc::snGrad(C)
                   - ghf*fvc::snGrad(rho)
                   - fvc::snGrad(pd)
-                )*mesh.magSf()
+                )*dgMesh.finVolMesh()->magSf()
             )
         );
     }

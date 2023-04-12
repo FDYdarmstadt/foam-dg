@@ -50,8 +50,9 @@ int main(int argc, char *argv[])
 #   include "createTime.H"
 #   include "createPolyMesh.H"
 #   include "createDgMesh.H"
+#   include "pimpleControl.H"
 
-    pimpleControl pimple(mesh);
+    pimpleControl pimple(*dgMesh.finVolMesh());
 
 #   include "readGravitationalAcceleration.H"
 #   include "initContinuityErrs.H"
