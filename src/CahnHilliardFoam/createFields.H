@@ -219,14 +219,14 @@
     //     *dgMesh.finVolMesh()
     // );
 
-    if (runTime.timeName() == "0")
-    {
-      Info << "Initializing DG fields from FV fields" << endl;
-      c.importFromVolScaField();
-      u.importFromVolVecField();
-    }
+    // if (runTime.timeName() == "0")
+    // {
+    //   Info << "Initializing DG fields from FV fields" << endl;
+    //   c.importFromVolScaField();
+    //   u.importFromVolVecField();
+    // }
 
-    // Volunetric face flux
+    // Volumetric face flux
     surfaceScalarField phi
     (
         IOobject

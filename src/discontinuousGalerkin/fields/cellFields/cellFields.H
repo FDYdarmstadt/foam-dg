@@ -231,6 +231,7 @@ public:
             GetBoSSSobject();
             GetBoSSSPatchobject();
             vsF_ = vsf;
+            this->importFromVolScaField();
         }
 
         //- Construct and read given IOobject
@@ -245,6 +246,7 @@ public:
             GetBoSSSobject();
             GetBoSSSPatchobject();
             vvF_ = vvf;
+            this->importFromVolVecField();
         }
 
         //- Construct and read from given stream
@@ -447,6 +449,14 @@ public:
     void SyncFromBoSSS() {
         OpenFoamDGField* bo = GetBoSSSobject();
         SyncFromBoSSSDGField(bo);
+        if (std::is_same<Type, dgScalar>()) {
+            GenericSyncMeanFromBoSSSDGScalarField(*vsF_);
+        }
+        else if (std::is_same<Type, dgVector>()) {
+            GenericSyncMeanFromBoSSSDGVectorField(*vvF_);
+        } else {
+            throw "type error!";
+        }
     }
 
     const dgMesh& dgmesh() {
