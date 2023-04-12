@@ -74,7 +74,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        dgMesh
+        dgMesh,
+        &C
     );
 
     Info<< "Reading DG field u\n" << endl;
@@ -89,7 +90,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        dgMesh
+        dgMesh,
+        &U
     );
 
     // Chemical potential psi
@@ -105,7 +107,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        dgMesh
+        dgMesh,
+        &Psi
     );
 
 

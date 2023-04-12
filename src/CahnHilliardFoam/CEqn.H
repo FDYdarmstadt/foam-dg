@@ -54,7 +54,7 @@ do {
   dgScalarMatrix CEqn(
       // dgm::ddt(C)
       //     +
-      dgm::dgCahnHilliard(c, u, psi, phi) //phi : volumetric face flux
+      dgm::dgCahnHilliard(c, u, phi, psi) //phi : volumetric face flux
       // dgm::dgCahnHilliard(C, C)
       // dgm::dgLaplacian(C)
       // + fvm::Sp(dfdcCoeffs,C)
