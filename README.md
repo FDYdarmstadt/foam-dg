@@ -11,29 +11,29 @@
 To use this code, follow these instructions:
 
 - clone this repository:
-```
+``` bash
 mkdir ~/foam/
 git clone https://git.rwth-aachen.de/bosss1/foam-dg.git ~/foam/foam-dg/
 ```
 
 - source `foam-extend`'s `bashrc`, i.e. something like (`foam-extend` users may already have defined a bash alias for this)
-```
-source ~/foam/foam-extend-4.1/etc/bashrc
+``` bash
+source ~/foam/foam-extend-4.1/etc/bashrc # adjust according to where you cloned foam-extend
 ```
 
 - export the `$FOAM_DG_ROOT`-variable (you may also want to put this in your `~/.bashrc` or wherever you set your bash variables):
-```
+``` bash
 export FOAM_DG_ROOT=~/foam/foam-dg/ # adjust according to where you cloned this repository
 ```
 
 - run the provided `src/Allwmake`-script
-```
+``` bash
 cd $FOAM_DG_ROOT/src
 ./Allwmake
 ```
 
 - try running one of the test cases, e.g.
-```
+``` bash
 cd $FOAM_DG_ROOT/run/Tests/dropletInShearFlowSmall/
 CahnHilliardFoam
 ```
