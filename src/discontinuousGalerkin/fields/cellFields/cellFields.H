@@ -67,6 +67,8 @@ class DgGeometricField
 public:
     OpenFoamDGField* bosssObject_ = NULL;
     OpenFoamPatchField* bosssObjectPatchField_ = NULL;
+        volScalarField* vsF_ = NULL;
+        volVectorField* vvF_ = NULL;
 
     public: const dgMesh& dgmesh_;
 
@@ -140,7 +142,7 @@ public:
             const Mesh& b,
             const dimensionSet& c,
             const word& patchFieldType=PatchField<Type>::calculatedType()
-        ) : 
+        ) :
             GeometricField<Type, PatchField, GeoMesh>(a, b, c, patchFieldType),
             dgmesh_(b)
         { 
@@ -215,6 +217,36 @@ public:
         { 
             GetBoSSSobject();
             GetBoSSSPatchobject();
+        }
+
+        //- Construct and read given IOobject
+        DgGeometricField
+        (
+            const IOobject& a,
+            const Mesh& b,
+            volScalarField* vsf
+        ) : GeometricField<Type, PatchField, GeoMesh>(a, b),
+            dgmesh_(b)
+        {
+            GetBoSSSobject();
+            GetBoSSSPatchobject();
+            vsF_ = vsf;
+            this->importFromVolScaField();
+        }
+
+        //- Construct and read given IOobject
+        DgGeometricField
+        (
+            const IOobject& a,
+            const Mesh& b,
+            volVectorField* vvf
+        ) : GeometricField<Type, PatchField, GeoMesh>(a, b),
+            dgmesh_(b)
+        {
+            GetBoSSSobject();
+            GetBoSSSPatchobject();
+            vvF_ = vvf;
+            this->importFromVolVecField();
         }
 
         //- Construct and read from given stream
@@ -417,6 +449,14 @@ public:
     void SyncFromBoSSS() {
         OpenFoamDGField* bo = GetBoSSSobject();
         SyncFromBoSSSDGField(bo);
+        if (std::is_same<Type, dgScalar>()) {
+            GenericSyncMeanFromBoSSSDGScalarField(*vsF_);
+        }
+        else if (std::is_same<Type, dgVector>()) {
+            GenericSyncMeanFromBoSSSDGVectorField(*vvF_);
+        } else {
+            throw "type error!";
+        }
     }
 
     const dgMesh& dgmesh() {
@@ -428,48 +468,14 @@ public:
             if (std::is_same<Type, dgVector>()){
                 throw "Cannot return volScalarField of dgVectorField";
             }
-            GeometricField<scalar, fvPatchField, volMesh> svF = GeometricField<scalar, fvPatchField, volMesh>(
-                IOobject
-                (
-                "fv" + this->name(),
-                // this->time().timeName(),
-                "0",
-                *dgmesh().finVolMesh(),
-                IOobject::MUST_READ,
-                IOobject::AUTO_WRITE
-                ),
-            *dgmesh().finVolMesh()
-            );
-            // syncToVolScalarField(*this, svF);
-            GenericSyncMeanFromBoSSSDGScalarField(svF);
-            // svF.time() = this->time();
-            svF.setUpToDate();
-            svF.write();
-            return svF;
+            return *vsF_;
         };
 
         GeometricField<vector, fvPatchField, volMesh> volVecField(){
             if (std::is_same<Type, dgScalar>()){
                 throw "Cannot return volVectorField of dgScalarField";
             }
-
-            GeometricField<vector, fvPatchField, volMesh> vvF = GeometricField<vector, fvPatchField, volMesh>(
-                IOobject
-                (
-                "fv" + this->name(),
-                // this->time().timeName(),
-                "0",
-                *dgmesh().finVolMesh(),
-                IOobject::MUST_READ,
-                IOobject::AUTO_WRITE
-                ),
-            *dgmesh().finVolMesh()
-            );
-            GenericSyncMeanFromBoSSSDGVectorField(vvF);
-            // vvF.time() = this->time();
-            vvF.setUpToDate();
-            vvF.write();
-            return vvF;
+            return *vvF_;
         };
 
         GeometricField<scalar, fvPatchField, volMesh> importFromVolScaField(){
@@ -477,39 +483,16 @@ public:
             if (std::is_same<Type, dgVector>()){
                 throw "Cannot return volScalarField of dgVectorField";
             }
-            GeometricField<scalar, fvPatchField, volMesh> svF = GeometricField<scalar, fvPatchField, volMesh>(
-                IOobject
-                (
-                "fv" + this->name(),
-                "0",
-                *dgmesh().finVolMesh(),
-                IOobject::MUST_READ,
-                IOobject::NO_WRITE
-                ),
-            *dgmesh().finVolMesh()
-            );
-            importFromVolScalarField(*this, svF);
-            return svF;
+            importFromVolScalarField(*this, *vsF_);
+            return *vsF_;
         };
 
         GeometricField<vector, fvPatchField, volMesh> importFromVolVecField(){
             if (std::is_same<Type, dgScalar>()){
                 throw "Cannot return volVectorField of dgScalarField";
             }
-
-            GeometricField<vector, fvPatchField, volMesh> vvF = GeometricField<vector, fvPatchField, volMesh>(
-                IOobject
-                (
-                "fv" + this->name(),
-                "0",
-                *dgmesh().finVolMesh(),
-                IOobject::MUST_READ,
-                IOobject::NO_WRITE
-                ),
-            *dgmesh().finVolMesh()
-            );
-            importFromVolVectorField(*this, vvF);
-            return vvF;
+            importFromVolVectorField(*this, *vvF_);
+            return *vvF_;
         };
 /*
         //- Return a component of the field

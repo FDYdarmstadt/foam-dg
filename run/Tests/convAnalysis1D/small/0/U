@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | foam-extend: Open Source CFD                    |
-|  \\    /   O peration     | Version:     4.0                                |
+|  \\    /   O peration     | Version:     4.1                                |
 |   \\  /    A nd           | Web:         http://www.foam-extend.org         |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -9,43 +9,19 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       preCellVectorField;
+    class       volVectorField;
     location    "0";
-    object      U;
+    object      fvU;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 dimensions      [0 1 -1 0 0 0 0];
 
-internalField   uniform ((0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0));
+internalField   uniform (0 0 0);
 
 boundaryField
 {
-    top
-    {
-        type            dirichlet;
-        value           uniform ((0.0088788825 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0));
-    }
-    bottom
-    {
-        type            dirichlet;
-        value           uniform ((-0.0088788825 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0));
-    }
-    left
-    {
-        type            homogenous;
-        value           uniform ((0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0));
-    }
-    right
-    {
-        type            homogenous;
-        value           uniform ((0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0));
-    }
-    frontAndBack
-    {
-        type            homogenous;
-        value           uniform ((0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0) (0 0 0 0 0 0 0 0 0 0));
-    }
+ top {type            homogenous; value 0;} bottom {type            homogenous; value 0;} left {type            homogenous; value 0;} right {type            homogenous; value 0;} frontAndBack {type            homogenous; value 0;} 
 }
 
 

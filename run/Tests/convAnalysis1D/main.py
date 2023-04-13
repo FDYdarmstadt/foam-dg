@@ -38,13 +38,13 @@ def prepareOFDir(casePath):
     timeDirectories = glob.glob(casePath + '/[0-9]*')
     for timeDir in timeDirectories:
         baseDir = timeDir
-        sourceDir = baseDir + "/fvMesh/"
+        sourceDir = baseDir
         targetDir = baseDir
-        files = ["/fvC", "/fvU"]
+        files = ["/C", "/U"]
         for fl in files:
             sourceFile = sourceDir + fl
             targetFile = targetDir + fl
-            shutil.copyfile(sourceFile, targetFile)
+            # shutil.copyfile(sourceFile, targetFile)
             # Read in the file
             with open(targetFile, 'r') as file :
                 filedata = file.read()
@@ -81,7 +81,7 @@ def plotOF(basePath, size):
     postprocessOFCase(casePath)
     timeDirectories = glob.glob(casePath + '/postProcessing/sets/[0-9]*')
     time = timeDirectories[-1]
-    xs, cs = readDataOF(time + "/lineX1_fvC.xy")
+    xs, cs = readDataOF(time + "/lineX1_C.xy")
     plt.plot(xs, cs, ".", label=size+ "(OF)")
 
     plt.legend()
@@ -104,7 +104,7 @@ def getOFError(basePath, size, cahn, rerun=False):
     postprocessOFCase(casePath)
     timeDirectories = glob.glob(casePath + '/postProcessing/sets/[0-9]*')
     time = timeDirectories[-1]
-    xs, cs = readDataOF(time + "/lineX1_fvC.xy")
+    xs, cs = readDataOF(time + "/lineX1_C.xy")
     ys = np.fromiter(map(lambda x: math.tanh(x/(math.sqrt(2) * cahn)), xs), dtype=np.double)
     error = sum(list(map(lambda x: x**2, ys-cs)))
     return error

@@ -11,7 +11,7 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh
+        *dgMesh.finVolMesh()
     );
 
     // Order paremeter C
@@ -26,7 +26,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh
+        // mesh
+        *dgMesh.finVolMesh()
     );
 
     // Chemical potential Psi
@@ -41,7 +42,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh
+        // mesh
+        *dgMesh.finVolMesh()
     );
 
     Info<< "Reading FV field U\n" << endl;
@@ -55,7 +57,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh
+        // mesh
+        *dgMesh.finVolMesh()
     );
 
     // Order parameter c
@@ -71,7 +74,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        dgMesh
+        dgMesh,
+        &C
     );
 
     Info<< "Reading DG field u\n" << endl;
@@ -86,7 +90,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        dgMesh
+        dgMesh,
+        &U
     );
 
     // Chemical potential psi
@@ -102,7 +107,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        dgMesh
+        dgMesh,
+        &Psi
     );
 
 
@@ -213,14 +219,14 @@
     //     *dgMesh.finVolMesh()
     // );
 
-    if (runTime.timeName() == "0")
-    {
-      Info << "Initializing DG fields from FV fields" << endl;
-      C.importFromVolScaField();
-      U.importFromVolVecField();
-    }
+    // if (runTime.timeName() == "0")
+    // {
+    //   Info << "Initializing DG fields from FV fields" << endl;
+    //   c.importFromVolScaField();
+    //   u.importFromVolVecField();
+    // }
 
-    // Volunetric face flux
+    // Volumetric face flux
     surfaceScalarField phi
     (
         IOobject
@@ -232,7 +238,7 @@
             IOobject::AUTO_WRITE
         ),
         // linearInterpolate(fvU) & dgMesh.finVolMesh()->Sf()
-        linearInterpolate(U.volVecField()) & dgMesh.finVolMesh()->Sf()
+        linearInterpolate(u.volVecField()) & dgMesh.finVolMesh()->Sf()
     );
 
     // Mixture density
@@ -283,13 +289,13 @@
 
 
     Info<< "Calculating field g.h\n" << endl;
-    volScalarField gh("gh", g & mesh.C());
-    surfaceScalarField ghf("gh", g & mesh.Cf());
+    volScalarField gh("gh", g & dgMesh.finVolMesh()->C());
+    surfaceScalarField ghf("gh", g & dgMesh.finVolMesh()->Cf());
 
     label pdRefCell = 0;
     scalar pdRefValue = 0.0;
     setRefCell(pd, pimple.dict(), pdRefCell, pdRefValue);
-    mesh.schemesDict().setFluxRequired(pd.name());
+    dgMesh.finVolMesh()->schemesDict().setFluxRequired(pd.name());
 
     scalar pRefValue = 0.0;
 

@@ -53,7 +53,7 @@ interpolationScheme cell;
 // Fields to sample.
 fields
 (
-    fvC
+    C
 );
 
 // Set sampling definition: choice of
