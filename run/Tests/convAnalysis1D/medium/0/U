@@ -21,6 +21,7 @@ internalField   uniform (0 0 0);
 
 boundaryField
 {
+ top {type            homogenous; value 0;} bottom {type            homogenous; value 0;} left {type            homogenous; value 0;} right {type            homogenous; value 0;} frontAndBack {type            homogenous; value 0;} 
 }
 
 
