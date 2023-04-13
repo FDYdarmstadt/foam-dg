@@ -30,7 +30,7 @@ dgLaplacianSchemes
 
 dgCahnHilliardSchemes
 {
-    dgCahnHilliard(CU) bosssCahnHilliard;
+    dgCahnHilliard(cu) bosssCahnHilliard;
 }
 
 fluxRequired

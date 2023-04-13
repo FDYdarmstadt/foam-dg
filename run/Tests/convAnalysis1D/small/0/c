@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | foam-extend: Open Source CFD                    |
-|  \\    /   O peration     | Version:     4.1                                |
+|  \\    /   O peration     | Version:     4.0                                |
 |   \\  /    A nd           | Web:         http://www.foam-extend.org         |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -9,121 +9,42 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
+    class       preCellScalarField;
     location    "0";
-    object      fvMesh/fvC;
+    object      C;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 dimensions      [0 0 0 0 0 0 0];
 
-internalField   nonuniform List<scalar> 
-80
-(
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
--1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-)
-;
+internalField   uniform (0 0 0 0 0 0 0 0 0 0);
 
 boundaryField
 {
     top
     {
-        type            zeroGradient;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     bottom
     {
-        type            zeroGradient;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     left
     {
-        type            zeroGradient;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     right
     {
-        type            zeroGradient;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     frontAndBack
     {
-        type            zeroGradient;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
 }
 
