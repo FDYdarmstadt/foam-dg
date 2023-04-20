@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 2/24/2023 12:53:12PM
+// Creation Date: 4/20/2023 2:24:11PM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -23,6 +23,7 @@
 #include "OpenFoamDGField.h"
 #include "OpenFoamMatrix.h"
 #include "OpenFoamPatchField.h"
+#include "OpenFoamSurfaceField.h"
 namespace BoSSS
 {
 namespace Application
@@ -137,14 +138,15 @@ if (exception != NULL) {
 }
 return BoSSS::Application::ExternalBinding::OpenFoamDGField::_FromMonoObject(retval);
 }
-void FixedOperators::CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamDGField* U, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptchU, double deltaT)
+void FixedOperators::CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamSurfaceField* Flux, BoSSS::Application::ExternalBinding::OpenFoamDGField* U, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptchU, double deltaT)
 {
-void* args[5];
+void* args[6];
 args[0] = mtx->_GetMonoObject();
-args[1] = U->_GetMonoObject();
-args[2] = ptch->_GetMonoObject();
-args[3] = ptchU->_GetMonoObject();
-args[4] = &deltaT;
+args[1] = Flux->_GetMonoObject();
+args[2] = U->_GetMonoObject();
+args[3] = ptch->_GetMonoObject();
+args[4] = ptchU->_GetMonoObject();
+args[5] = &deltaT;
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_CahnHilliard, mono_gchandle_get_target(_MonoGCHandle), args, &exception);

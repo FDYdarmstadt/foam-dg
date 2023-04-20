@@ -124,10 +124,19 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     BoSSS::Application::ExternalBinding::OpenFoamDGField* U = Uf.bosssObject_;
     // cellScalarField Phi(vf);
 
+    int nFaces = mesh().nFaces();
+    double* flxArray = (double*) malloc(sizeof(double*) * nFaces);
+    for (int iF = 0; iF < nFaces; iF++){
+            flxArray[iF] = Flux[iF];
+    }
+    // TODO put Flux into flxArray
+    BoSSS::Foundation::Grid::OpenFOAMGrid* ofMesh = mesh.GetBoSSSobject();
+    BoSSS::Application::ExternalBinding::OpenFoamSurfaceField* Flx = new BoSSS::Application::ExternalBinding::OpenFoamSurfaceField(ofMesh, flxArray, nFaces);
+
     BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
     double dt = vf.time().deltaT().value();
-    BoSSSOp->CahnHilliard(bosssMtx, U, bosssPtch, bosssPtchU, dt);
+    BoSSSOp->CahnHilliard(bosssMtx, Flx, U, bosssPtch, bosssPtchU, dt);
     BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetMu();
     // BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField = BoSSSOp->GetFlux();
     vf.SyncFromBoSSS();
@@ -135,7 +144,7 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     phif.SyncFromBoSSSDGField(PhiDGField);
     // Flux.SyncFromBoSSSDGField(FluxDGField);
 
-    label J = mesh().nCells();
+    // label J = mesh().nCells();
     // dgm.flux_ = Field<Vector<Type>>(J);
     // OpenFoamDGField *bo = dgf.GetBoSSSobject();
 

@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 2/24/2023 12:53:12PM
+// Creation Date: 4/20/2023 2:24:11PM
 // ##########################################################################
 #pragma once
 namespace BoSSS
@@ -24,7 +24,7 @@ void _SetForeignPointer(void* ptr);
 void* _GetForeignPointer();
 BoSSS::Application::ExternalBinding::OpenFoamDGField* GetFlux();
 BoSSS::Application::ExternalBinding::OpenFoamDGField* GetMu();
-void CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamDGField* U, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptchU, double deltaT);
+void CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamSurfaceField* Flux, BoSSS::Application::ExternalBinding::OpenFoamDGField* U, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptchU, double deltaT);
 void Laplacian(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch);
 private:
 void _InitMonoBindings();
