@@ -6,7 +6,7 @@
 - `mono`
 - optional: `BoSSS`, which is only required you would like to develop on the `BoSSS`-side
 
-## Running instructions
+## Building/running instructions
 
 To use this code, follow these instructions:
 

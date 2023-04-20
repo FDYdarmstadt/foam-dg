@@ -77,7 +77,12 @@ int main(int argc, char *argv[])
             // --- PISO loop
             while (pimple.correct())
             {
-#               include "pEqn.H"
+                #include "pEqn.H"
+
+              solve(UEqn == fvc::reconstruct(
+                                (fvc::interpolate(Psi) * fvc::snGrad(C) -
+                                 ghf * fvc::snGrad(rho) - fvc::snGrad(pd)) *
+                                dgMesh.finVolMesh()->magSf()));
             }
 
 #           include "continuityErrs.H"
