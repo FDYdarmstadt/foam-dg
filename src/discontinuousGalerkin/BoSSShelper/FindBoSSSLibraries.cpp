@@ -1,6 +1,7 @@
 #include "FindBoSSSLibraries.h"
 #include <sys/stat.h>
 #include <string.h>
+#include <stdexcept>
 
 bool DoesPathExist(const std::string &s)
 {
@@ -12,7 +13,7 @@ std::string GetBoSSSLibraryDirectory(){
   // std::string bosssinstall = getenv("BOSSS_INSTALL");
   char* rootdirCh = getenv("FOAM_DG_ROOT");
   if (rootdirCh == NULL){
-    throw "Please set the environment variable $FOAM_DG_ROOT to the absolute path of your foam-dg repository location.";
+    throw std::runtime_error("Please set the environment variable $FOAM_DG_ROOT to the absolute path of your foam-dg repository location.");
   }
   std::string rootdir;
   rootdir = rootdirCh;
@@ -28,7 +29,7 @@ std::string GetBoSSSLibraryDirectory(){
     fprintf(stderr, "\n but the folder does not exist \n ");
     fprintf(stderr, "Make sure that BoSSS was built correctly. \n ");
     fprintf(stderr, "If necessary, change the variable bossslibdir in foam-dg/src/discontiuousGalerkin/BoSSSwrapper/FindBoSSSLibraries.cpp \n ");
-    throw "Unable to find the location of the BoSSS libraries.";
+    throw std::runtime_error("Unable to find the location of the BoSSS libraries.");
   }
   return bossslibdir;
 }

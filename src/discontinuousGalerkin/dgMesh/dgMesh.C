@@ -118,7 +118,7 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     for (auto patch : bm.types()){
         if (patch == "empty"){
             if (found == 1){
-                throw "more than one empty patch found; please subsume all empty patches into one in blockMeshDict.";
+                throw std::runtime_error("more than one empty patch found; please subsume all empty patches into one in blockMeshDict.");
             }
             emptyTag = i;
             found = 1;

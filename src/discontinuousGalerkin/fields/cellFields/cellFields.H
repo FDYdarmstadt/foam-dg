@@ -455,7 +455,7 @@ public:
         else if (std::is_same<Type, dgVector>()) {
             GenericSyncMeanFromBoSSSDGVectorField(*vvF_);
         } else {
-            throw "type error!";
+            throw std::runtime_error("type error!");
         }
     }
 
@@ -466,14 +466,14 @@ public:
         GeometricField<scalar, fvPatchField, volMesh> volScaField(){
 
             if (std::is_same<Type, dgVector>()){
-                throw "Cannot return volScalarField of dgVectorField";
+                throw std::runtime_error("Cannot return volScalarField of dgVectorField");
             }
             return *vsF_;
         };
 
         GeometricField<vector, fvPatchField, volMesh> volVecField(){
             if (std::is_same<Type, dgScalar>()){
-                throw "Cannot return volVectorField of dgScalarField";
+                throw std::runtime_error("Cannot return volVectorField of dgScalarField");
             }
             return *vvF_;
         };
@@ -481,7 +481,7 @@ public:
         GeometricField<scalar, fvPatchField, volMesh> importFromVolScaField(){
 
             if (std::is_same<Type, dgVector>()){
-                throw "Cannot return volScalarField of dgVectorField";
+                throw std::runtime_error("Cannot return volScalarField of dgVectorField");
             }
             importFromVolScalarField(*this, *vsF_);
             return *vsF_;
@@ -489,7 +489,7 @@ public:
 
         GeometricField<vector, fvPatchField, volMesh> importFromVolVecField(){
             if (std::is_same<Type, dgScalar>()){
-                throw "Cannot return volVectorField of dgScalarField";
+                throw std::runtime_error("Cannot return volVectorField of dgScalarField");
             }
             importFromVolVectorField(*this, *vvF_);
             return *vvF_;
