@@ -40,6 +40,7 @@ discontinuousGalerkin/dgDdtScheme/EulerDdtScheme/EulerDdtSchemes.C
 BoSSSwrapper/OpenFoamMatrix.cpp
 BoSSSwrapper/OpenFoamDGField.cpp
 BoSSSwrapper/OpenFoamPatchField.cpp
+BoSSSwrapper/OpenFoamSurfaceField.cpp
 BoSSSwrapper/FixedOperators.cpp  
 BoSSSwrapper/Globals.cpp  
 BoSSSwrapper/GridData.cpp  
