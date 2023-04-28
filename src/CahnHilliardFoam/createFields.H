@@ -226,7 +226,6 @@
     //   u.importFromVolVecField();
     // }
 
-    // Volumetric face flux TODO: communicate this to bosss
     surfaceScalarField phi
     (
         IOobject
@@ -237,8 +236,8 @@
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
-        // linearInterpolate(fvU) & dgMesh.finVolMesh()->Sf()
         linearInterpolate(u.volVecField()) & dgMesh.finVolMesh()->Sf()
+        // linearInterpolate(U) & dgMesh.finVolMesh()->Sf()
     );
 
     // Mixture density
