@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 #   include "readGravitationalAcceleration.H"
 #   include "initContinuityErrs.H"
 #   include "createFields.H"
-#   include "correctPhi.H"
+// #   include "correctPhi.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
