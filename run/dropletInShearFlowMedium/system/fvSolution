@@ -59,7 +59,7 @@ solvers
     pdFinal
     {
         solver          PCG;
-        preconditioner  Cholesky;
+        preconditioner  DIC;
         tolerance       1e-9;
         relTol          0;
     }

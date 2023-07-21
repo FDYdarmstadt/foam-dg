@@ -82,7 +82,8 @@ def plotOF(basePath, size):
     timeDirectories = glob.glob(casePath + '/postProcessing/sets/[0-9]*')
     time = timeDirectories[-1]
     xs, cs = readDataOF(time + "/lineX1_C.xy")
-    plt.plot(xs, cs, ".", label=size+ "(OF)")
+    # plt.plot(xs, cs, ".", label=size+ "(OF)")
+    plt.plot(xs, cs, ".", label=size)
 
     plt.legend()
     plt.xlabel(r"$x$")
@@ -91,11 +92,31 @@ def plotOF(basePath, size):
 def plotEverything(OFbasePath, cahn, rerun=False):
     plt.clf()
     plotAnalytical(cahn)
-    for size in ["large", "medium", "small"]:
+    for size in ["fine", "medium", "coarse"]:
         if rerun:
             runOFCase(OFbasePath + "/" + size)
         plotOF(OFbasePath, size)
-    plt.savefig("./plot.pdf")
+    plt.savefig("./conv1D.png")
+
+def plotConvergence(basePath, cahn):
+    plt.clf()
+    DOFs = [20, 40, 80]
+    DOFsWithPadding = np.linspace(DOFs[0]*0.9, DOFs[-1]*1.11)
+    DOFslog = list(map(math.log2, DOFs))
+    errors = list(map(lambda size: getOFError(basePath, size, cahn, False), ["coarse", "medium", "fine"]))
+    errorslog = list(map(math.log2, errors))
+    def fittingFunc(x, a, b):
+        return a + b*x
+    result = optimization.curve_fit(fittingFunc, DOFslog, errorslog)
+    a = errors[-1]/DOFs[-1] ** (-3)
+    errorsExpected= list(map(lambda x: a * x**(-3), DOFsWithPadding))
+    plt.loglog()
+    plt.xlabel(r"\# of DOFs")
+    plt.ylabel(r"$E$")
+    plt.plot(DOFs, errors, "ko")
+
+    plt.plot(DOFsWithPadding, errorsExpected, "k--")
+    plt.savefig("./convergencePlot1D.png")
 
 def getOFError(basePath, size, cahn, rerun=False):
     casePath = basePath + "/" + size
@@ -112,7 +133,7 @@ def getOFError(basePath, size, cahn, rerun=False):
 def getOOC(basePath, cahn, rerun=False):
     DOFs = [20, 40, 80]
     DOFslog = list(map(math.log2, DOFs))
-    errors = list(map(lambda size: getOFError(basePath, size, cahn, rerun), ["small", "medium", "large"]))
+    errors = list(map(lambda size: getOFError(basePath, size, cahn, rerun), ["coarse", "medium", "fine"]))
     errorslog = list(map(math.log2, errors))
     def fittingFunc(x, a, b):
         return a + b*x
@@ -122,11 +143,13 @@ def getOOC(basePath, cahn, rerun=False):
 
 def main(inp):
     rerun = False
+    # rerun = True
     if len(inp) > 1 and inp[1] == "True":
         rerun = True
     cahn = 0.1
-    caseDir = os.path.dirname(os.path.realpath(sys.argv[0]))
-    # plotEverything(caseDir, cahn, rerun)
+    caseDir = os.path.dirname(os.path.realpath(sys.argv[0])) + "/convAnalysis1D/"
+    plotEverything(caseDir, cahn, rerun)
+    plotConvergence(caseDir, cahn)
     ooc = getOOC(caseDir, cahn, rerun)
     print(ooc)
     return ooc > 2.99

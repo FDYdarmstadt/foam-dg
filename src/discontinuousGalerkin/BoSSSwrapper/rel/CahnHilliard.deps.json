@@ -43,6 +43,17 @@
           }
         }
       },
+      "IntersectingQuadrature/1.0.4": {
+        "dependencies": {
+          "NUnit": "3.13.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/IntersectingQuadrature.dll": {
+            "assemblyVersion": "1.0.4.0",
+            "fileVersion": "1.0.4.0"
+          }
+        }
+      },
       "log4net/2.0.15": {
         "dependencies": {
           "System.Configuration.ConfigurationManager": "4.5.0"
@@ -525,6 +536,7 @@
           "BoSSS.Foundation": "1.0.0",
           "BoSSS.Foundation.Grid": "1.0.0",
           "BoSSS.Platform": "1.0.0",
+          "IntersectingQuadrature": "1.0.4",
           "MPI.Wrappers": "1.0.0",
           "ilPSP": "1.0.0",
           "ilPSP.LinSolvers.monkey": "1.0.0"
@@ -800,6 +812,13 @@
       "sha512": "sha512-OE0sl1/sQ37bjVsPKKtwQlWDgqaxWgtme3xZz7JssWUzg5JpMIyHgCTY9MVMxOg48fJ1AgGT3tgdH5m/kQ5xhA==",
       "path": "commandlineparser/2.9.1",
       "hashPath": "commandlineparser.2.9.1.nupkg.sha512"
+    },
+    "IntersectingQuadrature/1.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-g/fRfUtUgeN/NNswpm6WSdg+C39nR5PpfqIAKqiMNcI0SBCfynUL2cxy8B70QF7E6VVcd/vpTCu8eZpJNaVsng==",
+      "path": "intersectingquadrature/1.0.4",
+      "hashPath": "intersectingquadrature.1.0.4.nupkg.sha512"
     },
     "log4net/2.0.15": {
       "type": "package",

@@ -240,6 +240,49 @@
         // linearInterpolate(U) & dgMesh.finVolMesh()->Sf()
     );
 
+    // Info << "phi[iF]" << endl;
+    // int nFaces = dgMesh.finVolMesh()->nInternalFaces();
+    // for (int iF = 0; iF < nFaces; iF++){
+    //     Info << phi[iF] << endl;
+    // }
+
+    // surfaceVectorField phiUOnly
+    // (
+    //     IOobject
+    //     (
+    //         "phi",
+    //         runTime.timeName(),
+    //         mesh,
+    //         IOobject::READ_IF_PRESENT,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     linearInterpolate(u.volVecField())
+    // );
+
+    // Info << "phiUOnly[iF]" << endl;
+    // for (int iF = 0; iF < nFaces; iF++){
+    //     Info << phiUOnly[iF] << endl;
+    // }
+
+    // surfaceVectorField phiSurfaceMeshOnly
+    // (
+    //     IOobject
+    //     (
+    //         "phi",
+    //         runTime.timeName(),
+    //         mesh,
+    //         IOobject::READ_IF_PRESENT,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     dgMesh.finVolMesh()->Sf()
+    // );
+
+    // Info << "phiSurfaceMeshOnly[iF]" << endl;
+    // for (int iF = 0; iF < nFaces; iF++){
+    //     Info << phiSurfaceMeshOnly[iF] << endl;
+    // }
+    // Info << "Done" << endl;
+
     // Mixture density
     // Need to store rho for ddt(rho, U)
     volScalarField rho

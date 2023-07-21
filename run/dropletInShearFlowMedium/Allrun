@@ -1,25 +1,7 @@
 #!/bin/sh
 
-#generate mesh
-blockMesh
-makeFaMesh
+bash Allclean
 
-cp 0/C.orig 0/C
-cp 0/U.orig 0/U
+bash setFields.sh
 
-./setInitPhaseFieldVariable
-
-
-#remove bug in of 4ext
-find . -name "pd" -type f | xargs sed -i -e '/rAU/d'
-
-#run in parallel
-decomposePar 
-
-mpirun -np 4 phaseFieldFoam -parallel
-
-#reconstructPar
-
-
-
-
+CahnHilliardFoam

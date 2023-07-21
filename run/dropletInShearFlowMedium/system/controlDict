@@ -24,10 +24,10 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         0.001;//0.015;
+endTime         1.015e10;
 
-// deltaT          1e-6;
 deltaT          1e-3;
+// deltaT          1e-2;
 
 writeControl    timeStep;//
 

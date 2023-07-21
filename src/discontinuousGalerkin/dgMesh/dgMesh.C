@@ -186,6 +186,9 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
     free(faceOwner_Array);
     free(facesArray);
     free(facesContent);
+    free(patches);
+    free(names);
+    free(nameLengths);
 
     fvMesh *finVolMesh__ = new Foam::fvMesh(
         IOobject
