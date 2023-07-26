@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 4/20/2023 2:24:11PM
+// Creation Date: 7/26/2023 10:08:45AM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -138,15 +138,18 @@ if (exception != NULL) {
 }
 return BoSSS::Application::ExternalBinding::OpenFoamDGField::_FromMonoObject(retval);
 }
-void FixedOperators::CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamSurfaceField* Flux, BoSSS::Application::ExternalBinding::OpenFoamDGField* U, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptchU, double deltaT)
+void FixedOperators::CahnHilliard(BoSSS::Application::ExternalBinding::OpenFoamMatrix* mtx, BoSSS::Application::ExternalBinding::OpenFoamSurfaceField* Flux, BoSSS::Application::ExternalBinding::OpenFoamDGField* U, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptch, BoSSS::Application::ExternalBinding::OpenFoamPatchField* ptchU, double time, double deltaT, double Cahn, double Diff)
 {
-void* args[6];
+void* args[9];
 args[0] = mtx->_GetMonoObject();
 args[1] = Flux->_GetMonoObject();
 args[2] = U->_GetMonoObject();
 args[3] = ptch->_GetMonoObject();
 args[4] = ptchU->_GetMonoObject();
-args[5] = &deltaT;
+args[5] = &time;
+args[6] = &deltaT;
+args[7] = &Cahn;
+args[8] = &Diff;
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_CahnHilliard, mono_gchandle_get_target(_MonoGCHandle), args, &exception);

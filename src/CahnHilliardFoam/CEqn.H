@@ -55,13 +55,7 @@ do {
 
   // //- Assemble equations
   dgScalarMatrix CEqn(
-      // dgm::ddt(C)
-      //     +
-      dgm::dgCahnHilliard(c, u, phi, psi) //phi : volumetric face flux
-      // dgm::dgCahnHilliard(C, C)
-      // dgm::dgLaplacian(C)
-      // + fvm::Sp(dfdcCoeffs,C)
-      // + dfdcSource
+      dgm::dgCahnHilliard(c, u, phi, psi, Cn, D) //phi : volumetric face flux
   );
 
   // rhoPhi =

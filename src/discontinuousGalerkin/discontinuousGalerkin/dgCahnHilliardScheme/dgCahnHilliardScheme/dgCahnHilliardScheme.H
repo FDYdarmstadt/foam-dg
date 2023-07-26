@@ -218,7 +218,10 @@ public:
             DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
             // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
             DgGeometricField<Type, dgPatchField, cellMesh>& phif,
-            surfaceScalarField& Flux
+            surfaceScalarField& Flux,
+            dimensionedScalar Cn,
+            dimensionedScalar D
+
         ) = 0;
 // {
 //    return dgmCahnHilliard(vf, Uf);//tinterpGammaScheme_().interpolate(gamma)(), vf);

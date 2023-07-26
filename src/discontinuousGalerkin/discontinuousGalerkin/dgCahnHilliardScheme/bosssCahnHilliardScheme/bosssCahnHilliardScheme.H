@@ -129,6 +129,7 @@ public:
             DgGeometricField<VType, dgPatchField, cellMesh>&,
             DgGeometricField<Type, dgPatchField, cellMesh>&,
             surfaceScalarField&
+
         );
 
 //        tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian
@@ -144,7 +145,10 @@ public:
             DgGeometricField<VType, dgPatchField, cellMesh>&,
             // const DgGeometricField<VType, dgPatchField, cellMesh>&
             DgGeometricField<Type, dgPatchField, cellMesh>&,
-            surfaceScalarField&
+            surfaceScalarField&,
+            dimensionedScalar Cn,
+            dimensionedScalar D
+
         );
 
 //        tmp<GeometricField<Type, dgPatchField, cellMesh> > dgcLaplacian

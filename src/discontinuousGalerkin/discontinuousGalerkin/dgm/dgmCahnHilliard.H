@@ -68,14 +68,17 @@ dgCahnHilliard
     // const DgGeometricField<dgVector, dgPatchField, cellMesh>& phif,
     DgGeometricField<dgScalar, dgPatchField, cellMesh>& phif,
     surfaceScalarField& Flux,
-    const word& name
+    const word& name,
+    dimensionedScalar Cn,
+    dimensionedScalar D
+
 )
 {
     return dg::dgCahnHilliardScheme<Type, dgVector>::New
     (
         vf.mesh(),
         vf.mesh().schemesDict().dgCahnHilliardScheme(name)
-    )().dgmCahnHilliard(vf, Uf, phif, Flux);
+    )().dgmCahnHilliard(vf, Uf, phif, Flux, Cn, D);
 }
 
 template<class Type, class VType>
@@ -86,7 +89,10 @@ dgCahnHilliard
     DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
     // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
     surfaceScalarField& Flux,
-    DgGeometricField<Type, dgPatchField, cellMesh>& phif
+    DgGeometricField<Type, dgPatchField, cellMesh>& phif,
+    dimensionedScalar Cn,
+    dimensionedScalar D
+
 )
 {
 
@@ -109,7 +115,10 @@ dgCahnHilliard
         Uf,
         phif,
         Flux,
-        "dgCahnHilliard(" + vf.name() + Uf.name() + ')'
+        "dgCahnHilliard(" + vf.name() + Uf.name() + ')',
+    Cn,
+    D
+
     );
 }
 
@@ -122,10 +131,13 @@ dgCahnHilliard
     DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
     DgGeometricField<Type, dgPatchField, cellMesh>& phif,
     surfaceScalarField& Flux,
-    const word& name
+    const word& name,
+    dimensionedScalar Cn,
+    dimensionedScalar D
+
 )
 {
-    return dgm::dgCahnHilliard(vf, Uf, phif, Flux, name);
+    return dgm::dgCahnHilliard(vf, Uf, phif, Flux, name, Cn, D);
 }
 
 
@@ -137,10 +149,13 @@ dgCahnHilliard
     DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
     DgGeometricField<Type, dgPatchField, cellMesh>& phif,
-    surfaceScalarField& Flux
+    surfaceScalarField& Flux,
+    dimensionedScalar Cn,
+    dimensionedScalar D
+
 )
 {
-    return dgm::dgCahnHilliard(vf, Uf, phif, Flux); //Geo one field
+    return dgm::dgCahnHilliard(vf, Uf, phif, Flux, Cn, D); //Geo one field
 }
 
 // template<class Type, class VType>
@@ -189,7 +204,10 @@ dgCahnHilliard
    GeometricField<Type, dgPatchField, cellMesh>& vf,
    GeometricField<VType, dgPatchField, cellMesh>& Uf,
    GeometricField<Type, dgPatchField, cellMesh>& phif,
-   surfaceScalarField& Flux
+   surfaceScalarField& Flux,
+    dimensionedScalar Cn,
+    dimensionedScalar D
+
 )
 {
    return dgm::dgCahnHilliard
@@ -199,7 +217,9 @@ dgCahnHilliard
        Uf,
        phif,
        Flux,
-       "dgCahnHilliard(" + vf.name() + Uf.name() + ')'
+       "dgCahnHilliard(" + vf.name() + Uf.name() + ')',
+       Cn,
+       D
    );
 }
 
@@ -211,7 +231,10 @@ dgCahnHilliard
    DgGeometricField<Type, dgPatchField, cellMesh>& vf,
    DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
    DgGeometricField<Type, dgPatchField, cellMesh>& phif,
-   surfaceScalarField& Flux
+   surfaceScalarField& Flux,
+    dimensionedScalar Cn,
+    dimensionedScalar D
+
 )
 {
    return dgm::dgCahnHilliard
@@ -221,7 +244,9 @@ dgCahnHilliard
        Uf,
        phif,
        Flux,
-       "dgCahnHilliard(" + vf.name() + Uf.name() + ')'
+       "dgCahnHilliard(" + vf.name() + Uf.name() + ')',
+       Cn,
+       D
    );
 }
 //     template<class Type>

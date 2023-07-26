@@ -87,7 +87,10 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
     // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
     DgGeometricField<Type, dgPatchField, cellMesh>& phif,
-    surfaceScalarField& Flux
+    surfaceScalarField& Flux,
+    dimensionedScalar Cn,
+    dimensionedScalar D
+
 )
 {
 
@@ -147,7 +150,8 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
     double dt = vf.time().deltaT().value();
-    BoSSSOp->CahnHilliard(bosssMtx, Flx, U, bosssPtch, bosssPtchU, dt);
+    double t = vf.time().value();
+    BoSSSOp->CahnHilliard(bosssMtx, Flx, U, bosssPtch, bosssPtchU, t, dt, Cn.value(), D.value());
     BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetMu();
     // BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField = BoSSSOp->GetFlux();
     vf.SyncFromBoSSS();

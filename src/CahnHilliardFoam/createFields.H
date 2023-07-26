@@ -143,6 +143,18 @@
     (
         transportProperties.lookup("nub")
     );
+    dimensionedScalar sigma
+    (
+        transportProperties.lookup("sigma")
+    );
+    dimensionedScalar Cn
+    (
+        transportProperties.lookup("Cn")
+    );
+    dimensionedScalar D
+    (
+        transportProperties.lookup("D")
+    );
 
 
     // Info<< "Reading field psi\n" << endl;
