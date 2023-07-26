@@ -392,7 +392,9 @@ public:
         BoSSS::Application::ExternalBinding::OpenFoamDGField *bo = GetBoSSSobject();
       label J = dgf.mesh().nCells();
       for (label j = 0; j < J; j++) {
-        dgf[j] = bo->GetMean(0, j);
+          dgf[j] = bo->GetMean(0, j);
+          // Info << "bo(1): " << bo->GetMean(0,j) << endl;
+          // Info << "dgf: " << dgf[j] << endl;
       }
     }
 

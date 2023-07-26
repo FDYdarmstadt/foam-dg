@@ -49,9 +49,6 @@ do {
   //     fvm::ddt(C)
   // );
 
-  double rhob_ = 1261;
-  double rhoa_ = 1261;
-
 
   // //- Assemble equations
   dgScalarMatrix CEqn(
@@ -78,8 +75,6 @@ do {
 
   //   U.importFromVolVecField();
   //   U.SyncToBoSSS();
-  // double rhob_ = 1;
-  // double rhoa_ = 2;
 
 
   // CEqn.relax();
@@ -157,7 +152,15 @@ do {
 
 //- Update FV fields from DG fields
 c.SyncFromBoSSS();
-psi.SyncFromBoSSS();
+
+// BoSSS::Application::ExternalBinding::OpenFoamDGField *bo = psi.GetBoSSSobject();
+// psi.GenericSyncMeanFromBoSSSDGScalarField(Psi);
+
+label J = Psi.mesh().nCells();
+for (label j = 0; j < J; j++) {
+  Psi[j] = psi[j][0];
+}
+Info << Psi << endl;
 
 //- Update mixture properties
 // rho == (scalar(1) + C) / 2. * rhoa + (scalar(1) - C) / 2. * rhob;
