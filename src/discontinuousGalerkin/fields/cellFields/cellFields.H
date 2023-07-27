@@ -224,13 +224,13 @@ public:
         (
             const IOobject& a,
             const Mesh& b,
-            volScalarField* vsf
+            volScalarField& vsf
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b),
             dgmesh_(b)
         {
             GetBoSSSobject();
             GetBoSSSPatchobject();
-            vsF_ = vsf;
+            vsF_ = &vsf;
             this->importFromVolScaField();
         }
 
@@ -239,13 +239,13 @@ public:
         (
             const IOobject& a,
             const Mesh& b,
-            volVectorField* vvf
+            volVectorField& vvf
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b),
             dgmesh_(b)
         {
             GetBoSSSobject();
             GetBoSSSPatchobject();
-            vvF_ = vvf;
+            vvF_ = &vvf;
             this->importFromVolVecField();
         }
 
@@ -459,6 +459,10 @@ public:
         } else {
             throw std::runtime_error("type error!");
         }
+    }
+
+    void UpdateFVField(OpenFoamDGField* bo) {
+        GenericUpdateFVField(*this, bo);
     }
 
     const dgMesh& dgmesh() {
@@ -717,7 +721,6 @@ void GenericSyncFromBoSSSDGField(DgGeometricField<dgScalar, PatchField, GeoMesh>
 template<template<class> class PatchField, class GeoMesh>
 void GenericSyncFromBoSSSDGField(DgGeometricField<dgVector, PatchField, GeoMesh> &dgf, OpenFoamDGField* bo) {
   label J = dgf.dgmesh_.mesh().nCells();
-  // OpenFoamDGField *bo = dgf.GetBoSSSobject();
 
   for (label j = 0; j < J; j++) {
     int N = dgf[j].size();
@@ -730,6 +733,36 @@ void GenericSyncFromBoSSSDGField(DgGeometricField<dgVector, PatchField, GeoMesh>
   }
 }
 
+
+template<class Type, template<class> class PatchField, class GeoMesh>
+OpenFoamPatchField* GenericFVScalarField(DgGeometricField<Type, PatchField, GeoMesh> &dgf, OpenFoamDGField* bo);
+
+template<template<class> class PatchField, class GeoMesh>
+void GenericUpdateFVField(DgGeometricField<dgScalar, PatchField, GeoMesh> &dgf, OpenFoamDGField* bo) {
+
+  label J = dgf.dgmesh_.mesh().nCells();
+
+  for (label j = 0; j < J; j++) {
+    int N = dgf[j].size();
+    // dgf.vsF_->operator[](j) = dgf[j][0];
+    dgf.vsF_->operator[](j) = bo->GetMean(0, j);
+  }
+}
+
+template<template<class> class PatchField, class GeoMesh>
+void GenericUpdateFVField(DgGeometricField<dgVector, PatchField, GeoMesh> &dgf, OpenFoamDGField* bo) {
+  label J = dgf.dgmesh_.mesh().nCells();
+
+  for (label j = 0; j < J; j++) {
+    int N = dgf[j].size();
+    int D = 3;
+    for (int d = 0; d < D; d++) {
+      for (int n = 0; n < N; n++) {
+          dgf.vvF_.operator[](j)[d] = bo->GetMean(d, j);
+      }
+    }
+  }
+}
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

@@ -42,7 +42,6 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        // mesh
         *dgMesh.finVolMesh()
     );
 
@@ -75,7 +74,7 @@
             IOobject::AUTO_WRITE
         ),
         dgMesh,
-        &C
+        C
     );
 
     Info<< "Reading DG field u\n" << endl;
@@ -91,7 +90,7 @@
             IOobject::AUTO_WRITE
         ),
         dgMesh,
-        &U
+        U
     );
 
     // Chemical potential psi
@@ -108,7 +107,7 @@
             IOobject::AUTO_WRITE
         ),
         dgMesh,
-        &Psi
+        Psi
     );
 
 

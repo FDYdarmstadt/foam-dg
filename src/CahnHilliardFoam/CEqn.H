@@ -52,7 +52,7 @@ do {
 
   // //- Assemble equations
   dgScalarMatrix CEqn(
-      dgm::dgCahnHilliard(c, u, phi, psi, Cn, D) //phi : volumetric face flux
+      dgm::dgCahnHilliard(c, u, psi, phi, Cn, D) //phi : volumetric face flux
   );
 
   // rhoPhi =
@@ -153,13 +153,7 @@ do {
 //- Update FV fields from DG fields
 c.SyncFromBoSSS();
 
-// BoSSS::Application::ExternalBinding::OpenFoamDGField *bo = psi.GetBoSSSobject();
-// psi.GenericSyncMeanFromBoSSSDGScalarField(Psi);
 
-label J = Psi.mesh().nCells();
-for (label j = 0; j < J; j++) {
-  Psi[j] = psi[j][0];
-}
 Info << Psi << endl;
 
 //- Update mixture properties

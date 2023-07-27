@@ -85,7 +85,6 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     // const dimensionedScalar& gamma,
     DgGeometricField<Type, dgPatchField, cellMesh>& vf,
     DgGeometricField<VType, dgPatchField, cellMesh>& Uf,
-    // const DgGeometricField<VType, dgPatchField, cellMesh>& phif
     DgGeometricField<Type, dgPatchField, cellMesh>& phif,
     surfaceScalarField& Flux,
     dimensionedScalar Cn,
@@ -153,17 +152,21 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     double t = vf.time().value();
     BoSSSOp->CahnHilliard(bosssMtx, Flx, U, bosssPtch, bosssPtchU, t, dt, Cn.value(), D.value());
     BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetMu();
-    // BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField = BoSSSOp->GetFlux();
+
+    // BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField =
+    // BoSSSOp->GetFlux();
     vf.SyncFromBoSSS();
     Uf.SyncFromBoSSS();
     phif.SyncFromBoSSSDGField(PhiDGField);
+    phif.UpdateFVField(PhiDGField);
+    // phif.GenericSyncMeanFromBoSSSDGScalarField(&phif.vsF_); // TODO
     // Flux.SyncFromBoSSSDGField(FluxDGField);
 
     // label J = mesh().nCells();
     // dgm.flux_ = Field<Vector<Type>>(J);
     // OpenFoamDGField *bo = dgf.GetBoSSSobject();
 
-    Uf.SyncFromBoSSS();
+    // Uf.SyncFromBoSSS();
 
     Flux = linearInterpolate(Uf.volVecField() * vf.volScaField()) & Uf.dgmesh().finVolMesh()->Sf();
 
