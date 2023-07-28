@@ -151,14 +151,14 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     double dt = vf.time().deltaT().value();
     double t = vf.time().value();
     BoSSSOp->CahnHilliard(bosssMtx, Flx, U, bosssPtch, bosssPtchU, t, dt, Cn.value(), D.value());
-    BoSSS::Application::ExternalBinding::OpenFoamDGField* PhiDGField = BoSSSOp->GetMu();
+    BoSSS::Application::ExternalBinding::OpenFoamDGField* Phi0DGField = BoSSSOp->GetMu();
 
     // BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField =
     // BoSSSOp->GetFlux();
     vf.SyncFromBoSSS();
     Uf.SyncFromBoSSS();
-    phif.SyncFromBoSSSDGField(PhiDGField);
-    phif.UpdateFVField(PhiDGField);
+    phif.SyncFromBoSSSDGField(Phi0DGField);
+    phif.UpdateFV0Field();
     // phif.GenericSyncMeanFromBoSSSDGScalarField(&phif.vsF_); // TODO
     // Flux.SyncFromBoSSSDGField(FluxDGField);
 

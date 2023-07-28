@@ -465,6 +465,10 @@ public:
         GenericUpdateFVField(*this, bo);
     }
 
+    void UpdateFV0Field() {
+        GenericUpdateFVField(*this);
+    }
+
     const dgMesh& dgmesh() {
         return dgmesh_;
     }
@@ -759,6 +763,36 @@ void GenericUpdateFVField(DgGeometricField<dgVector, PatchField, GeoMesh> &dgf, 
     for (int d = 0; d < D; d++) {
       for (int n = 0; n < N; n++) {
           dgf.vvF_.operator[](j)[d] = bo->GetMean(d, j);
+      }
+    }
+  }
+}
+
+// for use with a pseudo-DG field of degree 0
+template<class Type, template<class> class PatchField, class GeoMesh>
+OpenFoamPatchField* GenericFVScalarField(DgGeometricField<Type, PatchField, GeoMesh> &dgf);
+
+template<template<class> class PatchField, class GeoMesh>
+void GenericUpdateFVField(DgGeometricField<dgScalar, PatchField, GeoMesh> &dgf) {
+
+  label J = dgf.dgmesh_.mesh().nCells();
+
+  for (label j = 0; j < J; j++) {
+    int N = dgf[j].size();
+    dgf.vsF_->operator[](j) = dgf[j][0];
+  }
+}
+
+template<template<class> class PatchField, class GeoMesh>
+void GenericUpdateFVField(DgGeometricField<dgVector, PatchField, GeoMesh> &dgf) {
+  label J = dgf.dgmesh_.mesh().nCells();
+
+  for (label j = 0; j < J; j++) {
+    int N = dgf[j].size();
+    int D = 3;
+    for (int d = 0; d < D; d++) {
+      for (int n = 0; n < N; n++) {
+          dgf.vvF_.operator[](j)[d] = dgf[j][d][0];
       }
     }
   }
