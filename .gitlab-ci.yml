@@ -9,4 +9,5 @@ Integration:
   trigger:
     include:
       - local: integration.yml
+      - local: zenodo.yml
     strategy: depend
