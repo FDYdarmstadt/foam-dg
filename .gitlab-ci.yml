@@ -18,6 +18,6 @@ send-snapshot:
   script:
     - pip3 install gitlab2zenodo
     - git archive --format zip --output ${CI_COMMIT_TAG#v}.zip ${CI_COMMIT_TAG}
-    - g2z-send -i $zenodo_record -t $zenodo_token -s -m .zenodo.json ${CI_COMMIT_TAG#v}.zip
+    - /home/gitlab-runner/.local/bin/g2z-send -i $zenodo_record -t $zenodo_token -s -m .zenodo.json ${CI_COMMIT_TAG#v}.zip
   tags:
     - linux
