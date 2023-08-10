@@ -132,19 +132,12 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     double* flxArray = (double*) malloc(sizeof(double) * nFaces);
     int iF;
     for (iF = 0; iF < nInternalFaces; iF++){
-        // Info << Flux[iF] << endl;
         flxArray[iF] = Flux[iF];
-        // Info << flxArray[iF] << endl << endl;
     }
-
-    // for (int iFF = iF; iFF < nFaces; iFF++){
-    //     Info << Flux.boundaryField()[0] << endl;
-    //     flxArray[iFF] = Flux.boundaryField()[0][iFF];
-    //     Info << flxArray[iFF] << endl << endl;
-    // }
 
     BoSSS::Foundation::Grid::OpenFOAMGrid* ofMesh = mesh.GetBoSSSobject();
     BoSSS::Application::ExternalBinding::OpenFoamSurfaceField* Flx = new BoSSS::Application::ExternalBinding::OpenFoamSurfaceField(ofMesh, flxArray, nFaces);
+    free(flxArray);
 
     BoSSS::Application::ExternalBinding::FixedOperators* BoSSSOp = new BoSSS::Application::ExternalBinding::FixedOperators();
     // BoSSSOp->CahnHilliard(bosssMtx, UbosssMtx, bosssPtch, bosssPtchU);
