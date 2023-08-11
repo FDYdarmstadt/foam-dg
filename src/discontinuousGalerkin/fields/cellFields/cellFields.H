@@ -224,13 +224,13 @@ public:
         (
             const IOobject& a,
             const Mesh& b,
-            volScalarField* vsf
+            volScalarField& vsf
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b),
             dgmesh_(b)
         {
             GetBoSSSobject();
             GetBoSSSPatchobject();
-            vsF_ = vsf;
+            vsF_ = &vsf;
             this->importFromVolScaField();
         }
 
@@ -239,13 +239,13 @@ public:
         (
             const IOobject& a,
             const Mesh& b,
-            volVectorField* vvf
+            volVectorField& vvf
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b),
             dgmesh_(b)
         {
             GetBoSSSobject();
             GetBoSSSPatchobject();
-            vvF_ = vvf;
+            vvF_ = &vvf;
             this->importFromVolVecField();
         }
 
@@ -432,11 +432,9 @@ public:
     }
 
     OpenFoamPatchField* GetBoSSSPatchobject() {
-        Info << "Hello from GetBoSSSpatchobject" << endl;
         if(bosssObjectPatchField_ == NULL) {
             bosssObjectPatchField_ = GenericGetBoSSSPatchobject(*this);
         }
-        Info << "Hello from GetBoSSSpatchobject 2" << endl;
         return bosssObjectPatchField_;
     }
 

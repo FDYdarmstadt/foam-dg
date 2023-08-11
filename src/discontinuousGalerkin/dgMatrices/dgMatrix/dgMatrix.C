@@ -432,7 +432,6 @@ void dgMatrix<Type>::operator+=(const dgMatrix<Type>& dgmv)
 {
     // also add to the BoSSSMatrix
     dgmv.SyncFromBoSSS();
-    cout << "Hello from += operator" << endl;
     cout << dgmv << endl;
     checkMethod(*this, dgmv, "+=");
 
