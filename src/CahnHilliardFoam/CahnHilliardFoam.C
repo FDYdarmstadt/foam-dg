@@ -48,7 +48,22 @@ int main(int argc, char *argv[])
   MyInit.BoSSSInitialize();
 
 #   include "createTime.H"
-#   include "createPolyMesh.H"
+
+    Foam::Info
+        << "Create mesh for time = "
+        << runTime.timeName() << Foam::nl << Foam::endl;
+
+    Foam::fvMesh mesh
+    (
+        Foam::IOobject
+        (
+            Foam::fvMesh::defaultRegion,
+            runTime.timeName(),
+            runTime,
+            Foam::IOobject::MUST_READ
+        )
+    );
+// #   include "createPolyMesh.H"
 #   include "createDgMesh.H"
 #   include "pimpleControl.H"
 

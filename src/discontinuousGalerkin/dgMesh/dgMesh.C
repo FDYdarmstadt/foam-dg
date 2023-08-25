@@ -73,10 +73,10 @@ void Foam::dgMesh::clearAddressing()
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::dgMesh::dgMesh(const polyMesh& pMesh)
+Foam::dgMesh::dgMesh(const fvMesh& pMesh)
 :
-    GeoMesh<polyMesh>(pMesh),
-    MeshObject<polyMesh, dgMesh>(pMesh),
+    GeoMesh<fvMesh>(pMesh),
+    MeshObject<fvMesh, dgMesh>(pMesh),
     boundary_(*this, pMesh.boundaryMesh()),
     schemesDict_(mesh().thisDb()),
     solutionDict_(mesh().thisDb()),
@@ -89,8 +89,8 @@ Foam::dgMesh::dgMesh(const polyMesh& pMesh)
 {
     if (debug)
     {
-        InfoIn("dgMesh::dgMesh(const polyMesh& pMesh)")
-            << "Creating dgMesh from polyMesh" << endl;
+        InfoIn("dgMesh::dgMesh(const fvMesh& pMesh)")
+            << "Creating dgMesh from fvMesh" << endl;
     }
 
     int nPoints = pMesh.nPoints();
@@ -300,7 +300,7 @@ Foam::scalarList Foam::dgMesh::gaussPoints()
 
 void Foam::dgMesh::calcCellScaleCoeffs() const
 {
-    const polyMesh& mesh = this->mesh();
+    const fvMesh& mesh = this->mesh();
     const scalarField points = mesh.points().component(vector::X);
 
     scalarField cellMax(mesh.cellCentres().component(vector::X));

@@ -65,8 +65,8 @@ class dgMeshLduAddressing;
 
 class dgMesh
 :
-    public GeoMesh<polyMesh>,
-    public MeshObject<polyMesh, dgMesh>,
+    public GeoMesh<fvMesh>,
+    public MeshObject<fvMesh, dgMesh>,
     public lduMesh
 {
     // Private data
@@ -140,7 +140,7 @@ public:
     // Constructors
 
         //- Construct from polyMesh
-        explicit dgMesh(const polyMesh& m);
+        explicit dgMesh(const fvMesh& m);
 
 
     //- Destructor
@@ -159,10 +159,10 @@ public:
 
         // Database
 
-            //- Return access to polyMesh
-            const polyMesh& mesh() const
+            //- Return access to fvMesh
+            const fvMesh& mesh() const
             {
-                return MeshObject<polyMesh, dgMesh>::mesh();
+                return MeshObject<fvMesh, dgMesh>::mesh();
             }
 
             //- Return reference to time

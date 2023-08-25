@@ -12,7 +12,7 @@
             IOobject::AUTO_WRITE
         ),
         // *dgMesh.finVolMesh()
-        fvmesh
+        mesh
     );
 
     // Order paremeter C
@@ -27,7 +27,7 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        fvmesh
+        mesh
         // *dgMesh.finVolMesh()
     );
 
@@ -44,7 +44,7 @@
             IOobject::AUTO_WRITE
         ),
         // *dgMesh.finVolMesh()
-        fvmesh
+        mesh
     );
 
     Info<< "Reading FV field U\n" << endl;
@@ -58,7 +58,7 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        fvmesh
+        mesh
         // *dgMesh.finVolMesh()
     );
 
@@ -249,7 +249,7 @@
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
-        linearInterpolate(u.volVecField()) & fvmesh.Sf()
+        linearInterpolate(u.volVecField()) & mesh.Sf()
         // linearInterpolate(U) & dgMesh.finVolMesh()->Sf()
     );
 
@@ -301,13 +301,13 @@
 
 
     Info<< "Calculating field g.h\n" << endl;
-    volScalarField gh("gh", g & fvmesh.C());
-    surfaceScalarField ghf("gh", g & fvmesh.Cf());
+    volScalarField gh("gh", g & mesh.C());
+    surfaceScalarField ghf("gh", g & mesh.Cf());
 
     label pdRefCell = 0;
     scalar pdRefValue = 0.0;
     setRefCell(pd, pimple.dict(), pdRefCell, pdRefValue);
-    fvmesh.schemesDict().setFluxRequired(pd.name());
+    mesh.schemesDict().setFluxRequired(pd.name());
 
     scalar pRefValue = 0.0;
 
