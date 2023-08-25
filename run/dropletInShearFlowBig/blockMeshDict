@@ -46,30 +46,50 @@ edges
 (
 );
 
-//boundary
-patches         
+boundary
 (
-    patch top
-    (
-        (4 5 6 7)
-    )
-    patch bottom
-    (
-        (0 3 2 1)
-    )
-    patch left
-    (
-        (0 4 7 3)
-    )
-    patch right
-    (
-        (2 6 5 1)
-    )
-    patch frontAndBack
-    (
-        (1 5 4 0)
-        (3 7 6 2)
-    )
+    top
+    {
+        type patch;
+        faces
+        (
+            (4 5 6 7)
+        );
+    }
+    bottom
+    {
+        type patch;
+        faces
+        (
+            (0 3 2 1)
+        );
+    }
+    left
+    {
+        type patch;
+        faces
+        (
+            (0 4 7 3)
+        );
+    }
+    right
+    {
+        type patch;
+        faces
+        (
+            (2 6 5 1)
+        );
+    }
+
+    frontAndBack
+    {
+        type patch;
+        faces
+        (
+            (1 5 4 0)
+            (3 7 6 2)
+        );
+    }
 );
 
 // ************************************************************************* //
