@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
     );
 // #   include "createPolyMesh.H"
 #   include "createDgMesh.H"
+    dgMesh.finVolMesh_ = &mesh;
 #   include "pimpleControl.H"
 
     pimpleControl pimple(*dgMesh.finVolMesh());

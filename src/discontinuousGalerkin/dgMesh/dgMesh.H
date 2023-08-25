@@ -97,7 +97,6 @@ class dgMesh
                 IOobject::NO_WRITE
                 );
 
-        fvMesh* finVolMesh_;
     // Demand-driven data
 
         //- ldu addressing
@@ -131,6 +130,8 @@ public:
 
         typedef dgMesh Mesh;
         typedef dgBoundaryMesh BoundaryMesh;
+
+        fvMesh* finVolMesh_;
 
 
     //- Runtime type information
