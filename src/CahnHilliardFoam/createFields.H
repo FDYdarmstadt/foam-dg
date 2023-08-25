@@ -11,7 +11,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        *dgMesh.finVolMesh()
+        // *dgMesh.finVolMesh()
+        fvmesh
     );
 
     // Order paremeter C
@@ -26,8 +27,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        // mesh
-        *dgMesh.finVolMesh()
+        fvmesh
+        // *dgMesh.finVolMesh()
     );
 
     // Chemical potential Psi
@@ -42,7 +43,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        *dgMesh.finVolMesh()
+        // *dgMesh.finVolMesh()
+        fvmesh
     );
 
     Info<< "Reading FV field U\n" << endl;
@@ -56,8 +58,8 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        // mesh
-        *dgMesh.finVolMesh()
+        fvmesh
+        // *dgMesh.finVolMesh()
     );
 
     // Order parameter c
@@ -247,7 +249,7 @@
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
-        linearInterpolate(u.volVecField()) & dgMesh.finVolMesh()->Sf()
+        linearInterpolate(u.volVecField()) & fvmesh.Sf()
         // linearInterpolate(U) & dgMesh.finVolMesh()->Sf()
     );
 
@@ -299,13 +301,13 @@
 
 
     Info<< "Calculating field g.h\n" << endl;
-    volScalarField gh("gh", g & dgMesh.finVolMesh()->C());
-    surfaceScalarField ghf("gh", g & dgMesh.finVolMesh()->Cf());
+    volScalarField gh("gh", g & fvmesh.C());
+    surfaceScalarField ghf("gh", g & fvmesh.Cf());
 
     label pdRefCell = 0;
     scalar pdRefValue = 0.0;
     setRefCell(pd, pimple.dict(), pdRefCell, pdRefValue);
-    dgMesh.finVolMesh()->schemesDict().setFluxRequired(pd.name());
+    fvmesh.schemesDict().setFluxRequired(pd.name());
 
     scalar pRefValue = 0.0;
 
