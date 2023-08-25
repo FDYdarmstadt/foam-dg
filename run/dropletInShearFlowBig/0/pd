@@ -31,15 +31,25 @@ boundaryField
     }
     left
     {
-        type            zeroGradient;
+        type            totalPressure;
+        rho             rho;
+        psi             none;
+        gamma           1;
+        p0              uniform 0;
+        value           uniform 0;
     }
     right
     {
-        type            zeroGradient;
+        type            totalPressure;
+        rho             rho;
+        psi             none;
+        gamma           1;
+        p0              uniform 0;
+        value           uniform 0;
     }
     frontAndBack
     {
-        type            empty;
+        type            zeroGradient;
     }
 }
 
