@@ -102,6 +102,7 @@ def plotConvergence(basePath, cahn):
     plt.clf()
     DOFs = [20, 40, 80]
     DOFsWithPadding = np.linspace(DOFs[0]*0.9, DOFs[-1]*1.11)
+    DOFsNegPadding = np.linspace(DOFs[0]*1.5, DOFs[-1]*0.8) + 1.2
     DOFslog = list(map(math.log2, DOFs))
     errors = list(map(lambda size: getOFError(basePath, size, cahn, False), ["coarse", "medium", "fine"]))
     errorslog = list(map(math.log2, errors))
@@ -116,6 +117,8 @@ def plotConvergence(basePath, cahn):
     plt.plot(DOFs, errors, "ko")
 
     plt.plot(DOFsWithPadding, errorsExpected, "k--")
+    plt.plot(DOFsNegPadding, list(map(lambda x: 3.0 * a * x ** -3, DOFsNegPadding)), "k-")
+    plt.text(4.5e1, 2.5e-4, "slope: -1")
     plt.savefig("./convergencePlot1D.png")
 
 def getOFError(basePath, size, cahn, rerun=False):
