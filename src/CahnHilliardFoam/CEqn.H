@@ -36,3 +36,5 @@ mu == (scalar(1) + C) / 2. * rhoa *nua + (scalar(1) - C) / 2. * rhob *nub;
 // rhoPhi = CEqn.Flux() / 2 * (rhob - rhoa) + phi * (rhob + rhoa) / 2;
 rhoPhi == phi / 2 * (rhob - rhoa) + phi * (rhob + rhoa) / 2; // TODO is phi really what Holger means with CEqn.Flux()?
 
+Info << "max(mu): " << max(mu) << endl;
+Info << "min(mu): " << min(mu) << endl;
