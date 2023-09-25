@@ -25,6 +25,8 @@ do {
 
 //- Update FV fields from DG fields
 c.SyncFromBoSSS();
+Info << C << endl;
+Info << Psi << endl;
 
 //- Update mixture properties
 // rho == (scalar(1) + C) / 2. * rhoa + (scalar(1) - C) / 2. * rhob;
