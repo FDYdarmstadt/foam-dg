@@ -2,7 +2,7 @@
 
 This file gives a short overview on the Docker image 
 `floriankummer81/foamdg6:28mar24`.
-The intention of this container is enable interested readers
+The intention of this container is to enable interested readers
 to reproduce numerical results from the study _Coupling OpenFOAM with BoSSS, a discontinuous Galerkin solver written in C#_, by Klingenberg et. al.
 
 The respective source code is available at:
@@ -37,11 +37,11 @@ In detail, the following requirements would have to be installed:
 The droplet-in-shear flow represents the main example 
 in the paper, c.f. Figure 4.
 The full numerical solution for each timestep is written as tecplot files.
-Here the plotting facilities of BoSSS are uses since these support plotting 
+Here the plotting facilities of BoSSS are used since these support plotting 
 of the high-order DG field date with sub-cell accuracy.
 The `.plt` files can be renamed into a meaningful sequence using
 the python script  `rename-plots.py`.
-A further important result of this computation is the deformation Parameter,
+A further important result of this computation is the deformation parameter,
 which describes the droplet deformation, details are given in the manuscript.
 It is written to standard output in every timestep;
 The respective lines read e.g as 
@@ -53,11 +53,11 @@ Using the Docker container, the results can be reproduced by the following steps
 ```bash
 docker load -i foamdg6.tar
 ```
-resp., pull it from the online source:
+or, alternatively, pull it from the online source:
 ```
 docker pull floriankummer81/foamdg6:28mar24
 ```
-2. Start the Docker container form the image
+2. Start the Docker container from the image
 ```bash
 docker run -it --user 999 floriankummer81/foamdg6 /bin/bash
 ```
@@ -71,7 +71,7 @@ cd /home/myuser/foam/foam-dg/run/dropletInShearFlowBig
 ```bash
 fe41
 ```
-5. Execute the the combined solver `CahnHilliardFoam`
+5. Execute the combined solver `CahnHilliardFoam`
    (Cahn-Hilliard phase field model in DG, Navier-Stokes in finite volume)
 ```bash
 ./Allclean
@@ -80,15 +80,15 @@ fe41
 
 ## 1D convergence study
 
-The case can be run in analog fashion to the droplet-in-sher-flow described above.
+The case can be run in analogous fashion to the droplet-in-sher-flow described above.
 The respective `Allclean` and `Allrun` scripts can be found in the directory
 ` /home/myuser/foam/foam-dg/run/Tests/convAnalysis1D`.
 
 The case itself consists of three sub-cases `coarse`, `medium` and `fine`,
 which are used to produce the convergence plot.
 The `Allrun` script in `convAnalysis1D` finally calls the Python 3 script
-`main.py`, which controlls the execution of the sub-cases and
-performs the experimental convergence analysis
+`main.py`, which controls the execution of the sub-cases and
+performs the experimental convergence analysis.
 
 At the end of `Allrun`, the measured convergence rate is written out,
 a value of approx 3.0 is expected (e.g 2.99003255306427).
@@ -112,8 +112,7 @@ The procedure should work similar on other Linux distributions.
    not the Open MPI provided with OpenFOAM; Therefore, 
    one has to define `export WM_MPLIB=SYSTEMOPENMPI`
    prior to sourcing the OpenFOAM shell environment.**    
-   In below, 
-   we assume the foam-extend root directory to be `$HOME/foam/foam-extend-4.1`.
+   Below, we assume the foam-extend root directory to be `$HOME/foam/foam-extend-4.1`.
    For the installation in the reference Docker container, 
    the following instructions were used:
    https://openfoamwiki.net/index.php/Installation/Linux/foam-extend-4.1/Ubuntu
@@ -143,7 +142,8 @@ The procedure should work similar on other Linux distributions.
    The best option to compile BoSSS and to deploy the BoSSS binaries in the respective location is `dotnet publish`:
 ```bash
    cd $HOME/BoSSS-master/public/src/L4-application/ExternalBinding
-   dotnet publish ./ExternalBinding.csproj -c Release -o $FOAM_DG_ROOT/src/discontinuousGalerkin/BoSSSwrapper/rel/
+   dotnet publish ./ExternalBinding.csproj -c Release \
+         -o $FOAM_DG_ROOT/src/discontinuousGalerkin/BoSSSwrapper/rel/
 ```
 7. Export the `FOAM_DG_ROOT`-variable, which points to the 
    root directory of the `foam-dg` repository.
