@@ -1,0 +1,21 @@
+#!/bin/sh
+
+cd ../../../src/
+./Allwmake
+cd -
+
+bash createMeshes.sh
+
+cd coarse
+bash setFields.sh
+cd -
+
+cd medium
+bash setFields.sh
+cd -
+
+cd fine
+bash setFields.sh
+cd -
+
+python main.py True

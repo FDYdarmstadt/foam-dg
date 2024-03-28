@@ -24,12 +24,12 @@ boundaryField
     top
     {
         type            fixedValue;
-        value           uniform (0.0088788825 0 0);
+        value           uniform (0 0 0);
     }
     bottom
     {
         type            fixedValue;
-        value           uniform (-0.0088788825 0 0);
+        value           uniform (0 0 0);
     }
     left
     {

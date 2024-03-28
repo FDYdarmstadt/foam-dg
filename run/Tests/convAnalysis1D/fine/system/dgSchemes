@@ -8,41 +8,33 @@
 FoamFile
 {
     version     2.0;
-    format      ascii;
-    class       volVectorField;
-    location    "0";
-    object      U;
+    format      binary;
+    class       dictionary;
+    location    "system";
+    object      dgSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 1 -1 0 0 0 0];
 
-internalField   uniform (0 0 0);
-
-boundaryField
+dgDdtSchemes
 {
-    top
-    {
-        type            fixedValue;
-        value           uniform (0.0088788825 0 0);
-    }
-    bottom
-    {
-        type            fixedValue;
-        value           uniform (-0.0088788825 0 0);
-    }
-    left
-    {
-        type            zeroGradient;
-    }
-    right
-    {
-        type            zeroGradient;
-    }
-    frontAndBack
-    {
-        type            zeroGradient;
-    }
+}
+
+dgDivSchemes
+{
+}
+
+dgLaplacianSchemes
+{
+}
+
+dgCahnHilliardSchemes
+{
+    dgCahnHilliard(cu) bosssCahnHilliard;
+}
+
+fluxRequired
+{
 }
 
 

@@ -40,19 +40,19 @@ def prepareOFDir(casePath):
         baseDir = timeDir
         sourceDir = baseDir
         targetDir = baseDir
-        files = ["/C", "/U"]
-        for fl in files:
-            sourceFile = sourceDir + fl
-            targetFile = targetDir + fl
-            # shutil.copyfile(sourceFile, targetFile)
-            # Read in the file
-            with open(targetFile, 'r') as file :
-                filedata = file.read()
-            # Replace the target string
-            filedata = filedata.replace('boundaryField\n{\n}', 'boundaryField\n{\n top {type            homogenous; value 0;} bottom {type            homogenous; value 0;} left {type            homogenous; value 0;} right {type            homogenous; value 0;} frontAndBack {type            homogenous; value 0;} \n}')
-            # Write the file out again
-            with open(targetFile, 'w') as file:
-                file.write(filedata)
+        #files = ["/C", "/U"]
+        #for fl in files:
+            #sourceFile = sourceDir + fl
+            #targetFile = targetDir + fl
+            ## shutil.copyfile(sourceFile, targetFile)
+            ## Read in the file
+            #with open(targetFile, 'r') as file :
+                #filedata = file.read()
+            ## Replace the target string
+            #filedata = filedata.replace('boundaryField\n{\n}', 'boundaryField\n{\n top {type            homogenous; value 0;} bottom {type            homogenous; value 0;} left {type            homogenous; value 0;} right {type            homogenous; value 0;} frontAndBack {type            homogenous; value 0;} \n}')
+            ## Write the file out again
+            #with open(targetFile, 'w') as file:
+                #file.write(filedata)
 
 def sample(casePath):
     subprocess.run(["sample"], cwd=casePath, stdout=subprocess.DEVNULL)
@@ -80,7 +80,7 @@ def plotOF(basePath, size):
     casePath = basePath + "/" + size
     postprocessOFCase(casePath)
     timeDirectories = glob.glob(casePath + '/postProcessing/sets/[0-9]*')
-    time = timeDirectories[-1]
+    time = timeDirectories[-2]
     xs, cs = readDataOF(time + "/lineX1_C.xy")
     # plt.plot(xs, cs, ".", label=size+ "(OF)")
     plt.plot(xs, cs, ".", label=size)
@@ -118,7 +118,7 @@ def plotConvergence(basePath, cahn):
 
     plt.plot(DOFsWithPadding, errorsExpected, "k--")
     plt.plot(DOFsNegPadding, list(map(lambda x: 3.0 * a * x ** -3, DOFsNegPadding)), "k-")
-    plt.text(4.5e1, 2.5e-4, "slope: -1")
+    plt.text(4.5e1, 2.5e-4, "slope: -3")
     plt.savefig("./convergencePlot1D.png")
 
 def getOFError(basePath, size, cahn, rerun=False):
@@ -127,7 +127,7 @@ def getOFError(basePath, size, cahn, rerun=False):
         runOFCase(basePath + "/" + size)
     postprocessOFCase(casePath)
     timeDirectories = glob.glob(casePath + '/postProcessing/sets/[0-9]*')
-    time = timeDirectories[-1]
+    time = timeDirectories[-2]
     xs, cs = readDataOF(time + "/lineX1_C.xy")
     ys = np.fromiter(map(lambda x: math.tanh(x/(math.sqrt(2) * cahn)), xs), dtype=np.double)
     error = sum(list(map(lambda x: x**2, ys-cs)))
@@ -146,11 +146,10 @@ def getOOC(basePath, cahn, rerun=False):
 
 def main(inp):
     rerun = False
-    # rerun = True
     if len(inp) > 1 and inp[1] == "True":
         rerun = True
     cahn = 0.1
-    caseDir = os.path.dirname(os.path.realpath(sys.argv[0])) + "/convAnalysis1D/"
+    caseDir = os.path.dirname(os.path.realpath(sys.argv[0]))
     plotEverything(caseDir, cahn, rerun)
     plotConvergence(caseDir, cahn)
     ooc = getOOC(caseDir, cahn, rerun)

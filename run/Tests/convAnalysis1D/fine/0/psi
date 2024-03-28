@@ -9,47 +9,42 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
+    class       preCellScalarField;
     location    "0";
-    object      p;
+    object      Phi;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 dimensions      [1 -1 -2 0 0 0 0];
 
-internalField   uniform 0;
+internalField   uniform (0 0 0 0 0 0 0 0 0 0);
 
 boundaryField
 {
     top
     {
-        type            zeroGradient;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     bottom
     {
-        type            zeroGradient;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     left
     {
-        type            totalPressure;
-        rho             rho;
-        psi             none;
-        gamma           1;
-        p0              uniform 0;
-        value           uniform 0;        
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     right
     {
-        type            totalPressure;
-        rho             rho;
-        psi             none;
-        gamma           1;
-        p0              uniform 0;
-        value           uniform 0;        
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
     frontAndBack
     {
-        type            zeroGradient;
+       type            homogenous;
+       value           uniform (0 0 0 0 0 0 0 0 0 0);
     }
 }
 

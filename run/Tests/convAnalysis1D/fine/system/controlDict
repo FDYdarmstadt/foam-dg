@@ -1,0 +1,116 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     phaseFieldFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         2.5e5;
+
+// deltaT          1e-6;
+deltaT          1e5;
+
+writeControl    adjustableRunTime;//timeStep;//
+
+writeInterval   1e5;//25;//
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  12;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   10;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+maxCo           0.1;
+
+maxDeltaT       1e-5;
+
+/*libs (*/
+/*"libgroovyBC.so"*/
+/*"libOpenFOAM.so"*/
+/*"libsimpleSwakFunctionObjects.so"*/
+/*"libswakFunctionObjects.so"*/
+/*);*/
+
+functions
+(
+/*
+basis_radius
+{
+    type swakExpression;
+    valueType set;
+    verbose  true;
+    setName  surface;
+
+    set
+    {
+        type uniform;
+        axis x;
+        start (1 0.05 1.41001);
+        end   (3 0.05 1.41001);
+        nPoints 8000;
+    }
+
+   expression "(C > 0) ? (pos().x - 1.0) : 0";
+   accumulations (max);
+   interpolate true;
+   interpolationType cellPoint;
+}
+*/
+/*
+droplet_height
+{
+    type swakExpression;
+    valueType set;
+    verbose  true;
+    setName  surface;
+
+    set
+    {
+        type uniform;
+        axis x;
+        start (1.0001 0.05 1);
+        end   (1.0001 0.05 3);
+        nPoints 8000;
+    }
+
+   expression "(C > 0) ? pos().x : 0";
+   accumulations (max);
+   interpolate true;
+   interpolationType cellPoint;
+}
+*/
+
+
+);
+
+
+
+// ************************************************************************* //

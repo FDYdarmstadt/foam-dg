@@ -10,26 +10,52 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "constant";
-    object      transportProperties;
+    location    "system";
+    object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//- fluid properties 
-//- a: air; b: water
-rhoa            rhoa [1 -3 0 0 0 0 0] 1261;
-rhob            rhob [1 -3 0 0 0 0 0] 1261;
-nua             nua [0 2 -1 0 0 0 0] 1.12e-3;
-nub             nub [0 2 -1 0 0 0 0] 1.12e-3;
-sigma           sigma [ 1 0 -2 0 0 0 0 ] 0.063;
-DT              DT [0 2 -1 0 0 0 0] 10;
-fa              fa [0 2 -1 0 0 0 0] 1;
-fb              fb [0 2 -1 0 0 0 0] 1;
-epsilon         epsilon [0 2 -1 0 0 0 0] 0.5;
-M               M [0 2 -1 0 0 0 0] 1;
-Cn               Cn [0 0 0 0 0 0 0] 1e-1;
-D               D [0 0 0 0 0 0 0] 5e-2;
-CTol              1e-5;
-UTol              1e-5;
+ddtSchemes
+{
+    default         Euler;
+}
+
+gradSchemes
+{
+    default          Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+    div(phi,C)      Gauss Gamma 0.75;
+    div(rho*phi,U)  Gauss GammaVDC 0.5;
+    //limitedLinearV 1;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear uncorrected;
+}
+
+interpolationSchemes
+{
+    default           linear;
+}
+
+snGradSchemes
+{
+    default           uncorrected;
+}
+
+fluxRequired
+{
+    default         no;
+    pd;
+    pcorr;
+    C;
+    Psi;
+}
+
 
 // ************************************************************************* //
