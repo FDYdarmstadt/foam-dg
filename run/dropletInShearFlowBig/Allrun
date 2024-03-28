@@ -1,5 +1,9 @@
 #!/bin/sh
 
+cd ../../src/
+./Allwmake
+cd -
+
 #generate mesh
 blockMesh
 makeFaMesh
@@ -16,7 +20,7 @@ find . -name "pd" -type f | xargs sed -i -e '/rAU/d'
 #run in parallel
 decomposePar 
 
-mpirun -np 4 phaseFieldFoam -parallel
+mpirun -np 4 CahnHilliardFoam -parallel
 
 #reconstructPar
 
