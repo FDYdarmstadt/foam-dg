@@ -1,7 +1,0 @@
-{
-         'title': 'foam-dg',
-         'upload_type': 'software',
-         'description': 'the foam-dg software project',
-    'creators': [{'name': 'Kummer, Florian; Klingenberg, Dario',
-                       'affiliation': 'Technical University Darmstadt'}]
-}
