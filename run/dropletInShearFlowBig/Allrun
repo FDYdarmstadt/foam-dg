@@ -6,24 +6,16 @@ cd -
 
 #generate mesh
 blockMesh
-makeFaMesh
 
 cp 0/C.orig 0/C
 cp 0/U.orig 0/U
 
-./setInitPhaseFieldVariable
-
-
 #remove bug in of 4ext
 find . -name "pd" -type f | xargs sed -i -e '/rAU/d'
 
-#run in parallel
-decomposePar 
+./setFields.sh
 
-mpirun -np 4 CahnHilliardFoam -parallel
-
-#reconstructPar
-
+CahnHilliardFoam
 
 
 

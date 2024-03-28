@@ -5,4 +5,4 @@
 
 cleanCase
 
-rm -rf out* ./*.plt 0.* processor* postProcessing/
+rm -rf out* ./*.plt processor* postProcessing/ &>/dev/null
