@@ -25,8 +25,6 @@ do {
 
 //- Update FV fields from DG fields
 c.SyncFromBoSSS();
-Info << "max(Psi)" << max(Psi) << endl;
-Info << "min(Psi)" << min(Psi) << endl;
 
 
 //- Update mixture properties
@@ -38,9 +36,3 @@ mu == (scalar(1) + C) / 2. * rhoa *nua + (scalar(1) - C) / 2. * rhob *nub;
 //- Update mass flux from dgScalarMatrix CEqn
 // rhoPhi = CEqn.Flux() / 2 * (rhob - rhoa) + phi * (rhob + rhoa) / 2;
 rhoPhi == phi / 2 * (rhob - rhoa) + phi * (rhob + rhoa) / 2; // TODO is phi really what Holger means with CEqn.Flux()?
-
-Info << "max(phi): " << max(phi) << endl;
-Info << "min(phi): " << min(phi) << endl;
-
-Info << "max(mu): " << max(mu) << endl;
-Info << "min(mu): " << min(mu) << endl;

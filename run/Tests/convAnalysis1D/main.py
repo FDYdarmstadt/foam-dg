@@ -14,8 +14,7 @@ import sys
 
 
 plt.rc('font', size=14)
-plt.rc('text', usetex = True)
-params = {'text.latex.preamble' : [r'\usepackage{siunitx}', r'\usepackage{amsmath}']}
+plt.rc('text', usetex = False)
 
 def runOFCase(casePath):
     # cleanup
@@ -86,8 +85,8 @@ def plotOF(basePath, size):
     plt.plot(xs, cs, ".", label=size)
 
     plt.legend()
-    plt.xlabel(r"$x$")
-    plt.ylabel(r"$c$")
+    plt.xlabel(r"x")
+    plt.ylabel(r"c")
 
 def plotEverything(OFbasePath, cahn, rerun=False):
     plt.clf()
@@ -112,8 +111,8 @@ def plotConvergence(basePath, cahn):
     a = errors[-1]/DOFs[-1] ** (-3)
     errorsExpected= list(map(lambda x: a * x**(-3), DOFsWithPadding))
     plt.loglog()
-    plt.xlabel(r"\# of DOFs")
-    plt.ylabel(r"$E$")
+    plt.xlabel(r"number of DOFs")
+    plt.ylabel(r"E")
     plt.plot(DOFs, errors, "ko")
 
     plt.plot(DOFsWithPadding, errorsExpected, "k--")
@@ -148,6 +147,7 @@ def main(inp):
     rerun = False
     if len(inp) > 1 and inp[1] == "True":
         rerun = True
+        print("rerunning cases")
     cahn = 0.1
     caseDir = os.path.dirname(os.path.realpath(sys.argv[0]))
     plotEverything(caseDir, cahn, rerun)

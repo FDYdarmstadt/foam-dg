@@ -1,7 +1,0 @@
-#!/bin/sh
-
-bash Allclean
-
-bash setFields.sh
-
-CahnHilliardFoam

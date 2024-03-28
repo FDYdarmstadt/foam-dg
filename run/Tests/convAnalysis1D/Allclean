@@ -1,12 +1,23 @@
+#!/bin/bash
+
+
+# Source tutorial clean functions
+. $WM_PROJECT_DIR/bin/tools/CleanFunctions
+
+rm *.png &>/dev/null
+rm *.pdf &>/dev/null
 
 cd coarse
-rm -r 0.* 1* 2* 3* 4* 5* 6* 7* 8* 9*
+cleanCase
+rm *.plt &>/dev/null
 cd -
 
 cd medium
-rm -r 0.* 1* 2* 3* 4* 5* 6* 7* 8* 9*
+cleanCase
+rm *.plt &>/dev/null
 cd -
 
 cd fine
-rm -r 0.* 1* 2* 3* 4* 5* 6* 7* 8* 9*
+cleanCase
+rm *.plt &>/dev/null
 cd -
