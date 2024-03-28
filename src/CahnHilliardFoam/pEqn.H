@@ -7,7 +7,7 @@
     surfaceScalarField phiU
     (
         "phiU",
-        (fvc::interpolate(U) & dgMesh.finVolMesh()->Sf())
+        (fvc::interpolate(U) & mesh.Sf())
       + fvc::ddtPhiCorr(rUA, rho, U, phi)
     );
 
@@ -18,7 +18,7 @@
             // Interfacial energy density
             fvc::interpolate(Psi)*fvc::snGrad(C)
           - ghf*fvc::snGrad(rho)
-        )*rUAf*dgMesh.finVolMesh()->magSf();
+        )*rUAf*mesh.magSf();
 
 
     while (pimple.correctNonOrthogonal())

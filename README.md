@@ -38,3 +38,6 @@ cd $FOAM_DG_ROOT/run/Tests/dropletInShearFlowSmall/
 CahnHilliardFoam
 ```
 This test case is very coarse and does not provide any interesting physics. It only serves to verify that the code can be executed without runtime errors. Nevertheless, it can serve as a template for more interesting test cases.
+
+
+
