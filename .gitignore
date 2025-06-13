@@ -1,3 +1,8 @@
+# binaries
+src/discontinuousGalerkin/BoSSSwrapper/rel/*
+*.dll
+*.pdb
+
 # git-ls-files --others --exclude-from=.git/info/exclude
 # Lines that start with '#' are comments.
 
@@ -78,7 +83,7 @@ doc/[Dd]oxygen/man
 # Florian stuff
 __pycache__/
 mono_crash.*.json
-
+.vscode 
 .ccls-cache/
 
 .gitignore
