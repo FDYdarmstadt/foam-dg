@@ -1,0 +1,1 @@
+This directory is suposed to contain the dotbet-binaries of BoSSS

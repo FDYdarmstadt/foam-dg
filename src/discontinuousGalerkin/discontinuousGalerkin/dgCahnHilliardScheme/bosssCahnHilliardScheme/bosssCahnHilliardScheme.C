@@ -144,7 +144,7 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     double dt = vf.time().deltaT().value();
     double t = vf.time().value();
     BoSSSOp->CahnHilliard(bosssMtx, Flx, U, bosssPtch, bosssPtchU, t, dt, Cn.value(), D.value());
-    BoSSS::Application::ExternalBinding::OpenFoamDGField* Phi0DGField = BoSSSOp->GetMu();
+    BoSSS::Application::ExternalBinding::OpenFoamDGField* Phi0DGField = BoSSSOp->GetMu(); // get chemical potential (phi or mu)
 
     // BoSSS::Application::ExternalBinding::OpenFoamDGField* FluxDGField =
     // BoSSSOp->GetFlux();
