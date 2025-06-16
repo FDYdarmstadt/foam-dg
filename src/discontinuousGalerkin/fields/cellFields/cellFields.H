@@ -239,6 +239,22 @@ public:
         (
             const IOobject& a,
             const Mesh& b,
+            volScalarField& vsf,
+            char* bosssName
+        ) : GeometricField<Type, PatchField, GeoMesh>(a, b),
+            dgmesh_(b)
+        {
+            GetBoSSSobject(bosssName);
+            GetBoSSSPatchobject();
+            vsF_ = &vsf;
+            this->importFromVolScaField();
+        }
+
+        //- Construct and read given IOobject
+        DgGeometricField
+        (
+            const IOobject& a,
+            const Mesh& b,
             volVectorField& vvf
         ) : GeometricField<Type, PatchField, GeoMesh>(a, b),
             dgmesh_(b)
@@ -414,6 +430,10 @@ public:
     }
 
     OpenFoamDGField* GetBoSSSobject() {
+        return GetBoSSSobject("noname");
+    }
+
+    OpenFoamDGField* GetBoSSSobject(char* BoSSSName) {
         if(bosssObject_ == NULL) {
             int NoOfComps;
             if(typeid(Type) == typeid(dgScalar)) {
@@ -425,8 +445,8 @@ public:
             }
 
             //const GeoMesh& msh = mesh();
-
-            bosssObject_ = new OpenFoamDGField(dgmesh_.GetBoSSSobject(), dgOrder::order, NoOfComps);
+          //say my name
+            bosssObject_ = new OpenFoamDGField(dgmesh_.GetBoSSSobject(), dgOrder::order, NoOfComps, BoSSSName);
         }
         return bosssObject_;
     }

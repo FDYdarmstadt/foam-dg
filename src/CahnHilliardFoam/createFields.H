@@ -76,7 +76,8 @@
             IOobject::AUTO_WRITE
         ),
         dgMesh,
-        C
+        C,
+        "c" // Name of the DG field in BoSSS
     );
 
     Info<< "Reading DG field u\n" << endl;

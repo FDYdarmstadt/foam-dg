@@ -2,7 +2,7 @@
 // This is AUTO-GENERATED code created by the 
 // BoSSS External Language Binding code generator.
 // **Any manual changes are over-written if the code-generator is executed.**
-// Creation Date: 7/26/2023 10:08:45AM
+// Creation Date: 6/16/2025 1:34:27 PM
 // ##########################################################################
 #include <stdlib.h>
 #include <assert.h>
@@ -78,15 +78,16 @@ MonoObject* OpenFoamDGField::_GetMonoObject()
 {
 return mono_gchandle_get_target(_MonoGCHandle);
 }
-OpenFoamDGField::OpenFoamDGField(BoSSS::Foundation::Grid::OpenFOAMGrid* g, int degree, int NoOfComponents)
+OpenFoamDGField::OpenFoamDGField(BoSSS::Foundation::Grid::OpenFOAMGrid* g, int degree, int NoOfComponents, void* fieldNameInC)
 {
 _InitMonoBindings();
 MonoObject* ThisObj = mono_object_new(BoSSS::Globals::_domain, _ClassHandle);
 _MonoGCHandle = mono_gchandle_new(ThisObj, true);
-void* args[3];
+void* args[4];
 args[0] = g->_GetMonoObject();
 args[1] = &degree;
 args[2] = &NoOfComponents;
+args[3] = &fieldNameInC;
 MonoObject* exception;
 MonoObject* retval;
 retval = mono_runtime_invoke(_ctor_0, mono_gchandle_get_target(_MonoGCHandle), args, &exception);
