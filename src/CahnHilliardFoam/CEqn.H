@@ -14,7 +14,9 @@ do {
   U.storePrevIter();
 
   // time-evolve the Cahn-Hilliard equation in BoSSS
-  dgm::dgCahnHilliard(c, u, psi, phi, Cn, D); //phi : volumetric face flux
+  dgScalarMatrix CEqn(
+      dgm::dgCahnHilliard(c, u, psi, phi, Cn, D) //phi : volumetric face flux
+  );
   
   converged = true;
 } while (!converged);

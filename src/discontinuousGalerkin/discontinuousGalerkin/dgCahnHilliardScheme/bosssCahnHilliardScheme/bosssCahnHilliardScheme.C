@@ -184,7 +184,7 @@ bosssCahnHilliardScheme<Type, VType>::dgmCahnHilliard
     //   }
     // }
     delete BoSSSOp;
-    delete Flx;
+    //delete Flx;
 
     dgm.SetBoSSSobject(bosssMtx);
 
