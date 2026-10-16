@@ -2,15 +2,11 @@
 label cCorr(0);
 Switch converged(false);
 
-// C.SyncToBoSSS();
-
-
 do {
 
   u.importFromVolVecField();
   cCorr++;
   C.storePrevIter();
-  // psi.storePrevIter();
   U.storePrevIter();
 
   // time-evolve the Cahn-Hilliard equation in BoSSS

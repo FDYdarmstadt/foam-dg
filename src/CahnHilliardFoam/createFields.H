@@ -11,7 +11,6 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        // *dgMesh.finVolMesh()
         mesh
     );
 
@@ -28,7 +27,6 @@
             IOobject::AUTO_WRITE
         ),
         mesh
-        // *dgMesh.finVolMesh()
     );
 
     // Chemical potential Psi
@@ -43,7 +41,6 @@
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        // *dgMesh.finVolMesh()
         mesh
     );
 
@@ -59,10 +56,12 @@
             IOobject::AUTO_WRITE
         ),
         mesh
-        // *dgMesh.finVolMesh()
     );
 
     // Order parameter c
+    // The DG counterparts (c, u, psi) below are the fields actually passed to
+    // BoSSS; the plain FV fields above (C, U, Psi) are kept in sync with them
+    // via importFromVolVecField()/SyncFromBoSSS(), see CEqn.H.
     Info<< "Reading DG field c\n" << endl;
 
     cellScalarField c
@@ -158,88 +157,8 @@
         transportProperties.lookup("D")
     );
 
-
-    // Info<< "Reading field psi\n" << endl;
-
-    // volScalarField psi
-    // (
-    //     IOobject
-    //     (
-    //         "psi",
-    //         runTime.timeName(),
-    //         mesh,
-    //         IOobject::MUST_READ,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh
-    // );
-
-    // Need to store rho for ddt(rho, U)
-    // volScalarField rho
-    // (
-    //     IOobject
-    //     (
-    //         "rho",
-    //         runTime.timeName(),
-    //         mesh,
-    //         IOobject::READ_IF_PRESENT
-    //     ),
-    //     // C*rhoa + (scalar(1) - C)*rhob,
-    //     // C.volScaField()*rhoa, // TODO
-    //     // C.volScaField().boundaryField().types()
-    //     *dgMesh.finVolMesh()
-    // );
-
-    // rho.oldTime();
-
-    // surfaceScalarField rhoPhi
-    // (
-    //     IOobject
-    //     (
-    //         "rho*phi",
-    //         runTime.timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::NO_WRITE
-    //     ),
-    //     // rhoa*Phi.volScaField()
-    //     linearInterpolate(U.volVecField()) & dgMesh.finVolMesh()->Sf()
-    // );
-
-
-
-    // fvMesh myMesh(
-    //     IOobject
-    //     (
-    //         "myMesh",
-    //         runTime.timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::NO_WRITE
-    //     )
-    // );
-
-    // volVectorField fvU
-    // (
-    //     IOobject
-    //     (
-    //         "fvU",
-    //         runTime.timeName(),
-    //         // myMesh,
-    //         *dgMesh.finVolMesh(),
-    //         IOobject::MUST_READ,
-    //         IOobject::NO_WRITE
-    //     ),
-    //     *dgMesh.finVolMesh()
-    // );
-
-    // if (runTime.timeName() == "0")
-    // {
-    //   Info << "Initializing DG fields from FV fields" << endl;
-    //   c.importFromVolScaField();
-    //   u.importFromVolVecField();
-    // }
-
+    // Face flux; u is the DG velocity field synced from BoSSS each time step
+    // (see CEqn.H), so phi is reconstructed from it rather than from U.
     surfaceScalarField phi
     (
         IOobject
@@ -251,7 +170,6 @@
             IOobject::AUTO_WRITE
         ),
         linearInterpolate(u.volVecField()) & mesh.Sf()
-        // linearInterpolate(U) & dgMesh.finVolMesh()->Sf()
     );
 
     // Mixture density
@@ -344,17 +262,6 @@
         transportProperties.lookup("M")
     );
 
-    // dictionary chDict(mesh.solutionDict().subDict("CahnHilliardSolution"));
-    // label nCCorr
-    // (
-    //     readLabel(chDict.lookup("nCCorr"))
-    // );
-
-    // scalar psiTol
-    // (
-    //     readScalar(chDict.lookup("psiTol"))
-    // );
-
     scalar CTol
     (
         readScalar(transportProperties.lookup("CTol"))
@@ -364,44 +271,3 @@
     (
         readScalar(transportProperties.lookup("UTol"))
     );
-
-
-    // Switch mixedCH
-    // (
-    //     transportProperties.lookup("mixedFormulation")
-    // );
-
-    // cellScalarField dfdcCoeffs(fa*sqr(C));
-    // cellScalarField dfdcSource(-fb*C);
-
-    //- Update potential
-    // psi = (dfdcCoeffs*C + dfdcSource) - fvc::laplacian(epsSqr,C);
-
-    // Working coupled solution field
-    // Info<< "Creating field blockCH\n" << endl;
-    // volVector2Field blockCH
-    // (
-    //     IOobject
-    //     (
-    //         "blockCH",
-    //         runTime.timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::NO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedVector2("zero", dimless, vector2::zero)
-    // );
-
-    // scalar vol(gSum(mesh.V()));
-    // scalar avgFreeEnergy
-    // (
-    //     (
-    //         fvc::domainIntegrate
-    //         (
-    //             (fa/4.0)*sqr(sqr(C) -fb/fa)
-    //             + epsSqr/2.0*magSqr(fvc::grad(C))
-    //         )/vol
-    //     ).value()
-    // );
-    // scalar avgMass((fvc::domainIntegrate(C)/vol).value());

@@ -63,7 +63,6 @@ int main(int argc, char *argv[])
             Foam::IOobject::MUST_READ
         )
     );
-// #   include "createPolyMesh.H"
 #   include "createDgMesh.H"
     dgMesh.finVolMesh_ = &mesh;
 #   include "pimpleControl.H"
@@ -73,7 +72,6 @@ int main(int argc, char *argv[])
 #   include "readGravitationalAcceleration.H"
 #   include "initContinuityErrs.H"
 #   include "createFields.H"
-// #   include "correctPhi.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -94,19 +92,12 @@ int main(int argc, char *argv[])
             while (pimple.correct())
             {
                 #include "pEqn.H"
-
-            //   solve(UEqn == fvc::reconstruct(
-            //                     (fvc::interpolate(Psi) * fvc::snGrad(C) -
-            //                      ghf * fvc::snGrad(rho) - fvc::snGrad(pd)) *
-            //                     dgMesh.finVolMesh()->magSf()));
-
             }
 
 #           include "continuityErrs.H"
 
         }
 
-        // #include "writeEnergyAndMass.H"
         runTime.write();
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
