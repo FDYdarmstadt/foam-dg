@@ -15,13 +15,17 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-numberOfSubdomains 4;
+// NOTE: the Allrun script for this case runs CahnHilliardFoam directly
+// (no decomposePar/mpirun/reconstructPar), i.e. in serial. This file is
+// currently not used; the settings below are kept only as a starting
+// point for future parallel runs.
+numberOfSubdomains 1;
 
 method          simple;
 
 simpleCoeffs
 {
-    n               ( 2 1 2 );
+    n               ( 1 1 1 );
     delta           0.001;
 }
 
