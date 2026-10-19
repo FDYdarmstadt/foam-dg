@@ -445,8 +445,8 @@ public:
             }
 
             //const GeoMesh& msh = mesh();
-          //say my name
-            bosssObject_ = new OpenFoamDGField(dgmesh_.GetBoSSSobject(), dgOrder::order, NoOfComps, BoSSSName);
+            // Current BoSSS assigns the component field names on construction.
+            bosssObject_ = new OpenFoamDGField(dgmesh_.GetBoSSSobject(), dgOrder::order, NoOfComps);
         }
         return bosssObject_;
     }

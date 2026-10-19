@@ -8,7 +8,8 @@ It also serves as a demonstrater of how to interface between the C++ code in Ope
 ## Prerequisites
 
 - modified version of `foam-extend4.1`,  see https://github.com/FDYdarmstadt/foam-extend-for-dg
-- `BoSSS`, `premaster`-banch from https://github.com/FDYdarmstadt/BoSSS
+- A current .NET 10 BoSSS checkout from https://github.com/FDYdarmstadt/BoSSS
+- .NET 10 SDK (including the Linux x64 native hosting pack) and BoSSS native libraries
 
 ## Building/running instructions
 
@@ -29,6 +30,17 @@ source ~/foam/foam-extend-4.1/etc/bashrc # adjust according to where you cloned 
 ``` bash
 export FOAM_DG_ROOT=~/foam/foam-dg/ # adjust according to where you cloned this repository
 ```
+
+- build and deploy matching C++ wrappers and .NET adapters (adjust both paths):
+```bash
+export BOSSS_INSTALL=/path/to/BoSSS-Install
+bash "$FOAM_DG_ROOT/src/discontinuousGalerkin/BoSSSwrapper/createBindings.sh" /path/to/BoSSS-source Release
+```
+  `BOSSS_INSTALL` is the native-library installation; the script argument is the
+  source checkout. The script publishes the .NET runtime configuration and all
+  managed dependencies into `BoSSSwrapper/rel`. It uses nethost/hostfxr and
+  generated `[UnmanagedCallersOnly]` entry points. Regenerate and rebuild both
+  sides when the exported BoSSS API changes.
 
 - run the provided `src/Allwmake`-script
 ``` bash
@@ -52,9 +64,15 @@ cd $FOAM_DG_ROOT/run/dropletInShearFlowBig_p1/
 ```
 
 A pre-built Docker image with a working installation of the full software
-stack (`foam-extend4.1`, `mono`, `BoSSS`) is also available; see
+stack from the Mono-based paper release is also available; see
 `Docker-Readme.md` in this repository for details. It allows reproducing the
 results of the accompanying publication without a manual build.
 
 
 
+
+The historical Docker tags described there use the previous Mono bridge and do
+not contain this .NET 10 migration. Building the current source requires the
+steps above. For direct `wmake` calls, first source `src/dotnet-host.sh`;
+`Allwmake` discovers the native hosting pack automatically. Set
+`DOTNET_HOST_NATIVE` if your SDK is installed in a nonstandard location.

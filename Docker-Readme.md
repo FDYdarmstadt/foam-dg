@@ -96,7 +96,15 @@ a value of approx 3.0 is expected (e.g 2.99003255306427).
 Furthermore, the files `conv1D.png` and `convergencePlot1D.png` are produced,
 which resemble Figures 2 and 3 in the manuscript, respectively.
 
-## Compiling and Running `foam-dg`
+## Current .NET 10 source
+
+The image tags and installation recipe below describe the historical paper
+release, whose bridge used Mono. Current source embeds .NET 10 with
+nethost/hostfxr and generated UnmanagedCallersOnly adapters. Follow README.md to
+build current source; Mono is not a prerequisite for it. The existing image has
+not been rebuilt as part of this hosting migration.
+
+## Compiling and Running `foam-dg` (historical Mono release)
 
 This section gives a quick installation and compilation instruction for
 `foam-dg` on Ubunutu 20.04 LTS, for which instructions for the installation of foam-extend exist.

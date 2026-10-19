@@ -1,18 +1,7 @@
-#!/bin/sh
-set -x
-
-rm -r ./discontinuousGalerkin/lnInclude
+#!/usr/bin/env bash
+set -e
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+source ./dotnet-host.sh
 wmakeLnInclude discontinuousGalerkin
-# wmakeLnInclude CahnHilliardFoam
-
 wmake libso discontinuousGalerkin
-
-# wmake testDg
-# wmake testDgField
-
-# wmake dgLaplacianFoam
 wmake CahnHilliardFoam
-# wmake dgConvectionFoam
-# wmake dgScalarTransport
-# wmake fvTransform
-# wmake fvPointTransform
