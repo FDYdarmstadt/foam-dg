@@ -44,22 +44,30 @@ OpenFoamDGField::OpenFoamDGField(BoSSS::Foundation::Grid::OpenFOAMGrid* a0, int 
     BoSSS::Globals::Check(fn((a0 ? a0->_ManagedHandle() : nullptr), a1, a2, &result), "OpenFoamDGField.OpenFoamDGField");
     try { _Adopt(result, this); } catch (...) { BoSSS::Globals::Release(result, false); throw; }
 }
+OpenFoamDGField::OpenFoamDGField(BoSSS::Foundation::Grid::OpenFOAMGrid* a0, int a1, int a2, void* a3) {
+    BoSSS::ManagedCallScope managedCall;
+    typedef int (*Fn)(void*, int, int, void*, void**);
+    static Fn fn = reinterpret_cast<Fn>(BoSSS::Globals::Resolve("BoSSS_Application_ExternalBinding_OpenFoamDGField_ctor_4"));
+    void* result{};
+    BoSSS::Globals::Check(fn((a0 ? a0->_ManagedHandle() : nullptr), a1, a2, a3, &result), "OpenFoamDGField.OpenFoamDGField");
+    try { _Adopt(result, this); } catch (...) { BoSSS::Globals::Release(result, false); throw; }
+}
 void OpenFoamDGField::SetDGcoordinate(int a0, int a1, int a2, double a3) {
     BoSSS::ManagedCallScope managedCall;
     typedef int (*Fn)(void*, int, int, int, double);
-    static Fn fn = reinterpret_cast<Fn>(BoSSS::Globals::Resolve("BoSSS_Application_ExternalBinding_OpenFoamDGField_SetDGcoordinate_4"));
+    static Fn fn = reinterpret_cast<Fn>(BoSSS::Globals::Resolve("BoSSS_Application_ExternalBinding_OpenFoamDGField_SetDGcoordinate_5"));
     BoSSS::Globals::Check(fn(_ManagedHandle(), a0, a1, a2, a3), "OpenFoamDGField.SetDGcoordinate");
 }
 void OpenFoamDGField::SetMean(int a0, int a1, double a2) {
     BoSSS::ManagedCallScope managedCall;
     typedef int (*Fn)(void*, int, int, double);
-    static Fn fn = reinterpret_cast<Fn>(BoSSS::Globals::Resolve("BoSSS_Application_ExternalBinding_OpenFoamDGField_SetMean_5"));
+    static Fn fn = reinterpret_cast<Fn>(BoSSS::Globals::Resolve("BoSSS_Application_ExternalBinding_OpenFoamDGField_SetMean_6"));
     BoSSS::Globals::Check(fn(_ManagedHandle(), a0, a1, a2), "OpenFoamDGField.SetMean");
 }
 void OpenFoamDGField::_SetForeignPointer(void* a0) {
     BoSSS::ManagedCallScope managedCall;
     typedef int (*Fn)(void*, void*);
-    static Fn fn = reinterpret_cast<Fn>(BoSSS::Globals::Resolve("BoSSS_Application_ExternalBinding_OpenFoamDGField__SetForeignPointer_6"));
+    static Fn fn = reinterpret_cast<Fn>(BoSSS::Globals::Resolve("BoSSS_Application_ExternalBinding_OpenFoamDGField__SetForeignPointer_7"));
     BoSSS::Globals::Check(fn(_ManagedHandle(), a0), "OpenFoamDGField._SetForeignPointer");
 }
 }}}

@@ -69,7 +69,7 @@ void Globals::Init(const char* managedDirectory) {
     void* abi = nullptr;
     rc = candidate(assembly.c_str(), managedType, "AbiFingerprint", UNMANAGEDCALLERSONLY_METHOD, nullptr, &abi);
     require(rc == 0 && abi, "Cannot query BoSSS bridge ABI fingerprint.");
-    require(reinterpret_cast<std::uint64_t (*)()>(abi)() == 0xE7C6BB4C62561FE8ULL,
+    require(reinterpret_cast<std::uint64_t (*)()>(abi)() == 0x80C631FCC57FD5EBULL,
             "BoSSS bridge ABI mismatch; regenerate wrappers and rebuild both C++ and managed code.");
     assemblyPath = assembly;
     directoryPath = directory;

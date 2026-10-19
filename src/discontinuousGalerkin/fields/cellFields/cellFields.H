@@ -445,8 +445,8 @@ public:
             }
 
             //const GeoMesh& msh = mesh();
-            // Current BoSSS assigns the component field names on construction.
-            bosssObject_ = new OpenFoamDGField(dgmesh_.GetBoSSSobject(), dgOrder::order, NoOfComps);
+            // BoSSS reads the per-field degree override; native storage stays unchanged.
+            bosssObject_ = new OpenFoamDGField(dgmesh_.GetBoSSSobject(), dgOrder::order, NoOfComps, BoSSSName);
         }
         return bosssObject_;
     }

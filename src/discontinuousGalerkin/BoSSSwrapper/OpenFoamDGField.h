@@ -10,6 +10,7 @@ double GetDGcoordinate(int a0, int a1, int a2);
 double GetMean(int a0, int a1);
 void* _GetForeignPointer();
 OpenFoamDGField(BoSSS::Foundation::Grid::OpenFOAMGrid* a0, int a1, int a2);
+OpenFoamDGField(BoSSS::Foundation::Grid::OpenFOAMGrid* a0, int a1, int a2, void* a3);
 void SetDGcoordinate(int a0, int a1, int a2, double a3);
 void SetMean(int a0, int a1, double a2);
 void _SetForeignPointer(void* a0);

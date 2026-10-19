@@ -76,3 +76,19 @@ not contain this .NET 10 migration. Building the current source requires the
 steps above. For direct `wmake` calls, first source `src/dotnet-host.sh`;
 `Allwmake` discovers the native hosting pack automatically. Set
 `DOTNET_HOST_NATIVE` if your SDK is installed in a nonstandard location.
+
+## Selecting the BoSSS polynomial degree
+
+Keep OpenFOAM/C++ storage at its existing p=2 setting. Each droplet case selects
+its managed order-parameter degree in `bosss/config.json`, read only by BoSSS:
+
+```json
+{"DgDgrees": {"c": 3}}
+```
+
+`DgDgrees` preserves the historical spelling. The named field constructor passes
+`c` into BoSSS; additional p=3 coefficients stay in the managed field, while
+OpenFOAM retains its ten native slots and exchanges means. Missing files or
+unmatched fields use the supplied native degree. At startup, check the line
+`BoSSS field 'c': native degree 2, managed degree 3, 20 coefficients per cell.`
+Copy the entire case, including its `bosss` subdirectory, for validation.
