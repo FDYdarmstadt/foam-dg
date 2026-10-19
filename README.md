@@ -1,10 +1,14 @@
 # OpenFOAM-BoSSS Bridge
 
+This is an wrapper library to make discontinuous Galerkin (DG) 
+funcionality of the BoSSS code available in OpenFOAM.
+It also serves as a demonstrater of how to interface between the C++ code in OpenFAOM and the c# code of BoSSS
+
+
 ## Prerequisites
 
-- `foam-extend4.1`
-- `mono`
-- optional: `BoSSS`, which is only required you would like to develop on the `BoSSS`-side
+- modified version of `foam-extend4.1`,  see https://github.com/FDYdarmstadt/foam-extend-for-dg
+- `BoSSS`, `premaster`-banch from https://github.com/FDYdarmstadt/BoSSS
 
 ## Building/running instructions
 
