@@ -68,7 +68,7 @@ Building only the image:
 ```
 
 The default tag is `floriankummer81/foamdg7:latest`. Override it with `IMAGE_NAME`
-in either helper. BoSSS is cloned afresh on each helper invocation while the
+in any helper. BoSSS is cloned afresh on each image build while the
 expensive foam-extend layers remain cached. Set `BOSSS_CACHE_BUST` to a stable
 value to reuse the BoSSS layers too. `FOAM_EXTEND_REF` is an optional Docker build
 argument; the selected revision must already contain the upstream compiler fixes.
@@ -80,6 +80,13 @@ and the contents of the native `amd64-openmpi` directory under `bosss-native/`.
 `docker-build.sh` performs this staging automatically.
 
 ## Run an existing image
+
+Launch an image you have already built with `./docker-launch.sh`, optionally
+passing Docker run options, for example `./docker-launch.sh --cpus=8`.
+It regenerates bindings and builds the mounted checkout before opening a shell,
+without rebuilding the Docker image. `IMAGE_NAME` and `CONTAINER_NAME` can be
+overridden in the environment. `docker-buildNlaunch.sh` uses this same launcher
+after building the image.
 
 After the new image has been published:
 

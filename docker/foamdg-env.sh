@@ -6,7 +6,13 @@ if [[ ${FOAMDG_ENV_READY:-} != 1 && ${FOAMDG_ENV_INITIALIZING:-} != 1 ]]; then
     export FOAMDG_ENV_INITIALIZING=1
     foamdg_restore_nounset=false
     case $- in *u*) foamdg_restore_nounset=true; set +u ;; esac
-    source "$HOME/foam/foam-extend-4.1/etc/bashrc"
+    # Its startup script shifts positional arguments. Give it a function's
+    # empty argument list so BASH_ENV cannot consume the container command.
+    _foamdg_source_foam() {
+        source "$HOME/foam/foam-extend-4.1/etc/bashrc"
+    }
+    _foamdg_source_foam
+    unset -f _foamdg_source_foam
     export LD_LIBRARY_PATH="$BOSSS_INSTALL/bin/native/linux/amd64-openmpi:$BOSSS_INSTALL/bin/native/linux/amd64-openmpi/dependencies:${LD_LIBRARY_PATH:-}"
     FOAMDG_ENV_READY=1
     # Keep READY local to this shell: a later login shell may reset PATH and

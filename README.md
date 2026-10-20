@@ -21,7 +21,8 @@ the environment. Set it to the restored homepage URL when available.
 
 Only this `foam-dg` checkout is mounted; BoSSS lives in `~/bosss` inside the
 image. The launcher generates matching bindings and compiles the mounted source.
-Use `./docker-build.sh` to build only the image. See
+Use `./docker-build.sh` to build only the image, or `./docker-launch.sh` to
+launch an existing image without rebuilding it. See
 [Docker-Readme.md](Docker-Readme.md) for native-library requirements, running an
 existing image, examples and publication instructions. The public BoSSS
 `premaster` merge containing the .NET hosting migration is required before the
