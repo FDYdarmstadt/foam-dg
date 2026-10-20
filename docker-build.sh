@@ -2,9 +2,13 @@
 # Build the image; native libraries are copied into it, never mounted at runtime.
 set -euo pipefail
 repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
-# Replace this URL when the public installer is available again, or override
+# The BoSSS homepage (kummer.pages.rwth-aachen.de) is down and not expected to
+# be repaired soon; using a temporary Nextcloud/Hessenbox share of the same
+# installer in the meantime (verified 2026-10-20: a genuine Makeself
+# self-extracting installer, ~190MB, downloads correctly with plain
+# curl --location). Replace this URL once the homepage is back, or override
 # BOSSS_INSTALL_URL in the environment. Used only when BOSSS_INSTALL is unset.
-BOSSS_INSTALL_URL=${BOSSS_INSTALL_URL:-https://kummer.pages.rwth-aachen.de/bosss-public/BoSSS-setup-latest.run}
+BOSSS_INSTALL_URL=${BOSSS_INSTALL_URL:-https://next.hessenbox.de/index.php/s/W5rn5W7itGKFSTp/download}
 if [[ ${1:-} == --help ]]; then
     echo "Usage: [BOSSS_INSTALL=/path/to/BoSSS-Install] $0 [docker build options...]"
     echo "Without BOSSS_INSTALL, downloads the installer from BOSSS_INSTALL_URL."
