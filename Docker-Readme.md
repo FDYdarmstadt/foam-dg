@@ -1,187 +1,150 @@
-# Readme: `foam-dg` Docker image
+# Docker image: foamdg7
 
-This file gives a short overview on the Docker image 
-`floriankummer81/foamdg6:28mar24`.
-The intention of this container is to enable interested readers
-to reproduce numerical results from the study _Coupling OpenFOAM with BoSSS, a discontinuous Galerkin solver written in C#_, by Klingenberg et. al.
+`floriankummer81/foamdg7` is the .NET 10 successor to the obsolete Mono-based
+`foamdg6` images. Its [Dockerfile](Dockerfile) builds Ubuntu 26.04,
+foam-extend-for-dg with GCC 12 and system OpenMPI, and the public BoSSS
+**`premaster`** branch in `/home/bosss/bosss`. No foam-extend patches or AI CLI
+installations are needed.
 
-The respective source code is available at:
-[![DOI](https://zenodo.org/badge/223185451.svg)](https://zenodo.org/doi/10.5281/zenodo.8386723)
+The image contains the compiled BoSSS generator, ExternalBinding and its managed
+dependencies, plus the supplied BoSSS native libraries. Only the host `foam-dg`
+checkout is mounted, at `/home/bosss/foam/foam-dg`. Generated wrappers, managed
+runtime files, case inputs and results therefore remain in that checkout.
 
-This study describes a multi-phase flow solver which combines 
-a finite volume flow solver with a phase field model (Cahn-Hilliard) discretized by means of 
-a discontinuous Galerkin (DG) method.
-For the implementation of the DG-related algorithms,
-`foam-dg` interfaces to the BoSSS library (https://git.rwth-aachen.de/kummer/bosss-public).
+The public BoSSS `premaster` branch must contain the completed .NET hosting
+migration before this image can build. The Dockerfile checks for it and fails
+with an explicit message if the public merge has not arrived. The new Docker
+Hub image is intended for publication after that build and validation succeed.
 
-The two numerical results of the study
-which are part of the Docker image and the Git repository, are
- - the simulation of a droplet in shear flow.
- - a 1D convergence study, 
-   demonstrating a third order spatial convergence of the phase field solver
+## Build and launch from source
 
-The reproduction of these results using the Docker container is described below.
+Clone this repository and obtain a Linux x64 BoSSS native installation containing
+`bin/native/linux/amd64-openmpi/libBoSSSnative_{seq,omp,mpi}.so`, including its
+`dependencies` directory. The native libraries are distributed separately from
+the BoSSS managed source. A defined `BOSSS_INSTALL` takes precedence and is used
+without any native-library download. An invalid local installation fails with
+an error rather than falling back to the network.
 
-The source-code of `foam-dg` can be found at https://github.com/FDYdarmstadt/foam-dg/.
-Compiling and executing requires the careful setup of several other packages, which has proven to be somewhat error-prone in the past. Therefore, to simplify reproducing the results, we provide a "reference system" in the form of a properly set up Docker container.
-In detail, the following requirements would have to be installed:
- - The discontinuous Galerkin (DG) library BoSSS (https://git.rwth-aachen.de/kummer/bosss-public)
-   must be installed and set up,
-   together with its on pre-conditions.
-   These include Mono, Dotnet as well as the runtime library of BoSSS itself.
- - A source distribution of `foam-extend-4.1` (https://github.com/visiblehawk/foam-extend-4.1),
-   against which `foam-dg` compiles
-
-## Quick Start to the droplet-in-shear-flow example in the container
-
-The droplet-in-shear flow represents the main example 
-in the paper, c.f. Figure 4.
-The full numerical solution for each timestep is written as tecplot files.
-Here the plotting facilities of BoSSS are used since these support plotting 
-of the high-order DG field date with sub-cell accuracy.
-The `.plt` files can be renamed into a meaningful sequence using
-the python script  `rename-plots.py`.
-A further important result of this computation is the deformation parameter,
-which describes the droplet deformation, details are given in the manuscript.
-It is written to standard output in every timestep;
-The respective lines read e.g as 
-`Deformation Parameter: 0.00106771156159383`.
-
-Using the Docker container, the results can be reproduced by the following steps:
-
-1. Download or import the `floriankummer81/foamdg6` Docker image; From a local tar-file as:
 ```bash
-docker load -i foamdg6.tar
+git clone https://github.com/FDYdarmstadt/foam-dg.git
+cd foam-dg
+export BOSSS_INSTALL=/absolute/path/to/BoSSS-Install
+./docker-buildNlaunch.sh
 ```
-or, alternatively, pull it from the online source:
-```
-docker pull floriankummer81/foamdg6:28mar24
-```
-2. Start the Docker container from the image
+
+If `BOSSS_INSTALL` is unset or empty, the build downloads and extracts the
+native installer into a temporary directory. The download URL is defined by
+`BOSSS_INSTALL_URL` near the top of `docker-build.sh`; edit its default when the
+homepage returns, or override it for a build:
+
 ```bash
-docker run -it --user 999 floriankummer81/foamdg6 /bin/bash
+unset BOSSS_INSTALL
+BOSSS_INSTALL_URL=https://your-host/BoSSS-setup-latest.run ./docker-build.sh
 ```
-3. Enter the respective `foam-dg`-directory 
-   containing the 
-   droplet-in-shear-flow configuration:
+
+The current default points to the old homepage, which is temporarily unavailable;
+use a local installation until it returns or supply a working replacement URL.
+Downloaded sign-in/error pages are rejected before attempting extraction.
+The build helper copies only the native library directory into the build
+context and removes the downloaded installer and extracted managed files. It is baked into the image, so no host BoSSS checkout or native-library
+mount is needed when running it. The shell runs as `bosss`, with the building
+user's UID/GID so generated files belong to that host user.
+
+The launcher builds the image, regenerates the C++ wrappers and .NET adapters
+against the image's BoSSS source, publishes them into the mounted
+`src/discontinuousGalerkin/BoSSSwrapper/rel`, builds `foam-dg`, and opens a shell.
+It exits if compilation fails. Additional arguments are Docker run options:
+
 ```bash
-cd /home/myuser/foam/foam-dg/run/dropletInShearFlowBig
+./docker-buildNlaunch.sh --cpus=8
 ```
-4. Source foam-extend environment variables
+
+Building only the image:
+
 ```bash
-fe41
+./docker-build.sh
+# Docker build flags are forwarded, for example:
+./docker-build.sh --no-cache
 ```
-5. Execute the combined solver `CahnHilliardFoam`
-   (Cahn-Hilliard phase field model in DG, Navier-Stokes in finite volume)
+
+The default tag is `floriankummer81/foamdg7:latest`. Override it with `IMAGE_NAME`
+in either helper. BoSSS is cloned afresh on each helper invocation while the
+expensive foam-extend layers remain cached. Set `BOSSS_CACHE_BUST` to a stable
+value to reuse the BoSSS layers too. `FOAM_EXTEND_REF` is an optional Docker build
+argument; the selected revision must already contain the upstream compiler fixes.
+Builds target `linux/amd64`, as required by the current native hosting pack and
+BoSSS native distribution.
+
+For a direct `docker build`, stage a context containing `Dockerfile`, `docker/`
+and the contents of the native `amd64-openmpi` directory under `bosss-native/`.
+`docker-build.sh` performs this staging automatically.
+
+## Run an existing image
+
+After the new image has been published:
+
 ```bash
-./Allclean
+docker pull floriankummer81/foamdg7:latest
+docker run -it --rm --platform linux/amd64 \
+  --mount "type=bind,source=$(pwd),target=/home/bosss/foam/foam-dg" \
+  floriankummer81/foamdg7:latest \
+  bash -c 'foamdg-build && exec bash -l'
+```
+
+Run this from the host `foam-dg` checkout. A published image uses its publisher's
+UID/GID; ensure that its `bosss` user can write to the checkout. Building locally
+with the helpers matches your own UID/GID automatically.
+
+`foamdg-build` can be rerun inside the container after source changes. Direct
+commands receive the foam-extend and native-library environment through the
+entrypoint; Bash shells also receive it through their startup files. For a
+running container named `foamdg7`, use `docker exec -it foamdg7 bash -l`.
+
+## Examples
+
+Inside the container, run the one-dimensional convergence study:
+
+```bash
+cd "$FOAM_DG_ROOT/run/Tests/convAnalysis1D"
 ./Allrun
 ```
 
-## 1D convergence study
+It runs the coarse, medium and fine grids and reports the convergence order
+(approximately three), producing `conv1D.png` and `convergencePlot1D.png`.
 
-The case can be run in analogous fashion to the droplet-in-sher-flow described above.
-The respective `Allclean` and `Allrun` scripts can be found in the directory
-` /home/myuser/foam/foam-dg/run/Tests/convAnalysis1D`.
+Run a droplet-in-shear-flow example:
 
-The case itself consists of three sub-cases `coarse`, `medium` and `fine`,
-which are used to produce the convergence plot.
-The `Allrun` script in `convAnalysis1D` finally calls the Python 3 script
-`main.py`, which controls the execution of the sub-cases and
-performs the experimental convergence analysis.
-
-At the end of `Allrun`, the measured convergence rate is written out,
-a value of approx 3.0 is expected (e.g 2.99003255306427).
-
-Furthermore, the files `conv1D.png` and `convergencePlot1D.png` are produced,
-which resemble Figures 2 and 3 in the manuscript, respectively.
-
-## Current .NET 10 source
-
-The image tags and installation recipe below describe the historical paper
-release, whose bridge used Mono. Current source embeds .NET 10 with
-nethost/hostfxr and generated UnmanagedCallersOnly adapters. Follow README.md to
-build current source; Mono is not a prerequisite for it. The existing image has
-not been rebuilt as part of this hosting migration.
-
-## Compiling and Running `foam-dg` (historical Mono release)
-
-This section gives a quick installation and compilation instruction for
-`foam-dg` on Ubunutu 20.04 LTS, for which instructions for the installation of foam-extend exist.
-The procedure should work similar on other Linux distributions.
-
-1. Install OpenMPI
 ```bash
-  apt-get update && apt-get install openmpi-common
-```
-2. Installation of foam-extend 4.1:
-   this is not covered here, extensive resources are available on-line.
-   **Note: To work correctly with BoSSS, OpenFOAM needs to be linked against the system Open MPI,
-   not the Open MPI provided with OpenFOAM; Therefore, 
-   one has to define `export WM_MPLIB=SYSTEMOPENMPI`
-   prior to sourcing the OpenFOAM shell environment.**    
-   Below, we assume the foam-extend root directory to be `$HOME/foam/foam-extend-4.1`.
-   For the installation in the reference Docker container, 
-   the following instructions were used:
-   https://openfoamwiki.net/index.php/Installation/Linux/foam-extend-4.1/Ubuntu
-3. Installation of `Mono`:
-```bash
-   apt-get update && apt-get install mono-complete
-```  
-4. Installation of `dotnet`: BoSSS requires at least Dotnet 6.0.
-   Installation instructions for Ubunutu 20.04 LTS, can be found at the Microsoft homepage: https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu-2004
-   (Remarks: since BoSSS has been migrated to the new-style project files,
-   it cannot be compiled using Mono tools. Therefore, Dotnet is required.
-   However, all BoSSS libraries which are used by `foam-dg`
-   are compiled for the `netstandard2.0` target, i.e., they are compatible with both,
-   Dotnet and Mono.)
-5. Installation of BoSSS native libraries: obtain the 
-   [latest installer](https://kummer.pages.rwth-aachen.de/bosss-public/BoSSS-setup-latest.run) 
-   for native libraries on Linux.
-   This installer will unpack the native libraries, namely the files 
-   `libBoSSSnative_seq.so`, `libBoSSSnative_omp.so` and `libBoSSSnative_mpi.so`.
-   Set the `BOSSS_INSTALL` environment variable to point to the 
-   directory created in the previous step.
-   The files `libBoSSSnative*.so` should be in the directory `$BOSSS_INSTALL/bin/native/linux/amd64-openmpi`.
-6. Optional: Compilation of BoSSS.
-   We assume the public version of BoSSS to be located at `cd $HOME/BoSSS-master/public`.
-   The output libraries, which `foam-dg` use, are expected to be located at
-   `$FOAM_DG_ROOT/src/discontinuousGalerkin/BoSSSwrapper/rel/`.
-   The best option to compile BoSSS and to deploy the BoSSS binaries in the respective location is `dotnet publish`:
-```bash
-   cd $HOME/BoSSS-master/public/src/L4-application/ExternalBinding
-   dotnet publish ./ExternalBinding.csproj -c Release \
-         -o $FOAM_DG_ROOT/src/discontinuousGalerkin/BoSSSwrapper/rel/
-```
-7. Export the `FOAM_DG_ROOT`-variable, which points to the 
-   root directory of the `foam-dg` repository.
-```bash
-   export FOAM_DG_ROOT=$HOME/foam/foam-dg
-```   
-8. Compile `foam-dg`:
-```bash
-   cd $FOAM_DG_ROOT/src
-   ./Allwmake
-```
-9. Enter the case folder for the droplet-in-shear-flow configuration and execute the 
-   `CahnHilliardFoam` solver:
-```bash
-   cd $FOAM_DG_ROOT/run/dropletInShearFlowBig
-   CahnHilliardFoam
+cd "$FOAM_DG_ROOT/run/dropletInShearFlowBig_p3"
+./Allrun
 ```
 
-## Miscellaneous information
+The `_p1`, `_p2` and `_p3` cases select the managed BoSSS polynomial degree in
+their `bosss/config.json` files; retain those subdirectories when copying cases.
+The solver writes Tecplot `.plt` output and reports the deformation parameter
+on standard output. These simulations can take substantial time. Results are
+written to the mounted host checkout.
 
-* The docker image itself is derived from `ubuntu:20.04`
-* When executing the Docker container, the user `myuser` (`uid=999`, group `myusergroup`)
-  should be used; all settings are prepared for this user.
-* The `.bashrc` of `myuser` defines the BoSSS-specific 
-  enviroment variables: `BOSSS_INSTALL=/root/BoSSS-install`
-  and `FOAM_DG_ROOT=/root/foam/foam-dg/`
-  which are required by BoSSS to find the native code libraries for BoSSS and 
-  the managed libraries called from OpenFOAM.
-* OpenFOAM is compiled against system Open MPI, 
-  since the BoSSS native libraries (`libBoSSSnative_mpi.so`) 
-  also links against the system MPI library.
-  Therefore, in the `.bashrc` we define `export WM_MPLIB=SYSTEMOPENMPI`
+## Provenance and Docker Hub publication
 
+`/home/bosss/foamdg-VERSION` records the BoSSS and foam-extend commits and .NET
+SDK version. `/home/bosss/bosss-native.sha256` records the native-library file
+checksums. After `foamdg-build`, `foamdg-mounted-VERSION` adds the mounted
+`foam-dg` commit and any tracked modifications. The host repository is compiled
+at launch rather than copied into the image.
+
+After the public BoSSS merge, validate the build and the coupled solver before
+publishing a dated release tag and `latest`, for example:
+
+```bash
+export IMAGE_NAME=floriankummer81/foamdg7:YYYYMMDD
+./docker-buildNlaunch.sh
+# Run the examples above inside the container, then exit.
+docker tag "$IMAGE_NAME" floriankummer81/foamdg7:latest
+docker login
+docker push "$IMAGE_NAME"
+docker push floriankummer81/foamdg7:latest
+```
+
+Use the dated tag or an image digest when recording results. Publication is a
+separate step; the build helpers do not push images.

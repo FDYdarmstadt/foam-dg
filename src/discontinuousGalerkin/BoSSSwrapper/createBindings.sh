@@ -6,7 +6,14 @@ bosss_source=$(cd -- "$1" && pwd)
 configuration=${2:-Release}
 case "$configuration" in Debug|Release) ;; *) echo 'Expected Debug or Release' >&2; exit 2;; esac
 wrapper_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
-project_dir="$bosss_source/public/src/L4-application"
+if [[ -d "$bosss_source/public/src/L4-application" ]]; then
+    project_dir="$bosss_source/public/src/L4-application"
+elif [[ -d "$bosss_source/src/L4-application" ]]; then
+    project_dir="$bosss_source/src/L4-application"
+else
+    echo "Cannot find BoSSS projects in $bosss_source (expected src/ or public/src/)." >&2
+    exit 2
+fi
 staging_dir=$(mktemp -d)
 trap 'rm -rf -- "$staging_dir"' EXIT
 # Exclude old generated adapters while bootstrapping, so removed/renamed exports

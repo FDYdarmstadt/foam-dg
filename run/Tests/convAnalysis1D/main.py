@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from matplotlib import subprocess
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize as optimization
@@ -72,7 +71,7 @@ def readDataOF(path):
 
 def plotAnalytical(cahn):
     xs = np.linspace(-1, 1, 100)
-    ys = np.fromiter(map(lambda x: math.tanh(x/(math.sqrt(2) * cahn)), xs), dtype=np.cfloat)
+    ys = np.fromiter(map(lambda x: math.tanh(x/(math.sqrt(2) * cahn)), xs), dtype=np.double)
     plt.plot(xs, ys, label="analytical")
 
 def plotOF(basePath, size):

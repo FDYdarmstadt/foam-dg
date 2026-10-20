@@ -1,14 +1,36 @@
 # OpenFOAM-BoSSS Bridge
 
-This is an wrapper library to make discontinuous Galerkin (DG) 
-funcionality of the BoSSS code available in OpenFOAM.
-It also serves as a demonstrater of how to interface between the C++ code in OpenFAOM and the c# code of BoSSS
+This library makes discontinuous Galerkin (DG) functionality from BoSSS
+available in OpenFOAM. It demonstrates coupling C++ and C# through .NET 10
+nethost/hostfxr and generated UnmanagedCallersOnly adapters.
 
 
-## Prerequisites
+## Docker quick start
+
+The new `floriankummer81/foamdg7` image builds foam-extend and the public BoSSS
+`premaster` branch. From this checkout, use your local BoSSS native installation:
+
+```bash
+export BOSSS_INSTALL=/path/to/BoSSS-Install
+./docker-buildNlaunch.sh
+```
+
+If `BOSSS_INSTALL` is unset, the build downloads the native installer using
+`BOSSS_INSTALL_URL`, defined near the top of `docker-build.sh` and overridable in
+the environment. Set it to the restored homepage URL when available.
+
+Only this `foam-dg` checkout is mounted; BoSSS lives in `~/bosss` inside the
+image. The launcher generates matching bindings and compiles the mounted source.
+Use `./docker-build.sh` to build only the image. See
+[Docker-Readme.md](Docker-Readme.md) for native-library requirements, running an
+existing image, examples and publication instructions. The public BoSSS
+`premaster` merge containing the .NET hosting migration is required before the
+image can build. `foamdg6` is obsolete for current source.
+
+## Prerequisites for a manual build
 
 - modified version of `foam-extend4.1`,  see https://github.com/FDYdarmstadt/foam-extend-for-dg
-- A current .NET 10 BoSSS checkout from https://github.com/FDYdarmstadt/BoSSS
+- A current .NET 10 BoSSS checkout, branch `premaster`, from https://github.com/FDYdarmstadt/BoSSS
 - .NET 10 SDK (including the Linux x64 native hosting pack) and BoSSS native libraries
 
 ## Building/running instructions
@@ -63,17 +85,7 @@ cd $FOAM_DG_ROOT/run/dropletInShearFlowBig_p1/
 ./Allrun
 ```
 
-A pre-built Docker image with a working installation of the full software
-stack from the Mono-based paper release is also available; see
-`Docker-Readme.md` in this repository for details. It allows reproducing the
-results of the accompanying publication without a manual build.
-
-
-
-
-The historical Docker tags described there use the previous Mono bridge and do
-not contain this .NET 10 migration. Building the current source requires the
-steps above. For direct `wmake` calls, first source `src/dotnet-host.sh`;
+For direct `wmake` calls, first source `src/dotnet-host.sh`;
 `Allwmake` discovers the native hosting pack automatically. Set
 `DOTNET_HOST_NATIVE` if your SDK is installed in a nonstandard location.
 
